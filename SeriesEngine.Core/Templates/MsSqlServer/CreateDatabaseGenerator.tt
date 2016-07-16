@@ -1,0 +1,53 @@
+﻿<#@ include file="CreateSchemaTemplate.tt" #>
+<#@ include file="CreateTableTemplate.tt" #>
+<#@ include file="CreateHierarchyTemplate.tt" #>
+<#+
+// <copyright file="CreateDataBaseGenerator.tt" company="">
+//  Copyright © Michael Matveev. All Rights Reserved.
+// </copyright>
+
+public class CreateDataBaseGenerator : Generator
+{
+	public String Output;
+	public XDocument DataTypesDoc;
+	public XDocument ComponentsDoc;
+	public XDocument HierarchiesDoc;
+
+	protected override void RunCore()
+	{		
+		Dictionary<String, XElement> dataTypes = DataTypesDoc.Root.Elements().ToDictionary(x => x.Attribute("Name").Value, x => x);
+
+		String prefix = ComponentsDoc.Root.Attribute("Prefix").Value;
+    
+		CreateSchemaTemplate createSchemaTemplate = new CreateSchemaTemplate 
+		{
+			Schema = prefix
+		};
+		createSchemaTemplate.RenderToFile(Output);
+
+		CreateTableTemplate createTableTempalte = new CreateTableTemplate 
+		{
+			Schema = prefix,
+			DataTypes = dataTypes
+		};
+
+		foreach(XElement stereotypeElement in ComponentsDoc.Descendants("Stereotype")) 
+		{
+			createTableTempalte.Stereotype = stereotypeElement;
+			createTableTempalte.RenderToFile(Output);
+		}
+
+		CreateHeirarchyTemplate createHierarchyTempalte = new CreateHeirarchyTemplate()
+		{
+			Schema = prefix
+		};
+
+		foreach(XElement hierarchyElement in HierarchiesDoc.Descendants("Hierarchy"))
+		{
+			createHierarchyTempalte.Hierarchy = hierarchyElement;
+			createHierarchyTempalte.RenderToFile(Output);
+		}
+	}
+}
+#>
+

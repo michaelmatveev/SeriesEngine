@@ -1,0 +1,79 @@
+﻿<#+
+    public class CreateSchemaTemplate : CSharpTemplate
+    {
+        public String Schema;
+	    public override string TransformText()
+	    {
+#>
+IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = N'<#= Schema #>')
+EXEC ('CREATE SCHEMA <#= Schema #>');
+GO
+
+-- drop all constraints
+DECLARE @str VARCHAR(max)
+DECLARE cur CURSOR FOR
+SELECT 'ALTER TABLE ' + '[' + s.[NAME] + '].[' + t.name + '] DROP CONSTRAINT ['+ c.name + ']'
+FROM sys.objects c, sys.objects t, sys.schemas s
+WHERE c.type IN ('C', 'F', 'PK', 'UQ', 'D')
+AND c.parent_object_id=t.object_id and t.type='U' AND t.SCHEMA_ID = s.schema_id
+ORDER BY c.type
+
+OPEN cur
+FETCH NEXT FROM cur INTO @str
+WHILE (@@fetch_status = 0) BEGIN
+ --PRINT @str
+ EXEC (@str)
+ FETCH NEXT FROM cur INTO @str
+END
+
+CLOSE cur
+DEALLOCATE cur;
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('[dbo].[Solutions]') AND type = 'U')
+DROP TABLE [dbo].[Solutions];
+GO
+
+CREATE TABLE [dbo].[Solutions] (
+    "Id" INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
+    "Name" NVARCHAR(MAX) NOT NULL,
+	"Description" NVARCHAR(MAX) NULL
+);
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('[dbo].[Users]') AND type = 'U')
+DROP TABLE [dbo].[Users];
+GO
+
+CREATE TABLE [dbo].[Users] (
+    "Id" INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
+    "LastName" NVARCHAR(128) NOT NULL,
+	"FirstName" NVARCHAR(128) NOT NULL,
+	"MiddleName" NVARCHAR(128) NOT NULL,
+    "SolutionId" INT NULL,
+	"IsSystem" BIT NULL
+);
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('[dbo].[Networks]') AND type = 'U')
+DROP TABLE [dbo].[Networks];
+GO
+
+CREATE TABLE [dbo].[Networks] (
+    "Id" INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
+    "Name" NVARCHAR(128) NOT NULL,
+    "Description" TEXT NULL,
+	"IsSystem" BIT NULL,
+    "Tag" INT NULL
+);
+GO
+
+ALTER TABLE[dbo].[Users]  WITH CHECK ADD  CONSTRAINT [FK_Users_ Solutions] FOREIGN KEY([SolutionId])
+REFERENCES [dbo].[Solutions] ([Id]);
+GO
+
+<#+
+            return this.GenerationEnvironment.ToString();
+	    }
+    }
+#>

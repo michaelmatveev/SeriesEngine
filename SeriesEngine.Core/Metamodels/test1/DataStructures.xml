@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Hierarchies>
+  <Hierarchy Name="MainHierarchy" WithHistory="True">
+    <Level>
+      <UsedStereotype Name="ObjectA"/>
+      <Level>
+        <UsedStereotype Name="ObjectB"/>
+        <Level>
+          <UsedStereotype Name="ObjectC"/>
+        </Level>
+      </Level>
+    </Level>
+  </Hierarchy>
+  <Hierarchy Name="SecondHierarchy">
+    <Level>
+      <UsedStereotype Name="ObjectA" />
+      <Level>
+        <UsedStereotype Name="ObjectA" />
+        <UsedStereotype Name="ObjectB" />
+      </Level>
+    </Level>
+  </Hierarchy>
+</Hierarchies>

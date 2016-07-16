@@ -1,0 +1,301 @@
+﻿<#@ assembly name="System.Xml" #>
+<#@ assembly name="System.Xml.Linq" #>
+<#@ import namespace="System.Xml.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#+
+// <copyright file="EnumDataTypeTempalte.tt" company="Michael Matveev">
+//  Copyright © Michael Matveev. All Rights Reserved.
+//  Создает необходимые таблицы для MS SQL 2005 для стереотипа Stereotype
+// </copyright>
+
+    // Вспомогательный класс
+    public class VariableSelector
+    {
+        public IEnumerable<XElement> Variables { get; private set; }
+        private XElement Stereotype { get; set; }
+
+        public VariableSelector(XElement stereotype)
+        {
+            Stereotype = stereotype;            
+        }
+
+        public VariableSelector QueryVariablesThat() 
+        {
+            Variables = Stereotype.Elements();
+            return this;
+        }
+
+        public VariableSelector Periodic()
+        {
+            Variables = Variables.Where(v => v.Attribute("Period") != null && v.Attribute("Period").Value != "None");
+            return this;
+        }
+
+        public VariableSelector NotPeriodic()
+        {
+            Variables = Variables.Where(v => v.Attribute("Period") == null || v.Attribute("Period").Value == "None");
+            return this;
+        }
+
+        public VariableSelector Versioned()
+        {
+            Variables = Variables.Where(v => v.Attribute("Versioned") != null && v.Attribute("Versioned").Value == "True");
+            return this;
+        }
+
+        public VariableSelector NotVersioned()
+        {
+            Variables = Variables.Where(v => v.Attribute("Versioned") == null || v.Attribute("Versioned").Value == "False");
+            return this;
+        }
+
+        public VariableSelector KindFull()
+        {
+            Variables = Variables.Where(v => v.Attribute("Kind") != null && v.Attribute("Kind").Value != "None");
+            return this;
+        }
+
+        public VariableSelector KindLess()
+        {
+            Variables = Variables.Where(v => v.Attribute("Kind") == null || v.Attribute("Kind").Value == "None");
+            return this;
+        }
+    }    
+
+    public class CreateTableTemplate : CSharpTemplate
+    {
+        public String Schema;
+        public Dictionary<String, XElement> DataTypes;
+        public XElement Stereotype;
+
+	    public override string TransformText()
+	    {
+            VariableSelector vs = new VariableSelector(this.Stereotype);
+            String Table = Stereotype.Attribute("Name").Value;
+            // TYPE0 VARS Неверсионные, непериодические, без уровней достоверности переменные сохраняем в таблице объектов.
+            // Это обычные аттрибуты.
+            // Поля: Id, ObjectCreationTime, UpdateTime, AuthorId, [Переменная1], ... [ПеременнаяN], ConcurencyStamp, Tag.
+#>
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('[<#= Schema #>].[<#= Table #>s]') AND type = 'U')
+DROP TABLE [<#= Schema #>].[<#= Table #>s];
+GO
+
+CREATE TABLE [<#= Schema #>].[<#= Table #>s] (
+    "Id" INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
+    "ObjectCreationTime" DATETIME NOT NULL DEFAULT (getdate()),
+    "UpdateTime" DATETIME NOT NULL DEFAULT (getdate()),
+    "AuthorId" INT,
+<#+
+            foreach(XElement variable in vs.QueryVariablesThat().NotPeriodic().NotVersioned().KindLess().Variables)
+            {                
+                AddColumn(variable);
+            }
+#>
+    "ConcurrencyStamp" TIMESTAMP NOT NULL,
+    "Tag" INT
+);
+GO
+
+ALTER TABLE [<#= Schema #>].[<#= Table #>s] WITH NOCHECK 
+ADD CONSTRAINT [FK_<#= Schema #>_<#= Table #>s_Users] FOREIGN KEY("AuthorId")
+REFERENCES [dbo].[Users] ("Id");
+GO
+
+<#+
+            // TYPE1 VARS Для неверсионных, периодических и вне зависимости от уровней достоверности переменных создаем отдельные таблицы.
+            // По таблице для каждой переменной.
+            // Поля: Id, ObjectId, Date, Kind, UpdateTime, AuthorId, [Переменная], ConcurencyStamp, Tag.
+            foreach(XElement variable in vs.QueryVariablesThat().Periodic().NotVersioned().Variables)
+            {
+                String varName = variable.Attribute("Name").Value;
+#>
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('[<#= Schema #>].[<#= Table #>_<#= varName #>s]') AND type = 'U')
+DROP TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s];
+GO
+
+CREATE TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s] (
+    "Id" INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
+    "ObjectId" INT NOT NULL,
+    "Date" DATETIME NOT NULL,
+    "Kind" SMALLINT,
+    "UpdateTime" DATETIME NOT NULL DEFAULT (getdate()),
+    "AuthorId" INT,
+<#+
+                AddColumn(variable);
+#>
+    "ConcurrencyStamp" TIMESTAMP NOT NULL,
+    "Tag" INT
+);
+GO
+
+ALTER TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s] WITH NOCHECK 
+ADD CONSTRAINT [FK_<#= Schema #>_<#= Table #>_<#= varName #>s_Users] FOREIGN KEY("AuthorId")
+REFERENCES [dbo].[Users] ("Id");
+GO
+
+ALTER TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s] WITH NOCHECK 
+ADD CONSTRAINT [FK_<#= Schema #>_<#= Table #>_<#= varName #>s_<#= Table #>s] FOREIGN KEY("ObjectId")
+REFERENCES [<#= Schema #>].[<#= Table #>s] ("Id");
+GO
+
+<#+
+            }
+
+            // TYPE2 VARS Для версионных, периодических и вне зависимости от уровней достоверности переменных создаем отдельные таблицы.
+            // По таблице для каждой переменной.
+            // Поля: Id, ObjectId, Date, Kind, CreationTime, AuthorId, [Переменная], Tag.
+            foreach(XElement variable in vs.QueryVariablesThat().Periodic().Versioned().Variables)
+            {
+                String varName = variable.Attribute("Name").Value;
+#>
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('[<#= Schema #>].[<#= Table #>_<#= varName #>s]') AND type = 'U')
+DROP TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s];
+GO
+
+CREATE TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s] (
+    "Id" INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
+    "ObjectId" INT NOT NULL,
+    "Date" DATETIME NOT NULL,
+    "Kind" SMALLINT,
+    "CreationTime" DATETIME NOT NULL DEFAULT (getdate()),
+    "AuthorId" INT,
+<#+
+                AddColumn(variable);
+#>
+    "Tag" INT
+);
+GO
+
+ALTER TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s] WITH NOCHECK 
+ADD CONSTRAINT [FK_<#= Schema #>_<#= Table #>_<#= varName #>s_Users] FOREIGN KEY("AuthorId")
+REFERENCES [dbo].[Users] ("Id");
+GO
+
+ALTER TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s] WITH NOCHECK 
+ADD CONSTRAINT [FK_<#= Schema #>_<#= Table #>_<#= varName #>s_<#= Table #>s] FOREIGN KEY("ObjectId")
+REFERENCES [<#= Schema #>].[<#= Table #>s] ("Id");
+GO
+
+<#+
+            }
+
+            // TYPE3 VARS Для неверсионных, непериодических но имеющих уровни достоверности переменных создаем отдельные таблицы.
+            // По таблице для каждой переменной.
+            // Поля: Id, ObjectId, Kind, UpdateTime, AuthorId, [Переменная], ConcurrencyStamp, Tag.
+            foreach(XElement variable in vs.QueryVariablesThat().NotPeriodic().NotVersioned().KindFull().Variables)
+            {
+                String varName = variable.Attribute("Name").Value;
+#>
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('[<#= Schema #>].[<#= Table #>_<#= varName #>s]') AND type = 'U')
+DROP TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s];
+GO
+
+CREATE TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s] (
+    "Id" INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
+    "ObjectId" INT NOT NULL,
+    "Kind" SMALLINT,
+    "UpdateTime" DATETIME NOT NULL DEFAULT (getdate()),
+    "AuthorId" INT,
+<#+
+                AddColumn(variable);
+#>
+    "ConcurrencyStamp" TIMESTAMP NOT NULL,
+    "Tag" INT
+);
+GO
+
+ALTER TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s] WITH NOCHECK 
+ADD CONSTRAINT [FK_<#= Schema #>_<#= Table #>_<#= varName #>s_Users] FOREIGN KEY("AuthorId")
+REFERENCES [dbo].[Users] ("Id");
+GO
+
+ALTER TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s] WITH NOCHECK 
+ADD CONSTRAINT [FK_<#= Schema #>_<#= Table #>_<#= varName #>s_<#= Table #>s] FOREIGN KEY("ObjectId")
+REFERENCES [<#= Schema #>].[<#= Table #>s] ("Id");
+GO
+
+<#+
+            }
+
+            // TYPE4 VARS Для версионных, непериодических и вне зависимости от уровней достоверности переменных создаем отдельные таблицы.
+            // По таблице для каждой переменной.
+            // Поля: Id, ObjectId, Kind, CreatioTime, AuthorId, [Переменная], Tag.
+            foreach(XElement variable in vs.QueryVariablesThat().NotPeriodic().Versioned().Variables)
+            {
+                String varName = variable.Attribute("Name").Value;
+#>
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('[<#= Schema #>].[<#= Table #>_<#= varName #>s]') AND type = 'U')
+DROP TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s];
+GO
+
+CREATE TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s] (
+    "Id" INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
+    "ObjectId" INT NOT NULL,
+    "Kind" SMALLINT,
+    "CreationTime" DATETIME NOT NULL DEFAULT (getdate()),
+    "AuthorId" INT,
+<#+
+                AddColumn(variable);
+#>
+    "Tag" INT
+);
+GO
+
+ALTER TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s] WITH NOCHECK 
+ADD CONSTRAINT [FK_<#= Schema #>_<#= Table #>_<#= varName #>s_Users] FOREIGN KEY("AuthorId")
+REFERENCES [dbo].[Users] ("Id");
+GO
+
+ALTER TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s] WITH NOCHECK 
+ADD CONSTRAINT [FK_<#= Schema #>_<#= Table #>_<#= varName #>s_<#= Table #>s] FOREIGN KEY("ObjectId")
+REFERENCES [<#= Schema #>].[<#= Table #>s] ("Id");
+GO
+
+<#+
+            }
+            return this.GenerationEnvironment.ToString();
+	    }
+
+        private void AddColumn(XElement variable) 
+        {            
+            String varName = variable.Attribute("Name").Value;
+            String typeName= variable.Attribute("DataType").Value;
+            // по умолчанию считаем что все поля обязательны
+            String nullConstraint;
+            if(variable.Attribute("Presence") == null || variable.Attribute("Presence").Value == "Required") 
+            {
+                nullConstraint = "NOT NULL";
+            }
+            else 
+            {
+                nullConstraint = String.Empty;
+            }
+            XElement dataType = DataTypes[typeName];
+            if(dataType.Name == "PrimitiveDataType") 
+            {
+                String storeType = dataType.Attribute("StoreType").Value;
+#>
+    "<#= varName #>" <#= storeType #> <#= nullConstraint #>,
+<#+
+            }
+            else if(dataType.Name == "EnumDataType") 
+            {
+#>
+    "<#= varName #>" INT <#= nullConstraint #>,
+<#+
+            }
+            else if(dataType.Name == "StructureDataType") 
+            {
+                foreach(XElement fieldElem in dataType.Elements()) 
+                {
+                    String fieldName = fieldElem.Attribute("Name").Value;
+                    String storeType = fieldElem.Attribute("StoreType").Value;
+#>
+    "<#= varName #>_<#= fieldName #>" <#= storeType #> <#= nullConstraint #>,
+<#+
+                }
+            }
+        }
+
+    }
+#>

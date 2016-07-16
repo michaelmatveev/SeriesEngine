@@ -1,0 +1,82 @@
+﻿<#@ import namespace="System" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#+
+// <copyright file="CreateHeirarchyTemplate.tt" company="Michael Matveev">
+//  Copyright © Michael Matveev. All Rights Reserved.
+// </copyright>
+
+public class CreateHeirarchyTemplate : CSharpTemplate
+{
+    public String Schema;
+    public XElement Hierarchy;
+	public override string TransformText()
+	{
+        String hName = Hierarchy.Attribute("Name").Value;
+		Boolean withHistory = (Hierarchy.Attribute("WithHistory") != null && Hierarchy.Attribute("WithHistory").Value == "True");
+        var stereotypes = Hierarchy.Descendants("UsedStereotype").Select(us => us.Attribute("Name").Value).Distinct();
+#>
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('[<#= Schema #>].[<#= hName #>]') AND type = 'U')
+DROP TABLE [<#= Schema #>].[<#= hName #>];
+GO
+
+CREATE TABLE [<#= Schema #>].[<#= hName #>] (
+	Id INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
+    NetId INT NOT NULL,
+    HId sys.hierarchyid NOT NULL,
+<#+        
+        foreach(String stereotype in stereotypes)
+        {
+#>
+    <#= stereotype #>_Id INT NULL,
+<#+
+        }
+
+		if(withHistory)
+		{
+#>
+	ValidFrom datetime NULL,
+	ValidTill datetime NULL,
+	ReplaceId INT NULL,
+<#+
+		}
+#>
+    Tag INT    
+);
+GO
+
+ALTER TABLE[<#= Schema #>].[<#= hName #>] WITH CHECK ADD  CONSTRAINT [FK_<#= hName #>_Networks] FOREIGN KEY([NetId])
+REFERENCES [dbo].[Networks] ([Id])
+GO
+
+CREATE NONCLUSTERED INDEX [IX_<#= hName #>_NetHidIndex] ON [<#= Schema #>].[<#= hName #>]
+(
+	NetId ASC,
+	HId ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+GO
+
+<#+ 
+	if(withHistory)
+	{
+#>
+ALTER TABLE [<#= Schema #>].[<#= hName #>] WITH CHECK ADD CONSTRAINT [FK_<#= hName #>_History] FOREIGN KEY([ReplaceId])
+REFERENCES [<#= Schema #>].[<#= hName #>] ([Id])
+GO
+<#+
+	}
+#>
+<#+
+        foreach(String stereotype in stereotypes)
+        {
+#>
+ALTER TABLE[<#= Schema #>].[<#= hName #>]  WITH CHECK ADD  CONSTRAINT [FK_<#= hName #>_ <#= stereotype #>s] FOREIGN KEY([<#= stereotype #>_Id])
+REFERENCES [<#= Schema #>].[<#= stereotype #>s] ([Id])
+GO
+<#+
+        }
+        return this.GenerationEnvironment.ToString();
+	}
+}
+#>

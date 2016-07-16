@@ -1,0 +1,5 @@
+﻿
+
+
+This scripts creates an SQL script to create database schema for scratch 
+The 'test1' model has been created successfully.

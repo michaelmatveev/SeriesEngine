@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CustomDataTypes>
+  <PrimitiveDataType Name="Integer" ClrType="Int32" StoreType="INT"/>
+  <PrimitiveDataType Name="SmallInt" ClrType="Int16" StoreType="SMALLINT"/>
+  <PrimitiveDataType Name="Boolean" ClrType="Boolean" StoreType="BIT"/>
+  <PrimitiveDataType Name="Decimal" ClrType="Decimal" StoreType="DECIMAL(38, 20)"/>
+  <PrimitiveDataType Name="String200" ClrType="String" StoreType="NVARCHAR(200)" />
+  <EnumDataType Name="CustomEnumType1">
+    <Element Member="Const1" Value="0">Константа 1</Element>
+    <Element Member="Const2" Value="1">Константа 2</Element>
+    <Element Member="Const3" Value="2">Константа 3</Element>
+  </EnumDataType>
+  <EnumDataType Name="CustomEnumType2" >
+    <Element Member="RootDep" Value="0">Головное предприятие</Element>
+    <Element Member="Factory" Value="1">Завод</Element>
+    <Element Member="Workhop" Value="2">Цех</Element>
+  </EnumDataType>
+</CustomDataTypes>

@@ -1,0 +1,40 @@
+<#@ template language="C#" hostspecific="True" debug="True" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml.Linq" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension="txt" #>
+<#@ include file="T4Toolbox.tt" #>
+<#@ include file="Templates\MsSqlServer\CreateDatabaseGenerator.tt" #>
+This scripts creates an SQL script to create database schema for scratch 
+<#
+// <copyright file="BuildMetamodelScript.tt" company="">
+//  Copyright © Michael Matveev. All Rights Reserved.
+// </copyright>
+
+	var metaModelsPath = this.Host.ResolvePath(@"Metamodels");
+	var dataTypesPath = this.Host.ResolvePath(@"Metamodels\DataTypes\MsSqlServer.xml");
+	var dataTypes = XDocument.Load(dataTypesPath);
+
+	foreach(var modelPath in Directory
+		.GetDirectories(metaModelsPath)
+		.Where(d => !d.EndsWith("DataTypes")))
+	{
+		var model = Path.GetFileName(modelPath);
+		var outputFile = String.Format("CreateDatabaseSchema.{0}.sql", model);
+		var generator = new CreateDataBaseGenerator
+		{
+			Output = outputFile,
+			DataTypesDoc = dataTypes,
+			ComponentsDoc = XDocument.Load(modelPath + @"\Components.xml"),
+			HierarchiesDoc = XDocument.Load(modelPath + @"\DataStructures.xml")
+		};
+		generator.Run();
+#>
+The '<#= model #>' model has been created successfully.
+<#
+	}
+#>

@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Model Name="Model1" Prefix="test1" TargetDatabase="MsSqlServer">
+
+  <Stereotype Name="ObjectA">
+    <Variable Name="Name" DataType="String200">
+      <Family Rank="10">Основные свойства</Family>
+      <Help Context="Название объекта" Ref="http://google.com">Имя (TYPE0)</Help>
+    </Variable>
+    <Variable Name="Description" DataType="String200" Presence="Optional">
+      <Family Rank="20">Основные свойства</Family>
+      <Help Context="Описание" Ref="http://yandex.ru">Описание (TYPE0)</Help>
+    </Variable>
+    <!--<Variable Name="SimpleStructure1" DataType="Structure1">
+      <Family Rank="30">Основные свойства</Family>
+      <Help Context="Переменная структура">Переменная структура(TYPE0)</Help>
+    </Variable>-->
+    <Variable Name="EnumVariable1" DataType="CustomEnumType1">
+    </Variable>
+    <Variable Name="EnumVariable2" DataType="CustomEnumType1" Presence="Optional">
+    </Variable>
+
+    <Variable Name="PeriodIntVariable" DataType="Integer" Period="Hour">
+      <Family Rank="20">Периодические свойства</Family>
+      <Help Unit="кВтч">Периодическая переменная почасовая, неверсионная, без степени достоверности (TYPE1)</Help>
+    </Variable>
+    <Variable Name="PeriodSmallIntVariable" DataType="SmallInt" Presence="Optional" Period="Month">
+      <Kind>
+        <All/>  
+      </Kind>
+      <Family Rank="20">Периодические свойства</Family>
+      <Help Unit="кг">Периодическая переменная помесячная, неверсионная, со степенями достоверности (TYPE1)</Help>
+    </Variable>
+
+    <Variable Name="PeriodDecimalVariable" DataType="Decimal" Period="Hour" Versioned="True">
+      <Family Rank="20">Периодические свойства</Family>
+      <Help>Периодическая переменная почасовая, версионная, без степени достоверности (TYPE2)</Help>
+    </Variable>
+    <Variable Name="PeriodEnumVariable" DataType="CustomEnumType1" Period="Hour" Versioned="True">
+      <Kind>
+        <All/>  
+      </Kind>
+      <Family Rank="20">Периодические свойства</Family>
+      <Help>Периодическая переменная почасовая, версионная, со степенями достоверности (TYPE2)</Help>
+    </Variable>
+
+    <!--<Variable Name="NonPeriodStructure1Variable" DataType="Structure1" Versioned="False" Kind="255">
+			<Family Rank="20">Периодические свойства</Family>
+			<Help>Непериодическая переменная, не версионная, со степенями достоверности (TYPE3)</Help>
+		</Variable>-->
+
+    <!--<Variable Name="NonPeriodStructure2Variable" DataType="Structure2" Versioned="True">
+			<Family Rank="20">Периодические свойства</Family>
+			<Help>Непериодическая переменная, версионная, без степени достоверности (TYPE4)</Help>
+		</Variable>-->
+    <!--<Variable Name="NonPeriodEnum2Variable" DataType="CustomEnumType2" Versioned="True" Kind="255">
+			<Family Rank="20">Периодические свойства</Family>
+			<Help>Непериодическая переменная, версионная, со степенями достоверности (TYPE4)</Help>
+		</Variable>-->
+  </Stereotype>
+
+  <Stereotype Name="ObjectB">
+    <Variable Name="Name" DataType="String200">
+      <Family Rank="10">Основные свойства</Family>
+      <Help Context="Название объекта" Ref="http://google.com">Имя (TYPE0)</Help>
+    </Variable>
+    <Variable Name="Description" DataType="String200" Presence="Optional">
+      <Family Rank="20">Основные свойства</Family>
+      <Help Context="Описание" Ref="http://yandex.ru">Описание (TYPE0)</Help>
+    </Variable>
+  </Stereotype>
+
+  <Stereotype Name="ObjectC">
+    <Variable Name="Name" DataType="String200">
+      <Family Rank="10">Основные свойства</Family>
+      <Help Context="Название объекта" Ref="http://google.com">Имя (TYPE0)</Help>
+    </Variable>
+    <Variable Name="Description" DataType="String200" Presence="Optional">
+      <Family Rank="20">Основные свойства</Family>
+      <Help Context="Описание" Ref="http://yandex.ru">Описание (TYPE0)</Help>
+    </Variable>
+  </Stereotype>
+
+</Model>
