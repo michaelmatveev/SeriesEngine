@@ -1,0 +1,48 @@
+<#@ template language="C#" debug="True" #>
+<#@ output extension="txt" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ assembly name="System.Xml.Linq" #>
+<#@ import namespace="System" #>
+<#@ import namespace = "System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ include file="T4Toolbox.tt" #>
+<#@ include file="..\Templates\EntityFramework6\EntitiesGenerator.tt" #>
+This script generates classes for enity framework based on model.
+Host path: <#= this.Host.ResolvePath(".") #> 
+The following models have been found:
+<#
+// <copyright file="DataAccessScript.tt" company="">
+//  Copyright © Mikhail Matveev 2016. All Rights Reserved.
+// </copyright>
+
+	var modelNames = Directory
+		.GetDirectories(this.Host.ResolvePath(@"..\Metamodels"))
+		.Select(path => Path.GetFileName(path))
+		.Where(name => name != "DataTypes");
+
+	foreach(var modelName in modelNames) 
+	{
+#>
+<#= modelName #>
+<#
+		var objectTypeFiles = Directory
+			.GetFiles(this.Host.ResolvePath(string.Format(@"..\MetaModels\{0}\ObjectTypes", modelName)));
+
+		var listTypeFiles = Directory
+			.GetFiles(this.Host.ResolvePath(string.Format(@"..\MetaModels\{0}\ObjectLists", modelName)));
+			
+
+		var eg = new EntitiesGenerator
+		{
+			Model = modelName,
+			PropertyTypesFolder = this.Host.ResolvePath(@"..\MetaModels\PropertyTypes"),
+			OutputFolder = this.Host.ResolvePath(modelName),
+			ObjectFiles = objectTypeFiles,
+			ObjectListFiles = listTypeFiles
+		};
+		eg.Run();
+	}
+#>

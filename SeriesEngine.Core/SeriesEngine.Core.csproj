@@ -30,7 +30,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,6 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\Context.cs" />
+    <Compile Include="DataAccess\Network.cs" />
+    <Compile Include="DataAccess\Solution.cs" />
+    <Compile Include="DataAccess\TreeHierarchy.cs" />
+    <Compile Include="DataAccess\TreeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reliability.cs" />
   </ItemGroup>
@@ -57,19 +71,34 @@
     <Content Include="CreateDatabaseSchema.test1.sql">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Content>
+    <Content Include="DataAccess\DataAccessScript.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastOutputs>.\DataAccessScript.cs</LastOutputs>
+      <LastGenOutput>DataAccessScript.txt</LastGenOutput>
+    </Content>
+    <Content Include="DataAccess\DataAccessScript.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataAccessScript.tt</DependentUpon>
+    </Content>
     <Content Include="Metamodels\DataTypes\MsSqlServer.xml" />
     <Content Include="Metamodels\test1\Components.xml" />
     <Content Include="Metamodels\test1\DataStructures.xml" />
+    <Content Include="Templates\EntityFramework6\EntitiesGenerator.tt" />
     <Content Include="Templates\Header.tt" />
     <Content Include="Templates\MsSqlServer\CreateDatabaseGenerator.tt" />
     <Content Include="Templates\MsSqlServer\CreateHierarchyTemplate.tt" />
     <Content Include="Templates\MsSqlServer\CreateSchemaTemplate.tt" />
     <Content Include="Templates\MsSqlServer\CreateTableTemplate.tt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
