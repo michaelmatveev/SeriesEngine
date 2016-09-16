@@ -29,8 +29,9 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.listViewFragments = new System.Windows.Forms.ListView();
+            this.columnHeaderCell = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -38,7 +39,7 @@
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.listView1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.listViewFragments, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -49,21 +50,27 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(338, 415);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // listView1
+            // listViewFragments
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1});
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.Location = new System.Drawing.Point(3, 3);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(332, 300);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.listViewFragments.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeaderName,
+            this.columnHeaderCell});
+            this.listViewFragments.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewFragments.FullRowSelect = true;
+            this.listViewFragments.Location = new System.Drawing.Point(3, 3);
+            this.listViewFragments.Name = "listViewFragments";
+            this.listViewFragments.Size = new System.Drawing.Size(332, 300);
+            this.listViewFragments.TabIndex = 0;
+            this.listViewFragments.UseCompatibleStateImageBehavior = false;
+            this.listViewFragments.View = System.Windows.Forms.View.Details;
             // 
-            // columnHeader1
+            // columnHeaderCell
             // 
-            this.columnHeader1.Text = "Ячейка";
+            this.columnHeaderCell.Text = "Ячейка";
+            // 
+            // columnHeaderName
+            // 
+            this.columnHeaderName.Text = "Имя";
             // 
             // Fragments
             // 
@@ -80,7 +87,8 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ListView listViewFragments;
+        private System.Windows.Forms.ColumnHeader columnHeaderCell;
+        private System.Windows.Forms.ColumnHeader columnHeaderName;
     }
 }

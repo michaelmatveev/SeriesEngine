@@ -10,5 +10,6 @@ namespace SeriesEngine.ExcelAddIn.Views
     {
         void Embed<T>(T viewToEmbed, string caption);
         void Release<T>(T viewToRelease);
+        //event EventHandler PaneClosed;
     }
 }

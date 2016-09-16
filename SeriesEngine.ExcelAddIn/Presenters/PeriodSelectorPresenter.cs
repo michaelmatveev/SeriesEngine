@@ -12,11 +12,19 @@ namespace SeriesEngine.ExcelAddIn.Presenters
     {
         public PeriodSelectorPresenter(IPeriodView view, IController controller) : base(view, controller)
         {
+            View.PaneClosed += (s, e) => Controller.GetInstance<MainMenuPresenter>().SetPeriodButton(false);
         }
 
-        public void ShowPeriods()
+        public void ShowPeriods(bool visible)
         {
-            View.ShowIt();
+            if (visible)
+            {
+                View.ShowIt();
+            }
+            else
+            {
+                View.HideIt();
+            }
         }
     }
 }

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SeriesEngine.ExcelAddIn.Views
+namespace SeriesEngine.ExcelAddIn.Models
 {
-    public interface IPeriodView : IPanes
+    public interface IFragmentsProvider
     {
+        IEnumerable<Fragment> GetFragments();
     }
 }

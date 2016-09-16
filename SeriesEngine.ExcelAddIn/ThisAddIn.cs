@@ -38,7 +38,8 @@ namespace SeriesEngine.ExcelAddIn
             var controller = new ExcelApplicationController
             {
                 PaneCollection = CustomTaskPanes,
-                MainRibbon = Globals.Ribbons.Ribbon                
+                MainRibbon = Globals.Ribbons.Ribbon,
+                CurrentDocument = Globals.Factory.GetVstoObject(wb)
             };
             controller.Configure();
             ApplicationControllers.Add(wb, controller);

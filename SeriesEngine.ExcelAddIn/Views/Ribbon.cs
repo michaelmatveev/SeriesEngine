@@ -4,22 +4,48 @@ using System.Linq;
 using System.Text;
 using Microsoft.Office.Tools.Ribbon;
 using SeriesEngine.ExcelAddIn.Views;
+using Microsoft.Office.Core;
 
 namespace SeriesEngine.ExcelAddIn
 {
     public partial class Ribbon : IMainMenuView
     {
-        public event EventHandler ShowFragmentsPane;
-        public event EventHandler ShowPeriodSelectorPane;
+        public event EventHandler<PaneArgs> ShowFragmentsPane;
+        public event EventHandler<PaneArgs> ShowPeriodSelectorPane;
+        public event EventHandler RefreshAll;
 
-        private void buttonConnectSolution_Click(object sender, RibbonControlEventArgs e)
+        private PaneArgs CreatePaneArgs(object toggleButton)
         {
-            ShowFragmentsPane?.Invoke(this, EventArgs.Empty);
+            return new PaneArgs
+            {
+                Visible = ((RibbonToggleButton)toggleButton).Checked
+            };
         }
 
         private void toggleButtonShowPeriodSelector_Click(object sender, RibbonControlEventArgs e)
         {
-            ShowPeriodSelectorPane?.Invoke(this, EventArgs.Empty);
+            ShowPeriodSelectorPane?.Invoke(this, CreatePaneArgs(sender));
         }
+
+        private void toggleButtonShowFragmetns_Click(object sender, RibbonControlEventArgs e)
+        {
+            ShowFragmentsPane?.Invoke(this, CreatePaneArgs(sender));
+        }
+
+        private void buttonRefresh_Click(object sender, RibbonControlEventArgs e)
+        {
+            RefreshAll?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void SetFragmentsButtonState(bool isChecked)
+        {
+            toggleButtonShowFragmetns.Checked = isChecked;
+        }
+
+        public void SetPeriodButtonState(bool isChecked)
+        {
+            toggleButtonShowPeriodSelector.Checked = isChecked;
+        }
+
     }
 }

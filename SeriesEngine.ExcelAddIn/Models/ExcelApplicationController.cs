@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+//using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Excel;
 using SeriesEngine.ExcelAddIn.Views;
 using SeriesEngine.ExcelAddIn.Helpers;
@@ -38,6 +39,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Singleton();
 
                 _.For<IFragmentView>()
+                    .Singleton()
                     .Use<Fragments>();
 
                 _.ForConcreteType<FragmentPresenter>()
@@ -45,10 +47,23 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Singleton();
 
                 _.For<IPeriodView>()
+                    .Singleton()
                     .Use<Period>();
 
                 _.ForConcreteType<PeriodSelectorPresenter>();
 
+                _.For<IFragmentsProvider>()
+                    .Singleton()
+                    .Use<MockFragmentsProvider>();
+
+                _.For<Workbook>()
+                    .Use(CurrentDocument);
+
+                _.For<IDataImporter>()
+                    .Singleton()
+                    .Use<DataImporter>();
+                    //.Ctor<Workbook>()
+                    //.Is(CurrentDocument);
             });
         }
     }

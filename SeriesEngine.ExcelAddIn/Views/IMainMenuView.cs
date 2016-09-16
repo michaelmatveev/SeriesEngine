@@ -6,9 +6,18 @@ using System.Threading.Tasks;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
+    public class PaneArgs: EventArgs
+    {
+        public bool Visible { get; set; }
+    }
+
     public interface IMainMenuView : IView
     {
-        event EventHandler ShowFragmentsPane;
-        event EventHandler ShowPeriodSelectorPane;
+        event EventHandler<PaneArgs> ShowFragmentsPane;
+        event EventHandler<PaneArgs> ShowPeriodSelectorPane;
+        event EventHandler RefreshAll;
+
+        void SetFragmentsButtonState(bool isChecked);
+        void SetPeriodButtonState(bool isChecked);
     }
 }

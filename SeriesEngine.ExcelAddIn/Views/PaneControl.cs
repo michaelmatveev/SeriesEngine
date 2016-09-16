@@ -7,10 +7,12 @@ using System.Windows.Forms;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
-    public class PaneControl : UserControl
+    public class PaneControl : UserControl, IPanes
     {
+        public event EventHandler PaneClosed;
         protected readonly string _paneCaption;
         private readonly IViewEmbedder _embedder;
+
         public PaneControl()
         {
         }
@@ -19,11 +21,22 @@ namespace SeriesEngine.ExcelAddIn.Views
         {
             _embedder = embedder;
             _paneCaption = caption;
+            //_embedder.PaneClosed += (s, e) => PaneClosed?.Invoke(s, EventArgs.Empty);
         }
 
         public void ShowIt()
         {
-            _embedder.Embed(this, _paneCaption);
+            _embedder.Embed(this, _paneCaption);            
+        }
+
+        public void HideIt()
+        {
+            _embedder.Release(this);
+        }
+
+        public void ParentPaneClosed()
+        {
+            PaneClosed?.Invoke(this, EventArgs.Empty);
         }
     }
 }

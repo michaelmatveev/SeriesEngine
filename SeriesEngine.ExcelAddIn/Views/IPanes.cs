@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
-    public interface IPeriodView : IPanes
+    public interface IPanes : IView
     {
+        event EventHandler PaneClosed;
+        void ShowIt();
+        void HideIt();
     }
 }

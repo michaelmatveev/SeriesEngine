@@ -17,5 +17,15 @@ namespace SeriesEngine.ExcelAddIn.Views
         {
             InitializeComponent();
         }
+
+        public void RefreshFragmentsView(IEnumerable<Fragment> fragments)
+        {
+            listViewFragments.Items.Clear();
+            listViewFragments.Items.AddRange(
+                fragments
+                .Select(f => new ListViewItem(new[] { f.Name, f.Cell }))
+                .ToArray());
+        }
     }
+
 }

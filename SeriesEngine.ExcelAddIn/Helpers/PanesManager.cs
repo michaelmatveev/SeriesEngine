@@ -1,10 +1,6 @@
 ﻿using Microsoft.Office.Tools;
 using SeriesEngine.ExcelAddIn.Views;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SeriesEngine.ExcelAddIn.Helpers
@@ -18,26 +14,26 @@ namespace SeriesEngine.ExcelAddIn.Helpers
             _panesCollection = panesCollection;
         }
 
-        //public PanesManager(string panesCollection)
-        //{
-        //    //_panesCollection = panesCollection;
-        //    var s = panesCollection;
-        //}
-
-
         public void Embed<T>(T viewToEmbed, string caption)
         {
-            var panel = _panesCollection.SingleOrDefault(p => p.Control == viewToEmbed as Control);
+            var panel = _panesCollection.SingleOrDefault(p => p.Control == viewToEmbed as UserControl);
             if (panel == null)
             {
                 panel = _panesCollection.Add(viewToEmbed as UserControl, caption);
+                panel.VisibleChanged += (s, e) =>
+                {
+                    if (!panel.Visible)
+                    {
+                        (viewToEmbed as PaneControl).ParentPaneClosed();
+                    }
+                };
             }
             panel.Visible = true;
         }
 
         public void Release<T>(T viewToRelease)
         {
-            var panel = _panesCollection.SingleOrDefault(p => p.Control == viewToRelease as Control);
+            var panel = _panesCollection.SingleOrDefault(p => p.Control == viewToRelease as UserControl);
             panel.Visible = false;
         }
     }

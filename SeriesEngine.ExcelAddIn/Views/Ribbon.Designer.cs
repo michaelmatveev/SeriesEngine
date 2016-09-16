@@ -37,12 +37,14 @@
             this.tab1 = this.Factory.CreateRibbonTab();
             this.tab2 = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
-            this.buttonConnectSolution = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.toggleButtonShowPeriodSelector = this.Factory.CreateRibbonToggleButton();
+            this.toggleButtonShowFragmetns = this.Factory.CreateRibbonToggleButton();
+            this.buttonRefresh = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.tab2.SuspendLayout();
             this.group1.SuspendLayout();
+            this.group2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
@@ -53,34 +55,41 @@
             // 
             // tab2
             // 
-            this.tab2.Groups.Add(this.group1);
             this.tab2.Groups.Add(this.group2);
+            this.tab2.Groups.Add(this.group1);
             this.tab2.Label = "Загрузка данных";
             this.tab2.Name = "tab2";
             // 
             // group1
             // 
-            this.group1.Items.Add(this.buttonConnectSolution);
             this.group1.Items.Add(this.toggleButtonShowPeriodSelector);
+            this.group1.Items.Add(this.toggleButtonShowFragmetns);
             this.group1.Label = "group1";
             this.group1.Name = "group1";
             // 
-            // buttonConnectSolution
-            // 
-            this.buttonConnectSolution.Label = "button1";
-            this.buttonConnectSolution.Name = "buttonConnectSolution";
-            this.buttonConnectSolution.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonConnectSolution_Click);
-            // 
             // group2
             // 
+            this.group2.Items.Add(this.buttonRefresh);
             this.group2.Label = "group2";
             this.group2.Name = "group2";
             // 
             // toggleButtonShowPeriodSelector
             // 
-            this.toggleButtonShowPeriodSelector.Label = "toggleButton1";
+            this.toggleButtonShowPeriodSelector.Label = "Период";
             this.toggleButtonShowPeriodSelector.Name = "toggleButtonShowPeriodSelector";
             this.toggleButtonShowPeriodSelector.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButtonShowPeriodSelector_Click);
+            // 
+            // toggleButtonShowFragmetns
+            // 
+            this.toggleButtonShowFragmetns.Label = "Фрагменты";
+            this.toggleButtonShowFragmetns.Name = "toggleButtonShowFragmetns";
+            this.toggleButtonShowFragmetns.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButtonShowFragmetns_Click);
+            // 
+            // buttonRefresh
+            // 
+            this.buttonRefresh.Label = "Обновить все";
+            this.buttonRefresh.Name = "buttonRefresh";
+            this.buttonRefresh.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonRefresh_Click);
             // 
             // Ribbon
             // 
@@ -94,6 +103,8 @@
             this.tab2.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
+            this.group2.ResumeLayout(false);
+            this.group2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -103,9 +114,10 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
         private Microsoft.Office.Tools.Ribbon.RibbonTab tab2;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonConnectSolution;
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonShowPeriodSelector;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
+        internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonShowFragmetns;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonRefresh;
     }
 
     partial class ThisRibbonCollection

@@ -157,10 +157,16 @@
   -->
   <ItemGroup>
     <Compile Include="Helpers\PanesManager.cs" />
+    <Compile Include="Models\DataImporter.cs" />
     <Compile Include="Models\ExcelApplicationController.cs" />
+    <Compile Include="Models\Fragment.cs" />
+    <Compile Include="Models\FragmentsProvider.cs" />
     <Compile Include="Models\IController.cs" />
     <Compile Include="Models\ApplicationController.cs" />
+    <Compile Include="Models\IDataImporter.cs" />
+    <Compile Include="Models\IFragmentsProvider.cs" />
     <Compile Include="Presenters\PeriodSelectorPresenter.cs" />
+    <Compile Include="Views\IPanes.cs" />
     <Compile Include="Views\IPeriodView.cs" />
     <Compile Include="Views\IViewEmbedder.cs" />
     <Compile Include="Presenters\FragmentPresenter.cs" />
