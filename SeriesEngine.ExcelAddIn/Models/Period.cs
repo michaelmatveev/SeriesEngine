@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
-    public interface IFragmentsProvider
+    public class Period
     {
-        IEnumerable<Fragment> GetFragments();
-        Period GetDefaultPeriod();
-        void SetDefaultPeriod(Period p);
-    }   
+        public DateTime From { get; set; }
+        public DateTime Till { get; set; }
+    }
 }

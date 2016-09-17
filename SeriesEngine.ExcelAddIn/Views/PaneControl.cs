@@ -21,7 +21,6 @@ namespace SeriesEngine.ExcelAddIn.Views
         {
             _embedder = embedder;
             _paneCaption = caption;
-            //_embedder.PaneClosed += (s, e) => PaneClosed?.Invoke(s, EventArgs.Empty);
         }
 
         public void ShowIt()

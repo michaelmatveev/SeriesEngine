@@ -8,6 +8,6 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public interface IDataImporter
     {
-        void ImportFromFragments(IEnumerable<Fragment> fragments);
+        void ImportFromFragments(IEnumerable<Fragment> fragments, Period period);
     }
 }

@@ -106,6 +106,10 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="FluentDateTime, Version=1.13.0.0, Culture=neutral, PublicKeyToken=6ccbc613702e6c71, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentDateTime.1.13.0\lib\NET35\FluentDateTime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="StructureMap, Version=4.3.0.449, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\StructureMap.4.4.0\lib\net45\StructureMap.dll</HintPath>
       <Private>True</Private>
@@ -165,7 +169,10 @@
     <Compile Include="Models\ApplicationController.cs" />
     <Compile Include="Models\IDataImporter.cs" />
     <Compile Include="Models\IFragmentsProvider.cs" />
+    <Compile Include="Models\Period.cs" />
+    <Compile Include="Presenters\FragmentPropertiesPresenter.cs" />
     <Compile Include="Presenters\PeriodSelectorPresenter.cs" />
+    <Compile Include="Views\IFragmentPropertiesView.cs" />
     <Compile Include="Views\IPanes.cs" />
     <Compile Include="Views\IPeriodView.cs" />
     <Compile Include="Views\IViewEmbedder.cs" />
@@ -190,6 +197,9 @@
     <EmbeddedResource Include="Views\Fragments.resx">
       <DependentUpon>Fragments.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\PeriodSelector.resx">
+      <DependentUpon>PeriodSelector.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Ribbon.resx">
       <DependentUpon>Ribbon.cs</DependentUpon>
     </EmbeddedResource>
@@ -203,7 +213,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Views\FragmentProperties.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\FragmentProperties.Designer.cs">
       <DependentUpon>FragmentProperties.cs</DependentUpon>
@@ -220,11 +230,11 @@
     <Compile Include="Views\PaneControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\Period.cs">
+    <Compile Include="Views\PeriodSelector.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\Period.Designer.cs">
-      <DependentUpon>Period.cs</DependentUpon>
+    <Compile Include="Views\PeriodSelector.Designer.cs">
+      <DependentUpon>PeriodSelector.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Ribbon.cs">
       <SubType>Component</SubType>

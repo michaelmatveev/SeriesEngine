@@ -48,7 +48,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 _.For<IPeriodView>()
                     .Singleton()
-                    .Use<Period>();
+                    .Use<PeriodSelector>();
 
                 _.ForConcreteType<PeriodSelectorPresenter>();
 
@@ -62,8 +62,15 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _.For<IDataImporter>()
                     .Singleton()
                     .Use<DataImporter>();
-                    //.Ctor<Workbook>()
-                    //.Is(CurrentDocument);
+
+                _.ForConcreteType<FragmentPropertiesPresenter>()
+                    .Configure
+                    .Singleton();
+
+                _.For<IFragmentPropertiesView>()
+                    .Singleton()
+                    .Use<FragmentProperties>();
+
             });
         }
     }

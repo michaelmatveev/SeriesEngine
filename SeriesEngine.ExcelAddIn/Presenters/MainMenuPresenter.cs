@@ -16,8 +16,10 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             View.ShowPeriodSelectorPane += (s, e) => Controller.GetInstance<PeriodSelectorPresenter>().ShowPeriods(e.Visible);
             View.RefreshAll += (s, e) =>
             {
-                var fragments = Controller.GetInstance<IFragmentsProvider>().GetFragments();
-                Controller.GetInstance<IDataImporter>().ImportFromFragments(fragments);
+                var framgmentsProvider = Controller.GetInstance<IFragmentsProvider>();
+                Controller.GetInstance<IDataImporter>().ImportFromFragments(
+                    framgmentsProvider.GetFragments(),
+                    framgmentsProvider.GetDefaultPeriod());
             };
         }
 

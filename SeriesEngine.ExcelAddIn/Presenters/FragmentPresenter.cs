@@ -13,6 +13,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
         public FragmentPresenter(IFragmentView view, IController controller) : base(view, controller)
         {
             View.PaneClosed += (s, e) => Controller.GetInstance<MainMenuPresenter>().SetFragmentsButton(false);
+            View.FragmentSelected += (s, e) => Controller.GetInstance<FragmentPropertiesPresenter>().EditFragment(e.Fragment);
         }
 
         public void ShowFragments(bool visible)

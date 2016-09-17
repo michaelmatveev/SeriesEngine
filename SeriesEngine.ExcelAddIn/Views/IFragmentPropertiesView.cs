@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
-    public interface IPeriodView : IPanes
+    public interface IFragmentPropertiesView : IView
     {
-        event EventHandler PeriodChanged;
-        Period SelectedPeriod { get; set; }
-
+        event EventHandler FragmentChanged;
+        Fragment Fragment { get; set; }
+        void ShowIt();
     }
 }

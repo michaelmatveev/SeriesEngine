@@ -30,8 +30,8 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.listViewFragments = new System.Windows.Forms.ListView();
-            this.columnHeaderCell = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderCell = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,14 +63,15 @@
             this.listViewFragments.TabIndex = 0;
             this.listViewFragments.UseCompatibleStateImageBehavior = false;
             this.listViewFragments.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeaderCell
-            // 
-            this.columnHeaderCell.Text = "Ячейка";
+            this.listViewFragments.DoubleClick += new System.EventHandler(this.listViewFragments_DoubleClick);
             // 
             // columnHeaderName
             // 
             this.columnHeaderName.Text = "Имя";
+            // 
+            // columnHeaderCell
+            // 
+            this.columnHeaderCell.Text = "Ячейка";
             // 
             // Fragments
             // 
