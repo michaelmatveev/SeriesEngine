@@ -39,7 +39,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboBoxNetworks = new System.Windows.Forms.ComboBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
@@ -51,9 +51,9 @@
             this.tabPageOutput = new System.Windows.Forms.TabPage();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.comboBox7 = new System.Windows.Forms.ComboBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBoxName = new System.Windows.Forms.TextBox();
+            this.comboBoxSheet = new System.Windows.Forms.ComboBox();
+            this.textBoxCell = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label5 = new System.Windows.Forms.Label();
@@ -128,7 +128,7 @@
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label4, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.label6, 0, 6);
-            this.tableLayoutPanel1.Controls.Add(this.comboBox1, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.comboBoxNetworks, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.comboBox2, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.checkedListBox1, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.comboBox3, 1, 4);
@@ -182,14 +182,14 @@
             this.label6.Text = "Точность";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // comboBox1
+            // comboBoxNetworks
             // 
-            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(148, 3);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(194, 21);
-            this.comboBox1.TabIndex = 7;
+            this.comboBoxNetworks.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxNetworks.FormattingEnabled = true;
+            this.comboBoxNetworks.Location = new System.Drawing.Point(148, 3);
+            this.comboBoxNetworks.Name = "comboBoxNetworks";
+            this.comboBoxNetworks.Size = new System.Drawing.Size(194, 21);
+            this.comboBoxNetworks.TabIndex = 7;
             // 
             // comboBox2
             // 
@@ -301,9 +301,9 @@
             this.tableLayoutPanel2.Controls.Add(label8, 0, 0);
             this.tableLayoutPanel2.Controls.Add(label9, 0, 1);
             this.tableLayoutPanel2.Controls.Add(label10, 0, 2);
-            this.tableLayoutPanel2.Controls.Add(this.textBox2, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.comboBox7, 1, 1);
-            this.tableLayoutPanel2.Controls.Add(this.textBox3, 1, 2);
+            this.tableLayoutPanel2.Controls.Add(this.textBoxName, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.comboBoxSheet, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.textBoxCell, 1, 2);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -348,30 +348,30 @@
             label10.Text = "Ячейка";
             label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // textBox2
+            // textBoxName
             // 
-            this.textBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBox2.Location = new System.Drawing.Point(148, 3);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(194, 20);
-            this.textBox2.TabIndex = 3;
+            this.textBoxName.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBoxName.Location = new System.Drawing.Point(148, 3);
+            this.textBoxName.Name = "textBoxName";
+            this.textBoxName.Size = new System.Drawing.Size(194, 20);
+            this.textBoxName.TabIndex = 3;
             // 
-            // comboBox7
+            // comboBoxSheet
             // 
-            this.comboBox7.Dock = System.Windows.Forms.DockStyle.Top;
-            this.comboBox7.FormattingEnabled = true;
-            this.comboBox7.Location = new System.Drawing.Point(148, 29);
-            this.comboBox7.Name = "comboBox7";
-            this.comboBox7.Size = new System.Drawing.Size(194, 21);
-            this.comboBox7.TabIndex = 4;
+            this.comboBoxSheet.Dock = System.Windows.Forms.DockStyle.Top;
+            this.comboBoxSheet.FormattingEnabled = true;
+            this.comboBoxSheet.Location = new System.Drawing.Point(148, 29);
+            this.comboBoxSheet.Name = "comboBoxSheet";
+            this.comboBoxSheet.Size = new System.Drawing.Size(194, 21);
+            this.comboBoxSheet.TabIndex = 4;
             // 
-            // textBox3
+            // textBoxCell
             // 
-            this.textBox3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBox3.Location = new System.Drawing.Point(148, 56);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(194, 20);
-            this.textBox3.TabIndex = 5;
+            this.textBoxCell.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBoxCell.Location = new System.Drawing.Point(148, 56);
+            this.textBoxCell.Name = "textBoxCell";
+            this.textBoxCell.Size = new System.Drawing.Size(194, 20);
+            this.textBoxCell.TabIndex = 5;
             // 
             // label3
             // 
@@ -591,7 +591,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboBoxNetworks;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.CheckedListBox checkedListBox1;
         private System.Windows.Forms.ComboBox comboBox3;
@@ -601,9 +601,9 @@
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.ComboBox comboBox7;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox textBoxName;
+        private System.Windows.Forms.ComboBox comboBoxSheet;
+        private System.Windows.Forms.TextBox textBoxCell;
         private System.Windows.Forms.TabPage tabPageOutput;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Label label3;

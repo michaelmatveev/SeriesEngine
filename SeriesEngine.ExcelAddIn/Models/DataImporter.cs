@@ -34,7 +34,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         
         private void ImportFramgent(Fragment fragment, Period period)
         {
-            Excel.Worksheet sheet = _workbook.Sheets["Лист1"];
+            Excel.Worksheet sheet = _workbook.Sheets[fragment.Sheet];
             sheet.get_Range(fragment.Cell).Value = fragment.Name;
             DateTime d = GetStartDate(period.From, fragment.Interval);
             int i = 1;

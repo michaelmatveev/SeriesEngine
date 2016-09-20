@@ -23,13 +23,26 @@ namespace SeriesEngine.ExcelAddIn.Views
         public void RefreshFragmentsView(IEnumerable<Fragment> fragments)
         {
             listViewFragments.Items.Clear();
+            listViewFragments.Groups.Clear();
+            var groups = fragments
+                .GroupBy(f => f.Sheet)
+                .Select(g => new ListViewGroup(g.Key, g.Key))
+                .ToArray();
+            listViewFragments.Groups.AddRange(groups);
+
             listViewFragments.Items.AddRange(
                 fragments
-                .Select(f => new ListViewItem(new[] { f.Name, f.Cell })
+                .Select(f => new ListViewItem(new[] { f.Name, f.Cell }, 
+                    listViewFragments
+                    .Groups
+                    .Cast<ListViewGroup>()
+                    .Single(g => g.Name == f.Sheet)
+                )
                 {
                     Tag = f
                 })
                 .ToArray());
+            
         }
 
         private void listViewFragments_DoubleClick(object sender, EventArgs e)

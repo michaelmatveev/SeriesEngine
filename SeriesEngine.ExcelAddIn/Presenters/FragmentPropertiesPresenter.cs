@@ -21,6 +21,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
         public void EditFragment(Fragment fragment)
         {
             View.Fragment = fragment;
+            View.Networks = Controller.GetInstance<INetworksProvider>().GetNetworks();
             View.ShowIt();
         }
     }

@@ -19,6 +19,7 @@ namespace SeriesEngine.ExcelAddIn.Models
     public class Fragment
     {
         public string Name { get; set; }
+        public string Sheet { get; set; }
         public string Cell { get; set; }
         public TimeInterval Interval { get; set; }
         public bool UseCustomPeriod { get; set; }

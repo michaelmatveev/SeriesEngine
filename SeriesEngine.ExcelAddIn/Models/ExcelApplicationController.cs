@@ -56,6 +56,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Singleton()
                     .Use<MockFragmentsProvider>();
 
+                _.For<INetworksProvider>()
+                    .Singleton()
+                    .Use<MockNetworkProvider>();
+
                 _.For<Workbook>()
                     .Use(CurrentDocument);
 
@@ -63,12 +67,12 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Singleton()
                     .Use<DataImporter>();
 
-                _.ForConcreteType<FragmentPropertiesPresenter>()
-                    .Configure
-                    .Singleton();
+                _.ForConcreteType<FragmentPropertiesPresenter>();
+                    //.Configure
+                    //.Singleton();
 
-                _.For<IFragmentPropertiesView>()
-                    .Singleton()
+                _.For<IFragmentPropertiesView>()                    
+                    //.Singleton()
                     .Use<FragmentProperties>();
 
             });

@@ -15,18 +15,27 @@ namespace SeriesEngine.ExcelAddIn.Views
     {
         public FragmentProperties()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         public event EventHandler FragmentChanged;
         public Fragment Fragment { get; set; }
+        public IEnumerable<Network> Networks { get; set; }
 
         public void ShowIt()
         {
-            if(ShowDialog() == DialogResult.OK)
+            //textBoxName.DataBindings.Clear();
+            textBoxName.DataBindings.Add("Text", Fragment, "Name");
+
+            comboBoxNetworks.DisplayMember = nameof(Network.Name);
+            comboBoxNetworks.DataSource = Networks.ToList();
+            
+            if (ShowDialog() == DialogResult.OK)
             {
                 FragmentChanged?.Invoke(this, EventArgs.Empty);
             }
+
+
         }
 
     }
