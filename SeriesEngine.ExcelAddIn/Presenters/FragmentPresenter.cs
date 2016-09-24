@@ -18,6 +18,17 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                 Controller.GetInstance<FragmentPropertiesPresenter>().EditFragment(e.Fragment);
                 ShowFragments(true); // refresh view after edit
             };
+            View.NewFragmentRequested += (s, e) =>
+            {
+                var newFragment = Controller.GetInstance<IFragmentsProvider>().CreateFragment(e.SourceCollection);
+                Controller.GetInstance<FragmentPropertiesPresenter>().EditFragment(newFragment);
+                ShowFragments(true);
+            };
+            View.FragmentDeleted += (s, e) =>
+            {
+                Controller.GetInstance<IFragmentsProvider>().DeleteFragment(e.Fragment);
+                ShowFragments(true);
+            };
         }
 
         public void ShowFragments(bool visible)

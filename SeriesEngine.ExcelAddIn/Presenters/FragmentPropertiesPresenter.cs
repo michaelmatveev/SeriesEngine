@@ -13,16 +13,16 @@ namespace SeriesEngine.ExcelAddIn.Presenters
         public FragmentPropertiesPresenter(IFragmentPropertiesView view, IController controller) : base(view, controller)
         {
             View.FragmentChanged += (s, e) =>
-              {
-                //View.Fragment;
+            {
+                Controller.GetInstance<IFragmentsProvider>().AddFragment(View.Fragment);
             };
         }
 
         public void EditFragment(Fragment fragment)
         {
             View.Fragment = fragment;
-            //View.Networks = Controller.GetInstance<INetworksProvider>().GetNetworks();
             View.ShowIt();
         }
+
     }
 }

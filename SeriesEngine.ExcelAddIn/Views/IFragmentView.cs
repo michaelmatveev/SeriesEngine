@@ -8,14 +8,17 @@ using System.Threading.Tasks;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
-    public class SelectFragmentEventArgs : EventArgs
+    public class SelectEntityEventArgs : EventArgs
     {
         public Fragment Fragment { get; set; }
+        public NamedCollection SourceCollection { get; set; }
     } 
 
     public interface IFragmentView : IPanes
     {
-        event EventHandler<SelectFragmentEventArgs> FragmentSelected;
+        event EventHandler<SelectEntityEventArgs> FragmentSelected;
+        event EventHandler<SelectEntityEventArgs> NewFragmentRequested;
+        event EventHandler<SelectEntityEventArgs> FragmentDeleted;
         void RefreshFragmentsView(IEnumerable<Fragment> fragments);
     }
 }

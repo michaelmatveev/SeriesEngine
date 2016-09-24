@@ -16,6 +16,13 @@ namespace SeriesEngine.ExcelAddIn.Models
         Minutes30
     }
 
+    public enum Kind
+    {
+        MostAccurate,
+        Plan,
+        Fact,
+    }
+
     public class Fragment
     {
         public string Name { get; set; }
@@ -23,7 +30,10 @@ namespace SeriesEngine.ExcelAddIn.Models
         public string Cell { get; set; }
 
         public NamedCollection SourceCollection { get; set; }
-       
+        public string ObjectTypeName { get; set; }
+        public string VariableName { get; set; }
+        public Kind Kind { get; set; }
+
         public TimeInterval Interval { get; set; }
         public bool IntervalsByRows { get; set; }
         public bool ShowIntervals { get; set; }
@@ -34,6 +44,14 @@ namespace SeriesEngine.ExcelAddIn.Models
         public TimeInterval ShiftPeriod { get; set; }
 
         public Period CustomPeriod { get; set; }
+
+        public Fragment(NamedCollection collection, Period defaultPeriod)
+        {
+            SourceCollection = collection;
+            IntervalsByRows = true;
+            UseCommonPeriod = true;
+            CustomPeriod = defaultPeriod;
+        }
 
     }
 }

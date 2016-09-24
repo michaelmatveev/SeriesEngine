@@ -20,51 +20,43 @@ namespace SeriesEngine.ExcelAddIn.Models
             Name = "Коллекция 1"
         };
 
-        public List<Fragment> _fragments = new List<Fragment>
+        public HashSet<Fragment> _fragments = new HashSet<Fragment>
         {
-            new Fragment
+            new Fragment(SourceCollection, DefaultPeriod)
             {
                 Name = "Фрагмент 1",
                 Sheet = "Лист1",
                 Cell = "A1",
                 Interval = TimeInterval.Hour,
-                SourceCollection = SourceCollection,
                 IntervalsByRows = true,
                 UseCommonPeriod = true,
-                CustomPeriod = DefaultPeriod
             },
-            new Fragment
+            new Fragment(SourceCollection, DefaultPeriod)
             {
                 Name = "Фрагмент 2",
                 Sheet = "Лист1",
                 Cell = "C1",
                 Interval = TimeInterval.Day,
-                SourceCollection = SourceCollection,
                 IntervalsByRows = true,
                 UseCommonPeriod = true,
-                CustomPeriod = DefaultPeriod
             },
-            new Fragment
+            new Fragment(SourceCollection, DefaultPeriod)
             {
                 Name = "Фрагмент 3",
                 Sheet = "Лист1",
                 Cell = "E1",
                 Interval= TimeInterval.Month,
-                SourceCollection = SourceCollection,
                 IntervalsByRows = true,
                 UseCommonPeriod = true,
-                CustomPeriod = DefaultPeriod
             },
-            new Fragment
+            new Fragment(SourceCollection, DefaultPeriod)
             {
                 Name = "Фрагмент 4",
                 Sheet = "Лист1",
                 Cell = "G1",
                 Interval = TimeInterval.Year,
-                SourceCollection = SourceCollection,
                 IntervalsByRows = true,
                 UseCommonPeriod = true,
-                CustomPeriod = DefaultPeriod
             }
         };
 
@@ -72,6 +64,25 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             return _fragments;
         }
+
+        public Fragment CreateFragment(NamedCollection source)
+        {
+            return new Fragment(SourceCollection, DefaultPeriod);
+        }
+
+        public void AddFragment(Fragment fragment)
+        {
+            //if (!_fragments.Contains(fragment))
+            //{
+                _fragments.Add(fragment);
+            //}
+        }
+
+        public void DeleteFragment(Fragment fragment)
+        {
+            _fragments.Remove(fragment);
+        }
+
 
         private Period _defaultPeriod = new Period
         {

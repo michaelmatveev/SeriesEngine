@@ -13,7 +13,9 @@ namespace SeriesEngine.ExcelAddIn.Views
 {
     public partial class Fragments : PaneControl, IFragmentView
     {
-        public event EventHandler<SelectFragmentEventArgs> FragmentSelected;
+        public event EventHandler<SelectEntityEventArgs> FragmentSelected;
+        public event EventHandler<SelectEntityEventArgs> NewFragmentRequested;
+        public event EventHandler<SelectEntityEventArgs> FragmentDeleted;
 
         public Fragments(IViewEmbedder embedder) : base(embedder, "Фрагменты")
         {
@@ -22,44 +24,74 @@ namespace SeriesEngine.ExcelAddIn.Views
 
         public void RefreshFragmentsView(IEnumerable<Fragment> fragments)
         {
-            listViewFragments.Items.Clear();
-            listViewFragments.Groups.Clear();
-            var groups = fragments
-                .GroupBy(f => f.Sheet)
-                .Select(g => new ListViewGroup(g.Key, g.Key))
-                .ToArray();
-            listViewFragments.Groups.AddRange(groups);
-
-            listViewFragments.Items.AddRange(
-                fragments
-                .Select(f => new ListViewItem(new[] { f.Name, f.Cell }, 
-                    listViewFragments
-                    .Groups
-                    .Cast<ListViewGroup>()
-                    .Single(g => g.Name == f.Sheet)
-                )
-                {
-                    Tag = f
-                })
-                .ToArray());
+            treeViewFragments.Nodes.Clear();
+            var root = treeViewFragments.Nodes.Add("Эта книга");
             
-        }
+            var namedCollections = fragments
+                .GroupBy(f => f.SourceCollection)
+                .Select(g => new TreeNode(g.Key.Name)
+                {
+                    Tag = g.Key                    
+                })
+                .ToArray();
 
-        private void listViewFragments_DoubleClick(object sender, EventArgs e)
-        {
-            FragmentSelected?.Invoke(sender, new SelectFragmentEventArgs
+            root.Nodes.AddRange(namedCollections);
+
+            foreach(var collection in namedCollections)
             {
-                Fragment = (Fragment)listViewFragments.SelectedItems[0].Tag
-            });
+                collection.Nodes.AddRange(fragments
+                    .Where(f => f.SourceCollection == collection.Tag)
+                    .Select(f => new TreeNode($"{f.Name} ({f.Sheet}!{f.Cell})")
+                    {
+                        Tag = f
+                    })
+                    .ToArray());
+            }
+
+            treeViewFragments.ExpandAll();
         }
 
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        private void EditNode(TreeNode node)
         {
-
+            if (node.Tag is Fragment)
+            {
+                FragmentSelected?.Invoke(this, new SelectEntityEventArgs
+                {
+                    Fragment = (Fragment)node.Tag
+                });
+            }
         }
 
-        private void listViewFragments_SelectedIndexChanged(object sender, EventArgs e)
+        private void treeViewFragments_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
+            EditNode(e.Node);
+        }
+
+        private void linkLabelAddFragment_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if(treeViewFragments.SelectedNode.Tag is NamedCollection)
+            {
+                NewFragmentRequested?.Invoke(this, new SelectEntityEventArgs
+                {
+                    SourceCollection = (NamedCollection)treeViewFragments.SelectedNode.Tag
+                });
+            }
+        }
+
+        private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            EditNode(treeViewFragments.SelectedNode);
+        }
+
+        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (treeViewFragments.SelectedNode.Tag is Fragment)
+            {
+                FragmentDeleted?.Invoke(this, new SelectEntityEventArgs
+                {
+                    Fragment = (Fragment)treeViewFragments.SelectedNode.Tag
+                });
+            }
 
         }
     }
