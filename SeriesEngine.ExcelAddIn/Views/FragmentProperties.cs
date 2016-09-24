@@ -38,5 +38,9 @@ namespace SeriesEngine.ExcelAddIn.Views
 
         }
 
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

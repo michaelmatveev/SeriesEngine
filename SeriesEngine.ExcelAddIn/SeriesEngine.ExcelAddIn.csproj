@@ -178,6 +178,12 @@
     <Compile Include="Models\Period.cs" />
     <Compile Include="Presenters\FragmentPropertiesPresenter.cs" />
     <Compile Include="Presenters\PeriodSelectorPresenter.cs" />
+    <Compile Include="Views\CollectionProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CollectionProperties.Designer.cs">
+      <DependentUpon>CollectionProperties.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\IFragmentPropertiesView.cs" />
     <Compile Include="Views\IPanes.cs" />
     <Compile Include="Views\IPeriodView.cs" />
@@ -197,6 +203,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\CollectionProperties.resx">
+      <DependentUpon>CollectionProperties.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\FragmentProperties.resx">
       <DependentUpon>FragmentProperties.cs</DependentUpon>
     </EmbeddedResource>

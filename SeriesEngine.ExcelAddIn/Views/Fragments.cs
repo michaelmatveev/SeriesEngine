@@ -52,6 +52,16 @@ namespace SeriesEngine.ExcelAddIn.Views
                 Fragment = (Fragment)listViewFragments.SelectedItems[0].Tag
             });
         }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void listViewFragments_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }
