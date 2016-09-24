@@ -170,6 +170,7 @@
     <Compile Include="Models\IDataImporter.cs" />
     <Compile Include="Models\IFragmentsProvider.cs" />
     <Compile Include="Models\INetworksProvider.cs" />
+    <Compile Include="Models\NamedCollection.cs" />
     <Compile Include="Models\MockNetworkProvider.cs" />
     <Compile Include="Models\Network.cs" />
     <Compile Include="Models\NetworkTree.cs" />

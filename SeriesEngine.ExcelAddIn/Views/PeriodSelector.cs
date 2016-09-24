@@ -38,8 +38,15 @@ namespace SeriesEngine.ExcelAddIn.Views
 
             set
             {
-                dateTimePickerStart.Value = value.From;
-                dateTimePickerFinish.Value = value.Till;
+                if (value == null)
+                {
+                    dateTimePickerStart.Value = dateTimePickerFinish.Value = DateTime.Now;
+                }
+                else
+                {
+                    dateTimePickerStart.Value = value.From;
+                    dateTimePickerFinish.Value = value.Till;
+                }
             }
         }
 

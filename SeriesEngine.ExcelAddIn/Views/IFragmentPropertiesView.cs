@@ -11,7 +11,7 @@ namespace SeriesEngine.ExcelAddIn.Views
     {
         event EventHandler FragmentChanged;
         Fragment Fragment { get; set; }
-        IEnumerable<Network> Networks { get; set; }
+        //IEnumerable<Network> Networks { get; set; }
         void ShowIt();
     }
 }

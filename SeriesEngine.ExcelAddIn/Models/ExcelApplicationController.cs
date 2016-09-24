@@ -68,12 +68,14 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Use<DataImporter>();
 
                 _.ForConcreteType<FragmentPropertiesPresenter>();
-                    //.Configure
-                    //.Singleton();
+                //.Configure
+                //.Singleton();
 
-                _.For<IFragmentPropertiesView>()                    
+                _.For<IFragmentPropertiesView>()
                     //.Singleton()
-                    .Use<FragmentProperties>();
+                    .Use<FragmentProperties>()
+                    .Ctor<IList<string>>()
+                    .Is(CurrentDocument.Worksheets.OfType<Microsoft.Office.Interop.Excel.Worksheet>().Select(ws => ws.Name).ToList());
 
             });
         }

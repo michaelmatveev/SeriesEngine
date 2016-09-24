@@ -21,7 +21,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             foreach(var f in fragments)
             {
-                if (f.UseCustomPeriod)
+                if (f.UseCommonPeriod)
                 {
                     ImportFramgent(f, f.CustomPeriod);
                 }

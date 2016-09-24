@@ -31,7 +31,7 @@
             System.Windows.Forms.Label label8;
             System.Windows.Forms.Label label9;
             System.Windows.Forms.Label label10;
-            SeriesEngine.ExcelAddIn.Models.Period period1 = new SeriesEngine.ExcelAddIn.Models.Period();
+            SeriesEngine.ExcelAddIn.Models.Period period2 = new SeriesEngine.ExcelAddIn.Models.Period();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageCommon = new System.Windows.Forms.TabPage();
             this.tabPageVariable = new System.Windows.Forms.TabPage();
@@ -39,12 +39,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.comboBoxNetworks = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.comboBox5 = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.comboBoxObjectTypes = new System.Windows.Forms.ComboBox();
+            this.comboBoxVariables = new System.Windows.Forms.ComboBox();
+            this.comboBoxKind = new System.Windows.Forms.ComboBox();
+            this.labelCollectionName = new System.Windows.Forms.Label();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
@@ -54,21 +52,21 @@
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.comboBoxSheet = new System.Windows.Forms.ComboBox();
             this.textBoxCell = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.comboBoxInterval = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.comboBox8 = new System.Windows.Forms.ComboBox();
+            this.checkBoxUseCommonPeriod = new System.Windows.Forms.CheckBox();
+            this.checkBoxUseShift = new System.Windows.Forms.CheckBox();
+            this.numericUpDownShift = new System.Windows.Forms.NumericUpDown();
+            this.comboBoxShiftInterval = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.periodSelector1 = new SeriesEngine.ExcelAddIn.Views.PeriodSelector();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.radioButtonIntervalsByRows = new System.Windows.Forms.RadioButton();
+            this.radioButtonIntervalsByColumns = new System.Windows.Forms.RadioButton();
+            this.checkBoxShowIntervals = new System.Windows.Forms.CheckBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.periodSelectorCustom = new SeriesEngine.ExcelAddIn.Views.PeriodSelector();
             label8 = new System.Windows.Forms.Label();
             label9 = new System.Windows.Forms.Label();
             label10 = new System.Windows.Forms.Label();
@@ -82,7 +80,8 @@
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownShift)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -126,21 +125,18 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 145F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.label3, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label4, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.label6, 0, 6);
-            this.tableLayoutPanel1.Controls.Add(this.comboBoxNetworks, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.comboBox2, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.checkedListBox1, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.comboBox3, 1, 4);
-            this.tableLayoutPanel1.Controls.Add(this.comboBox5, 1, 6);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.comboBoxObjectTypes, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.comboBoxVariables, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.comboBoxKind, 1, 6);
+            this.tableLayoutPanel1.Controls.Add(this.labelCollectionName, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 8;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -155,7 +151,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label2.Location = new System.Drawing.Point(3, 27);
+            this.label2.Location = new System.Drawing.Point(3, 25);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(77, 27);
             this.label2.TabIndex = 15;
@@ -166,7 +162,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label4.Location = new System.Drawing.Point(3, 181);
+            this.label4.Location = new System.Drawing.Point(3, 52);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(71, 27);
             this.label4.TabIndex = 3;
@@ -177,69 +173,54 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label6.Location = new System.Drawing.Point(3, 208);
+            this.label6.Location = new System.Drawing.Point(3, 79);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(54, 27);
             this.label6.TabIndex = 5;
             this.label6.Text = "Точность";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // comboBoxNetworks
+            // comboBoxObjectTypes
             // 
-            this.comboBoxNetworks.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.comboBoxNetworks.FormattingEnabled = true;
-            this.comboBoxNetworks.Location = new System.Drawing.Point(148, 3);
-            this.comboBoxNetworks.Name = "comboBoxNetworks";
-            this.comboBoxNetworks.Size = new System.Drawing.Size(194, 21);
-            this.comboBoxNetworks.TabIndex = 7;
+            this.comboBoxObjectTypes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxObjectTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxObjectTypes.FormattingEnabled = true;
+            this.comboBoxObjectTypes.Location = new System.Drawing.Point(148, 28);
+            this.comboBoxObjectTypes.Name = "comboBoxObjectTypes";
+            this.comboBoxObjectTypes.Size = new System.Drawing.Size(194, 21);
+            this.comboBoxObjectTypes.TabIndex = 8;
             // 
-            // comboBox2
+            // comboBoxVariables
             // 
-            this.comboBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(148, 30);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(194, 21);
-            this.comboBox2.TabIndex = 8;
+            this.comboBoxVariables.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxVariables.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxVariables.FormattingEnabled = true;
+            this.comboBoxVariables.Location = new System.Drawing.Point(148, 55);
+            this.comboBoxVariables.Name = "comboBoxVariables";
+            this.comboBoxVariables.Size = new System.Drawing.Size(194, 21);
+            this.comboBoxVariables.TabIndex = 10;
             // 
-            // checkedListBox1
+            // comboBoxKind
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.checkedListBox1, 2);
-            this.checkedListBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(3, 84);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(339, 94);
-            this.checkedListBox1.TabIndex = 9;
+            this.comboBoxKind.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxKind.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxKind.FormattingEnabled = true;
+            this.comboBoxKind.Location = new System.Drawing.Point(148, 82);
+            this.comboBoxKind.Name = "comboBoxKind";
+            this.comboBoxKind.Size = new System.Drawing.Size(194, 21);
+            this.comboBoxKind.TabIndex = 12;
             // 
-            // comboBox3
+            // labelCollectionName
             // 
-            this.comboBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(148, 184);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(194, 21);
-            this.comboBox3.TabIndex = 10;
-            // 
-            // comboBox5
-            // 
-            this.comboBox5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Location = new System.Drawing.Point(148, 211);
-            this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(194, 21);
-            this.comboBox5.TabIndex = 12;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label1.Location = new System.Drawing.Point(3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(62, 27);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Коллекция";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelCollectionName.AutoSize = true;
+            this.tableLayoutPanel1.SetColumnSpan(this.labelCollectionName, 2);
+            this.labelCollectionName.Dock = System.Windows.Forms.DockStyle.Left;
+            this.labelCollectionName.Location = new System.Drawing.Point(3, 0);
+            this.labelCollectionName.Name = "labelCollectionName";
+            this.labelCollectionName.Size = new System.Drawing.Size(62, 25);
+            this.labelCollectionName.TabIndex = 0;
+            this.labelCollectionName.Text = "Коллекция";
+            this.labelCollectionName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // flowLayoutPanel2
             // 
@@ -361,6 +342,7 @@
             // comboBoxSheet
             // 
             this.comboBoxSheet.Dock = System.Windows.Forms.DockStyle.Top;
+            this.comboBoxSheet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxSheet.FormattingEnabled = true;
             this.comboBoxSheet.Location = new System.Drawing.Point(148, 29);
             this.comboBoxSheet.Name = "comboBoxSheet";
@@ -375,27 +357,16 @@
             this.textBoxCell.Size = new System.Drawing.Size(194, 20);
             this.textBoxCell.TabIndex = 5;
             // 
-            // label3
-            // 
-            this.label3.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label3.Location = new System.Drawing.Point(3, 54);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 27);
-            this.label3.TabIndex = 16;
-            this.label3.Text = "Объекты";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 2;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 145F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel3.Controls.Add(this.checkBox1, 0, 4);
+            this.tableLayoutPanel3.Controls.Add(this.checkBoxShowIntervals, 0, 4);
             this.tableLayoutPanel3.Controls.Add(this.label5, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.label7, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.comboBox4, 1, 0);
-            this.tableLayoutPanel3.Controls.Add(this.radioButton1, 1, 2);
-            this.tableLayoutPanel3.Controls.Add(this.radioButton2, 1, 3);
+            this.tableLayoutPanel3.Controls.Add(this.comboBoxInterval, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.panel1, 1, 2);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -431,26 +402,27 @@
             this.label7.Text = "Временные интервалы";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // comboBox4
+            // comboBoxInterval
             // 
-            this.comboBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(148, 3);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(194, 21);
-            this.comboBox4.TabIndex = 3;
+            this.comboBoxInterval.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxInterval.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxInterval.FormattingEnabled = true;
+            this.comboBoxInterval.Location = new System.Drawing.Point(148, 3);
+            this.comboBoxInterval.Name = "comboBoxInterval";
+            this.comboBoxInterval.Size = new System.Drawing.Size(194, 21);
+            this.comboBoxInterval.TabIndex = 3;
             // 
             // tableLayoutPanel4
             // 
             this.tableLayoutPanel4.ColumnCount = 2;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 145F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel4.Controls.Add(this.checkBox2, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.numericUpDown1, 0, 2);
-            this.tableLayoutPanel4.Controls.Add(this.comboBox8, 1, 2);
-            this.tableLayoutPanel4.Controls.Add(this.checkBox3, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.checkBoxUseCommonPeriod, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.numericUpDownShift, 0, 2);
+            this.tableLayoutPanel4.Controls.Add(this.comboBoxShiftInterval, 1, 2);
+            this.tableLayoutPanel4.Controls.Add(this.checkBoxUseShift, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.label11, 0, 3);
-            this.tableLayoutPanel4.Controls.Add(this.periodSelector1, 0, 4);
+            this.tableLayoutPanel4.Controls.Add(this.periodSelectorCustom, 0, 4);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -464,47 +436,50 @@
             this.tableLayoutPanel4.Size = new System.Drawing.Size(345, 378);
             this.tableLayoutPanel4.TabIndex = 0;
             // 
-            // checkBox2
+            // checkBoxUseCommonPeriod
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Checked = true;
-            this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tableLayoutPanel4.SetColumnSpan(this.checkBox2, 2);
-            this.checkBox2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.checkBox2.Location = new System.Drawing.Point(3, 3);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(174, 17);
-            this.checkBox2.TabIndex = 0;
-            this.checkBox2.Text = "Использовать общий период";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBoxUseCommonPeriod.AutoSize = true;
+            this.checkBoxUseCommonPeriod.Checked = true;
+            this.checkBoxUseCommonPeriod.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tableLayoutPanel4.SetColumnSpan(this.checkBoxUseCommonPeriod, 2);
+            this.checkBoxUseCommonPeriod.Dock = System.Windows.Forms.DockStyle.Left;
+            this.checkBoxUseCommonPeriod.Location = new System.Drawing.Point(3, 3);
+            this.checkBoxUseCommonPeriod.Name = "checkBoxUseCommonPeriod";
+            this.checkBoxUseCommonPeriod.Size = new System.Drawing.Size(174, 17);
+            this.checkBoxUseCommonPeriod.TabIndex = 0;
+            this.checkBoxUseCommonPeriod.Text = "Использовать общий период";
+            this.checkBoxUseCommonPeriod.UseVisualStyleBackColor = true;
+            this.checkBoxUseCommonPeriod.CheckedChanged += new System.EventHandler(this.checkBoxUseCommonPeriod_CheckedChanged);
             // 
-            // checkBox3
+            // checkBoxUseShift
             // 
-            this.checkBox3.AutoSize = true;
-            this.tableLayoutPanel4.SetColumnSpan(this.checkBox3, 2);
-            this.checkBox3.Dock = System.Windows.Forms.DockStyle.Left;
-            this.checkBox3.Location = new System.Drawing.Point(3, 26);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(262, 17);
-            this.checkBox3.TabIndex = 1;
-            this.checkBox3.Text = "Со смещением относительно общего периода";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.checkBoxUseShift.AutoSize = true;
+            this.tableLayoutPanel4.SetColumnSpan(this.checkBoxUseShift, 2);
+            this.checkBoxUseShift.Dock = System.Windows.Forms.DockStyle.Left;
+            this.checkBoxUseShift.Location = new System.Drawing.Point(3, 26);
+            this.checkBoxUseShift.Name = "checkBoxUseShift";
+            this.checkBoxUseShift.Size = new System.Drawing.Size(262, 17);
+            this.checkBoxUseShift.TabIndex = 1;
+            this.checkBoxUseShift.Text = "Со смещением относительно общего периода";
+            this.checkBoxUseShift.UseVisualStyleBackColor = true;
+            this.checkBoxUseShift.CheckedChanged += new System.EventHandler(this.checkBoxUseShift_CheckedChanged);
             // 
-            // numericUpDown1
+            // numericUpDownShift
             // 
-            this.numericUpDown1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.numericUpDown1.Location = new System.Drawing.Point(99, 49);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(43, 20);
-            this.numericUpDown1.TabIndex = 2;
+            this.numericUpDownShift.Dock = System.Windows.Forms.DockStyle.Right;
+            this.numericUpDownShift.Location = new System.Drawing.Point(99, 49);
+            this.numericUpDownShift.Name = "numericUpDownShift";
+            this.numericUpDownShift.Size = new System.Drawing.Size(43, 20);
+            this.numericUpDownShift.TabIndex = 2;
             // 
-            // comboBox8
+            // comboBoxShiftInterval
             // 
-            this.comboBox8.FormattingEnabled = true;
-            this.comboBox8.Location = new System.Drawing.Point(148, 49);
-            this.comboBox8.Name = "comboBox8";
-            this.comboBox8.Size = new System.Drawing.Size(121, 21);
-            this.comboBox8.TabIndex = 3;
+            this.comboBoxShiftInterval.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxShiftInterval.FormattingEnabled = true;
+            this.comboBoxShiftInterval.Location = new System.Drawing.Point(148, 49);
+            this.comboBoxShiftInterval.Name = "comboBoxShiftInterval";
+            this.comboBoxShiftInterval.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxShiftInterval.TabIndex = 3;
             // 
             // label11
             // 
@@ -516,53 +491,62 @@
             this.label11.Text = "Специальный период";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // periodSelector1
+            // radioButtonIntervalsByRows
             // 
-            this.tableLayoutPanel4.SetColumnSpan(this.periodSelector1, 2);
-            this.periodSelector1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.periodSelector1.Enabled = false;
-            this.periodSelector1.Location = new System.Drawing.Point(3, 103);
-            this.periodSelector1.Name = "periodSelector1";
-            period1.From = new System.DateTime(2016, 9, 17, 23, 57, 55, 44);
-            period1.Till = new System.DateTime(2016, 9, 17, 23, 57, 55, 49);
-            this.periodSelector1.SelectedPeriod = period1;
-            this.periodSelector1.Size = new System.Drawing.Size(339, 150);
-            this.periodSelector1.TabIndex = 5;
+            this.radioButtonIntervalsByRows.AutoSize = true;
+            this.radioButtonIntervalsByRows.Checked = true;
+            this.radioButtonIntervalsByRows.Location = new System.Drawing.Point(3, 3);
+            this.radioButtonIntervalsByRows.Name = "radioButtonIntervalsByRows";
+            this.radioButtonIntervalsByRows.Size = new System.Drawing.Size(85, 17);
+            this.radioButtonIntervalsByRows.TabIndex = 5;
+            this.radioButtonIntervalsByRows.TabStop = true;
+            this.radioButtonIntervalsByRows.Text = "По строкам";
+            this.radioButtonIntervalsByRows.UseVisualStyleBackColor = true;
             // 
-            // radioButton1
+            // radioButtonIntervalsByColumns
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Checked = true;
-            this.radioButton1.Location = new System.Drawing.Point(148, 55);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(85, 17);
-            this.radioButton1.TabIndex = 5;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "По строкам";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            this.radioButtonIntervalsByColumns.AutoSize = true;
+            this.radioButtonIntervalsByColumns.Location = new System.Drawing.Point(3, 26);
+            this.radioButtonIntervalsByColumns.Name = "radioButtonIntervalsByColumns";
+            this.radioButtonIntervalsByColumns.Size = new System.Drawing.Size(91, 17);
+            this.radioButtonIntervalsByColumns.TabIndex = 6;
+            this.radioButtonIntervalsByColumns.Text = "По столбцам";
+            this.radioButtonIntervalsByColumns.UseVisualStyleBackColor = true;
             // 
-            // radioButton2
+            // checkBoxShowIntervals
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(148, 78);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(91, 17);
-            this.radioButton2.TabIndex = 6;
-            this.radioButton2.Text = "По столбцам";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.checkBoxShowIntervals.AutoSize = true;
+            this.tableLayoutPanel3.SetColumnSpan(this.checkBoxShowIntervals, 2);
+            this.checkBoxShowIntervals.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.checkBoxShowIntervals.Location = new System.Drawing.Point(3, 107);
+            this.checkBoxShowIntervals.Name = "checkBoxShowIntervals";
+            this.checkBoxShowIntervals.Size = new System.Drawing.Size(339, 17);
+            this.checkBoxShowIntervals.TabIndex = 8;
+            this.checkBoxShowIntervals.Text = "Показывать интервалы";
+            this.checkBoxShowIntervals.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // panel1
             // 
-            this.checkBox1.AutoSize = true;
-            this.tableLayoutPanel3.SetColumnSpan(this.checkBox1, 2);
-            this.checkBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.checkBox1.Location = new System.Drawing.Point(3, 101);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(339, 17);
-            this.checkBox1.TabIndex = 8;
-            this.checkBox1.Text = "Показывать интервалы";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.panel1.AutoSize = true;
+            this.panel1.Controls.Add(this.radioButtonIntervalsByRows);
+            this.panel1.Controls.Add(this.radioButtonIntervalsByColumns);
+            this.panel1.Location = new System.Drawing.Point(148, 55);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(97, 46);
+            this.panel1.TabIndex = 9;
+            // 
+            // periodSelectorCustom
+            // 
+            this.tableLayoutPanel4.SetColumnSpan(this.periodSelectorCustom, 2);
+            this.periodSelectorCustom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.periodSelectorCustom.Enabled = false;
+            this.periodSelectorCustom.Location = new System.Drawing.Point(3, 103);
+            this.periodSelectorCustom.Name = "periodSelectorCustom";
+            period2.From = new System.DateTime(2016, 9, 17, 23, 57, 55, 44);
+            period2.Till = new System.DateTime(2016, 9, 17, 23, 57, 55, 49);
+            this.periodSelectorCustom.SelectedPeriod = period2;
+            this.periodSelectorCustom.Size = new System.Drawing.Size(339, 150);
+            this.periodSelectorCustom.TabIndex = 5;
             // 
             // FragmentProperties
             // 
@@ -592,7 +576,9 @@
             this.tableLayoutPanel3.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownShift)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -607,12 +593,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox comboBoxNetworks;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.ComboBox comboBox5;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox comboBoxObjectTypes;
+        private System.Windows.Forms.ComboBox comboBoxVariables;
+        private System.Windows.Forms.ComboBox comboBoxKind;
+        private System.Windows.Forms.Label labelCollectionName;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonOK;
@@ -622,20 +606,20 @@
         private System.Windows.Forms.TextBox textBoxCell;
         private System.Windows.Forms.TabPage tabPageOutput;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.ComboBox comboBoxInterval;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.ComboBox comboBox8;
-        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox checkBoxUseCommonPeriod;
+        private System.Windows.Forms.NumericUpDown numericUpDownShift;
+        private System.Windows.Forms.ComboBox comboBoxShiftInterval;
+        private System.Windows.Forms.CheckBox checkBoxUseShift;
         private System.Windows.Forms.Label label11;
-        private PeriodSelector periodSelector1;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton2;
+        private PeriodSelector periodSelectorCustom;
+        private System.Windows.Forms.CheckBox checkBoxShowIntervals;
+        private System.Windows.Forms.RadioButton radioButtonIntervalsByRows;
+        private System.Windows.Forms.RadioButton radioButtonIntervalsByColumns;
+        private System.Windows.Forms.Panel panel1;
     }
 }

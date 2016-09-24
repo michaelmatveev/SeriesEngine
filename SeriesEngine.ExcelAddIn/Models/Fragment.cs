@@ -21,8 +21,19 @@ namespace SeriesEngine.ExcelAddIn.Models
         public string Name { get; set; }
         public string Sheet { get; set; }
         public string Cell { get; set; }
+
+        public NamedCollection SourceCollection { get; set; }
+       
         public TimeInterval Interval { get; set; }
-        public bool UseCustomPeriod { get; set; }
+        public bool IntervalsByRows { get; set; }
+        public bool ShowIntervals { get; set; }
+
+        public bool UseCommonPeriod { get; set; }
+        public bool UseShift { get; set; }
+        public int Shift { get; set; }
+        public TimeInterval ShiftPeriod { get; set; }
+
         public Period CustomPeriod { get; set; }
+
     }
 }
