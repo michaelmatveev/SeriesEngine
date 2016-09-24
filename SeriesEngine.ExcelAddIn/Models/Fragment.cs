@@ -30,8 +30,8 @@ namespace SeriesEngine.ExcelAddIn.Models
         public string Cell { get; set; }
 
         public NamedCollection SourceCollection { get; set; }
-        public string ObjectTypeName { get; set; }
-        public string VariableName { get; set; }
+        public ObjectMetamodel ObjectMetamodel { get; set; }
+        public Variable VariableMetamodel { get; set; }
         public Kind Kind { get; set; }
 
         public TimeInterval Interval { get; set; }

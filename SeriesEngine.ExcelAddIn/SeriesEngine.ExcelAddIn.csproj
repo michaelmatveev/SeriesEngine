@@ -169,13 +169,16 @@
     <Compile Include="Models\ApplicationController.cs" />
     <Compile Include="Models\IDataImporter.cs" />
     <Compile Include="Models\IFragmentsProvider.cs" />
+    <Compile Include="Models\IModelProvider.cs" />
     <Compile Include="Models\INetworksProvider.cs" />
+    <Compile Include="Models\MockModelProvider.cs" />
     <Compile Include="Models\NamedCollection.cs" />
     <Compile Include="Models\MockNetworkProvider.cs" />
     <Compile Include="Models\Network.cs" />
     <Compile Include="Models\NetworkTree.cs" />
     <Compile Include="Models\NetworkTreeNode.cs" />
     <Compile Include="Models\NetwrokList.cs" />
+    <Compile Include="Models\ObjectMetamodel.cs" />
     <Compile Include="Models\Period.cs" />
     <Compile Include="Presenters\FragmentPropertiesPresenter.cs" />
     <Compile Include="Presenters\PeriodSelectorPresenter.cs" />

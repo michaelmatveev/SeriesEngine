@@ -71,6 +71,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                 //.Configure
                 //.Singleton();
 
+                _.For<IModelProvider>()
+                    .Singleton()
+                    .Use<MockModelProvider>();
+
                 _.For<IFragmentPropertiesView>()
                     //.Singleton()
                     .Use<FragmentProperties>()
