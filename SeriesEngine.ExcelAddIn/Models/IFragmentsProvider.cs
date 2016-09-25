@@ -10,6 +10,7 @@ namespace SeriesEngine.ExcelAddIn.Models
     {
         IEnumerable<Fragment> GetFragments();
         Fragment CreateFragment(NamedCollection source);
+        Fragment CopyFragment(Fragment sourceFragment, NamedCollection sourceCollection);
         void AddFragment(Fragment fragment);
         void DeleteFragment(Fragment fragment);
 

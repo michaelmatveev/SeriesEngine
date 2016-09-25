@@ -24,7 +24,12 @@ namespace SeriesEngine.ExcelAddIn.Views
             
             comboBoxObjectTypes.DisplayMember = "Name";
             comboBoxObjectTypes.ValueMember = "ObjectModel";
-   
+            var objectsMetamodels = _modelProvider
+                .GetObjectMetamodels()
+                .Select(om => new { Name = om.Name, ObjectModel = om }).ToList();
+            //objectsMetamodels.Insert(0, new { Name = "Выберите тип объекта", ObjectModel = (ObjectMetamodel)null });
+            comboBoxObjectTypes.DataSource = objectsMetamodels;
+
             comboBoxKind.DataSource = Enum.GetValues(typeof(Kind));
         }
 
@@ -38,7 +43,7 @@ namespace SeriesEngine.ExcelAddIn.Views
             textBoxCell.DataBindings.Add(nameof(textBoxCell.Text), Fragment, nameof(Fragment.Cell));
 
             labelCollectionName.Text = Fragment.SourceCollection.Name;
-            comboBoxObjectTypes.DataBindings.Add(nameof(comboBoxObjectTypes.SelectedValue), Fragment, nameof(Fragment.ObjectMetamodel));
+            comboBoxObjectTypes.DataBindings.Add(nameof(comboBoxObjectTypes.SelectedValue), Fragment, nameof(Fragment.ObjectMetamodel));//, false, DataSourceUpdateMode.OnPropertyChanged);
             comboBoxVariables.DataBindings.Add(nameof(comboBoxVariables.SelectedValue), Fragment, nameof(Fragment.VariableMetamodel));
             comboBoxKind.DataBindings.Add(nameof(comboBoxKind.SelectedItem), Fragment, nameof(Fragment.Kind));
 
@@ -55,14 +60,11 @@ namespace SeriesEngine.ExcelAddIn.Views
             SetUseCommonPeriodState(Fragment.UseCommonPeriod);
             SetShiftState(Fragment.UseShift);
 
-            var objectsMetamodels = _modelProvider.GetObjectMetamodels()
-.Select(om => new { Name = om.Name, ObjectModel = om }).ToList();
-            //objectsMetamodels.Insert(0, new { Name = "Выберите тип объекта", ObjectModel = (ObjectMetamodel)null });
-            comboBoxObjectTypes.DataSource = objectsMetamodels;
-
-
+            //comboBoxObjectTypes.SelectedValue = 
             if (ShowDialog() == DialogResult.OK)
             {
+                //Fragment.ObjectMetamodel = (ObjectMetamodel)comboBoxObjectTypes.SelectedValue;
+                //Fragment.VariableMetamodel = (Variable)comboBoxVariables.SelectedValue;                
                 FragmentChanged?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -91,8 +93,11 @@ namespace SeriesEngine.ExcelAddIn.Views
         private void comboBoxObjectTypes_SelectedIndexChanged(object sender, EventArgs e)
         {
             var om = (ObjectMetamodel)comboBoxObjectTypes.SelectedValue;
+            
             if (om != null)
             {
+                //comboBoxObjectTypes.DataBindings["SelectedValue"].WriteValue();
+
                 comboBoxVariables.DisplayMember = "Name";
                 comboBoxVariables.ValueMember = "VariableModel";
                 comboBoxVariables.DataSource = om.Variables.Select(vm => new { Name = vm.Name, VariableModel = vm }).ToList();

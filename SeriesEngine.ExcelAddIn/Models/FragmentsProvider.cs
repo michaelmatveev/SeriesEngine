@@ -26,37 +26,145 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 Name = "Фрагмент 1",
                 Sheet = "Лист1",
-                Cell = "A1",
-                Interval = TimeInterval.Hour,
-                IntervalsByRows = true,
+                Cell = "B11",
+                ObjectMetamodel = MockModelProvider.Point,
+                VariableMetamodel = MockModelProvider.Point.Variables.First(v => v.Name == "Наименование"),
+                Interval = TimeInterval.Month,
+                IntervalsByRows = false,
                 UseCommonPeriod = true,
+                ShowIntervals = false
             },
             new Fragment(SourceCollection, DefaultPeriod)
             {
                 Name = "Фрагмент 2",
                 Sheet = "Лист1",
-                Cell = "C1",
-                Interval = TimeInterval.Day,
-                IntervalsByRows = true,
+                Cell = "C11",
+                ObjectMetamodel = MockModelProvider.Point,
+                VariableMetamodel = MockModelProvider.Point.Variables.First(v => v.Name == "Уровень напряжения"),
+                Interval = TimeInterval.Month,
+                IntervalsByRows = false,
                 UseCommonPeriod = true,
+                ShowIntervals = false
             },
             new Fragment(SourceCollection, DefaultPeriod)
             {
                 Name = "Фрагмент 3",
                 Sheet = "Лист1",
-                Cell = "E1",
-                Interval= TimeInterval.Month,
-                IntervalsByRows = true,
+                Cell = "D11",
+                ObjectMetamodel = MockModelProvider.Point,
+                VariableMetamodel = MockModelProvider.Point.Variables.First(v => v.Name == "Максимальная мощность"),
+                Interval = TimeInterval.Month,
+                IntervalsByRows = false,
                 UseCommonPeriod = true,
+                ShowIntervals = false
             },
             new Fragment(SourceCollection, DefaultPeriod)
             {
                 Name = "Фрагмент 4",
                 Sheet = "Лист1",
-                Cell = "G1",
-                Interval = TimeInterval.Year,
-                IntervalsByRows = true,
+                Cell = "E11",
+                ObjectMetamodel = MockModelProvider.Point,
+                VariableMetamodel = MockModelProvider.Point.Variables.First(v => v.Name == "Ценовая категория"),
+                Interval = TimeInterval.Month,
+                IntervalsByRows = false,
                 UseCommonPeriod = true,
+                ShowIntervals = false
+            },
+            new Fragment(SourceCollection, DefaultPeriod)
+            {
+                Name = "Фрагмент 5",
+                Sheet = "Лист1",
+                Cell = "F11",
+                ObjectMetamodel = MockModelProvider.Device,
+                VariableMetamodel = MockModelProvider.Device.Variables.First(v => v.Name == "Тип прибора учета"),
+                Interval = TimeInterval.Month,
+                IntervalsByRows = false,
+                UseCommonPeriod = true,
+                ShowIntervals = false
+            },
+            new Fragment(SourceCollection, DefaultPeriod)
+            {
+                Name = "Фрагмент 6",
+                Sheet = "Лист1",
+                Cell = "G11",
+                ObjectMetamodel = MockModelProvider.Device,
+                VariableMetamodel = MockModelProvider.Device.Variables.First(v => v.Name == "Номер счетчика"),
+                Interval = TimeInterval.Month,
+                IntervalsByRows = false,
+                UseCommonPeriod = true,
+                ShowIntervals = false
+            },
+            new Fragment(SourceCollection, DefaultPeriod)
+            {
+                Name = "Фрагмент 7",
+                Sheet = "Лист1",
+                Cell = "H11",
+                ObjectMetamodel = MockModelProvider.Device,
+                VariableMetamodel = MockModelProvider.Device.Variables.First(v => v.Name == "Направление перетока"),
+                Interval = TimeInterval.Month,
+                IntervalsByRows = false,
+                UseCommonPeriod = true,
+                ShowIntervals = false
+            },
+            new Fragment(SourceCollection, DefaultPeriod)
+            {
+                Name = "Фрагмент 8",
+                Sheet = "Лист1",
+                Cell = "I11",
+                ObjectMetamodel = MockModelProvider.Device,
+                VariableMetamodel = MockModelProvider.Device.Variables.First(v => v.Name == "Показание счетчика"),
+                Interval = TimeInterval.Month,
+                IntervalsByRows = false,
+                UseCommonPeriod = true,
+                ShowIntervals = false
+            },
+            new Fragment(SourceCollection, DefaultPeriod)
+            {
+                Name = "Фрагмент 9",
+                Sheet = "Лист1",
+                Cell = "J11",
+                ObjectMetamodel = MockModelProvider.Device,
+                VariableMetamodel = MockModelProvider.Device.Variables.First(v => v.Name == "Показание счетчика"),
+                Interval = TimeInterval.Month,
+                IntervalsByRows = false,
+                UseCommonPeriod = true,
+                ShowIntervals = false
+            },
+            new Fragment(SourceCollection, DefaultPeriod)
+            {
+                Name = "Фрагмент 10",
+                Sheet = "Лист1",
+                Cell = "L11",
+                ObjectMetamodel = MockModelProvider.Device,
+                VariableMetamodel = MockModelProvider.Device.Variables.First(v => v.Name == "Коэффициент трансформации"),
+                Interval = TimeInterval.Month,
+                IntervalsByRows = false,
+                UseCommonPeriod = true,
+                ShowIntervals = false
+            },
+            new Fragment(SourceCollection, DefaultPeriod)
+            {
+                Name = "Фрагмент 11",
+                Sheet = "Лист1",
+                Cell = "P11",
+                ObjectMetamodel = MockModelProvider.Device,
+                VariableMetamodel = MockModelProvider.Device.Variables.First(v => v.Name == "Потери"),
+                Interval = TimeInterval.Month,
+                IntervalsByRows = false,
+                UseCommonPeriod = true,
+                ShowIntervals = false
+            },
+            new Fragment(SourceCollection, DefaultPeriod)
+            {
+                Name = "Фрагмент 12",
+                Sheet = "Лист1",
+                Cell = "Q11",
+                ObjectMetamodel = MockModelProvider.Device,
+                VariableMetamodel = MockModelProvider.Device.Variables.First(v => v.Name == "ОДН"),
+                Interval = TimeInterval.Month,
+                IntervalsByRows = false,
+                UseCommonPeriod = true,
+                ShowIntervals = false
             }
         };
 
@@ -67,7 +175,33 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public Fragment CreateFragment(NamedCollection source)
         {
-            return new Fragment(SourceCollection, DefaultPeriod);
+            var mock = new MockModelProvider();
+            return new Fragment(SourceCollection, DefaultPeriod)
+            {
+                ObjectMetamodel = mock.GetObjectMetamodels().First(),
+                VariableMetamodel = mock.GetObjectMetamodels().First().Variables.First()
+            };
+        }
+
+        public Fragment CopyFragment(Fragment sourceFragment, NamedCollection sourceCollection)
+        {
+            return new Fragment(sourceCollection, sourceFragment.CustomPeriod)
+            {
+                Name = $"{sourceFragment.Name}_копия",
+                Sheet = sourceFragment.Sheet,
+                Cell = sourceFragment.Cell,
+                ObjectMetamodel = sourceFragment.ObjectMetamodel,
+                VariableMetamodel = sourceFragment.VariableMetamodel,
+                Kind = sourceFragment.Kind,
+                Interval = sourceFragment.Interval,
+                IntervalsByRows = sourceFragment.IntervalsByRows,
+                ShowIntervals = sourceFragment.ShowIntervals,
+                UseCommonPeriod = sourceFragment.UseCommonPeriod,
+                UseShift = sourceFragment.UseShift,
+                Shift = sourceFragment.Shift,
+                ShiftPeriod = sourceFragment.ShiftPeriod,
+                CustomPeriod = sourceFragment.CustomPeriod
+            };
         }
 
         public void AddFragment(Fragment fragment)

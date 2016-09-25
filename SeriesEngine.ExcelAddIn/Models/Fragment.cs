@@ -50,7 +50,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             SourceCollection = collection;
             IntervalsByRows = true;
             UseCommonPeriod = true;
-            CustomPeriod = defaultPeriod;
+            CustomPeriod = defaultPeriod; 
         }
 
     }

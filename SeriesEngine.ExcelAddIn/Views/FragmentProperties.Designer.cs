@@ -31,7 +31,7 @@
             System.Windows.Forms.Label label8;
             System.Windows.Forms.Label label9;
             System.Windows.Forms.Label label10;
-            SeriesEngine.ExcelAddIn.Models.Period period2 = new SeriesEngine.ExcelAddIn.Models.Period();
+            SeriesEngine.ExcelAddIn.Models.Period period1 = new SeriesEngine.ExcelAddIn.Models.Period();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageCommon = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -43,7 +43,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.comboBoxObjectTypes = new System.Windows.Forms.ComboBox();
             this.comboBoxVariables = new System.Windows.Forms.ComboBox();
             this.comboBoxKind = new System.Windows.Forms.ComboBox();
             this.labelCollectionName = new System.Windows.Forms.Label();
@@ -63,10 +62,11 @@
             this.comboBoxShiftInterval = new System.Windows.Forms.ComboBox();
             this.checkBoxUseShift = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.periodSelectorCustom = new SeriesEngine.ExcelAddIn.Views.PeriodSelector();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
+            this.periodSelectorCustom = new SeriesEngine.ExcelAddIn.Views.PeriodSelector();
+            this.comboBoxObjectTypes = new System.Windows.Forms.ComboBox();
             label8 = new System.Windows.Forms.Label();
             label9 = new System.Windows.Forms.Label();
             label10 = new System.Windows.Forms.Label();
@@ -206,10 +206,10 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 145F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.comboBoxObjectTypes, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label4, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.label6, 0, 6);
-            this.tableLayoutPanel1.Controls.Add(this.comboBoxObjectTypes, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.comboBoxVariables, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.comboBoxKind, 1, 6);
             this.tableLayoutPanel1.Controls.Add(this.labelCollectionName, 0, 0);
@@ -260,17 +260,6 @@
             this.label6.TabIndex = 5;
             this.label6.Text = "Точность";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // comboBoxObjectTypes
-            // 
-            this.comboBoxObjectTypes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.comboBoxObjectTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxObjectTypes.FormattingEnabled = true;
-            this.comboBoxObjectTypes.Location = new System.Drawing.Point(148, 28);
-            this.comboBoxObjectTypes.Name = "comboBoxObjectTypes";
-            this.comboBoxObjectTypes.Size = new System.Drawing.Size(194, 21);
-            this.comboBoxObjectTypes.TabIndex = 8;
-            this.comboBoxObjectTypes.SelectedIndexChanged += new System.EventHandler(this.comboBoxObjectTypes_SelectedIndexChanged);
             // 
             // comboBoxVariables
             // 
@@ -504,19 +493,6 @@
             this.label11.Text = "Специальный период";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // periodSelectorCustom
-            // 
-            this.tableLayoutPanel4.SetColumnSpan(this.periodSelectorCustom, 2);
-            this.periodSelectorCustom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.periodSelectorCustom.Enabled = false;
-            this.periodSelectorCustom.Location = new System.Drawing.Point(3, 103);
-            this.periodSelectorCustom.Name = "periodSelectorCustom";
-            period2.From = new System.DateTime(2016, 9, 17, 23, 57, 55, 44);
-            period2.Till = new System.DateTime(2016, 9, 17, 23, 57, 55, 49);
-            this.periodSelectorCustom.SelectedPeriod = period2;
-            this.periodSelectorCustom.Size = new System.Drawing.Size(339, 150);
-            this.periodSelectorCustom.TabIndex = 5;
-            // 
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.AutoSize = true;
@@ -548,6 +524,30 @@
             this.buttonOK.TabIndex = 1;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
+            // 
+            // periodSelectorCustom
+            // 
+            this.tableLayoutPanel4.SetColumnSpan(this.periodSelectorCustom, 2);
+            this.periodSelectorCustom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.periodSelectorCustom.Enabled = false;
+            this.periodSelectorCustom.Location = new System.Drawing.Point(3, 103);
+            this.periodSelectorCustom.Name = "periodSelectorCustom";
+            period1.From = new System.DateTime(2016, 9, 17, 23, 57, 55, 44);
+            period1.Till = new System.DateTime(2016, 9, 17, 23, 57, 55, 49);
+            this.periodSelectorCustom.SelectedPeriod = period1;
+            this.periodSelectorCustom.Size = new System.Drawing.Size(339, 150);
+            this.periodSelectorCustom.TabIndex = 5;
+            // 
+            // comboBoxObjectTypes
+            // 
+            this.comboBoxObjectTypes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxObjectTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxObjectTypes.FormattingEnabled = true;
+            this.comboBoxObjectTypes.Location = new System.Drawing.Point(148, 28);
+            this.comboBoxObjectTypes.Name = "comboBoxObjectTypes";
+            this.comboBoxObjectTypes.Size = new System.Drawing.Size(194, 21);
+            this.comboBoxObjectTypes.TabIndex = 16;
+            this.comboBoxObjectTypes.SelectedIndexChanged += new System.EventHandler(this.comboBoxObjectTypes_SelectedIndexChanged);
             // 
             // FragmentProperties
             // 
@@ -594,7 +594,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox comboBoxObjectTypes;
         private System.Windows.Forms.ComboBox comboBoxVariables;
         private System.Windows.Forms.ComboBox comboBoxKind;
         private System.Windows.Forms.Label labelCollectionName;
@@ -622,5 +621,6 @@
         private System.Windows.Forms.RadioButton radioButtonIntervalsByRows;
         private System.Windows.Forms.RadioButton radioButtonIntervalsByColumns;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.ComboBox comboBoxObjectTypes;
     }
 }

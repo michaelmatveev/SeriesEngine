@@ -19,6 +19,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         event EventHandler<SelectEntityEventArgs> FragmentSelected;
         event EventHandler<SelectEntityEventArgs> NewFragmentRequested;
         event EventHandler<SelectEntityEventArgs> FragmentDeleted;
+        event EventHandler<SelectEntityEventArgs> FragmentCopied;
         void RefreshFragmentsView(IEnumerable<Fragment> fragments);
     }
 }

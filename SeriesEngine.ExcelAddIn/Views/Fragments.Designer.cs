@@ -35,6 +35,7 @@
             this.linkLabel4 = new System.Windows.Forms.LinkLabel();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
             this.treeViewFragments = new System.Windows.Forms.TreeView();
+            this.linkLabelCopyFragment = new System.Windows.Forms.LinkLabel();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -62,22 +63,23 @@
             this.flowLayoutPanel2.AutoSize = true;
             this.flowLayoutPanel2.Controls.Add(this.linkLabel1);
             this.flowLayoutPanel2.Controls.Add(this.linkLabelAddFragment);
+            this.flowLayoutPanel2.Controls.Add(this.linkLabelCopyFragment);
             this.flowLayoutPanel2.Controls.Add(this.linkLabel4);
             this.flowLayoutPanel2.Controls.Add(this.linkLabel3);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(13, 338);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(13, 354);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(312, 64);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(312, 48);
             this.flowLayoutPanel2.TabIndex = 4;
             // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
+            this.flowLayoutPanel2.SetFlowBreak(this.linkLabel1, true);
             this.linkLabel1.Location = new System.Drawing.Point(3, 0);
             this.linkLabel1.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(116, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(106, 13);
             this.linkLabel1.TabIndex = 3;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "Добавить коллекцию";
@@ -109,7 +111,7 @@
             // linkLabel3
             // 
             this.linkLabel3.AutoSize = true;
-            this.linkLabel3.Location = new System.Drawing.Point(3, 48);
+            this.linkLabel3.Location = new System.Drawing.Point(67, 32);
             this.linkLabel3.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.linkLabel3.Name = "linkLabel3";
             this.linkLabel3.Size = new System.Drawing.Size(50, 13);
@@ -123,9 +125,21 @@
             this.treeViewFragments.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeViewFragments.Location = new System.Drawing.Point(13, 13);
             this.treeViewFragments.Name = "treeViewFragments";
-            this.treeViewFragments.Size = new System.Drawing.Size(312, 319);
+            this.treeViewFragments.Size = new System.Drawing.Size(312, 335);
             this.treeViewFragments.TabIndex = 5;
             this.treeViewFragments.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewFragments_NodeMouseDoubleClick);
+            // 
+            // linkLabelCopyFragment
+            // 
+            this.linkLabelCopyFragment.AutoSize = true;
+            this.flowLayoutPanel2.SetFlowBreak(this.linkLabelCopyFragment, true);
+            this.linkLabelCopyFragment.Location = new System.Drawing.Point(109, 16);
+            this.linkLabelCopyFragment.Name = "linkLabelCopyFragment";
+            this.linkLabelCopyFragment.Size = new System.Drawing.Size(120, 13);
+            this.linkLabelCopyFragment.TabIndex = 7;
+            this.linkLabelCopyFragment.TabStop = true;
+            this.linkLabelCopyFragment.Text = "Копировать фрагмент";
+            this.linkLabelCopyFragment.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelCopyFragment_LinkClicked);
             // 
             // Fragments
             // 
@@ -150,5 +164,6 @@
         private System.Windows.Forms.LinkLabel linkLabelAddFragment;
         private System.Windows.Forms.LinkLabel linkLabel4;
         private System.Windows.Forms.LinkLabel linkLabel3;
+        private System.Windows.Forms.LinkLabel linkLabelCopyFragment;
     }
 }

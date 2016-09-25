@@ -12,6 +12,8 @@ namespace SeriesEngine.ExcelAddIn.Models
     public class DataImporter : IDataImporter
     {
         private Workbook _workbook;
+        private Random _random = new Random();
+
         public DataImporter(Workbook workbook)
         {
             _workbook = workbook;
@@ -19,7 +21,8 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void ImportFromFragments(IEnumerable<Fragment> fragments, Period period)
         {
-            foreach(var f in fragments)
+            //var random = new Random();
+            foreach (var f in fragments)
             {
                 if (f.UseCommonPeriod)
                 {
@@ -31,21 +34,68 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
             }
         }
-        
+
         private void ImportFramgent(Fragment fragment, Period period)
         {
             Excel.Worksheet sheet = _workbook.Sheets[fragment.Sheet];
             sheet.get_Range(fragment.Cell).Value = fragment.Name;
-            DateTime d = GetStartDate(period.From, fragment.Interval);
-            int i = 1;
-            var random = new Random();
-            while (d < period.Till)
+            //DateTime d = GetStartDate(period.From, fragment.Interval);
+
+            int row = 0;
+            int col = 0;
+            //if (fragment.IntervalsByRows)
+            //{
+            ////    row = 1;
+            //}
+            //else
+            //{
+            ////    col = 1;
+            //}
+            if (fragment.IntervalsByRows)
             {
-                sheet.get_Range(fragment.Cell).Offset[i, 0].Value2 = d;//.ToOADate();
-                sheet.get_Range(fragment.Cell).Offset[i, 0].NumberFormat = GetFormat(fragment.Interval);
-                sheet.get_Range(fragment.Cell).Offset[i++, 1].Value2 = random.Next(100);
-                d = GetNextDate(d, fragment.Interval);
-            }             
+                DateTime d = GetStartDate(period.From, fragment.Interval);
+                for (int i = 0; i < 20; i++) //TODO Replace on interation throught collection
+                {
+                    while (d < period.Till)
+                    {
+                        row = 0;
+                        if (fragment.ShowIntervals)
+                        {
+                            sheet.get_Range(fragment.Cell).Offset[row, i].Value2 = d;
+                            sheet.get_Range(fragment.Cell).Offset[row, i].NumberFormat = GetFormat(fragment.Interval);
+                            sheet.get_Range(fragment.Cell).Offset[row++, i + 1].Value2 = _random.Next(100);
+                        }
+                        else
+                        {
+                            sheet.get_Range(fragment.Cell).Offset[row++, i].Value2 = _random.Next(100);
+                        }
+                        d = GetNextDate(d, fragment.Interval);
+                    }
+                }
+            }        
+            else
+            {
+                for (int i = 0; i < 20; i++) //TODO Replace on interation throught collection
+                {
+                    DateTime d = GetStartDate(period.From, fragment.Interval);
+                    while (d < period.Till)
+                    {
+                        col = 0;
+                        if (fragment.ShowIntervals)
+                        {
+                            sheet.get_Range(fragment.Cell).Offset[i, col].Value2 = d;
+                            sheet.get_Range(fragment.Cell).Offset[i, col].NumberFormat = GetFormat(fragment.Interval);
+                            sheet.get_Range(fragment.Cell).Offset[i + 1, col++].Value2 = _random.Next(100);
+                        }
+                        else
+                        {
+                            sheet.get_Range(fragment.Cell).Offset[i, col++].Value2 = _random.Next(100);
+                        }
+                        d = GetNextDate(d, fragment.Interval);
+                    }                    
+                }
+            }
+            
         }
         
         private DateTime GetStartDate(DateTime from, TimeInterval interval)

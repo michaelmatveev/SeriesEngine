@@ -29,6 +29,12 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                 Controller.GetInstance<IFragmentsProvider>().DeleteFragment(e.Fragment);
                 ShowFragments(true);
             };
+            View.FragmentCopied += (s, e) =>
+            {
+                var copiedFragment = Controller.GetInstance<IFragmentsProvider>().CopyFragment(e.Fragment, e.SourceCollection);
+                Controller.GetInstance<IFragmentsProvider>().AddFragment(copiedFragment);
+                ShowFragments(true);
+            };
         }
 
         public void ShowFragments(bool visible)
