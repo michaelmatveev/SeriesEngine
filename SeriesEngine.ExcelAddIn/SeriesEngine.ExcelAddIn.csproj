@@ -161,8 +161,10 @@
   -->
   <ItemGroup>
     <Compile Include="Helpers\PanesManager.cs" />
+    <Compile Include="Models\BaseFragment.cs" />
     <Compile Include="Models\DataImporter.cs" />
     <Compile Include="Models\ExcelApplicationController.cs" />
+    <Compile Include="Models\FilteredCollection.cs" />
     <Compile Include="Models\Fragment.cs" />
     <Compile Include="Models\FragmentsProvider.cs" />
     <Compile Include="Models\IController.cs" />

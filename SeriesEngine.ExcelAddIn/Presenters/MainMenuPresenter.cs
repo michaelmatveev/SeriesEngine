@@ -42,7 +42,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                 {
                     var framgmentsProvider = Controller.GetInstance<IFragmentsProvider>();
                     Controller.GetInstance<IDataImporter>().ImportFromFragments(
-                        framgmentsProvider.GetFragments(),
+                        framgmentsProvider.GetFragments(string.Empty).OfType<Fragment>(),
                         framgmentsProvider.GetDefaultPeriod());
                 }
             };

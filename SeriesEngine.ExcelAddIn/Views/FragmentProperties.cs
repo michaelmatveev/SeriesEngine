@@ -21,14 +21,7 @@ namespace SeriesEngine.ExcelAddIn.Views
             InitializeComponent();
             comboBoxSheet.DataSource = sheets;
             comboBoxInterval.DataSource = comboBoxShiftInterval.DataSource = Enum.GetValues(typeof(TimeInterval));
-            
-            comboBoxObjectTypes.DisplayMember = "Name";
-            comboBoxObjectTypes.ValueMember = "ObjectModel";
-            var objectsMetamodels = _modelProvider
-                .GetObjectMetamodels()
-                .Select(om => new { Name = om.Name, ObjectModel = om }).ToList();
-            //objectsMetamodels.Insert(0, new { Name = "Выберите тип объекта", ObjectModel = (ObjectMetamodel)null });
-            comboBoxObjectTypes.DataSource = objectsMetamodels;
+           
 
             comboBoxKind.DataSource = Enum.GetValues(typeof(Kind));
         }
@@ -42,10 +35,17 @@ namespace SeriesEngine.ExcelAddIn.Views
             comboBoxSheet.DataBindings.Add(nameof(comboBoxInterval.SelectedItem), Fragment, nameof(Fragment.Sheet));
             textBoxCell.DataBindings.Add(nameof(textBoxCell.Text), Fragment, nameof(Fragment.Cell));
 
-            labelCollectionName.Text = Fragment.SourceCollection.Name;
+            labelCollectionName.Text = Fragment.Parent.Name;
             comboBoxObjectTypes.DataBindings.Add(nameof(comboBoxObjectTypes.SelectedValue), Fragment, nameof(Fragment.ObjectMetamodel));//, false, DataSourceUpdateMode.OnPropertyChanged);
             comboBoxVariables.DataBindings.Add(nameof(comboBoxVariables.SelectedValue), Fragment, nameof(Fragment.VariableMetamodel));
             comboBoxKind.DataBindings.Add(nameof(comboBoxKind.SelectedItem), Fragment, nameof(Fragment.Kind));
+
+            comboBoxObjectTypes.DisplayMember = "Name";
+            comboBoxObjectTypes.ValueMember = "ObjectModel";
+            var objectsMetamodels = ((CollectionFragment)Fragment.Parent)
+                .SupportedModels
+                .Select(om => new { Name = om.Name, ObjectModel = om }).ToList();
+            comboBoxObjectTypes.DataSource = objectsMetamodels;
 
             comboBoxInterval.DataBindings.Add(nameof(comboBoxInterval.SelectedItem), Fragment, nameof(Fragment.Interval));
             radioButtonIntervalsByRows.DataBindings.Add(nameof(radioButtonIntervalsByRows.Checked), Fragment, nameof(Fragment.IntervalsByRows));

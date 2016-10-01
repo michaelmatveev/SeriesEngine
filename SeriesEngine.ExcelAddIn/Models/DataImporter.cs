@@ -39,18 +39,9 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             Excel.Worksheet sheet = _workbook.Sheets[fragment.Sheet];
             sheet.get_Range(fragment.Cell).Value = fragment.Name;
-            //DateTime d = GetStartDate(period.From, fragment.Interval);
 
             int row = 0;
             int col = 0;
-            //if (fragment.IntervalsByRows)
-            //{
-            ////    row = 1;
-            //}
-            //else
-            //{
-            ////    col = 1;
-            //}
             if (fragment.IntervalsByRows)
             {
                 DateTime d = GetStartDate(period.From, fragment.Interval);

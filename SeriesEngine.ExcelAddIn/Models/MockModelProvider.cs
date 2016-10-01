@@ -8,6 +8,16 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public class MockModelProvider : IModelProvider
     {
+        internal static ObjectMetamodel Region = new ObjectMetamodel
+        {
+            Name = "Регион",
+        };
+
+        internal static ObjectMetamodel Consumer = new ObjectMetamodel
+        {
+            Name = "Потребитель",
+        };
+
         internal static ObjectMetamodel Contract = new ObjectMetamodel
         {
             Name = "Договор",

@@ -11,7 +11,7 @@ namespace SeriesEngine.ExcelAddIn.Views
     public class SelectEntityEventArgs : EventArgs
     {
         public Fragment Fragment { get; set; }
-        public NamedCollection SourceCollection { get; set; }
+        public CollectionFragment SourceCollection { get; set; }
     } 
 
     public interface IFragmentView : IPanes
@@ -20,6 +20,6 @@ namespace SeriesEngine.ExcelAddIn.Views
         event EventHandler<SelectEntityEventArgs> NewFragmentRequested;
         event EventHandler<SelectEntityEventArgs> FragmentDeleted;
         event EventHandler<SelectEntityEventArgs> FragmentCopied;
-        void RefreshFragmentsView(IEnumerable<Fragment> fragments);
+        void RefreshFragmentsView(IEnumerable<BaseFragment> fragments);
     }
 }

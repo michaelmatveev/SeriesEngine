@@ -43,7 +43,6 @@
             this.breadCrumbs.StartButtonCaption = "Press this button to start";
             this.breadCrumbs.TabIndex = 0;
             this.breadCrumbs.Text = "breadCrumbs1";
-            this.breadCrumbs.SizeChanged += new System.EventHandler(this.breadCrumbs1_SizeChanged);
             // 
             // Filter
             // 
@@ -52,7 +51,6 @@
             this.Controls.Add(this.breadCrumbs);
             this.Name = "Filter";
             this.Size = new System.Drawing.Size(227, 25);
-            this.SizeChanged += new System.EventHandler(this.Filter_SizeChanged);
             this.ResumeLayout(false);
             this.PerformLayout();
 

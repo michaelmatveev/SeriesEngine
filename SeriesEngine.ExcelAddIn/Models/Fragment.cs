@@ -23,13 +23,11 @@ namespace SeriesEngine.ExcelAddIn.Models
         Fact,
     }
 
-    public class Fragment
+    public class Fragment : BaseFragment
     {
-        public string Name { get; set; }
         public string Sheet { get; set; }
         public string Cell { get; set; }
 
-        public NamedCollection SourceCollection { get; set; }
         public ObjectMetamodel ObjectMetamodel { get; set; }
         public Variable VariableMetamodel { get; set; }
         public Kind Kind { get; set; }
@@ -45,9 +43,9 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public Period CustomPeriod { get; set; }
 
-        public Fragment(NamedCollection collection, Period defaultPeriod)
+        public Fragment(BaseFragment parent, Period defaultPeriod)
         {
-            SourceCollection = collection;
+            Parent = parent;
             IntervalsByRows = true;
             UseCommonPeriod = true;
             CustomPeriod = defaultPeriod; 

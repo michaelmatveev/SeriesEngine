@@ -23,30 +23,42 @@ namespace SeriesEngine.ExcelAddIn.Views
             InitializeComponent();
         }
 
-        public void RefreshFragmentsView(IEnumerable<Fragment> fragments)
+        private void AddNodes(TreeNode newNode, TreeNode parent)
+        {
+
+        }
+
+        public void RefreshFragmentsView(IEnumerable<BaseFragment> fragments)
         {
             treeViewFragments.Nodes.Clear();
+            var newNodes = new List<TreeNode>();
             var root = treeViewFragments.Nodes.Add("Эта книга");
-
-            var namedCollections = fragments
-                .GroupBy(f => f.SourceCollection)
-                .Select(g => new TreeNode(g.Key.Name)
-                {
-                    Tag = g.Key
-                })
-                .ToArray();
-
-            root.Nodes.AddRange(namedCollections);
-
-            foreach (var collection in namedCollections)
+            newNodes.Add(root);
+            
+            foreach(var f in fragments)
             {
-                collection.Nodes.AddRange(fragments
-                    .Where(f => f.SourceCollection == collection.Tag)
-                    .Select(f => new TreeNode($"{f.Name} ({f.Sheet}!{f.Cell})")
+                var newNode = new TreeNode(f.Name)
+                {
+                    Tag = f
+                };
+
+                if (f.Parent == null)
+                {
+                    root.Nodes.Add(newNode);                    
+                }
+                else
+                {
+                    var parent = newNodes.SingleOrDefault(n => n.Tag == f.Parent);
+                    if(parent == null)
                     {
-                        Tag = f
-                    })
-                    .ToArray());
+                        // ?
+                    }
+                    else
+                    {
+                        parent.Nodes.Add(newNode);
+                    }
+                }
+                newNodes.Add(newNode);
             }
 
             treeViewFragments.ExpandAll();
@@ -70,13 +82,13 @@ namespace SeriesEngine.ExcelAddIn.Views
 
         private void linkLabelAddFragment_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (treeViewFragments.SelectedNode?.Tag is NamedCollection)
-            {
-                NewFragmentRequested?.Invoke(this, new SelectEntityEventArgs
-                {
-                    SourceCollection = (NamedCollection)treeViewFragments.SelectedNode.Tag
-                });
-            }
+            //if (treeViewFragments.SelectedNode?.Tag is NamedCollection)
+            //{
+            //    NewFragmentRequested?.Invoke(this, new SelectEntityEventArgs
+            //    {
+            //        SourceCollection = (NamedCollection)treeViewFragments.SelectedNode.Tag
+            //    });
+            //}
         }
 
         private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -100,11 +112,11 @@ namespace SeriesEngine.ExcelAddIn.Views
         {
             if (treeViewFragments.SelectedNode?.Tag is Fragment)
             {
-                FragmentCopied?.Invoke(this, new SelectEntityEventArgs
-                {
-                    Fragment = (Fragment)treeViewFragments.SelectedNode.Tag,
-                    SourceCollection = (NamedCollection)treeViewFragments.SelectedNode.Parent.Tag
-                });
+                //FragmentCopied?.Invoke(this, new SelectEntityEventArgs
+                //{
+                //    Fragment = (Fragment)treeViewFragments.SelectedNode.Tag,
+                //    SourceCollection = (NamedCollection)treeViewFragments.SelectedNode.Parent.Tag
+                //});
             }
         }
 

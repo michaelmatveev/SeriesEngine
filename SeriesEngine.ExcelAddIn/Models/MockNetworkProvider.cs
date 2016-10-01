@@ -17,13 +17,28 @@ namespace SeriesEngine.ExcelAddIn.Models
             };
             var consumer1 = new NetworkTreeNode
             {
-                NodeName = "Шахта Юбилейная",
+                NodeName = "Шахта \"Юбилейная\"",
                 Parent = region1
             };
             var contract1 = new NetworkTreeNode
             {
-                NodeName = "Договор ЭН",
+                NodeName = "0670413-ЭН",
                 Parent = consumer1
+            };
+            var point1 = new NetworkTreeNode
+            {
+                NodeName = "ПС \"Сев - Байд\" 110/6 кВт Ф 6-14",
+                Parent = contract1
+            };
+            var device1 = new NetworkTreeNode
+            {
+                NodeName = "35588369",
+                Parent = point1
+            };
+            var device2 = new NetworkTreeNode
+            {
+                NodeName = "35588466",
+                Parent = point1
             };
 
             yield return new NetworkTree
@@ -33,7 +48,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                 {
                     region1,
                     consumer1,
-                    contract1
+                    contract1,
+                    point1,
+                    device1,
+                    device2
                 }
             };    
         }

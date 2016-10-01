@@ -12,6 +12,13 @@ namespace SeriesEngine.ExcelAddIn.Presenters
     {
         public FilterPresenter(IFilterView view, IController controller) : base(view, controller)
         {
+            View.FilterUpdated += (s, e) =>
+            {
+                if (Controller.IsActive)
+                {
+                    Controller.Filter = e.FilterString;
+                }
+            };
         }
 
         public void ShowFilterForNetwork(Network network)
@@ -22,6 +29,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             }
             else
             {
+                View.RefreshFilter(network as NetworkTree, string.Empty);
                 View.ShowIt(PaneLocation.Top);
             }
         }

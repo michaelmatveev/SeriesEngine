@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -15,14 +13,80 @@ namespace SeriesEngine.ExcelAddIn.Models
             Till = DateTime.Now.AddMonths(1).FirstDayOfMonth()
         };
 
-        private static NamedCollection SourceCollection = new NamedCollection
+        private static CollectionFragment SourceCollection = new CollectionFragment
         {
-            Name = "Коллекция 1"
+            Name = "Потребители-Точки учета",
+            SupportedModels = new []
+            {                
+                MockModelProvider.Contract,
+                MockModelProvider.Point,
+                MockModelProvider.Device
+            }
+        };
+        
+        private static CollectionFragment AllRegions = new CollectionFragment
+        {
+            Name = MockModelProvider.Region.Name,
+            Parent = SourceCollection,
+            SupportedModels = new[]
+            {
+                MockModelProvider.Contract,
+                MockModelProvider.Point,
+                MockModelProvider.Device
+            }
         };
 
-        public HashSet<Fragment> _fragments = new HashSet<Fragment>
+        private static CollectionFragment AllConsumers = new CollectionFragment
         {
-            new Fragment(SourceCollection, DefaultPeriod)
+            Name = MockModelProvider.Consumer.Name,
+            Parent = AllRegions,
+            SupportedModels = new[]
+            {
+                MockModelProvider.Contract,
+                MockModelProvider.Point,
+                MockModelProvider.Device
+            }
+        };
+
+        private static CollectionFragment AllContracts = new CollectionFragment
+        {
+            Name = MockModelProvider.Contract.Name,
+            Parent = AllConsumers,
+            SupportedModels = new[]
+            {
+                MockModelProvider.Contract,
+                MockModelProvider.Point,
+                MockModelProvider.Device
+            }
+        };
+
+        private static CollectionFragment AllPoints = new CollectionFragment
+        {
+            Name = MockModelProvider.Point.Name,
+            Parent = AllContracts,
+            SupportedModels = new[]
+            {
+                MockModelProvider.Contract,
+                MockModelProvider.Point,
+                MockModelProvider.Device
+            }
+        };
+
+        private static CollectionFragment AllDevices = new CollectionFragment
+        {
+            Name = MockModelProvider.Device.Name,
+            Parent = AllPoints,
+            SupportedModels = new[]
+            {
+                MockModelProvider.Contract,
+                MockModelProvider.Point,
+                MockModelProvider.Device
+            }
+        };
+
+        public HashSet<BaseFragment> _fragments = new HashSet<BaseFragment>
+        {
+            new Fragment(AllDevices, DefaultPeriod)
             {
                 Name = "Фрагмент 1",
                 Sheet = "Лист1",
@@ -34,7 +98,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 UseCommonPeriod = true,
                 ShowIntervals = false
             },
-            new Fragment(SourceCollection, DefaultPeriod)
+            new Fragment(AllDevices, DefaultPeriod)
             {
                 Name = "Фрагмент 2",
                 Sheet = "Лист1",
@@ -46,7 +110,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 UseCommonPeriod = true,
                 ShowIntervals = false
             },
-            new Fragment(SourceCollection, DefaultPeriod)
+            new Fragment(AllDevices, DefaultPeriod)
             {
                 Name = "Фрагмент 3",
                 Sheet = "Лист1",
@@ -58,7 +122,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 UseCommonPeriod = true,
                 ShowIntervals = false
             },
-            new Fragment(SourceCollection, DefaultPeriod)
+            new Fragment(AllDevices, DefaultPeriod)
             {
                 Name = "Фрагмент 4",
                 Sheet = "Лист1",
@@ -70,7 +134,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 UseCommonPeriod = true,
                 ShowIntervals = false
             },
-            new Fragment(SourceCollection, DefaultPeriod)
+            new Fragment(AllDevices, DefaultPeriod)
             {
                 Name = "Фрагмент 5",
                 Sheet = "Лист1",
@@ -82,7 +146,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 UseCommonPeriod = true,
                 ShowIntervals = false
             },
-            new Fragment(SourceCollection, DefaultPeriod)
+            new Fragment(AllDevices, DefaultPeriod)
             {
                 Name = "Фрагмент 6",
                 Sheet = "Лист1",
@@ -94,7 +158,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 UseCommonPeriod = true,
                 ShowIntervals = false
             },
-            new Fragment(SourceCollection, DefaultPeriod)
+            new Fragment(AllDevices, DefaultPeriod)
             {
                 Name = "Фрагмент 7",
                 Sheet = "Лист1",
@@ -106,7 +170,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 UseCommonPeriod = true,
                 ShowIntervals = false
             },
-            new Fragment(SourceCollection, DefaultPeriod)
+            new Fragment(AllDevices, DefaultPeriod)
             {
                 Name = "Фрагмент 8",
                 Sheet = "Лист1",
@@ -118,7 +182,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 UseCommonPeriod = true,
                 ShowIntervals = false
             },
-            new Fragment(SourceCollection, DefaultPeriod)
+            new Fragment(AllDevices, DefaultPeriod)
             {
                 Name = "Фрагмент 9",
                 Sheet = "Лист1",
@@ -130,7 +194,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 UseCommonPeriod = true,
                 ShowIntervals = false
             },
-            new Fragment(SourceCollection, DefaultPeriod)
+            new Fragment(AllDevices, DefaultPeriod)
             {
                 Name = "Фрагмент 10",
                 Sheet = "Лист1",
@@ -142,7 +206,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 UseCommonPeriod = true,
                 ShowIntervals = false
             },
-            new Fragment(SourceCollection, DefaultPeriod)
+            new Fragment(AllDevices, DefaultPeriod)
             {
                 Name = "Фрагмент 11",
                 Sheet = "Лист1",
@@ -154,7 +218,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 UseCommonPeriod = true,
                 ShowIntervals = false
             },
-            new Fragment(SourceCollection, DefaultPeriod)
+            new Fragment(AllDevices, DefaultPeriod)
             {
                 Name = "Фрагмент 12",
                 Sheet = "Лист1",
@@ -168,12 +232,21 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         };
 
-        public IEnumerable<Fragment> GetFragments()
+        public IEnumerable<BaseFragment> GetFragments(string filter)
         {
-            return _fragments;
+            yield return SourceCollection;
+            yield return AllRegions;
+            yield return AllConsumers;
+            yield return AllContracts;
+            yield return AllPoints;
+            yield return AllDevices;
+            foreach (var f in _fragments)
+            {
+                yield return f;
+            }
         }
 
-        public Fragment CreateFragment(NamedCollection source)
+        public Fragment CreateFragment(CollectionFragment source)
         {
             var mock = new MockModelProvider();
             return new Fragment(SourceCollection, DefaultPeriod)
@@ -183,7 +256,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             };
         }
 
-        public Fragment CopyFragment(Fragment sourceFragment, NamedCollection sourceCollection)
+        public Fragment CopyFragment(Fragment sourceFragment, CollectionFragment sourceCollection)
         {
             return new Fragment(sourceCollection, sourceFragment.CustomPeriod)
             {

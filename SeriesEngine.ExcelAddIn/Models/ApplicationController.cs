@@ -18,14 +18,11 @@ namespace SeriesEngine.ExcelAddIn.Models
         }
 
         public bool IsActive { get; set; }
+        public string Filter { get; set; }
 
         public T GetInstance<T>()
         {
-            //if (IsActive)
-            //{
-                return Container.GetInstance<T>();
-            //}
-            throw new Exception("Inactive");
+            return Container.GetInstance<T>();
         }
     }
 }
