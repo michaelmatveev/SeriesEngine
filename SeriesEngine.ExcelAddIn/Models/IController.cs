@@ -10,6 +10,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public interface IController
     {
+        bool IsActive { get; set; }
         T GetInstance<T>();
     }
 }

@@ -14,12 +14,17 @@ namespace SeriesEngine.ExcelAddIn.Helpers
             _panesCollection = panesCollection;
         }
 
-        public void Embed<T>(T viewToEmbed, string caption)
+        public void Embed<T>(T viewToEmbed, string caption, PaneLocation location = PaneLocation.Right)
         {
             var panel = _panesCollection.SingleOrDefault(p => p.Control == viewToEmbed as UserControl);
             if (panel == null)
             {
                 panel = _panesCollection.Add(viewToEmbed as UserControl, caption);
+                if(location == PaneLocation.Top)
+                {
+                    panel.DockPosition = Microsoft.Office.Core.MsoCTPDockPosition.msoCTPDockPositionTop;
+                    panel.Height = 60;
+                }                
                 panel.VisibleChanged += (s, e) =>
                 {
                     if (!panel.Visible)

@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Office.Tools.Ribbon;
 using SeriesEngine.ExcelAddIn.Views;
 using Microsoft.Office.Core;
+using SeriesEngine.ExcelAddIn.Models;
 
 namespace SeriesEngine.ExcelAddIn
 {
@@ -13,6 +14,7 @@ namespace SeriesEngine.ExcelAddIn
         public event EventHandler<PaneArgs> ShowFragmentsPane;
         public event EventHandler<PaneArgs> ShowPeriodSelectorPane;
         public event EventHandler RefreshAll;
+        public event EventHandler<FilterArgs> FilterSelected;
 
         private PaneArgs CreatePaneArgs(object toggleButton)
         {
@@ -47,5 +49,22 @@ namespace SeriesEngine.ExcelAddIn
             toggleButtonShowPeriodSelector.Checked = isChecked;
         }
 
+
+        public void InitializeFilters(IEnumerable<Network> networks)
+        {
+            foreach (var network in networks)
+            {
+                var item = Factory.CreateRibbonButton();
+                item.Click += (s, e) =>
+                {
+                    FilterSelected?.Invoke(this, new FilterArgs
+                    {
+                        SelectedNetwork = network
+                    });
+                };
+                item.Label = network.Name;
+                menuFilter.Items.Add(item);
+            }
+        }        
     }
 }

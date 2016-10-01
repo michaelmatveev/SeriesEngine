@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
-    public interface IPanes : IView
+    public interface IFilterView : IPanes
     {
-        event EventHandler PaneClosed;
-        void ShowIt(PaneLocation defaultLocation = PaneLocation.Right);
-        void HideIt();
     }
 }

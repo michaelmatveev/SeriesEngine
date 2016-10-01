@@ -23,9 +23,9 @@ namespace SeriesEngine.ExcelAddIn.Views
             _paneCaption = caption;
         }
 
-        public void ShowIt()
+        public void ShowIt(PaneLocation defaultLocation = PaneLocation.Right)
         {
-            _embedder.Embed(this, _paneCaption);            
+            _embedder.Embed(this, _paneCaption, defaultLocation);            
         }
 
         public void HideIt()

@@ -36,15 +36,19 @@
         {
             this.tab1 = this.Factory.CreateRibbonTab();
             this.tab2 = this.Factory.CreateRibbonTab();
-            this.group1 = this.Factory.CreateRibbonGroup();
             this.group2 = this.Factory.CreateRibbonGroup();
+            this.buttonRefresh = this.Factory.CreateRibbonButton();
+            this.group1 = this.Factory.CreateRibbonGroup();
             this.toggleButtonShowPeriodSelector = this.Factory.CreateRibbonToggleButton();
             this.toggleButtonShowFragmetns = this.Factory.CreateRibbonToggleButton();
-            this.buttonRefresh = this.Factory.CreateRibbonButton();
+            this.splitButtonFilters = this.Factory.CreateRibbonSplitButton();
+            this.menuFilter = this.Factory.CreateRibbonMenu();
+            this.button1 = this.Factory.CreateRibbonButton();
+            this.checkBox1 = this.Factory.CreateRibbonCheckBox();
             this.tab1.SuspendLayout();
             this.tab2.SuspendLayout();
-            this.group1.SuspendLayout();
             this.group2.SuspendLayout();
+            this.group1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
@@ -60,18 +64,26 @@
             this.tab2.Label = "Загрузка данных";
             this.tab2.Name = "tab2";
             // 
-            // group1
-            // 
-            this.group1.Items.Add(this.toggleButtonShowPeriodSelector);
-            this.group1.Items.Add(this.toggleButtonShowFragmetns);
-            this.group1.Label = "group1";
-            this.group1.Name = "group1";
-            // 
             // group2
             // 
             this.group2.Items.Add(this.buttonRefresh);
             this.group2.Label = "group2";
             this.group2.Name = "group2";
+            // 
+            // buttonRefresh
+            // 
+            this.buttonRefresh.Label = "Обновить все";
+            this.buttonRefresh.Name = "buttonRefresh";
+            this.buttonRefresh.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonRefresh_Click);
+            // 
+            // group1
+            // 
+            this.group1.Items.Add(this.toggleButtonShowPeriodSelector);
+            this.group1.Items.Add(this.toggleButtonShowFragmetns);
+            this.group1.Items.Add(this.menuFilter);
+            this.group1.Items.Add(this.splitButtonFilters);
+            this.group1.Label = "group1";
+            this.group1.Name = "group1";
             // 
             // toggleButtonShowPeriodSelector
             // 
@@ -85,11 +97,30 @@
             this.toggleButtonShowFragmetns.Name = "toggleButtonShowFragmetns";
             this.toggleButtonShowFragmetns.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButtonShowFragmetns_Click);
             // 
-            // buttonRefresh
+            // splitButtonFilters
             // 
-            this.buttonRefresh.Label = "Обновить все";
-            this.buttonRefresh.Name = "buttonRefresh";
-            this.buttonRefresh.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonRefresh_Click);
+            this.splitButtonFilters.ButtonType = Microsoft.Office.Tools.Ribbon.RibbonButtonType.ToggleButton;
+            this.splitButtonFilters.Items.Add(this.button1);
+            this.splitButtonFilters.Items.Add(this.checkBox1);
+            this.splitButtonFilters.Label = "Выбор объектов";
+            this.splitButtonFilters.Name = "splitButtonFilters";
+            // 
+            // menuFilter
+            // 
+            this.menuFilter.Dynamic = true;
+            this.menuFilter.Label = "Фильтр";
+            this.menuFilter.Name = "menuFilter";
+            // 
+            // button1
+            // 
+            this.button1.Label = "button1";
+            this.button1.Name = "button1";
+            this.button1.ShowImage = true;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.Label = "checkBox1";
+            this.checkBox1.Name = "checkBox1";
             // 
             // Ribbon
             // 
@@ -101,10 +132,10 @@
             this.tab1.PerformLayout();
             this.tab2.ResumeLayout(false);
             this.tab2.PerformLayout();
-            this.group1.ResumeLayout(false);
-            this.group1.PerformLayout();
             this.group2.ResumeLayout(false);
             this.group2.PerformLayout();
+            this.group1.ResumeLayout(false);
+            this.group1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -118,6 +149,10 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonShowFragmetns;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonRefresh;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton splitButtonFilters;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFilter;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox1;
     }
 
     partial class ThisRibbonCollection

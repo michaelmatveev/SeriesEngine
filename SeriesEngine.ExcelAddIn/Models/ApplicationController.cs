@@ -17,9 +17,15 @@ namespace SeriesEngine.ExcelAddIn.Models
             Container = new Container();
         }
 
+        public bool IsActive { get; set; }
+
         public T GetInstance<T>()
         {
-            return Container.GetInstance<T>();
+            //if (IsActive)
+            //{
+                return Container.GetInstance<T>();
+            //}
+            throw new Exception("Inactive");
         }
     }
 }

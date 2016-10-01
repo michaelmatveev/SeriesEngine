@@ -12,19 +12,45 @@ namespace SeriesEngine.ExcelAddIn.Presenters
     {
         public MainMenuPresenter(IMainMenuView view, IController controller) : base(view, controller)
         {
-            View.ShowFragmentsPane += (s, e) => Controller.GetInstance<FragmentPresenter>().ShowFragments(e.Visible);
-            View.ShowPeriodSelectorPane += (s, e) => Controller.GetInstance<PeriodSelectorPresenter>().ShowPeriods(e.Visible);
+            View.ShowFragmentsPane += (s, e) =>
+            {
+                if (Controller.IsActive)
+                {
+                    Controller.GetInstance<FragmentPresenter>().ShowFragments(e.Visible);
+                }
+            };
+
+            View.ShowPeriodSelectorPane += (s, e) =>
+            {
+                if (Controller.IsActive)
+                {
+                    Controller.GetInstance<PeriodSelectorPresenter>().ShowPeriods(e.Visible);
+                }
+            };
+
+            View.FilterSelected += (s, e) =>
+            {
+                if (Controller.IsActive)
+                {
+                    Controller.GetInstance<FilterPresenter>().ShowFilterForNetwork(e.SelectedNetwork);
+                }
+            };
+
             View.RefreshAll += (s, e) =>
             {
-                var framgmentsProvider = Controller.GetInstance<IFragmentsProvider>();
-                Controller.GetInstance<IDataImporter>().ImportFromFragments(
-                    framgmentsProvider.GetFragments(),
-                    framgmentsProvider.GetDefaultPeriod());
+                if (Controller.IsActive)
+                {
+                    var framgmentsProvider = Controller.GetInstance<IFragmentsProvider>();
+                    Controller.GetInstance<IDataImporter>().ImportFromFragments(
+                        framgmentsProvider.GetFragments(),
+                        framgmentsProvider.GetDefaultPeriod());
+                }
             };
         }
 
         public void Run()
         {
+            View.InitializeFilters(Controller.GetInstance<INetworksProvider>().GetNetworks());
         }
 
         public void SetFragmentsButton(bool state)

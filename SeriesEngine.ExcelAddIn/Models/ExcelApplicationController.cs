@@ -13,7 +13,7 @@ using SeriesEngine.ExcelAddIn.Presenters;
 namespace SeriesEngine.ExcelAddIn.Models
 {
     public class ExcelApplicationController : ApplicationController
-    {
+    {        
         public Ribbon MainRibbon { get; set; }
         public CustomTaskPaneCollection PaneCollection { get; set; }
         public Workbook CurrentDocument { get; set; }      
@@ -52,6 +52,12 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 _.ForConcreteType<PeriodSelectorPresenter>();
 
+                _.For<IFilterView>()
+                    .Singleton()
+                    .Use<Filter>();
+
+                _.ForConcreteType<FilterPresenter>();
+
                 _.For<IFragmentsProvider>()
                     .Singleton()
                     .Use<MockFragmentsProvider>();
@@ -82,6 +88,21 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Is(CurrentDocument.Worksheets.OfType<Microsoft.Office.Interop.Excel.Worksheet>().Select(ws => ws.Name).ToList());
 
             });
+        }
+
+        private bool isPeriodPaneOpen;
+        private bool isFragmentPaneOpen;
+
+        public void SaveRibbonState()
+        {
+            isPeriodPaneOpen = MainRibbon.toggleButtonShowPeriodSelector.Checked;
+            isFragmentPaneOpen = MainRibbon.toggleButtonShowFragmetns.Checked;
+        }
+
+        public void RestoreRibbonState()
+        {
+            MainRibbon.toggleButtonShowPeriodSelector.Checked = isPeriodPaneOpen;
+            MainRibbon.toggleButtonShowFragmetns.Checked = isFragmentPaneOpen;
         }
     }
 }
