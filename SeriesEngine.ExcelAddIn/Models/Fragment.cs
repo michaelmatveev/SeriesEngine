@@ -34,6 +34,17 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public TimeInterval Interval { get; set; }
         public bool IntervalsByRows { get; set; }
+        public bool IntervalsByColumns
+        {
+            get
+            {
+                return !IntervalsByRows;
+            }
+            set
+            {
+                IntervalsByRows = !value;
+            }
+        }
         public bool ShowIntervals { get; set; }
 
         public bool UseCommonPeriod { get; set; }

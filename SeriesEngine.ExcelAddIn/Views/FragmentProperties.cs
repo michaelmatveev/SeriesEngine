@@ -49,6 +49,7 @@ namespace SeriesEngine.ExcelAddIn.Views
 
             comboBoxInterval.DataBindings.Add(nameof(comboBoxInterval.SelectedItem), Fragment, nameof(Fragment.Interval));
             radioButtonIntervalsByRows.DataBindings.Add(nameof(radioButtonIntervalsByRows.Checked), Fragment, nameof(Fragment.IntervalsByRows));
+            radioButtonIntervalsByColumns.DataBindings.Add(nameof(radioButtonIntervalsByColumns.Checked), Fragment, nameof(Fragment.IntervalsByColumns));
             checkBoxShowIntervals.DataBindings.Add(nameof(checkBoxShowIntervals.Checked), Fragment, nameof(Fragment.ShowIntervals));
 
             checkBoxUseCommonPeriod.DataBindings.Add(nameof(checkBoxUseCommonPeriod.Checked), Fragment, nameof(Fragment.UseCommonPeriod));
@@ -60,7 +61,6 @@ namespace SeriesEngine.ExcelAddIn.Views
             SetUseCommonPeriodState(Fragment.UseCommonPeriod);
             SetShiftState(Fragment.UseShift);
 
-            //comboBoxObjectTypes.SelectedValue = 
             if (ShowDialog() == DialogResult.OK)
             {
                 //Fragment.ObjectMetamodel = (ObjectMetamodel)comboBoxObjectTypes.SelectedValue;
@@ -94,7 +94,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         {
             var om = (ObjectMetamodel)comboBoxObjectTypes.SelectedValue;
             
-            if (om != null)
+            if (om != null && om.Variables != null)
             {
                 //comboBoxObjectTypes.DataBindings["SelectedValue"].WriteValue();
 

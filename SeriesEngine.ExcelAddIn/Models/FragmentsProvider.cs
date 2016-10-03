@@ -234,14 +234,40 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public IEnumerable<BaseFragment> GetFragments(string filter)
         {
-            yield return SourceCollection;
-            yield return AllRegions;
-            yield return AllConsumers;
-            yield return AllContracts;
-            yield return AllPoints;
-            yield return AllDevices;
+            MockNetworkProvider networkProvider = new MockNetworkProvider();
+            CollectionFragment source = null;
+            foreach(var network in networkProvider.GetNetworks())
+            {
+                source = new CollectionFragment
+                {
+                    Name = network.Name
+                };
+                yield return source;
+                var supportedModels = new List<ObjectMetamodel>();
+                if (network is NetworkTree)
+                {
+                    var netTree = network as NetworkTree;
+                    var groupedObjects = netTree.Nodes.GroupBy((n) => n.LinckedObject.ObjectModel);
+                    
+                    foreach(var g in groupedObjects)
+                    {
+                        supportedModels.Add(g.Key);
+                        var newFragment = new CollectionFragment
+                        {
+                            Name = $"{g.Key.Name} ({g.Count()})",
+                            Parent = source,
+                            SupportedModels = supportedModels.ToArray()
+                        };
+                        yield return newFragment;
+                        source = newFragment;
+                    }
+
+                }
+            }
+
             foreach (var f in _fragments)
             {
+                f.Parent = source; 
                 yield return f;
             }
         }

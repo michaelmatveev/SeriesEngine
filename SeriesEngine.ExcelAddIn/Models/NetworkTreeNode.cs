@@ -10,5 +10,6 @@ namespace SeriesEngine.ExcelAddIn.Models
     {
         public string NodeName { get; set; }
         public NetworkTreeNode Parent { get; set; }
+        public ManagedObject LinckedObject { get; set; }
     }
 }

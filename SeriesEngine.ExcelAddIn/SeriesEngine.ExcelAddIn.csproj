@@ -173,6 +173,7 @@
     <Compile Include="Models\IFragmentsProvider.cs" />
     <Compile Include="Models\IModelProvider.cs" />
     <Compile Include="Models\INetworksProvider.cs" />
+    <Compile Include="Models\ManagedObject.cs" />
     <Compile Include="Models\MockModelProvider.cs" />
     <Compile Include="Models\NamedCollection.cs" />
     <Compile Include="Models\MockNetworkProvider.cs" />

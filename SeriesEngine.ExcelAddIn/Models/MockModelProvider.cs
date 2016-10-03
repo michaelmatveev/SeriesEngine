@@ -100,7 +100,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         internal static List<ObjectMetamodel> _metamodels = new List<ObjectMetamodel>
         {
-            Contract, Point, Device,
+            Region, Consumer, Contract, Point, Device,
         };
 
         public IEnumerable<ObjectMetamodel> GetObjectMetamodels()

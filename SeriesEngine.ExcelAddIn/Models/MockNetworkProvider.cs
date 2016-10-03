@@ -13,32 +13,56 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             var region1 = new NetworkTreeNode
             {
-                NodeName = "Кемеровская область"
+                NodeName = "Кемеровская область",
+                LinckedObject = new ManagedObject
+                {
+                    ObjectModel = MockModelProvider.Region
+                }
             };
             var consumer1 = new NetworkTreeNode
             {
                 NodeName = "Шахта \"Юбилейная\"",
-                Parent = region1
+                Parent = region1,
+                LinckedObject = new ManagedObject
+                {
+                    ObjectModel = MockModelProvider.Consumer
+                }
             };
             var contract1 = new NetworkTreeNode
             {
                 NodeName = "0670413-ЭН",
-                Parent = consumer1
+                Parent = consumer1,
+                LinckedObject = new ManagedObject
+                {
+                    ObjectModel = MockModelProvider.Contract
+                }
             };
             var point1 = new NetworkTreeNode
             {
                 NodeName = "ПС \"Сев - Байд\" 110/6 кВт Ф 6-14",
-                Parent = contract1
+                Parent = contract1,
+                LinckedObject = new ManagedObject
+                {
+                    ObjectModel = MockModelProvider.Point
+                }
             };
             var device1 = new NetworkTreeNode
             {
                 NodeName = "35588369",
-                Parent = point1
+                Parent = point1,
+                LinckedObject = new ManagedObject
+                {
+                    ObjectModel = MockModelProvider.Device
+                }
             };
             var device2 = new NetworkTreeNode
             {
                 NodeName = "35588466",
-                Parent = point1
+                Parent = point1,
+                LinckedObject = new ManagedObject
+                {
+                    ObjectModel = MockModelProvider.Device
+                }
             };
 
             yield return new NetworkTree
