@@ -41,7 +41,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
         {
             if (visible)
             {
-                View.RefreshFragmentsView(Controller.GetInstance<IFragmentsProvider>().GetFragments(string.Empty));
+                View.RefreshFragmentsView(Controller.GetInstance<IFragmentsProvider>().GetFragments(Controller.Filter));
                 View.ShowIt();
             }
             else

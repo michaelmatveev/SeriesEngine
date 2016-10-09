@@ -9,5 +9,6 @@ namespace SeriesEngine.ExcelAddIn.Models
     public class ManagedObject
     {
         public ObjectMetamodel ObjectModel { get; set; }
+        public string Name { get; set; }
     }
 }

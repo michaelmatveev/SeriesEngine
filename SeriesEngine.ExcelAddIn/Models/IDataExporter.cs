@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
-    public interface IDataImporter
+    public interface IDataExporter
     {
-        void ImportFromFragments(IEnumerable<DataFragment> fragments, Period period);
+        void ExportFromFragments(IEnumerable<DataFragment> fragments);
     }
 }

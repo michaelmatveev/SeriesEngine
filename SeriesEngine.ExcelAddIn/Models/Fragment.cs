@@ -23,11 +23,8 @@ namespace SeriesEngine.ExcelAddIn.Models
         Fact,
     }
 
-    public class Fragment : BaseFragment
+    public class Fragment : DataFragment
     {
-        public string Sheet { get; set; }
-        public string Cell { get; set; }
-
         public ObjectMetamodel ObjectMetamodel { get; set; }
         public Variable VariableMetamodel { get; set; }
         public Kind Kind { get; set; }
@@ -52,14 +49,10 @@ namespace SeriesEngine.ExcelAddIn.Models
         public int Shift { get; set; }
         public TimeInterval ShiftPeriod { get; set; }
 
-        public Period CustomPeriod { get; set; }
-
-        public Fragment(BaseFragment parent, Period defaultPeriod)
+        public Fragment(BaseFragment parent, Period defaultPeriod) : base(parent, defaultPeriod)
         {
-            Parent = parent;
             IntervalsByRows = true;
             UseCommonPeriod = true;
-            CustomPeriod = defaultPeriod; 
         }
 
     }

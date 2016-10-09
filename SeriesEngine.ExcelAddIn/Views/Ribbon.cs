@@ -14,6 +14,7 @@ namespace SeriesEngine.ExcelAddIn
         public event EventHandler<PaneArgs> ShowFragmentsPane;
         public event EventHandler<PaneArgs> ShowPeriodSelectorPane;
         public event EventHandler RefreshAll;
+        public event EventHandler SaveAll;
         public event EventHandler<FilterArgs> FilterSelected;
 
         private PaneArgs CreatePaneArgs(object toggleButton)
@@ -37,6 +38,11 @@ namespace SeriesEngine.ExcelAddIn
         private void buttonRefresh_Click(object sender, RibbonControlEventArgs e)
         {
             RefreshAll?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void buttonSave_Click(object sender, RibbonControlEventArgs e)
+        {
+            SaveAll?.Invoke(this, EventArgs.Empty);
         }
 
         public void SetFragmentsButtonState(bool isChecked)
@@ -65,6 +71,8 @@ namespace SeriesEngine.ExcelAddIn
                 item.Label = network.Name;
                 menuFilter.Items.Add(item);
             }
-        }        
+        }
+
+
     }
 }

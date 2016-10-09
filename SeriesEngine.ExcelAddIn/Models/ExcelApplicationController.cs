@@ -73,6 +73,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Singleton()
                     .Use<DataImporter>();
 
+                _.For<IDataExporter>()
+                    .Singleton()
+                    .Use<DataExporter>();
+
                 _.ForConcreteType<FragmentPropertiesPresenter>();
                 //.Configure
                 //.Singleton();

@@ -41,10 +41,11 @@
             this.group1 = this.Factory.CreateRibbonGroup();
             this.toggleButtonShowPeriodSelector = this.Factory.CreateRibbonToggleButton();
             this.toggleButtonShowFragmetns = this.Factory.CreateRibbonToggleButton();
-            this.splitButtonFilters = this.Factory.CreateRibbonSplitButton();
             this.menuFilter = this.Factory.CreateRibbonMenu();
+            this.splitButtonFilters = this.Factory.CreateRibbonSplitButton();
             this.button1 = this.Factory.CreateRibbonButton();
             this.checkBox1 = this.Factory.CreateRibbonCheckBox();
+            this.buttonSave = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.tab2.SuspendLayout();
             this.group2.SuspendLayout();
@@ -67,13 +68,16 @@
             // group2
             // 
             this.group2.Items.Add(this.buttonRefresh);
+            this.group2.Items.Add(this.buttonSave);
             this.group2.Label = "group2";
             this.group2.Name = "group2";
             // 
             // buttonRefresh
             // 
+            this.buttonRefresh.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.buttonRefresh.Label = "Обновить все";
             this.buttonRefresh.Name = "buttonRefresh";
+            this.buttonRefresh.ShowImage = true;
             this.buttonRefresh.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonRefresh_Click);
             // 
             // group1
@@ -97,6 +101,12 @@
             this.toggleButtonShowFragmetns.Name = "toggleButtonShowFragmetns";
             this.toggleButtonShowFragmetns.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButtonShowFragmetns_Click);
             // 
+            // menuFilter
+            // 
+            this.menuFilter.Dynamic = true;
+            this.menuFilter.Label = "Фильтр";
+            this.menuFilter.Name = "menuFilter";
+            // 
             // splitButtonFilters
             // 
             this.splitButtonFilters.ButtonType = Microsoft.Office.Tools.Ribbon.RibbonButtonType.ToggleButton;
@@ -104,12 +114,6 @@
             this.splitButtonFilters.Items.Add(this.checkBox1);
             this.splitButtonFilters.Label = "Выбор объектов";
             this.splitButtonFilters.Name = "splitButtonFilters";
-            // 
-            // menuFilter
-            // 
-            this.menuFilter.Dynamic = true;
-            this.menuFilter.Label = "Фильтр";
-            this.menuFilter.Name = "menuFilter";
             // 
             // button1
             // 
@@ -121,6 +125,14 @@
             // 
             this.checkBox1.Label = "checkBox1";
             this.checkBox1.Name = "checkBox1";
+            // 
+            // buttonSave
+            // 
+            this.buttonSave.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonSave.Label = "Сохранить все";
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.ShowImage = true;
+            this.buttonSave.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonSave_Click);
             // 
             // Ribbon
             // 
@@ -153,6 +165,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFilter;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonSave;
     }
 
     partial class ThisRibbonCollection

@@ -22,6 +22,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         event EventHandler<PaneArgs> ShowFragmentsPane;
         event EventHandler<PaneArgs> ShowPeriodSelectorPane;
         event EventHandler RefreshAll;
+        event EventHandler SaveAll;
         event EventHandler<FilterArgs> FilterSelected;
 
         void InitializeFilters(IEnumerable<Network> networks);

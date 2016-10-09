@@ -41,16 +41,27 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                 if (Controller.IsActive)
                 {
                     var framgmentsProvider = Controller.GetInstance<IFragmentsProvider>();
-                    Controller.GetInstance<IDataImporter>().ImportFromFragments(
-                        framgmentsProvider.GetFragments(string.Empty).OfType<Fragment>(),
+                    var dataImporter = Controller.GetInstance<IDataImporter>();
+                    dataImporter.ImportFromFragments(
+                        framgmentsProvider.GetFragments(string.Empty).OfType<DataFragment>(),
                         framgmentsProvider.GetDefaultPeriod());
+                }
+            };
+
+            View.SaveAll += (s, e) =>
+            {
+                if (Controller.IsActive)
+                {
+                    var framgmentsProvider = Controller.GetInstance<IFragmentsProvider>();
+                    var dataExporter = Controller.GetInstance<IDataExporter>();
+                    dataExporter.ExportFromFragments(framgmentsProvider.GetFragments(string.Empty).OfType<DataFragment>());
                 }
             };
         }
 
         public void Run()
         {
-            View.InitializeFilters(Controller.GetInstance<INetworksProvider>().GetNetworks());
+            View.InitializeFilters(Controller.GetInstance<INetworksProvider>().GetNetworks(Controller.Filter));
         }
 
         public void SetFragmentsButton(bool state)

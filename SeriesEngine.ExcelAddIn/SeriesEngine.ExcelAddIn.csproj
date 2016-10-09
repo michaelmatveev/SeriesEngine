@@ -162,6 +162,8 @@
   <ItemGroup>
     <Compile Include="Helpers\PanesManager.cs" />
     <Compile Include="Models\BaseFragment.cs" />
+    <Compile Include="Models\DataExporter.cs" />
+    <Compile Include="Models\DataFragment.cs" />
     <Compile Include="Models\DataImporter.cs" />
     <Compile Include="Models\ExcelApplicationController.cs" />
     <Compile Include="Models\FilteredCollection.cs" />
@@ -169,6 +171,7 @@
     <Compile Include="Models\FragmentsProvider.cs" />
     <Compile Include="Models\IController.cs" />
     <Compile Include="Models\ApplicationController.cs" />
+    <Compile Include="Models\IDataExporter.cs" />
     <Compile Include="Models\IDataImporter.cs" />
     <Compile Include="Models\IFragmentsProvider.cs" />
     <Compile Include="Models\IModelProvider.cs" />
@@ -181,6 +184,7 @@
     <Compile Include="Models\NetworkTree.cs" />
     <Compile Include="Models\NetworkTreeNode.cs" />
     <Compile Include="Models\NetwrokList.cs" />
+    <Compile Include="Models\NodeFragment.cs" />
     <Compile Include="Models\ObjectMetamodel.cs" />
     <Compile Include="Models\Period.cs" />
     <Compile Include="Presenters\FilterPresenter.cs" />

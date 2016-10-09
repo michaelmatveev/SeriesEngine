@@ -19,76 +19,107 @@ namespace SeriesEngine.ExcelAddIn.Models
             _workbook = workbook;
         }
 
-        public void ImportFromFragments(IEnumerable<Fragment> fragments, Period period)
+        public void ImportFromFragments(IEnumerable<DataFragment> fragments, Period period)
         {
-            //var random = new Random();
             foreach (var f in fragments)
             {
-                if (f.UseCommonPeriod)
+                if(f is NodeFragment)
                 {
-                    ImportFramgent(f, f.CustomPeriod);
-                }
-                else
-                {
-                    ImportFramgent(f, period);
+                    ImportNodeFragment((NodeFragment)f);
                 }
             }
         }
 
-        private void ImportFramgent(Fragment fragment, Period period)
+        private void ImportNodeFragment(NodeFragment fragment)
         {
             Excel.Worksheet sheet = _workbook.Sheets[fragment.Sheet];
             sheet.get_Range(fragment.Cell).Value = fragment.Name;
 
-            int row = 0;
-            int col = 0;
-            if (fragment.IntervalsByRows)
+            MockNetworkProvider netwrokProvider = new MockNetworkProvider();
+            var network = netwrokProvider.GetNetworks(string.Empty);
+
+            int i = 1;
+            foreach(var node in (network.First() as NetworkTree).Nodes.Where(n => n.LinkedObject.ObjectModel == fragment.Model))
             {
-                DateTime d = GetStartDate(period.From, fragment.Interval);
-                for (int i = 0; i < 20; i++) //TODO Replace on interation throught collection
+                var cell = sheet.get_Range(fragment.Cell).Offset[i++, 0];
+                switch (fragment.NodeValue)
                 {
-                    while (d < period.Till)
-                    {
-                        row = 0;
-                        if (fragment.ShowIntervals)
-                        {
-                            sheet.get_Range(fragment.Cell).Offset[row, i].Value2 = d;
-                            sheet.get_Range(fragment.Cell).Offset[row, i].NumberFormat = GetFormat(fragment.Interval);
-                            sheet.get_Range(fragment.Cell).Offset[row++, i + 1].Value2 = _random.Next(100);
-                        }
-                        else
-                        {
-                            sheet.get_Range(fragment.Cell).Offset[row++, i].Value2 = _random.Next(100);
-                        }
-                        d = GetNextDate(d, fragment.Interval);
-                    }
-                }
-            }        
-            else
-            {
-                for (int i = 0; i < 20; i++) //TODO Replace on interation throught collection
-                {
-                    DateTime d = GetStartDate(period.From, fragment.Interval);
-                    while (d < period.Till)
-                    {
-                        col = 0;
-                        if (fragment.ShowIntervals)
-                        {
-                            sheet.get_Range(fragment.Cell).Offset[i, col].Value2 = d;
-                            sheet.get_Range(fragment.Cell).Offset[i, col].NumberFormat = GetFormat(fragment.Interval);
-                            sheet.get_Range(fragment.Cell).Offset[i + 1, col++].Value2 = _random.Next(100);
-                        }
-                        else
-                        {
-                            sheet.get_Range(fragment.Cell).Offset[i, col++].Value2 = _random.Next(100);
-                        }
-                        d = GetNextDate(d, fragment.Interval);
-                    }                    
+                    case ExportNodeValue.Name: cell.Value2 = node.NodeName; break;
+                    case ExportNodeValue.Since: cell.Value2 = node.Since; break;
+                    case ExportNodeValue.Till: cell.Value2 = node.Till; break;
                 }
             }
-            
         }
-        
+
+        //public void ImportFromFragments(IEnumerable<Fragment> fragments, Period period)
+        //{
+        //    foreach (var f in fragments)
+        //    {
+        //        if (f.UseCommonPeriod)
+        //        {
+        //            ImportFramgent(f, f.CustomPeriod);
+        //        }
+        //        else
+        //        {
+        //            ImportFramgent(f, period);
+        //        }
+        //    }
+        //}
+
+        //private void ImportFramgent(Fragment fragment, Period period)
+        //{
+        //    Excel.Worksheet sheet = _workbook.Sheets[fragment.Sheet];
+        //    sheet.get_Range(fragment.Cell).Value = fragment.Name;
+
+        //    int row = 0;
+        //    int col = 0;
+        //    if (fragment.IntervalsByRows)
+        //    {
+        //        DateTime d = GetStartDate(period.From, fragment.Interval);
+        //        for (int i = 0; i < 20; i++) //TODO Replace on interation throught collection
+        //        {
+        //            while (d < period.Till)
+        //            {
+        //                row = 0;
+        //                if (fragment.ShowIntervals)
+        //                {
+        //                    sheet.get_Range(fragment.Cell).Offset[row, i].Value2 = d;
+        //                    sheet.get_Range(fragment.Cell).Offset[row, i].NumberFormat = GetFormat(fragment.Interval);
+        //                    sheet.get_Range(fragment.Cell).Offset[row++, i + 1].Value2 = _random.Next(100);
+        //                }
+        //                else
+        //                {
+        //                    sheet.get_Range(fragment.Cell).Offset[row++, i].Value2 = _random.Next(100);
+        //                }
+        //                d = GetNextDate(d, fragment.Interval);
+        //            }
+        //        }
+        //    }        
+        //    else
+        //    {
+        //        for (int i = 0; i < 20; i++) //TODO Replace on interation throught collection
+        //        {
+        //            DateTime d = GetStartDate(period.From, fragment.Interval);
+        //            while (d < period.Till)
+        //            {
+        //                col = 0;
+        //                if (fragment.ShowIntervals)
+        //                {
+        //                    sheet.get_Range(fragment.Cell).Offset[i, col].Value2 = d;
+        //                    sheet.get_Range(fragment.Cell).Offset[i, col].NumberFormat = GetFormat(fragment.Interval);
+        //                    sheet.get_Range(fragment.Cell).Offset[i + 1, col++].Value2 = _random.Next(100);
+        //                }
+        //                else
+        //                {
+        //                    sheet.get_Range(fragment.Cell).Offset[i, col++].Value2 = _random.Next(100);
+        //                }
+        //                d = GetNextDate(d, fragment.Interval);
+        //            }                    
+        //        }
+        //    }
+
+        //}
+
         private DateTime GetStartDate(DateTime from, TimeInterval interval)
         {
             switch (interval)
