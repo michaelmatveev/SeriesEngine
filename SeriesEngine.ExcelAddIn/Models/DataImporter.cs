@@ -67,11 +67,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                 xmlMap.Delete();
             }
             xmlMap = _workbook.XmlMaps.Add(fragment.GetSchema());
-            //xmlMap.ShowImportExportValidationErrors = false;
-            //xmlMap.PreserveNumberFormatting = false;
-            //xmlMap.
             xmlMap.Name = fragment.Name;
-            xmlMap.Application.DisplayAlerts = false;
+            //xmlMap.Application.DisplayAlerts = false;
 
             var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == fragment.Name);
             if(listObject != null)
@@ -85,24 +82,23 @@ namespace SeriesEngine.ExcelAddIn.Models
                 .Cast<Excel.ListColumn>()
                 .First();
 
-            var subFragment = fragment.SubFragments().First();
+            var subFragment = fragment.SubFragments.First();
             column.XPath.SetValue(xmlMap, subFragment.XmlPath);
             column.Name = subFragment.Caption;
 
-            foreach (var f  in fragment.SubFragments().Skip(1))
+            foreach (var f  in fragment.SubFragments.Skip(1))
             {
                 var newColumn = listObject.ListColumns.Add();
 
                 newColumn.Name = f.Caption;
                 newColumn.XPath.SetValue(xmlMap, f.XmlPath);
                 //newColumn.Range.NumberFormat = "@";
-
             }
 
             xmlMap.ImportXml(fragment.GetXml());
-            listObject.ListColumns[4].Range.NumberFormat = "General";
+            //listObject.ListColumns[4].Range.NumberFormat = "General";
   
-            xmlMap.Application.DisplayAlerts = true;
+            //xmlMap.Application.DisplayAlerts = true;
         }
 
         //public void ImportFromFragments(IEnumerable<Fragment> fragments, Period period)

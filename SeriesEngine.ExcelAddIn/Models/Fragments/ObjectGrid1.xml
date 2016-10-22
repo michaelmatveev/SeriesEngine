@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ObjectGrid Sheet="Лист1" Cell="C2">
+<ObjectGrid xmlns="http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments" Version="1" Name="Таблица1" Sheet="Лист1" Cell="C2">
   <CFragment Caption="Регион" CollectionName="Main" Level="1" RefObject="Region" Type="UniqueName"/>
   <CFragment Caption="Потребитель" CollectionName="Main" Level="2" RefObject="Customer" Type="UniqueName"/>
   <CFragment Caption="Договор" CollectionName="Main" Level="3" RefObject="Contract" Type="UniqueName"/>
@@ -7,5 +7,5 @@
   <CFragment Caption="Дата договора с потребителем" CollectionName="Main" Level="3" RefObject="Contract" Type="Since"/>
   <CFragment Caption="Объект" CollectionName="Main" Level="4" RefObject="ConsumerObject" Type="UniqueName"/>
   <CFragment Caption="Точка" CollectionName="Main" Level="5" RefObject="Point" Type="UniqueName"/>
-  <VFragment Caption="Уровень расчетного напряжения" CollectionName="Main" Level="5" Variable="VoltageLevel" Kind="Fact"/>
+  <VFragment Caption="Уровень расчетного напряжения" Level="5" CollectionName="Main"  RefObject="Point" Variable="VoltageLevel" Kind="Fact"/>
 </ObjectGrid>

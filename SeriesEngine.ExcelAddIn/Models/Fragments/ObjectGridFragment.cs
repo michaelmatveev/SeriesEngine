@@ -1,20 +1,44 @@
-﻿using System;
+﻿using SeriesEngine.ExcelAddIn.Properties;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace SeriesEngine.ExcelAddIn.Models.Fragments
 {
+    public class SubFragment
+    {
+        public string XmlPath { get; set; }
+        public string Caption { get; set; }
+        public int Level { get; set; }
+        public string CollectionName { get; set; }
+        public string RefObject { get; set; }
+    }
+
+    public enum NodeType
+    {
+        UniqueName,
+        Since,
+        Till,
+        Path
+    }
+
+    public class NodeSubFragment : SubFragment
+    {
+        public NodeType NodeType;
+    }
+
+    public class VariableSubFragment : SubFragment
+    {
+        public Kind Kind;
+        public string VariableName;
+    }
 
     [Serializable]
     public class ObjectGridFragment : SheetFragment
     {
-        public class SubFragment
-        {
-            public string XmlPath { get; set; }
-            public string Caption { get; set; }
-        }
 
         public ObjectGridFragment() : base(null, new Period())
         {
@@ -24,43 +48,102 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
         {
         }
 
+        private static XNamespace ns = "http://www.w3.org/2001/XMLSchema";
+
         public string GetSchema()
         {
-            return @"<xsd:schema xmlns:xsd=""http://www.w3.org/2001/XMLSchema""><xsd:element nillable=""true"" name=""BookInfo""><xsd:complexType><xsd:sequence minOccurs=""0""><xsd:element minOccurs=""0"" maxOccurs=""unbounded"" nillable=""true"" name=""Book"" form=""unqualified""><xsd:complexType><xsd:sequence minOccurs=""0""><xsd:element minOccurs=""0"" nillable=""true"" type=""xsd:string"" name=""ISBN"" form=""unqualified""></xsd:element><xsd:element minOccurs=""0"" nillable=""true"" type=""xsd:string"" name=""Title"" form=""unqualified""></xsd:element><xsd:element minOccurs=""0"" nillable=""true"" type=""xsd:string"" name=""Author"" form=""unqualified""></xsd:element><xsd:element minOccurs=""0"" nillable=""true"" type=""xsd:integer"" name=""Quantity"" form=""unqualified""></xsd:element></xsd:sequence></xsd:complexType></xsd:element></xsd:sequence></xsd:complexType></xsd:element></xsd:schema>";
+            
+            var schema = new XDocument(
+                new XElement(ns + "schema", new XAttribute("attributeFormDefault", "unqualified"), new XAttribute("elementFormDefault", "unqualified"),
+                    new XElement(ns + "element", new XAttribute("name", "DataToImport"),
+                        new XElement(ns + "complexType",
+                            new XElement(ns + "sequence")))));
+
+            schema.Root.SetAttributeValue(XNamespace.Xmlns + "xs", ns);
+            var lastElement = schema.Descendants().Where(d => !d.HasElements).Single();
+            var currentPath = "/DataToImport"; 
+
+            foreach (var sfGroup in SubFragments.GroupBy(sf => sf.Level).OrderBy(sfg => sfg.Key))
+            {
+                var complexType = new XElement(ns + "complexType");
+                var sequence = new XElement(ns + "sequence", new XAttribute("maxOccurs", "unbounded"));
+                complexType.Add(sequence);
+
+                foreach (var sf in sfGroup) 
+                {
+                    if (!lastElement.Descendants(ns + "element").Any(d => d.Attribute("name").Value == sf.RefObject))
+                    {
+                        lastElement.Add(
+                            new XElement(ns + "element", new XAttribute("name", sf.RefObject),
+                                complexType));
+                        currentPath = $"{currentPath}/{sf.RefObject}";
+                    }
+
+                    var nsf = sf as NodeSubFragment;
+                    if (nsf != null)
+                    {
+                        complexType.Add(GetShemaForNode(nsf));
+                        sf.XmlPath = $"{currentPath}/@{nsf.NodeType}";
+                    }
+
+                    var vsf = sf as VariableSubFragment;
+                    if (vsf != null)
+                    {
+                        sequence.Add(GetShemaForVariable(vsf));
+                        sf.XmlPath = $"{currentPath}/{vsf.VariableName}";                        
+                    }
+                }
+                lastElement = sequence;                
+            }
+
+            return schema.ToString();
+
+            //return @"<xsd:schema xmlns:xsd=""http://www.w3.org/2001/XMLSchema""><xsd:element nillable=""true"" name=""BookInfo""><xsd:complexType><xsd:sequence minOccurs=""0""><xsd:element minOccurs=""0"" maxOccurs=""unbounded"" nillable=""true"" name=""Book"" form=""unqualified""><xsd:complexType><xsd:sequence minOccurs=""0""><xsd:element minOccurs=""0"" nillable=""true"" type=""xsd:string"" name=""ISBN"" form=""unqualified""></xsd:element><xsd:element minOccurs=""0"" nillable=""true"" type=""xsd:string"" name=""Title"" form=""unqualified""></xsd:element><xsd:element minOccurs=""0"" nillable=""true"" type=""xsd:string"" name=""Author"" form=""unqualified""></xsd:element><xsd:element minOccurs=""0"" nillable=""true"" type=""xsd:integer"" name=""Quantity"" form=""unqualified""></xsd:element></xsd:sequence></xsd:complexType></xsd:element></xsd:sequence></xsd:complexType></xsd:element></xsd:schema>";
+        }
+
+        private XElement GetShemaForNode(NodeSubFragment sf)
+        {
+            return new XElement(ns + "attribute", new XAttribute("name", sf.NodeType.ToString()), new XAttribute("type", "xs:string"), new XAttribute("use", sf.NodeType == NodeType.UniqueName ? "required" : "optional"));
+        }
+
+        private XElement GetShemaForVariable(VariableSubFragment sf)
+        {
+            return new XElement(ns + "element", new XAttribute("name", sf.VariableName), new XAttribute("type", "xs:string"));
         }
 
         public string GetXml()
         {
-            return "<?xml version='1.0'?><BookInfo><Book><ISBN>989-0-487-04641-2</ISBN><Title>My World</Title><Author>Nancy Davolio</Author><Quantity>121</Quantity></Book><Book><ISBN>981-0-776-05541-0</ISBN><Title>Get Connected</Title><Author>Janet Leverling</Author><Quantity>435</Quantity></Book><Book><ISBN>999-1-543-02345-2</ISBN><Title>Honesty</Title><Author>Robert Fuller</Author><Quantity>315</Quantity></Book></BookInfo>";
-        } 
-
-        public IEnumerable<SubFragment> SubFragments()
-        {
-            yield return new SubFragment()
-            {
-                Caption = "ISBN",
-                XmlPath = "/BookInfo/Book/ISBN"
-            };
-
-            yield return new SubFragment()
-            {
-                Caption = "Заголовок",
-                XmlPath = "/BookInfo/Book/Title"
-            };
-
-            yield return new SubFragment()
-            {
-                Caption = "Автор",
-                XmlPath = "/BookInfo/Book/Author"
-            };
-
-            yield return new SubFragment()
-            {
-                Caption = "Количество",
-                XmlPath = "/BookInfo/Book/Quantity"
-            };
-
+            return Resources.TestGridData;
         }
+
+        public IList<SubFragment> SubFragments = new List<SubFragment>();
+        //{
+
+            //yield return new SubFragment()
+            //{
+            //    Caption = "ISBN",
+            //    XmlPath = "/BookInfo/Book/ISBN"
+            //};
+
+            //yield return new SubFragment()
+            //{
+            //    Caption = "Заголовок",
+            //    XmlPath = "/BookInfo/Book/Title"
+            //};
+
+            //yield return new SubFragment()
+            //{
+            //    Caption = "Автор",
+            //    XmlPath = "/BookInfo/Book/Author"
+            //};
+
+            //yield return new SubFragment()
+            //{
+            //    Caption = "Количество",
+            //    XmlPath = "/BookInfo/Book/Quantity"
+            //};
+
+        //}
 
     }
 }

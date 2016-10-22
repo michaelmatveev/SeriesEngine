@@ -192,6 +192,7 @@
     <Compile Include="Models\Period.cs" />
     <Compile Include="Models\TimeInterval.cs" />
     <Compile Include="Models\WorkbookFragmentsProvider.cs" />
+    <Compile Include="Models\XmlToFragmentConverter.cs" />
     <Compile Include="Presenters\FilterPresenter.cs" />
     <Compile Include="Presenters\FragmentPropertiesPresenter.cs" />
     <Compile Include="Presenters\PeriodSelectorPresenter.cs" />
@@ -303,7 +304,6 @@
   <ItemGroup>
     <Content Include="Models\DataForObjectGrid1.xml" />
     <Content Include="Models\Fragments\ObjectGrid1.xml" />
-    <Content Include="Models\Fragments\XMLFile1.xml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

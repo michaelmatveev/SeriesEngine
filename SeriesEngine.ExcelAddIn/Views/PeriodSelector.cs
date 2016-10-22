@@ -50,9 +50,9 @@ namespace SeriesEngine.ExcelAddIn.Views
             }
         }
 
-        private void dateTimePicker_ValueChanged(object sender, EventArgs e)
+        private void buttonOK_Click(object sender, EventArgs e)
         {
-            if(dateTimePickerStart.Value < dateTimePickerFinish.Value)
+            if (dateTimePickerStart.Value < dateTimePickerFinish.Value)
             {
                 PeriodChanged?.Invoke(this, EventArgs.Empty);
             }

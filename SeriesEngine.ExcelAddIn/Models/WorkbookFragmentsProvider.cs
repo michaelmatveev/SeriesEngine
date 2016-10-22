@@ -9,6 +9,7 @@ using FluentDateTime;
 using Microsoft.Office.Core;
 using System.IO;
 using System.Xml.Serialization;
+using System.Xml.Linq;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -40,7 +41,6 @@ namespace SeriesEngine.ExcelAddIn.Models
             throw new NotImplementedException();
         }
 
-        //public string CustomPeriodId { get; set; };
         private const string CustomPropertyPeriodId = "sePeriodId";
         private static XmlSerializer PeriodSerializer = new XmlSerializer(typeof(Period));
 
@@ -48,12 +48,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             var properties = (DocumentProperties)_workbook.CustomDocumentProperties;
             var property = properties.FindPropertyByName(CustomPropertyPeriodId);
-            //if (!_workbook.DataHost.IsCached(CustomPeriodId, ""))
-            //{
-            //    this.StartCaching("dataSet1");
-            //}
 
-            //_workbook.DataHost.StartCaching(Cu)
             if (property == null)
             {
                 SetDefaultPeriod(Period.Default);
@@ -88,37 +83,29 @@ namespace SeriesEngine.ExcelAddIn.Models
                 properties.CreateOrUpdateStringProperty(CustomPropertyPeriodId, partId);
             }
         }
-               
-        //private static XmlSerializer serializer = new XmlSerializer(typeof(Query));
+
+        private const string XmlNamespace = "http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments";
 
         public IEnumerable<BaseFragment> GetFragments(string filter)
         {
-            //var result = new List<BaseFragment>();
-            //foreach(var part in _workbook.CustomXMLParts.Cast<CustomXMLPart>().Where(p => !p.BuiltIn))
-            //{
-            //    using (var reader = new StringReader(part.XML))
-            //    {
-            //        try
-            //        {
-            //            var grid = (ObjectGridFragment)serializer.Deserialize(reader);
-            //            result.Add(grid);
-            //        }
-            //        catch
-            //        {
-
-            //        }
-            //    }
-
-            //};
-            //return result;
-            var defPeriod = GetDefaultPeriod();
-            yield return new ObjectGridFragment(null, defPeriod)
+            var result = new List<BaseFragment>();
+            var gridParts = _workbook.CustomXMLParts
+                .Cast<CustomXMLPart>()
+                .Where(p => !p.BuiltIn && p.NamespaceURI == XmlNamespace);
+            var defaultPeriod = GetDefaultPeriod();
+            foreach (var part in gridParts)
             {
-                Name = "customPart"
+                var doc = XDocument.Parse(part.XML);
+                result.Add(XmlToFragmentConverter.GetFragment(doc, defaultPeriod));
             };
+             
+            return result;
+            //var defPeriod = GetDefaultPeriod();
+            //yield return new ObjectGridFragment(null, defPeriod)
+            //{
+            //    Name = "customPart"
+            //};
         }
-
-
 
     }
 }
