@@ -1,4 +1,5 @@
 ﻿using FluentDateTime;
+using SeriesEngine.ExcelAddIn.Models.Fragments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,70 +24,77 @@ namespace SeriesEngine.ExcelAddIn.Models
                 MockModelProvider.Device
             }
         };
-        
-        private static CollectionFragment AllRegions = new CollectionFragment
-        {
-            Name = MockModelProvider.Region.Name,
-            Parent = SourceCollection,
-            SupportedModels = new[]
-            {
-                MockModelProvider.Contract,
-                MockModelProvider.Point,
-                MockModelProvider.Device
-            }
-        };
 
-        private static CollectionFragment AllConsumers = new CollectionFragment
-        {
-            Name = MockModelProvider.Consumer.Name,
-            Parent = AllRegions,
-            SupportedModels = new[]
-            {
-                MockModelProvider.Contract,
-                MockModelProvider.Point,
-                MockModelProvider.Device
-            }
-        };
+        //private static ObjectGridFragment ObjectGrid = new ObjectGridFragment(SourceCollection, DefaultPeriod)
+        //{
+        //    Name = "Объекты",
+        //    Sheet = "Лист1",
+        //    Cell = "A1",
+        //};
 
-        private static CollectionFragment AllContracts = new CollectionFragment
-        {
-            Name = MockModelProvider.Contract.Name,
-            Parent = AllConsumers,
-            SupportedModels = new[]
-            {
-                MockModelProvider.Contract,
-                MockModelProvider.Point,
-                MockModelProvider.Device
-            }
-        };
+        //private static CollectionFragment AllRegions = new CollectionFragment
+        //{
+        //    Name = MockModelProvider.Region.Name,
+        //    Parent = SourceCollection,
+        //    SupportedModels = new[]
+        //    {
+        //        MockModelProvider.Contract,
+        //        MockModelProvider.Point,
+        //        MockModelProvider.Device
+        //    }
+        //};
 
-        private static CollectionFragment AllPoints = new CollectionFragment
-        {
-            Name = MockModelProvider.Point.Name,
-            Parent = AllContracts,
-            SupportedModels = new[]
-            {
-                MockModelProvider.Contract,
-                MockModelProvider.Point,
-                MockModelProvider.Device
-            }
-        };
+        //private static CollectionFragment AllConsumers = new CollectionFragment
+        //{
+        //    Name = MockModelProvider.Consumer.Name,
+        //    Parent = AllRegions,
+        //    SupportedModels = new[]
+        //    {
+        //        MockModelProvider.Contract,
+        //        MockModelProvider.Point,
+        //        MockModelProvider.Device
+        //    }
+        //};
 
-        private static CollectionFragment AllDevices = new CollectionFragment
-        {
-            Name = MockModelProvider.Device.Name,
-            Parent = AllPoints,
-            SupportedModels = new[]
-            {
-                MockModelProvider.Contract,
-                MockModelProvider.Point,
-                MockModelProvider.Device
-            }
-        };
+        //private static CollectionFragment AllContracts = new CollectionFragment
+        //{
+        //    Name = MockModelProvider.Contract.Name,
+        //    Parent = AllConsumers,
+        //    SupportedModels = new[]
+        //    {
+        //        MockModelProvider.Contract,
+        //        MockModelProvider.Point,
+        //        MockModelProvider.Device
+        //    }
+        //};
 
-        public HashSet<DataFragment> _fragments = new HashSet<DataFragment>
+        //private static CollectionFragment AllPoints = new CollectionFragment
+        //{
+        //    Name = MockModelProvider.Point.Name,
+        //    Parent = AllContracts,
+        //    SupportedModels = new[]
+        //    {
+        //        MockModelProvider.Contract,
+        //        MockModelProvider.Point,
+        //        MockModelProvider.Device
+        //    }
+        //};
+
+        //private static CollectionFragment AllDevices = new CollectionFragment
+        //{
+        //    Name = MockModelProvider.Device.Name,
+        //    Parent = AllPoints,
+        //    SupportedModels = new[]
+        //    {
+        //        MockModelProvider.Contract,
+        //        MockModelProvider.Point,
+        //        MockModelProvider.Device
+        //    }
+        //};
+
+        public HashSet<SheetFragment> _fragments = new HashSet<SheetFragment>
         {
-            new NodeFragment(AllDevices, DefaultPeriod)
+            new NodeFragment(null, DefaultPeriod)
             {
                 Name = "НазваниеРегиона",
                 Sheet = "Лист1",
@@ -255,6 +263,13 @@ namespace SeriesEngine.ExcelAddIn.Models
                     Name = network.Name
                 };
                 yield return source;
+                yield return new ObjectGridFragment(source, DefaultPeriod)
+                {
+                    Name = "СтруктураОбъектов",
+                    Sheet = "Лист1",
+                    Cell = "A1",
+                };
+
                 var supportedModels = new List<ObjectMetamodel>();
                 if (network is NetworkTree)
                 {
@@ -275,27 +290,29 @@ namespace SeriesEngine.ExcelAddIn.Models
                     }
                 }
             }
-            // source - последний CollectionFragment
+
+            // source - последний CollectionFragment, к котрому можно цеплять DataFragmet
             foreach (var f in _fragments)
             {
-                f.Parent = source; 
+                f.Parent = source;
                 yield return f;
             }
+
         }
 
-        public Fragment CreateFragment(CollectionFragment source)
+        public DataFragment CreateFragment(CollectionFragment source)
         {
             var mock = new MockModelProvider();
-            return new Fragment(SourceCollection, DefaultPeriod)
+            return new DataFragment(SourceCollection, DefaultPeriod)
             {
                 ObjectMetamodel = mock.GetObjectMetamodels().First(),
                 VariableMetamodel = mock.GetObjectMetamodels().First().Variables.First()
             };
         }
 
-        public Fragment CopyFragment(Fragment sourceFragment, CollectionFragment sourceCollection)
+        public DataFragment CopyFragment(DataFragment sourceFragment, CollectionFragment sourceCollection)
         {
-            return new Fragment(sourceCollection, sourceFragment.CustomPeriod)
+            return new DataFragment(sourceCollection, sourceFragment.CustomPeriod)
             {
                 Name = $"{sourceFragment.Name}_копия",
                 Sheet = sourceFragment.Sheet,
@@ -314,7 +331,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             };
         }
 
-        public void AddFragment(Fragment fragment)
+        public void AddFragment(DataFragment fragment)
         {
             //if (!_fragments.Contains(fragment))
             //{
@@ -322,7 +339,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             //}
         }
 
-        public void DeleteFragment(Fragment fragment)
+        public void DeleteFragment(DataFragment fragment)
         {
             _fragments.Remove(fragment);
         }

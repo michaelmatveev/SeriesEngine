@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace SeriesEngine.ExcelAddIn.Models
+namespace SeriesEngine.ExcelAddIn.Models.Fragments
 {
     public class CollectionFragment : BaseFragment
     {

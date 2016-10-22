@@ -1,29 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SeriesEngine.ExcelAddIn.Models
+﻿namespace SeriesEngine.ExcelAddIn.Models.Fragments
 {
-    public enum TimeInterval
-    {
-        Year,
-        Month,
-        Week,
-        Day,
-        Hour,
-        Minutes30
-    }
-
-    public enum Kind
-    {
-        MostAccurate,
-        Plan,
-        Fact,
-    }
-
-    public class Fragment : DataFragment
+    public class DataFragment : SheetFragment
     {
         public ObjectMetamodel ObjectMetamodel { get; set; }
         public Variable VariableMetamodel { get; set; }
@@ -49,7 +26,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         public int Shift { get; set; }
         public TimeInterval ShiftPeriod { get; set; }
 
-        public Fragment(BaseFragment parent, Period defaultPeriod) : base(parent, defaultPeriod)
+        public DataFragment(BaseFragment parent, Period defaultPeriod) : base(parent, defaultPeriod)
         {
             IntervalsByRows = true;
             UseCommonPeriod = true;

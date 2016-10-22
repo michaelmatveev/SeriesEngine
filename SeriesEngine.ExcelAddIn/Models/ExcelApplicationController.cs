@@ -1,10 +1,6 @@
 ﻿using Microsoft.Office.Tools;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-//using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Excel;
 using SeriesEngine.ExcelAddIn.Views;
 using SeriesEngine.ExcelAddIn.Helpers;
@@ -40,7 +36,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 _.For<IFragmentView>()
                     .Singleton()
-                    .Use<Fragments>();
+                    .Use<FragmentsControl>();
 
                 _.ForConcreteType<FragmentPresenter>()
                     .Configure
@@ -60,7 +56,8 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 _.For<IFragmentsProvider>()
                     .Singleton()
-                    .Use<MockFragmentsProvider>();
+                //    .Use<MockFragmentsProvider>();
+                    .Use<WorkbookFragmentsProvider>();
 
                 _.For<INetworksProvider>()
                     .Singleton()

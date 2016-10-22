@@ -1,24 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using SeriesEngine.ExcelAddIn.Models;
+using SeriesEngine.ExcelAddIn.Models.Fragments;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
-    public partial class Fragments : PaneControl, IFragmentView
+    public partial class FragmentsControl : PaneControl, IFragmentView
     {
         public event EventHandler<SelectEntityEventArgs> FragmentSelected;
         public event EventHandler<SelectEntityEventArgs> NewFragmentRequested;
         public event EventHandler<SelectEntityEventArgs> FragmentDeleted;
         public event EventHandler<SelectEntityEventArgs> FragmentCopied;
 
-        public Fragments(IViewEmbedder embedder) : base(embedder, "Фрагменты")
+        public FragmentsControl(IViewEmbedder embedder) : base(embedder, "Фрагменты")
         {
             InitializeComponent();
         }
@@ -66,11 +61,11 @@ namespace SeriesEngine.ExcelAddIn.Views
 
         private void EditNode(TreeNode node)
         {
-            if (node.Tag is Fragment)
+            if (node.Tag is DataFragment)
             {
                 FragmentSelected?.Invoke(this, new SelectEntityEventArgs
                 {
-                    Fragment = (Fragment)node.Tag
+                    Fragment = (DataFragment)node.Tag
                 });
             }
         }
@@ -98,11 +93,11 @@ namespace SeriesEngine.ExcelAddIn.Views
 
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (treeViewFragments.SelectedNode?.Tag is Fragment)
+            if (treeViewFragments.SelectedNode?.Tag is DataFragment)
             {
                 FragmentDeleted?.Invoke(this, new SelectEntityEventArgs
                 {
-                    Fragment = (Fragment)treeViewFragments.SelectedNode.Tag
+                    Fragment = (DataFragment)treeViewFragments.SelectedNode.Tag
                 });
             }
 
@@ -110,7 +105,7 @@ namespace SeriesEngine.ExcelAddIn.Views
 
         private void linkLabelCopyFragment_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (treeViewFragments.SelectedNode?.Tag is Fragment)
+            if (treeViewFragments.SelectedNode?.Tag is DataFragment)
             {
                 //FragmentCopied?.Invoke(this, new SelectEntityEventArgs
                 //{

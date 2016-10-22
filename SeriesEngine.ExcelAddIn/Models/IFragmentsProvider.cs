@@ -1,18 +1,15 @@
-﻿using System;
+﻿using SeriesEngine.ExcelAddIn.Models.Fragments;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
     public interface IFragmentsProvider
     {
         IEnumerable<BaseFragment> GetFragments(string filter);
-        Fragment CreateFragment(CollectionFragment source);
-        Fragment CopyFragment(Fragment sourceFragment, CollectionFragment sourceCollection);
-        void AddFragment(Fragment fragment);
-        void DeleteFragment(Fragment fragment);
+        DataFragment CreateFragment(CollectionFragment source);
+        DataFragment CopyFragment(DataFragment sourceFragment, CollectionFragment sourceCollection);
+        void AddFragment(DataFragment fragment);
+        void DeleteFragment(DataFragment fragment);
 
         Period GetDefaultPeriod();
         void SetDefaultPeriod(Period p);

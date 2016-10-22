@@ -1,6 +1,6 @@
 ﻿namespace SeriesEngine.ExcelAddIn.Views
 {
-    partial class Fragments
+    partial class FragmentsControl
     {
         /// <summary> 
         /// Required designer variable.

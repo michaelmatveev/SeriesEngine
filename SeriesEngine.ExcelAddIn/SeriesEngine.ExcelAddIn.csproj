@@ -161,14 +161,16 @@
   -->
   <ItemGroup>
     <Compile Include="Helpers\PanesManager.cs" />
-    <Compile Include="Models\BaseFragment.cs" />
+    <Compile Include="Models\Extensions.cs" />
+    <Compile Include="Models\Fragments\BaseFragment.cs" />
     <Compile Include="Models\DataExporter.cs" />
-    <Compile Include="Models\DataFragment.cs" />
+    <Compile Include="Models\Fragments\SheetFragment.cs" />
     <Compile Include="Models\DataImporter.cs" />
     <Compile Include="Models\ExcelApplicationController.cs" />
-    <Compile Include="Models\FilteredCollection.cs" />
-    <Compile Include="Models\Fragment.cs" />
-    <Compile Include="Models\FragmentsProvider.cs" />
+    <Compile Include="Models\Fragments\CollectionFragment.cs" />
+    <Compile Include="Models\Fragments\ObjectGridFragment.cs" />
+    <Compile Include="Models\Fragments\DataFragment.cs" />
+    <Compile Include="Models\MockFragmentsProvider.cs" />
     <Compile Include="Models\IController.cs" />
     <Compile Include="Models\ApplicationController.cs" />
     <Compile Include="Models\IDataExporter.cs" />
@@ -176,6 +178,7 @@
     <Compile Include="Models\IFragmentsProvider.cs" />
     <Compile Include="Models\IModelProvider.cs" />
     <Compile Include="Models\INetworksProvider.cs" />
+    <Compile Include="Models\Kind.cs" />
     <Compile Include="Models\ManagedObject.cs" />
     <Compile Include="Models\MockModelProvider.cs" />
     <Compile Include="Models\NamedCollection.cs" />
@@ -184,9 +187,11 @@
     <Compile Include="Models\NetworkTree.cs" />
     <Compile Include="Models\NetworkTreeNode.cs" />
     <Compile Include="Models\NetwrokList.cs" />
-    <Compile Include="Models\NodeFragment.cs" />
+    <Compile Include="Models\Fragments\NodeFragment.cs" />
     <Compile Include="Models\ObjectMetamodel.cs" />
     <Compile Include="Models\Period.cs" />
+    <Compile Include="Models\TimeInterval.cs" />
+    <Compile Include="Models\WorkbookFragmentsProvider.cs" />
     <Compile Include="Presenters\FilterPresenter.cs" />
     <Compile Include="Presenters\FragmentPropertiesPresenter.cs" />
     <Compile Include="Presenters\PeriodSelectorPresenter.cs" />
@@ -224,6 +229,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Views\CollectionProperties.resx">
       <DependentUpon>CollectionProperties.cs</DependentUpon>
@@ -234,8 +240,8 @@
     <EmbeddedResource Include="Views\FragmentProperties.resx">
       <DependentUpon>FragmentProperties.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Fragments.resx">
-      <DependentUpon>Fragments.cs</DependentUpon>
+    <EmbeddedResource Include="Views\FragmentsControl.resx">
+      <DependentUpon>FragmentsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\PeriodSelector.resx">
       <DependentUpon>PeriodSelector.cs</DependentUpon>
@@ -258,11 +264,11 @@
     <Compile Include="Views\FragmentProperties.Designer.cs">
       <DependentUpon>FragmentProperties.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Fragments.cs">
+    <Compile Include="Views\FragmentsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\Fragments.Designer.cs">
-      <DependentUpon>Fragments.cs</DependentUpon>
+    <Compile Include="Views\FragmentsControl.Designer.cs">
+      <DependentUpon>FragmentsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\IFragmentView.cs" />
     <Compile Include="Views\IMainMenuView.cs" />
@@ -294,7 +300,11 @@
     </Compile>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Models\DataForObjectGrid1.xml" />
+    <Content Include="Models\Fragments\ObjectGrid1.xml" />
+    <Content Include="Models\Fragments\XMLFile1.xml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

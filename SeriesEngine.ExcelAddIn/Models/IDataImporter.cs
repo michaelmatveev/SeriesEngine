@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SeriesEngine.ExcelAddIn.Models.Fragments;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public interface IDataImporter
     {
-        void ImportFromFragments(IEnumerable<DataFragment> fragments, Period period);
+        void ImportFromFragments(IEnumerable<SheetFragment> fragments, Period period);
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SeriesEngine.ExcelAddIn.Models.Fragments;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -18,7 +19,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             _workbook = workbook;
         }
 
-        public void ExportFromFragments(IEnumerable<DataFragment> fragments)
+        public void ExportFromFragments(IEnumerable<SheetFragment> fragments)
         {
             foreach (var f in fragments)
             {

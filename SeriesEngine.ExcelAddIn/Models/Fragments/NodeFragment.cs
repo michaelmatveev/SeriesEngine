@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SeriesEngine.ExcelAddIn.Models
+﻿namespace SeriesEngine.ExcelAddIn.Models.Fragments
 {
     public enum ExportNodeValue
     {
@@ -16,7 +10,7 @@ namespace SeriesEngine.ExcelAddIn.Models
     /// <summary>
     /// This fragment is conencted with object in specified hierachy
     /// </summary>
-    public class NodeFragment : DataFragment
+    public class NodeFragment : SheetFragment
     {
         public NodeFragment(BaseFragment parent, Period defaultPeriod) : base(parent, defaultPeriod)
         {

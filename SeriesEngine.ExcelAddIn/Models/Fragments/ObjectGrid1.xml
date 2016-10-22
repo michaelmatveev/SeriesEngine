@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ObjectGrid Sheet="Лист1" Cell="C2">
+  <CFragment Caption="Регион" CollectionName="Main" Level="1" RefObject="Region" Type="UniqueName"/>
+  <CFragment Caption="Потребитель" CollectionName="Main" Level="2" RefObject="Customer" Type="UniqueName"/>
+  <CFragment Caption="Договор" CollectionName="Main" Level="3" RefObject="Contract" Type="UniqueName"/>
+  <VFragment Caption="Тип договора" CollectionName="Main" Level="3" RefObject="Contract" Variable="ContractType" Kind="Fact"/>
+  <CFragment Caption="Дата договора с потребителем" CollectionName="Main" Level="3" RefObject="Contract" Type="Since"/>
+  <CFragment Caption="Объект" CollectionName="Main" Level="4" RefObject="ConsumerObject" Type="UniqueName"/>
+  <CFragment Caption="Точка" CollectionName="Main" Level="5" RefObject="Point" Type="UniqueName"/>
+  <VFragment Caption="Уровень расчетного напряжения" CollectionName="Main" Level="5" Variable="VoltageLevel" Kind="Fact"/>
+</ObjectGrid>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SeriesEngine.ExcelAddIn.Models;
+using SeriesEngine.ExcelAddIn.Models.Fragments;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
@@ -43,7 +44,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                     var framgmentsProvider = Controller.GetInstance<IFragmentsProvider>();
                     var dataImporter = Controller.GetInstance<IDataImporter>();
                     dataImporter.ImportFromFragments(
-                        framgmentsProvider.GetFragments(string.Empty).OfType<DataFragment>(),
+                        framgmentsProvider.GetFragments(string.Empty).OfType<SheetFragment>(),
                         framgmentsProvider.GetDefaultPeriod());
                 }
             };
@@ -54,7 +55,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                 {
                     var framgmentsProvider = Controller.GetInstance<IFragmentsProvider>();
                     var dataExporter = Controller.GetInstance<IDataExporter>();
-                    dataExporter.ExportFromFragments(framgmentsProvider.GetFragments(string.Empty).OfType<DataFragment>());
+                    dataExporter.ExportFromFragments(framgmentsProvider.GetFragments(string.Empty).OfType<SheetFragment>());
                 }
             };
         }

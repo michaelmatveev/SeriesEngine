@@ -8,6 +8,7 @@ using Office = Microsoft.Office.Core;
 using Microsoft.Office.Tools.Excel;
 using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.ExcelAddIn.Presenters;
+using SeriesEngine.ExcelAddIn.Properties;
 
 namespace SeriesEngine.ExcelAddIn
 {
@@ -24,7 +25,7 @@ namespace SeriesEngine.ExcelAddIn
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            Application.WorkbookOpen += (w) => CreateWorkbookController(w);
+            Application.WorkbookOpen += (w) => CreateWorkbookController(w);            
             ((Excel.AppEvents_Event)Application).NewWorkbook += (w) => CreateWorkbookController(w);
             Application.WorkbookBeforeClose += (Excel.Workbook wb, ref bool c) => ApplicationControllers.Remove(wb);
             Application.WorkbookActivate += (wb) =>
@@ -59,6 +60,13 @@ namespace SeriesEngine.ExcelAddIn
             controller.Configure();
             ApplicationControllers.Add(wb, controller);
             controller.GetInstance<MainMenuPresenter>().Run();
+
+            AddTestGrid(wb);
+        }
+
+        private void AddTestGrid(Excel.Workbook wb)
+        {
+            var part = wb.CustomXMLParts.Add(Resources.TestGrid);
         }
 
     }

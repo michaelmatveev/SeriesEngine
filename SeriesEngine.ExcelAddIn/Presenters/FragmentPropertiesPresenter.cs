@@ -1,10 +1,6 @@
 ﻿using SeriesEngine.ExcelAddIn.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SeriesEngine.ExcelAddIn.Models;
+using SeriesEngine.ExcelAddIn.Models.Fragments;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
@@ -18,7 +14,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             };
         }
 
-        public void EditFragment(Fragment fragment)
+        public void EditFragment(DataFragment fragment)
         {
             View.Fragment = fragment;
             View.ShowIt();

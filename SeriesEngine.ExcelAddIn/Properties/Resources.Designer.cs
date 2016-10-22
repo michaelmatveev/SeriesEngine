@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 namespace SeriesEngine.ExcelAddIn.Properties {
+    using System;
     
     
     /// <summary>
@@ -18,7 +19,7 @@ namespace SeriesEngine.ExcelAddIn.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -56,6 +57,20 @@ namespace SeriesEngine.ExcelAddIn.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        ///&lt;ObjectGrid Sheet=&quot;Лист1&quot; Cell=&quot;C2&quot;&gt;
+        ///  &lt;CFragment Caption=&quot;Регион&quot; CollectionName=&quot;Main&quot; Level=&quot;1&quot; RefObject=&quot;Region&quot; Type=&quot;UniqueName&quot;/&gt;
+        ///  &lt;CFragment Caption=&quot;Потребитель&quot; CollectionName=&quot;Main&quot; Level=&quot;2&quot; RefObject=&quot;Customer&quot; Type=&quot;UniqueName&quot;/&gt;
+        ///  &lt;CFragment Caption=&quot;Договор&quot; CollectionName=&quot;Main&quot; Level=&quot;3&quot; RefObject=&quot;Contract&quot; Type=&quot;UniqueName&quot;/&gt;
+        ///  &lt;VFragment Caption=&quot;Тип договора&quot; CollectionName=&quot;Main&quot; Level=&quot;3&quot; RefObject=&quot;Contract&quot; Variable=&quot;ContractType&quot; Kind [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string TestGrid {
+            get {
+                return ResourceManager.GetString("TestGrid", resourceCulture);
             }
         }
     }

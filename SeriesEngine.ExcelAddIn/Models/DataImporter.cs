@@ -6,6 +6,7 @@ using FluentDateTime;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SeriesEngine.ExcelAddIn.Models.Fragments;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -19,13 +20,17 @@ namespace SeriesEngine.ExcelAddIn.Models
             _workbook = workbook;
         }
 
-        public void ImportFromFragments(IEnumerable<DataFragment> fragments, Period period)
+        public void ImportFromFragments(IEnumerable<SheetFragment> fragments, Period period)
         {
             foreach (var f in fragments)
             {
-                if(f is NodeFragment)
+                //if(f is NodeFragment)
+                //{
+                //    ImportNodeFragment((NodeFragment)f);
+                //}
+                if(f is ObjectGridFragment)
                 {
-                    ImportNodeFragment((NodeFragment)f);
+                    ImportGridFragment((ObjectGridFragment)f);
                 }
             }
         }
@@ -49,6 +54,55 @@ namespace SeriesEngine.ExcelAddIn.Models
                     case ExportNodeValue.Till: cell.Value2 = node.Till; break;
                 }
             }
+        }
+
+        private void ImportGridFragment(ObjectGridFragment fragment)
+        {
+            Excel.Worksheet sheet = _workbook.Sheets[fragment.Sheet];
+            sheet.get_Range(fragment.Cell).Select();
+
+            var xmlMap = _workbook.XmlMaps.Cast<Excel.XmlMap>().SingleOrDefault(m => m.Name == fragment.Name);
+            if(xmlMap != null)
+            {
+                xmlMap.Delete();
+            }
+            xmlMap = _workbook.XmlMaps.Add(fragment.GetSchema());
+            //xmlMap.ShowImportExportValidationErrors = false;
+            //xmlMap.PreserveNumberFormatting = false;
+            //xmlMap.
+            xmlMap.Name = fragment.Name;
+            xmlMap.Application.DisplayAlerts = false;
+
+            var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == fragment.Name);
+            if(listObject != null)
+            {
+                listObject.Delete();
+            }
+            listObject = sheet.ListObjects.Add();
+            listObject.Name = fragment.Name;
+
+            var column = listObject.ListColumns
+                .Cast<Excel.ListColumn>()
+                .First();
+
+            var subFragment = fragment.SubFragments().First();
+            column.XPath.SetValue(xmlMap, subFragment.XmlPath);
+            column.Name = subFragment.Caption;
+
+            foreach (var f  in fragment.SubFragments().Skip(1))
+            {
+                var newColumn = listObject.ListColumns.Add();
+
+                newColumn.Name = f.Caption;
+                newColumn.XPath.SetValue(xmlMap, f.XmlPath);
+                //newColumn.Range.NumberFormat = "@";
+
+            }
+
+            xmlMap.ImportXml(fragment.GetXml());
+            listObject.ListColumns[4].Range.NumberFormat = "General";
+  
+            xmlMap.Application.DisplayAlerts = true;
         }
 
         //public void ImportFromFragments(IEnumerable<Fragment> fragments, Period period)

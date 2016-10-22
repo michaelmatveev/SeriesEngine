@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DataToImport>
+  <!-- Данные импортируются с максимального уровня-->
+  <Region Name="Пензенская область">
+    <Customer Name="ООО &quot;МагнитЭнерго&quot;">
+      <Contract Name="1001014-ЭН" Since="2002-05-30T09:00:00" Till="2008-05-30T09:00:00">
+        <ContractType>КП</ContractType>
+        <ConsumerObject Name="ММ &quot;Влад&quot; г. Пенза пр-т. Строителей, 24а">
+          <Point Name="ТП-530">
+            <VoltageLevel>СН-2</VoltageLevel>  
+          </Point>
+          <Point Name="ТП-531">
+            <VoltageLevel>СН-2</VoltageLevel>
+          </Point>
+        </ConsumerObject>
+        <ConsumerObject Name="ММ &quot;Арбеково&quot; г. Пенза пр. Строителей, 63">
+          <Point Name="ТП-796">
+            <VoltageLevel>СН-2</VoltageLevel>
+          </Point>
+        </ConsumerObject>
+      </Contract>
+    </Customer>
+  </Region>
+</DataToImport>
