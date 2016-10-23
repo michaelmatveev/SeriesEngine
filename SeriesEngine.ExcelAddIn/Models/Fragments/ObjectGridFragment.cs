@@ -54,10 +54,10 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
         {
             
             var schema = new XDocument(
-                new XElement(ns + "schema", new XAttribute("attributeFormDefault", "unqualified"), new XAttribute("elementFormDefault", "unqualified"),
-                    new XElement(ns + "element", new XAttribute("name", "DataToImport"),
+                new XElement(ns + "schema",
+                    new XElement(ns + "element", new XAttribute("name", "DataToImport"), new XAttribute("nillable", "true"),
                         new XElement(ns + "complexType",
-                            new XElement(ns + "sequence")))));
+                            new XElement(ns + "sequence", new XAttribute("minOccurs", "0"))))));
 
             schema.Root.SetAttributeValue(XNamespace.Xmlns + "xs", ns);
             var lastElement = schema.Descendants().Where(d => !d.HasElements).Single();
@@ -66,15 +66,16 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
             foreach (var sfGroup in SubFragments.GroupBy(sf => sf.Level).OrderBy(sfg => sfg.Key))
             {
                 var complexType = new XElement(ns + "complexType");
-                var sequence = new XElement(ns + "sequence", new XAttribute("maxOccurs", "unbounded"));
+                var sequence = new XElement(ns + "sequence", new XAttribute("minOccurs", "0"));
                 complexType.Add(sequence);
 
                 foreach (var sf in sfGroup) 
                 {
                     if (!lastElement.Descendants(ns + "element").Any(d => d.Attribute("name").Value == sf.RefObject))
                     {
+                        //minOccurs="0" maxOccurs="unbounded" nillable="true" form="unqualified"
                         lastElement.Add(
-                            new XElement(ns + "element", new XAttribute("name", sf.RefObject),
+                            new XElement(ns + "element", new XAttribute("name", sf.RefObject), new XAttribute("minOccurs", "0"), new XAttribute("maxOccurs", "unbounded"), new XAttribute("nillable", "true"), new XAttribute("form", "unqualified"),
                                 complexType));
                         currentPath = $"{currentPath}/{sf.RefObject}";
                     }
@@ -97,18 +98,16 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
             }
 
             return schema.ToString();
-
-            //return @"<xsd:schema xmlns:xsd=""http://www.w3.org/2001/XMLSchema""><xsd:element nillable=""true"" name=""BookInfo""><xsd:complexType><xsd:sequence minOccurs=""0""><xsd:element minOccurs=""0"" maxOccurs=""unbounded"" nillable=""true"" name=""Book"" form=""unqualified""><xsd:complexType><xsd:sequence minOccurs=""0""><xsd:element minOccurs=""0"" nillable=""true"" type=""xsd:string"" name=""ISBN"" form=""unqualified""></xsd:element><xsd:element minOccurs=""0"" nillable=""true"" type=""xsd:string"" name=""Title"" form=""unqualified""></xsd:element><xsd:element minOccurs=""0"" nillable=""true"" type=""xsd:string"" name=""Author"" form=""unqualified""></xsd:element><xsd:element minOccurs=""0"" nillable=""true"" type=""xsd:integer"" name=""Quantity"" form=""unqualified""></xsd:element></xsd:sequence></xsd:complexType></xsd:element></xsd:sequence></xsd:complexType></xsd:element></xsd:schema>";
         }
 
         private XElement GetShemaForNode(NodeSubFragment sf)
         {
-            return new XElement(ns + "attribute", new XAttribute("name", sf.NodeType.ToString()), new XAttribute("type", "xs:string"), new XAttribute("use", sf.NodeType == NodeType.UniqueName ? "required" : "optional"));
+            return new XElement(ns + "attribute", new XAttribute("name", sf.NodeType.ToString()), new XAttribute("type", "xs:string"), new XAttribute("use", sf.NodeType == NodeType.UniqueName ? "required" : "optional"), new XAttribute("form", "unqualified"));
         }
 
         private XElement GetShemaForVariable(VariableSubFragment sf)
         {
-            return new XElement(ns + "element", new XAttribute("name", sf.VariableName), new XAttribute("type", "xs:string"));
+            return new XElement(ns + "element", new XAttribute("name", sf.VariableName), new XAttribute("type", "xs:string"), new XAttribute("minOccurs", "1"), new XAttribute("maxOccurs", "1"), new XAttribute("nillable", "true"), new XAttribute("form", "unqualified"));
         }
 
         public string GetXml()

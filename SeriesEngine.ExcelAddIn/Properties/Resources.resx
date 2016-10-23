@@ -125,6 +125,7 @@
   &lt;CFragment Caption="Договор" CollectionName="Main" Level="3" RefObject="Contract" Type="UniqueName"/&gt;
   &lt;VFragment Caption="Тип договора" CollectionName="Main" Level="3" RefObject="Contract" Variable="ContractType" Kind="Fact"/&gt;
   &lt;CFragment Caption="Дата договора с потребителем" CollectionName="Main" Level="3" RefObject="Contract" Type="Since"/&gt;
+  &lt;CFragment Caption="Дата завершения договора" CollectionName="Main" Level="3" RefObject="Contract" Type="Till"/&gt;
   &lt;CFragment Caption="Объект" CollectionName="Main" Level="4" RefObject="ConsumerObject" Type="UniqueName"/&gt;
   &lt;CFragment Caption="Точка" CollectionName="Main" Level="5" RefObject="Point" Type="UniqueName"/&gt;
   &lt;VFragment Caption="Уровень расчетного напряжения" Level="5" CollectionName="Main"  RefObject="Point" Variable="VoltageLevel" Kind="Fact"/&gt;

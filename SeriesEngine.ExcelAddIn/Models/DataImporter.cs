@@ -66,7 +66,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 xmlMap.Delete();
             }
-            xmlMap = _workbook.XmlMaps.Add(fragment.GetSchema());
+            xmlMap = _workbook.XmlMaps.Add(fragment.GetSchema(), "DataToImport");
             xmlMap.Name = fragment.Name;
             //xmlMap.Application.DisplayAlerts = false;
 
@@ -95,7 +95,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 //newColumn.Range.NumberFormat = "@";
             }
 
-            xmlMap.ImportXml(fragment.GetXml());
+            var results = xmlMap.ImportXml(fragment.GetXml(), true);
             //listObject.ListColumns[4].Range.NumberFormat = "General";
   
             //xmlMap.Application.DisplayAlerts = true;
