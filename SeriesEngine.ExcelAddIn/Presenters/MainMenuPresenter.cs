@@ -12,9 +12,10 @@ using SeriesEngine.App.EventData;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
-    public class MainMenuPresenter : Presenter<IMainMenuView>, ICommand<InitalizeCommandArgs>, IEventHandler<InitializeEventData>, IEventHandler<TogglePeriodEventData>
+    public class MainMenuPresenter : Presenter<IMainMenuView>, ICommand<InitalizeCommandArgs>, IEventHandler<InitializeEventData>, IEventHandler<MainPaneClosed>
     {
         private INetworksProvider _networkProvider;
+        private bool _firstInitialization = true;
         public MainMenuPresenter(IMainMenuView view, IApplicationController controller, INetworksProvider networkProvider) : base(view, controller)
         {
             _networkProvider = networkProvider;
@@ -26,16 +27,18 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             //    }
             //};
 
-            View.ShowPeriodSelectorPane += (s, e) =>
+            View.ShowCustomPane += (s, e) =>
             {
-                Controller.Execute<ShowPeriodCommandArgs>(new ShowPeriodCommandArgs
+                Controller.Execute(new ShowCustomPaneCommandArgs
                 {
                     IsVisible = e.Visible
                 });
-                //if (Controller.IsActive)
-                //{
-                //    Controller.GetInstance<PeriodSelectorPresenter>().ShowPeriods(e.Visible);
-                //}
+
+                if (_firstInitialization)
+                {
+                    Controller.Execute(new SwitchToPeriodCommandArgs());
+                    _firstInitialization = false;
+                }
             };
 
             //View.FilterSelected += (s, e) =>
@@ -84,7 +87,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             View.InitializeFilters(_networkProvider.GetNetworks(string.Empty));
         }
 
-        void IEventHandler<TogglePeriodEventData>.Handle(TogglePeriodEventData eventData)
+        void IEventHandler<MainPaneClosed>.Handle(MainPaneClosed eventData)
         {
             View.SetPeriodButtonState(false);
         }

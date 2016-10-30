@@ -28,10 +28,6 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _.For<IApplicationController>()
                     .Use(this);
 
-                //_.For<IEventPublisher>()
-                //    .Singleton()
-                //    .Use<EventPublisher>();
-
                 _.For<IViewEmbedder>()
                     .Singleton()
                     .Use<PanesManager>()
@@ -64,7 +60,16 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Configure
                     .Singleton();
 
-                _.For<ICommand<ShowPeriodCommandArgs>>().Use(c => c.GetInstance<PeriodSelectorPresenter>());
+                _.For<IMainPane>()
+                    .Singleton()
+                    .Use<MainPaneControl>();
+
+                _.ForConcreteType<MainPanePresenter>()
+                    .Configure
+                    .Singleton()
+                    .InterceptWith(new FuncInterceptor<MainPanePresenter>(m => RegisterHandlers(m)));
+                
+                _.For<ICommand<ShowCustomPaneCommandArgs>>().Use(c => c.GetInstance<MainPanePresenter>());
 
                 _.For<IFilterView>()
                     .Singleton()
@@ -118,13 +123,13 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void SaveRibbonState()
         {
-            isPeriodPaneOpen = MainRibbon.toggleButtonShowPeriodSelector.Checked;
+            isPeriodPaneOpen = MainRibbon.toggleButtonShowPane.Checked;
             isFragmentPaneOpen = MainRibbon.toggleButtonShowFragmetns.Checked;
         }
 
         public void RestoreRibbonState()
         {
-            MainRibbon.toggleButtonShowPeriodSelector.Checked = isPeriodPaneOpen;
+            MainRibbon.toggleButtonShowPane.Checked = isPeriodPaneOpen;
             MainRibbon.toggleButtonShowFragmetns.Checked = isFragmentPaneOpen;
         }
     }

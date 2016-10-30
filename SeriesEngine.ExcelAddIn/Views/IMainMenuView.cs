@@ -20,7 +20,7 @@ namespace SeriesEngine.ExcelAddIn.Views
     public interface IMainMenuView : IView
     {
         event EventHandler<PaneArgs> ShowFragmentsPane;
-        event EventHandler<PaneArgs> ShowPeriodSelectorPane;
+        event EventHandler<PaneArgs> ShowCustomPane;
         event EventHandler RefreshAll;
         event EventHandler SaveAll;
         event EventHandler<FilterArgs> FilterSelected;

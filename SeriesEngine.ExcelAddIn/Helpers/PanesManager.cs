@@ -24,6 +24,10 @@ namespace SeriesEngine.ExcelAddIn.Helpers
                 {
                     panel.DockPosition = Microsoft.Office.Core.MsoCTPDockPosition.msoCTPDockPositionTop;
                     panel.Height = 60;
+                }
+                else
+                {
+                    panel.Width = 315;
                 }                
                 panel.VisibleChanged += (s, e) =>
                 {

@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,8 +48,12 @@
     <Compile Include="ApplicationController.cs" />
     <Compile Include="CommandArgs\InitalizeCommandArgs.cs" />
     <Compile Include="CommandArgs\ShowPeriodCommandArgs.cs" />
+    <Compile Include="CommandArgs\SwitchToFiltersCommandArgs.cs" />
+    <Compile Include="CommandArgs\SwitchToFragmentsCommandArgs.cs" />
+    <Compile Include="CommandArgs\SwitchToPeriodCommandArgs.cs" />
     <Compile Include="EventData\InitializeEventData.cs" />
-    <Compile Include="EventData\TogglePeriodEventData.cs" />
+    <Compile Include="EventData\SwitchToViewEventData.cs" />
+    <Compile Include="EventData\MainPaneClosed.cs" />
     <Compile Include="EventHandlerOptions.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="EventPublisher.cs" />

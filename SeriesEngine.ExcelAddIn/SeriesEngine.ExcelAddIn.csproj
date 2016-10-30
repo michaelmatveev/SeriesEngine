@@ -196,6 +196,7 @@
     <Compile Include="Models\XmlToFragmentConverter.cs" />
     <Compile Include="Presenters\FilterPresenter.cs" />
     <Compile Include="Presenters\FragmentPropertiesPresenter.cs" />
+    <Compile Include="Presenters\MainPanePresenter.cs" />
     <Compile Include="Presenters\PeriodSelectorPresenter.cs" />
     <Compile Include="Views\BreadCrumbs.cs">
       <SubType>Component</SubType>
@@ -214,6 +215,7 @@
     </Compile>
     <Compile Include="Views\IFilterView.cs" />
     <Compile Include="Views\IFragmentPropertiesView.cs" />
+    <Compile Include="Views\IMainPane.cs" />
     <Compile Include="Views\IPanes.cs" />
     <Compile Include="Views\IPeriodView.cs" />
     <Compile Include="Views\IViewEmbedder.cs" />
@@ -245,6 +247,9 @@
     <EmbeddedResource Include="Views\FragmentsControl.resx">
       <DependentUpon>FragmentsControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\MainPaneControl.resx">
+      <DependentUpon>MainPaneControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\PeriodSelector.resx">
       <DependentUpon>PeriodSelector.cs</DependentUpon>
     </EmbeddedResource>
@@ -275,6 +280,12 @@
     <Compile Include="Views\IFragmentView.cs" />
     <Compile Include="Views\IMainMenuView.cs" />
     <Compile Include="Views\IView.cs" />
+    <Compile Include="Views\MainPaneControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\MainPaneControl.Designer.cs">
+      <DependentUpon>MainPaneControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\PaneControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

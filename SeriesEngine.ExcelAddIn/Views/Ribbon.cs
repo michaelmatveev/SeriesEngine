@@ -12,7 +12,7 @@ namespace SeriesEngine.ExcelAddIn
     public partial class Ribbon : IMainMenuView
     {
         public event EventHandler<PaneArgs> ShowFragmentsPane;
-        public event EventHandler<PaneArgs> ShowPeriodSelectorPane;
+        public event EventHandler<PaneArgs> ShowCustomPane;
         public event EventHandler RefreshAll;
         public event EventHandler SaveAll;
         public event EventHandler<FilterArgs> FilterSelected;
@@ -23,11 +23,6 @@ namespace SeriesEngine.ExcelAddIn
             {
                 Visible = ((RibbonToggleButton)toggleButton).Checked
             };
-        }
-
-        private void toggleButtonShowPeriodSelector_Click(object sender, RibbonControlEventArgs e)
-        {
-            ShowPeriodSelectorPane?.Invoke(this, CreatePaneArgs(sender));
         }
 
         private void toggleButtonShowFragmetns_Click(object sender, RibbonControlEventArgs e)
@@ -52,7 +47,7 @@ namespace SeriesEngine.ExcelAddIn
 
         public void SetPeriodButtonState(bool isChecked)
         {
-            toggleButtonShowPeriodSelector.Checked = isChecked;
+            toggleButtonShowPane.Checked = isChecked;
         }
 
 
@@ -73,6 +68,9 @@ namespace SeriesEngine.ExcelAddIn
             }
         }
 
-
+        private void toggleButtonShowPane_Click(object sender, RibbonControlEventArgs e)
+        {
+            ShowCustomPane?.Invoke(this, CreatePaneArgs(sender));
+        }
     }
 }

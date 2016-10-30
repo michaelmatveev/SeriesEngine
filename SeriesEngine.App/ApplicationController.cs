@@ -27,15 +27,5 @@ namespace SeriesEngine.App
             EventPublisher.Publish(eventData);
         }
 
-        //public void Subscribe<T>(IEventHandler<T> handler)
-        //{
-        //    EventPublisher.RegisterHandler(handler);
-        //}
-
-        //public void Unsubscribe<T>(IEventHandler<T> handler)
-        //{
-        //    EventPublisher.UnregisterHandler(handler);
-        //}
-
     }
 }

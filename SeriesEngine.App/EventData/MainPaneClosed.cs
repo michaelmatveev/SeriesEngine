@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SeriesEngine.App.EventData
 {
-    public class TogglePeriodEventData
+    public class MainPaneClosed
     {
     }
 }

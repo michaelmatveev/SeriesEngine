@@ -11,18 +11,13 @@ using SeriesEngine.ExcelAddIn.Models;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
-    public partial class PeriodSelector : PaneControl, IPeriodView
+    public partial class PeriodSelector : UserControl, IPeriodView
     {
         public PeriodSelector() : base()
         {
             InitializeComponent();
         }
         
-        public PeriodSelector(IViewEmbedder embedder) : base(embedder, "Период")
-        {
-            InitializeComponent();
-        }
-
         public event EventHandler PeriodChanged;
 
         public Period SelectedPeriod

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
-    public interface IPeriodView : IPanes
+    public interface IPeriodView : IView
     {
         event EventHandler PeriodChanged;
         Period SelectedPeriod { get; set; }
