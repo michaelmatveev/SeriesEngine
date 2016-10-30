@@ -5,20 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SeriesEngine.ExcelAddIn.Models;
+using SeriesEngine.App;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
     public class FilterPresenter : Presenter<IFilterView>
     {
-        public FilterPresenter(IFilterView view, IController controller) : base(view, controller)
+        public FilterPresenter(IFilterView view, IApplicationController controller) : base(view, controller)
         {
-            View.FilterUpdated += (s, e) =>
-            {
-                if (Controller.IsActive)
-                {
-                    Controller.Filter = e.FilterString;
-                }
-            };
+            //View.FilterUpdated += (s, e) =>
+            //{
+            //    if (Controller.IsActive)
+            //    {
+            //        Controller.Filter = e.FilterString;
+            //    }
+            //};
         }
 
         public void ShowFilterForNetwork(Network network)

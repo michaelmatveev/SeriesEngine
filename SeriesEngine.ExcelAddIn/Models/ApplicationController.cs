@@ -20,9 +20,9 @@ namespace SeriesEngine.ExcelAddIn.Models
         public bool IsActive { get; set; }
         public string Filter { get; set; }
 
-        public T GetInstance<T>()
-        {
-            return Container.GetInstance<T>();
-        }
+        //public T GetInstance<T>()
+        //{
+        //    return Container.GetInstance<T>();
+        //}
     }
 }

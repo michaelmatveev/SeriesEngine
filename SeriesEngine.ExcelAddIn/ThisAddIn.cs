@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
+﻿using System.Collections.Generic;
 using Excel = Microsoft.Office.Interop.Excel;
-using Office = Microsoft.Office.Core;
-using Microsoft.Office.Tools.Excel;
 using SeriesEngine.ExcelAddIn.Models;
-using SeriesEngine.ExcelAddIn.Presenters;
 using SeriesEngine.ExcelAddIn.Properties;
+using SeriesEngine.App.EventData;
 
 namespace SeriesEngine.ExcelAddIn
 {
@@ -59,9 +53,9 @@ namespace SeriesEngine.ExcelAddIn
             };
             controller.Configure();
             ApplicationControllers.Add(wb, controller);
-            controller.GetInstance<MainMenuPresenter>().Run();
+            controller.Raise(new InitializeEventData());
 
-            AddTestGrid(wb);
+            AddTestGrid(wb);//TODO remove this code
         }
 
         private void AddTestGrid(Excel.Workbook wb)

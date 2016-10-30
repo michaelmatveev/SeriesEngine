@@ -6,63 +6,67 @@ using System.Text;
 using System.Threading.Tasks;
 using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.ExcelAddIn.Models.Fragments;
+using SeriesEngine.App;
+using SeriesEngine.App.CommandArgs;
+using SeriesEngine.App.EventData;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
-    public class MainMenuPresenter : Presenter<IMainMenuView>
+    public class MainMenuPresenter : Presenter<IMainMenuView>, ICommand<InitalizeCommandArgs>, IEventHandler<InitializeEventData>, IEventHandler<TogglePeriodEventData>
     {
-        public MainMenuPresenter(IMainMenuView view, IController controller) : base(view, controller)
+        private INetworksProvider _networkProvider;
+        public MainMenuPresenter(IMainMenuView view, IApplicationController controller, INetworksProvider networkProvider) : base(view, controller)
         {
-            View.ShowFragmentsPane += (s, e) =>
-            {
-                if (Controller.IsActive)
-                {
-                    Controller.GetInstance<FragmentPresenter>().ShowFragments(e.Visible);
-                }
-            };
+            _networkProvider = networkProvider;
+            //View.ShowFragmentsPane += (s, e) =>
+            //{
+            //    if (Controller.IsActive)
+            //    {
+            //        Controller.GetInstance<FragmentPresenter>().ShowFragments(e.Visible);
+            //    }
+            //};
 
             View.ShowPeriodSelectorPane += (s, e) =>
             {
-                if (Controller.IsActive)
+                Controller.Execute<ShowPeriodCommandArgs>(new ShowPeriodCommandArgs
                 {
-                    Controller.GetInstance<PeriodSelectorPresenter>().ShowPeriods(e.Visible);
-                }
+                    IsVisible = e.Visible
+                });
+                //if (Controller.IsActive)
+                //{
+                //    Controller.GetInstance<PeriodSelectorPresenter>().ShowPeriods(e.Visible);
+                //}
             };
 
-            View.FilterSelected += (s, e) =>
-            {
-                if (Controller.IsActive)
-                {
-                    Controller.GetInstance<FilterPresenter>().ShowFilterForNetwork(e.SelectedNetwork);
-                }
-            };
+            //View.FilterSelected += (s, e) =>
+            //{
+            //    if (Controller.IsActive)
+            //    {
+            //        Controller.GetInstance<FilterPresenter>().ShowFilterForNetwork(e.SelectedNetwork);
+            //    }
+            //};
 
-            View.RefreshAll += (s, e) =>
-            {
-                if (Controller.IsActive)
-                {
-                    var framgmentsProvider = Controller.GetInstance<IFragmentsProvider>();
-                    var dataImporter = Controller.GetInstance<IDataImporter>();
-                    dataImporter.ImportFromFragments(
-                        framgmentsProvider.GetFragments(string.Empty).OfType<SheetFragment>(),
-                        framgmentsProvider.GetDefaultPeriod());
-                }
-            };
+            //View.RefreshAll += (s, e) =>
+            //{
+            //    if (Controller.IsActive)
+            //    {
+            //        var framgmentsProvider = Controller.GetInstance<IFragmentsProvider>();
+            //        var dataImporter = Controller.GetInstance<IDataImporter>();
+            //        dataImporter.ImportFromFragments(
+            //            framgmentsProvider.GetFragments(string.Empty).OfType<SheetFragment>(),
+            //            framgmentsProvider.GetDefaultPeriod());
+            //    }
+            //};
 
-            View.SaveAll += (s, e) =>
-            {
-                if (Controller.IsActive)
-                {
-                    var framgmentsProvider = Controller.GetInstance<IFragmentsProvider>();
-                    var dataExporter = Controller.GetInstance<IDataExporter>();
-                    dataExporter.ExportFromFragments(framgmentsProvider.GetFragments(string.Empty).OfType<SheetFragment>());
-                }
-            };
-        }
-
-        public void Run()
-        {
-            View.InitializeFilters(Controller.GetInstance<INetworksProvider>().GetNetworks(Controller.Filter));
+            //View.SaveAll += (s, e) =>
+            //{
+            //    if (Controller.IsActive)
+            //    {
+            //        var framgmentsProvider = Controller.GetInstance<IFragmentsProvider>();
+            //        var dataExporter = Controller.GetInstance<IDataExporter>();
+            //        dataExporter.ExportFromFragments(framgmentsProvider.GetFragments(string.Empty).OfType<SheetFragment>());
+            //    }
+            //};
         }
 
         public void SetFragmentsButton(bool state)
@@ -70,9 +74,19 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             View.SetFragmentsButtonState(state);   
         }
 
-        public void SetPeriodButton(bool state)
+        void ICommand<InitalizeCommandArgs>.Execute(InitalizeCommandArgs commandData)
         {
-            View.SetPeriodButtonState(state);
+            View.InitializeFilters(_networkProvider.GetNetworks(string.Empty));
+        }
+
+        void IEventHandler<InitializeEventData>.Handle(InitializeEventData eventData)
+        {
+            View.InitializeFilters(_networkProvider.GetNetworks(string.Empty));
+        }
+
+        void IEventHandler<TogglePeriodEventData>.Handle(TogglePeriodEventData eventData)
+        {
+            View.SetPeriodButtonState(false);
         }
 
     }

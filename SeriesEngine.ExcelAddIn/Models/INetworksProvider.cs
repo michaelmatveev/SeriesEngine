@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
-    interface INetworksProvider
+    public interface INetworksProvider
     {
         IEnumerable<Network> GetNetworks(string filter); 
     }

@@ -161,6 +161,7 @@
   -->
   <ItemGroup>
     <Compile Include="Helpers\PanesManager.cs" />
+    <Compile Include="Models\CustomInterceptorPolicy.cs" />
     <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\Fragments\BaseFragment.cs" />
     <Compile Include="Models\DataExporter.cs" />
@@ -172,7 +173,6 @@
     <Compile Include="Models\Fragments\DataFragment.cs" />
     <Compile Include="Models\MockFragmentsProvider.cs" />
     <Compile Include="Models\IController.cs" />
-    <Compile Include="Models\ApplicationController.cs" />
     <Compile Include="Models\IDataExporter.cs" />
     <Compile Include="Models\IDataImporter.cs" />
     <Compile Include="Models\IFragmentsProvider.cs" />
@@ -190,6 +190,7 @@
     <Compile Include="Models\Fragments\NodeFragment.cs" />
     <Compile Include="Models\ObjectMetamodel.cs" />
     <Compile Include="Models\Period.cs" />
+    <Compile Include="Models\SubscribeInterceptor.cs" />
     <Compile Include="Models\TimeInterval.cs" />
     <Compile Include="Models\WorkbookFragmentsProvider.cs" />
     <Compile Include="Models\XmlToFragmentConverter.cs" />
@@ -304,6 +305,16 @@
   <ItemGroup>
     <Content Include="Models\DataForObjectGrid1.xml" />
     <Content Include="Models\Fragments\ObjectGrid1.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SeriesEngine.App\SeriesEngine.App.csproj">
+      <Project>{bcb7a219-851b-46d2-a8d3-107a2c81e22f}</Project>
+      <Name>SeriesEngine.App</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Commands\" />
+    <Folder Include="Events\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

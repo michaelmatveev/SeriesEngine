@@ -1,10 +1,5 @@
-﻿using SeriesEngine.ExcelAddIn.Models;
+﻿using SeriesEngine.App;
 using SeriesEngine.ExcelAddIn.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
@@ -12,9 +7,9 @@ namespace SeriesEngine.ExcelAddIn.Presenters
         where V : IView
     {
         protected readonly V View;
-        protected readonly IController Controller;
+        protected readonly IApplicationController Controller;
 
-        public Presenter(V view, IController controller)
+        public Presenter(V view, IApplicationController controller)
         {
             View = view;
             Controller = controller;
