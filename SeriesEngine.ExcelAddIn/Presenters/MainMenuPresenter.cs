@@ -12,11 +12,17 @@ using SeriesEngine.App.EventData;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
-    public class MainMenuPresenter : Presenter<IMainMenuView>, ICommand<InitalizeCommandArgs>, IEventHandler<InitializeEventData>, IEventHandler<MainPaneClosed>
+    public class MainMenuPresenter : Presenter<IMainMenuView>, 
+        ICommand<InitalizeCommandArgs>, 
+        IEventHandler<InitializeEventData>, 
+        IEventHandler<MainPaneClosed>
     {
         private INetworksProvider _networkProvider;
         private bool _firstInitialization = true;
-        public MainMenuPresenter(IMainMenuView view, IApplicationController controller, INetworksProvider networkProvider) : base(view, controller)
+
+        public MainMenuPresenter(IMainMenuView view, 
+            IApplicationController controller,
+            INetworksProvider networkProvider) : base(view, controller)
         {
             _networkProvider = networkProvider;
             //View.ShowFragmentsPane += (s, e) =>
@@ -49,17 +55,10 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             //    }
             //};
 
-            //View.RefreshAll += (s, e) =>
-            //{
-            //    if (Controller.IsActive)
-            //    {
-            //        var framgmentsProvider = Controller.GetInstance<IFragmentsProvider>();
-            //        var dataImporter = Controller.GetInstance<IDataImporter>();
-            //        dataImporter.ImportFromFragments(
-            //            framgmentsProvider.GetFragments(string.Empty).OfType<SheetFragment>(),
-            //            framgmentsProvider.GetDefaultPeriod());
-            //    }
-            //};
+            View.RefreshAll += (s, e) =>
+            {
+                Controller.Execute(new ReloadAllCommandArgs());
+            };
 
             //View.SaveAll += (s, e) =>
             //{

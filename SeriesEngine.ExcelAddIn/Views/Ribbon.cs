@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Office.Tools.Ribbon;
 using SeriesEngine.ExcelAddIn.Views;
-using Microsoft.Office.Core;
 using SeriesEngine.ExcelAddIn.Models;
 
 namespace SeriesEngine.ExcelAddIn

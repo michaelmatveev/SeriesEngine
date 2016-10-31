@@ -7,32 +7,50 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SeriesEngine.ExcelAddIn.Models.Fragments;
+using SeriesEngine.App;
+using SeriesEngine.App.CommandArgs;
+using SeriesEngine.ExcelAddIn.Helpers;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
-    public class DataImporter : IDataImporter
+    public class DataImporter : ICommand<ReloadAllCommandArgs>
     {
-        private Workbook _workbook;
+        private readonly Workbook _workbook;
+        private readonly IFragmentsProvider _fragmentsProvider;
+        private readonly INetworksProvider _networksProvider;
         private Random _random = new Random();
 
-        public DataImporter(Workbook workbook)
+        public DataImporter(Workbook workbook, IFragmentsProvider fragmentsProvider, INetworksProvider networksProvider)
         {
             _workbook = workbook;
+            _fragmentsProvider = fragmentsProvider;
+            _networksProvider = networksProvider;
+        }
+
+        public void Execute(ReloadAllCommandArgs commandData)
+        {
+            ImportFromFragments(
+                _fragmentsProvider.GetFragments(string.Empty).OfType<SheetFragment>(),
+                _fragmentsProvider.GetDefaultPeriod());
         }
 
         public void ImportFromFragments(IEnumerable<SheetFragment> fragments, Period period)
         {
-            foreach (var f in fragments)
+            using (new ActiveRangeKeeper(_workbook))
             {
-                //if(f is NodeFragment)
-                //{
-                //    ImportNodeFragment((NodeFragment)f);
-                //}
-                if(f is ObjectGridFragment)
+
+                foreach (var f in fragments)
                 {
-                    ImportGridFragment((ObjectGridFragment)f);
+                    //if(f is NodeFragment)
+                    //{
+                    //    ImportNodeFragment((NodeFragment)f);
+                    //}
+                    if (f is ObjectGridFragment)
+                    {
+                        ImportGridFragment((ObjectGridFragment)f);
+                    }
                 }
-            }
+            }            
         }
 
         private void ImportNodeFragment(NodeFragment fragment)
@@ -59,6 +77,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         private void ImportGridFragment(ObjectGridFragment fragment)
         {
             Excel.Worksheet sheet = _workbook.Sheets[fragment.Sheet];
+            sheet.Activate();
             sheet.get_Range(fragment.Cell).Select();
 
             var xmlMap = _workbook.XmlMaps.Cast<Excel.XmlMap>().SingleOrDefault(m => m.Name == fragment.Name);
@@ -69,7 +88,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             xmlMap = _workbook.XmlMaps.Add(fragment.GetSchema(), "DataToImport");
             xmlMap.Name = fragment.Name;
             //xmlMap.Application.DisplayAlerts = false;
-
+            
             var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == fragment.Name);
             if(listObject != null)
             {
@@ -95,7 +114,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                 //newColumn.Range.NumberFormat = "@";
             }
 
-            var results = xmlMap.ImportXml(fragment.GetXml(), true);
+            listObject.ShowHeaders = fragment.ShowHeader;
+            var results = xmlMap.ImportXml(fragment.GetXml(_networksProvider.GetNetworks(string.Empty)), true);
             //listObject.ListColumns[4].Range.NumberFormat = "General";
   
             //xmlMap.Application.DisplayAlerts = true;

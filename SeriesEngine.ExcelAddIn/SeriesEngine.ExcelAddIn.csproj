@@ -160,6 +160,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Helpers\ActiveRangeKeeper.cs" />
     <Compile Include="Helpers\PanesManager.cs" />
     <Compile Include="Models\CustomInterceptorPolicy.cs" />
     <Compile Include="Models\Extensions.cs" />
@@ -174,7 +175,6 @@
     <Compile Include="Models\MockFragmentsProvider.cs" />
     <Compile Include="Models\IController.cs" />
     <Compile Include="Models\IDataExporter.cs" />
-    <Compile Include="Models\IDataImporter.cs" />
     <Compile Include="Models\IFragmentsProvider.cs" />
     <Compile Include="Models\IModelProvider.cs" />
     <Compile Include="Models\INetworksProvider.cs" />

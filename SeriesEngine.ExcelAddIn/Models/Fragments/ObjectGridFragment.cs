@@ -39,6 +39,7 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
     [Serializable]
     public class ObjectGridFragment : SheetFragment
     {
+        public bool ShowHeader { get; set; }
 
         public ObjectGridFragment() : base(null, new Period())
         {
@@ -110,39 +111,11 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
             return new XElement(ns + "element", new XAttribute("name", sf.VariableName), new XAttribute("type", "xs:string"), new XAttribute("minOccurs", "1"), new XAttribute("maxOccurs", "1"), new XAttribute("nillable", "true"), new XAttribute("form", "unqualified"));
         }
 
-        public string GetXml()
+        public string GetXml(ICollection<Network> networks)
         {
             return Resources.TestGridData;
         }
 
         public IList<SubFragment> SubFragments = new List<SubFragment>();
-        //{
-
-            //yield return new SubFragment()
-            //{
-            //    Caption = "ISBN",
-            //    XmlPath = "/BookInfo/Book/ISBN"
-            //};
-
-            //yield return new SubFragment()
-            //{
-            //    Caption = "Заголовок",
-            //    XmlPath = "/BookInfo/Book/Title"
-            //};
-
-            //yield return new SubFragment()
-            //{
-            //    Caption = "Автор",
-            //    XmlPath = "/BookInfo/Book/Author"
-            //};
-
-            //yield return new SubFragment()
-            //{
-            //    Caption = "Количество",
-            //    XmlPath = "/BookInfo/Book/Quantity"
-            //};
-
-        //}
-
     }
 }

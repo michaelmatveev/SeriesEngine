@@ -42,7 +42,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Singleton()
                     .InterceptWith(new FuncInterceptor<MainMenuPresenter>(m => RegisterHandlers(m)));
 
-                _.For<ICommand<InitalizeCommandArgs>>().Use(c => c.GetInstance<MainMenuPresenter>());
+                _.For<ICommand<InitalizeCommandArgs>>()
+                    .Use(c => c.GetInstance<MainMenuPresenter>());
 
                 _.For<IFragmentView>()
                     .Singleton()
@@ -69,7 +70,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Singleton()
                     .InterceptWith(new FuncInterceptor<MainPanePresenter>(m => RegisterHandlers(m)));
                 
-                _.For<ICommand<ShowCustomPaneCommandArgs>>().Use(c => c.GetInstance<MainPanePresenter>());
+                _.For<ICommand<ShowCustomPaneCommandArgs>>()
+                    .Use(c => c.GetInstance<MainPanePresenter>());
 
                 _.For<IFilterView>()
                     .Singleton()
@@ -88,9 +90,12 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _.For<Workbook>()
                     .Use(CurrentDocument);
 
-                _.For<IDataImporter>()
-                    .Singleton()
-                    .Use<DataImporter>();
+                _.ForConcreteType<DataImporter>()
+                    .Configure
+                    .Singleton();
+
+                _.For<ICommand<ReloadAllCommandArgs>>()
+                    .Use(c => c.GetInstance<DataImporter>());
 
                 _.For<IDataExporter>()
                     .Singleton()

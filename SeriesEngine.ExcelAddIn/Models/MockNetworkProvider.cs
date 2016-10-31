@@ -77,7 +77,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             });
         }
 
-        public IEnumerable<Network> GetNetworks(string filter)
+        public ICollection<Network> GetNetworks(string filter)
         {
             var result = new NetworkTree
             {
@@ -115,7 +115,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             //    nt.Nodes.Add(device2);
             //}
 
-            yield return result;
+            return new[] { result };
         }
     }
 }

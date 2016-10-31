@@ -8,6 +8,6 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public interface INetworksProvider
     {
-        IEnumerable<Network> GetNetworks(string filter); 
+        ICollection<Network> GetNetworks(string filter); 
     }
 }
