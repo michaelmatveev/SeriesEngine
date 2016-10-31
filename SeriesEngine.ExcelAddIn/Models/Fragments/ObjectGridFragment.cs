@@ -40,6 +40,8 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
     public class ObjectGridFragment : SheetFragment
     {
         public bool ShowHeader { get; set; }
+        
+        public object Tag { get; set; }
 
         public ObjectGridFragment() : base(null, new Period())
         {

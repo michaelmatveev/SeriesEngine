@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SeriesEngine.ExcelAddIn.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,13 +12,13 @@ namespace SeriesEngine.ExcelAddIn.Views
     {
         public event EventHandler PaneClosed;
         protected readonly string _paneCaption;
-        private readonly IViewEmbedder _embedder;
+        private readonly PanesManager _embedder;
 
         public PaneControl()
         {
         }
 
-        public PaneControl(IViewEmbedder embedder, string caption)
+        public PaneControl(PanesManager embedder, string caption)
         {
             _embedder = embedder;
             _paneCaption = caption;

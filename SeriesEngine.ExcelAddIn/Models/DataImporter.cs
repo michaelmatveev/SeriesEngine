@@ -116,6 +116,8 @@ namespace SeriesEngine.ExcelAddIn.Models
 
             listObject.ShowHeaders = fragment.ShowHeader;
             var results = xmlMap.ImportXml(fragment.GetXml(_networksProvider.GetNetworks(string.Empty)), true);
+
+            fragment.Tag = listObject;
             //listObject.ListColumns[4].Range.NumberFormat = "General";
   
             //xmlMap.Application.DisplayAlerts = true;

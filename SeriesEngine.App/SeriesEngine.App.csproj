@@ -48,6 +48,7 @@
     <Compile Include="ApplicationController.cs" />
     <Compile Include="CommandArgs\InitalizeCommandArgs.cs" />
     <Compile Include="CommandArgs\ReloadAllCommandArgs.cs" />
+    <Compile Include="CommandArgs\SaveAllCommandArgs.cs" />
     <Compile Include="CommandArgs\ShowPeriodCommandArgs.cs" />
     <Compile Include="CommandArgs\SwitchToFiltersCommandArgs.cs" />
     <Compile Include="CommandArgs\SwitchToFragmentsCommandArgs.cs" />

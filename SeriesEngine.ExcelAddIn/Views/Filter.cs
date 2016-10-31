@@ -8,12 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SeriesEngine.ExcelAddIn.Models;
+using SeriesEngine.ExcelAddIn.Helpers;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
     public partial class Filter : PaneControl, IFilterView
     {
-        public Filter(IViewEmbedder embedder) : base(embedder, "Фильтр")
+        public Filter(PanesManager embedder) : base(embedder, "Фильтр")
         {
             InitializeComponent();
             breadCrumbs.BreadCrumbClick += (s, e) =>

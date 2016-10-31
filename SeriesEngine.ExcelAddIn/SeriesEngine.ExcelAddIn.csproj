@@ -174,7 +174,6 @@
     <Compile Include="Models\Fragments\DataFragment.cs" />
     <Compile Include="Models\MockFragmentsProvider.cs" />
     <Compile Include="Models\IController.cs" />
-    <Compile Include="Models\IDataExporter.cs" />
     <Compile Include="Models\IFragmentsProvider.cs" />
     <Compile Include="Models\IModelProvider.cs" />
     <Compile Include="Models\INetworksProvider.cs" />
@@ -218,7 +217,6 @@
     <Compile Include="Views\IMainPane.cs" />
     <Compile Include="Views\IPanes.cs" />
     <Compile Include="Views\IPeriodView.cs" />
-    <Compile Include="Views\IViewEmbedder.cs" />
     <Compile Include="Presenters\FragmentPresenter.cs" />
     <Compile Include="Presenters\MainMenuPresenter.cs" />
     <Compile Include="Presenters\Presenter.cs" />

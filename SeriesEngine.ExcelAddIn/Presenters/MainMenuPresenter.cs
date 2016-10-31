@@ -1,11 +1,5 @@
 ﻿using SeriesEngine.ExcelAddIn.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SeriesEngine.ExcelAddIn.Models;
-using SeriesEngine.ExcelAddIn.Models.Fragments;
 using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
 using SeriesEngine.App.EventData;
@@ -60,8 +54,10 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                 Controller.Execute(new ReloadAllCommandArgs());
             };
 
-            //View.SaveAll += (s, e) =>
-            //{
+            View.SaveAll += (s, e) =>
+            {
+                Controller.Execute(new SaveAllCommandArgs());
+            };
             //    if (Controller.IsActive)
             //    {
             //        var framgmentsProvider = Controller.GetInstance<IFragmentsProvider>();

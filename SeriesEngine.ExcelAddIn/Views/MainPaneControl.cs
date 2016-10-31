@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SeriesEngine.ExcelAddIn.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -11,7 +12,7 @@ namespace SeriesEngine.ExcelAddIn.Views
             InitializeComponent();
         }
 
-        public MainPaneControl(IViewEmbedder embedder) : base(embedder, "Ряды данных")
+        public MainPaneControl(PanesManager embedder) : base(embedder, "Ряды данных")
         {
             InitializeComponent();
         }

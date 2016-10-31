@@ -28,11 +28,17 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _.For<IApplicationController>()
                     .Use(this);
 
-                _.For<IViewEmbedder>()
+                _.ForConcreteType<PanesManager>()
+                    .Configure
                     .Singleton()
-                    .Use<PanesManager>()
                     .Ctor<CustomTaskPaneCollection>()
                     .Is(PaneCollection);
+                    
+                //_.For<IViewEmbedder>()
+                //    .Singleton()
+                //    .Use<PanesManager>()
+                //    .Ctor<CustomTaskPaneCollection>()
+                //    .Is(PaneCollection);
 
                 _.For<IMainMenuView>()
                     .Use(MainRibbon);
@@ -97,9 +103,12 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _.For<ICommand<ReloadAllCommandArgs>>()
                     .Use(c => c.GetInstance<DataImporter>());
 
-                _.For<IDataExporter>()
-                    .Singleton()
-                    .Use<DataExporter>();
+                _.ForConcreteType<DataExporter>()
+                    .Configure
+                    .Singleton();
+
+                _.For<ICommand<SaveAllCommandArgs>>()
+                    .Use(c => c.GetInstance<DataExporter>());
 
                 _.ForConcreteType<FragmentPropertiesPresenter>();
 

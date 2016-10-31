@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using SeriesEngine.ExcelAddIn.Models.Fragments;
+using SeriesEngine.ExcelAddIn.Helpers;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
@@ -13,7 +14,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         public event EventHandler<SelectEntityEventArgs> FragmentDeleted;
         public event EventHandler<SelectEntityEventArgs> FragmentCopied;
 
-        public FragmentsControl(IViewEmbedder embedder) : base(embedder, "Фрагменты")
+        public FragmentsControl(PanesManager embedder) : base(embedder, "Фрагменты")
         {
             InitializeComponent();
         }

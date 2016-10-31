@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.App;
+using SeriesEngine.ExcelAddIn.Helpers;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {

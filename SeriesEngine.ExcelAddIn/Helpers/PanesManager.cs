@@ -5,7 +5,13 @@ using System.Windows.Forms;
 
 namespace SeriesEngine.ExcelAddIn.Helpers
 {
-    public class PanesManager : IViewEmbedder
+    public enum PaneLocation
+    {
+        Top,
+        Right
+    }
+
+    public class PanesManager
     {
         private readonly CustomTaskPaneCollection _panesCollection;
 
