@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -16,7 +12,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 LinkedObject = new ManagedObject
                 {
-                    Name = "Кемеровская область",
+                    Name = "Пензенская область",
                     ObjectModel = MockModelProvider.Region
                 }
             };
@@ -25,8 +21,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                 Parent = region1,
                 LinkedObject = new ManagedObject
                 {
-                    Name = "Шахта \"Юбилейная\"",
-                    ObjectModel = MockModelProvider.Consumer
+                    Name = "OOO \"МагнитЭнерго\"",
+                    ObjectModel = MockModelProvider.Customer
                 }
             };
             var contract1 = new NetworkTreeNode
@@ -34,19 +30,30 @@ namespace SeriesEngine.ExcelAddIn.Models
                 Parent = consumer1,
                 LinkedObject = new ManagedObject
                 {
-                    Name = "0670413-ЭН",
+                    Name = "1001014-ЭН",
                     ObjectModel = MockModelProvider.Contract
                 }
             };
-            var point1 = new NetworkTreeNode
+            contract1.LinkedObject["ContractType"] = "КП";
+            var consumerObject1 = new NetworkTreeNode
             {
                 Parent = contract1,
                 LinkedObject = new ManagedObject
                 {
-                    Name = "ПС \"Сев - Байд\" 110/6 кВт Ф 6-14",
+                    Name = "ММ \"Влад\"; г. Пенза пр-т. Строителей, 24а",
+                    ObjectModel = MockModelProvider.ConsumerObject
+                }
+            };
+            var point1 = new NetworkTreeNode
+            {
+                Parent = consumerObject1,
+                LinkedObject = new ManagedObject
+                {
+                    Name = "ТП-530",
                     ObjectModel = MockModelProvider.Point
                 }
             };
+            point1.LinkedObject["VoltageLevel"] = "СН-2";
             var device1 = new NetworkTreeNode
             {
                 Parent = point1,
@@ -65,6 +72,35 @@ namespace SeriesEngine.ExcelAddIn.Models
                     ObjectModel = MockModelProvider.Device
                 }
             };
+            var point2 = new NetworkTreeNode
+            {
+                Parent = consumerObject1,
+                LinkedObject = new ManagedObject
+                {
+                    Name = "ТП-531",
+                    ObjectModel = MockModelProvider.Point
+                }
+            };
+            point2.LinkedObject["VoltageLevel"] = "СН-2";
+            var consumerObject2 = new NetworkTreeNode
+            {
+                Parent = contract1,
+                LinkedObject = new ManagedObject
+                {
+                    Name = "ММ \"Арбеково\" г.Пенза пр. Строителей, 63",
+                    ObjectModel = MockModelProvider.ConsumerObject
+                }
+            };
+            var point3 = new NetworkTreeNode
+            {
+                Parent = consumerObject2,
+                LinkedObject = new ManagedObject
+                {
+                    Name = "ТП-796",
+                    ObjectModel = MockModelProvider.Point
+                }
+            };
+            point3.LinkedObject["VoltageLevel"] = "СН-2";
 
             mainTree = new NetworkTree
             {
@@ -73,7 +109,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
             mainTree.Nodes.AddRange(new[]
             {
-                region1, consumer1, contract1, point1, device1, device2
+                region1, consumer1, contract1, consumerObject1, point1, device1, device2, point2, consumerObject2, point3
             });
         }
 

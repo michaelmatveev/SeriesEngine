@@ -162,6 +162,8 @@
   <ItemGroup>
     <Compile Include="Helpers\ActiveRangeKeeper.cs" />
     <Compile Include="Helpers\PanesManager.cs" />
+    <Compile Include="Helpers\TreeHelpers.cs" />
+    <Compile Include="Models\SubFragment.cs" />
     <Compile Include="Models\CustomInterceptorPolicy.cs" />
     <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\Fragments\BaseFragment.cs" />

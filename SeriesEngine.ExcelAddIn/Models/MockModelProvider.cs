@@ -10,17 +10,17 @@ namespace SeriesEngine.ExcelAddIn.Models
     {
         internal static ObjectMetamodel Region = new ObjectMetamodel
         {
-            Name = "Регион",
+            Name = "Region",
         };
 
-        internal static ObjectMetamodel Consumer = new ObjectMetamodel
+        internal static ObjectMetamodel Customer = new ObjectMetamodel
         {
-            Name = "Потребитель",
+            Name = "Customer",
         };
 
         internal static ObjectMetamodel Contract = new ObjectMetamodel
         {
-            Name = "Договор",
+            Name = "Contract",
             Variables = new List<Variable>
             {
                 new Variable
@@ -38,9 +38,14 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         };
 
+        internal static ObjectMetamodel ConsumerObject = new ObjectMetamodel
+        {
+            Name = "ConsumerObject",
+        };
+
         internal static ObjectMetamodel Point = new ObjectMetamodel
         {
-            Name = "Точка поставки",
+            Name = "Point",
             Variables = new List<Variable>
             {
                 new Variable
@@ -64,7 +69,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         internal static ObjectMetamodel Device = new ObjectMetamodel
         {
-            Name = "Прибор учета",
+            Name = "Device",
             Variables = new List<Variable>
             {
                 new Variable
@@ -100,7 +105,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         internal static List<ObjectMetamodel> _metamodels = new List<ObjectMetamodel>
         {
-            Region, Consumer, Contract, Point, Device,
+            Region, Customer, Contract, ConsumerObject, Point, Device,
         };
 
         public IEnumerable<ObjectMetamodel> GetObjectMetamodels()

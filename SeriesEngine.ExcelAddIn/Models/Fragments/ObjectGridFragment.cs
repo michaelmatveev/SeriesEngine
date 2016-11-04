@@ -1,45 +1,14 @@
-﻿using SeriesEngine.ExcelAddIn.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace SeriesEngine.ExcelAddIn.Models.Fragments
 {
-    public class SubFragment
-    {
-        public string XmlPath { get; set; }
-        public string Caption { get; set; }
-        public int Level { get; set; }
-        public string CollectionName { get; set; }
-        public string RefObject { get; set; }
-    }
-
-    public enum NodeType
-    {
-        UniqueName,
-        Since,
-        Till,
-        Path
-    }
-
-    public class NodeSubFragment : SubFragment
-    {
-        public NodeType NodeType;
-    }
-
-    public class VariableSubFragment : SubFragment
-    {
-        public Kind Kind;
-        public string VariableName;
-    }
-
     [Serializable]
     public class ObjectGridFragment : SheetFragment
     {
-        public bool ShowHeader { get; set; }
+        public bool ShowHeader { get; set; } = true;
         
         public object Tag { get; set; }
 
@@ -54,10 +23,9 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
         private static XNamespace ns = "http://www.w3.org/2001/XMLSchema";
 
         public string GetSchema()
-        {
-            
+        {            
             var schema = new XDocument(
-                new XElement(ns + "schema",
+                new XElement(ns +"schema",
                     new XElement(ns + "element", new XAttribute("name", "DataToImport"), new XAttribute("nillable", "true"),
                         new XElement(ns + "complexType",
                             new XElement(ns + "sequence", new XAttribute("minOccurs", "0"))))));
@@ -76,7 +44,6 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
                 {
                     if (!lastElement.Descendants(ns + "element").Any(d => d.Attribute("name").Value == sf.RefObject))
                     {
-                        //minOccurs="0" maxOccurs="unbounded" nillable="true" form="unqualified"
                         lastElement.Add(
                             new XElement(ns + "element", new XAttribute("name", sf.RefObject), new XAttribute("minOccurs", "0"), new XAttribute("maxOccurs", "unbounded"), new XAttribute("nillable", "true"), new XAttribute("form", "unqualified"),
                                 complexType));
@@ -99,7 +66,6 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
                 }
                 lastElement = sequence;                
             }
-
             return schema.ToString();
         }
 
@@ -115,7 +81,9 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
 
         public string GetXml(ICollection<Network> networks)
         {
-            return Resources.TestGridData;
+            var network = networks.OfType<NetworkTree>().First();
+            var xml = network.ConvertToXml(SubFragments);
+            return xml.ToString();
         }
 
         public IList<SubFragment> SubFragments = new List<SubFragment>();
