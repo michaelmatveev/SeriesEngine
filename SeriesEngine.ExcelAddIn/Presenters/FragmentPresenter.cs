@@ -6,13 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.App;
+using SeriesEngine.App.CommandArgs;
+using SeriesEngine.App.EventData;
+using System.Windows.Forms;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
-    public class FragmentPresenter : Presenter<IFragmentView>
+    public class FragmentPresenter : Presenter<IFragmentView>, ICommand<SwitchToFragmentsCommandArgs>
     {
-        public FragmentPresenter(IFragmentView view, IApplicationController controller) : base(view, controller)
+        private IFragmentsProvider _fragmentsProvider;
+        public FragmentPresenter(IFragmentView view, IApplicationController controller, IFragmentsProvider fragmentsProvider) : base(view, controller)
         {
+            _fragmentsProvider = fragmentsProvider;
             //View.PaneClosed += (s, e) => Controller.GetInstance<MainMenuPresenter>().SetFragmentsButton(false);
             //View.FragmentSelected += (s, e) =>
             //{
@@ -50,5 +55,15 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             //    View.HideIt();
             //}
         }
+
+        void ICommand<SwitchToFragmentsCommandArgs>.Execute(SwitchToFragmentsCommandArgs commandData)
+        {
+            View.RefreshFragmentsView(_fragmentsProvider.GetFragments(string.Empty));
+            Controller.Raise(new SwitchToViewEventData
+            {
+                InflatedControl = (Control)View
+            });
+        }
+
     }
 }

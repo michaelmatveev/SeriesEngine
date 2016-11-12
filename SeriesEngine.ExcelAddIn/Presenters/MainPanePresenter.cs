@@ -27,8 +27,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                     case "Периоды":
                         Controller.Execute(new SwitchToPeriodCommandArgs()); break;
                     case "Фрагменты":
-                        View.InflateControl(null); break;
-                    //Controller.Execute(new SwitchToFragmentsCommandArgs()); break;
+                        Controller.Execute(new SwitchToFragmentsCommandArgs()); break;
                     case "Фильтры":
                         View.InflateControl(null); break;
                     //Controller.Execute(new SwitchToFiltersCommandArgs()); break;

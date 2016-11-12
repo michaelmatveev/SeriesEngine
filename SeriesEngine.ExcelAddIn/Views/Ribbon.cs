@@ -8,7 +8,7 @@ namespace SeriesEngine.ExcelAddIn
 {
     public partial class Ribbon : IMainMenuView
     {
-        public event EventHandler<PaneArgs> ShowFragmentsPane;
+        //public event EventHandler<PaneArgs> ShowFragmentsPane;
         public event EventHandler<PaneArgs> ShowCustomPane;
         public event EventHandler RefreshAll;
         public event EventHandler SaveAll;
@@ -22,9 +22,14 @@ namespace SeriesEngine.ExcelAddIn
             };
         }
 
-        private void toggleButtonShowFragmetns_Click(object sender, RibbonControlEventArgs e)
+        //private void toggleButtonShowFragmetns_Click(object sender, RibbonControlEventArgs e)
+        //{
+        //    ShowFragmentsPane?.Invoke(this, CreatePaneArgs(sender));
+        //}
+
+        private void toggleButtonShowPane_Click(object sender, RibbonControlEventArgs e)
         {
-            ShowFragmentsPane?.Invoke(this, CreatePaneArgs(sender));
+            ShowCustomPane?.Invoke(this, CreatePaneArgs(sender));
         }
 
         private void buttonRefresh_Click(object sender, RibbonControlEventArgs e)
@@ -37,12 +42,12 @@ namespace SeriesEngine.ExcelAddIn
             SaveAll?.Invoke(this, EventArgs.Empty);
         }
 
-        public void SetFragmentsButtonState(bool isChecked)
-        {
-            toggleButtonShowFragmetns.Checked = isChecked;
-        }
+        //public void SetFragmentsButtonState(bool isChecked)
+        //{
+        //    toggleButtonShowFragmetns.Checked = isChecked;
+        //}
 
-        public void SetPeriodButtonState(bool isChecked)
+        public void SetPaneVisibleState(bool isChecked)
         {
             toggleButtonShowPane.Checked = isChecked;
         }
@@ -65,9 +70,5 @@ namespace SeriesEngine.ExcelAddIn
             }
         }
 
-        private void toggleButtonShowPane_Click(object sender, RibbonControlEventArgs e)
-        {
-            ShowCustomPane?.Invoke(this, CreatePaneArgs(sender));
-        }
     }
 }

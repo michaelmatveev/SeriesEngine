@@ -24,17 +24,7 @@ namespace SeriesEngine.ExcelAddIn
             Application.WorkbookBeforeClose += (Excel.Workbook wb, ref bool c) => ApplicationControllers.Remove(wb);
             Application.WorkbookActivate += (wb) =>
             {
-                ApplicationControllers[wb].RestoreRibbonState();
-                ApplicationControllers[wb].IsActive = true;
-            };
-            Application.WorkbookDeactivate += (wb) => 
-            {
-                ExcelApplicationController controller;
-                if (ApplicationControllers.TryGetValue(wb, out controller))
-                {
-                    controller.SaveRibbonState();
-                    controller.IsActive = false;
-                }
+                ApplicationControllers[wb].Raise(new RestoreMenuStateEventData());
             };
         }
 

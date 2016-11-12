@@ -3,16 +3,20 @@ using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
 using SeriesEngine.App.EventData;
+using System;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
     public class MainMenuPresenter : Presenter<IMainMenuView>, 
         ICommand<InitalizeCommandArgs>, 
         IEventHandler<InitializeEventData>, 
-        IEventHandler<MainPaneClosed>
+        IEventHandler<MainPaneClosed>,
+        IEventHandler<RestoreMenuStateEventData>//,
+        //IEventHandler<SaveMenuStateEventData>
     {
         private INetworksProvider _networkProvider;
         private bool _firstInitialization = true;
+        private bool _isPaneVisible;
 
         public MainMenuPresenter(IMainMenuView view, 
             IApplicationController controller,
@@ -29,9 +33,10 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
             View.ShowCustomPane += (s, e) =>
             {
+                _isPaneVisible = e.Visible;
                 Controller.Execute(new ShowCustomPaneCommandArgs
                 {
-                    IsVisible = e.Visible
+                    IsVisible = _isPaneVisible
                 });
 
                 if (_firstInitialization)
@@ -67,10 +72,6 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             //};
         }
 
-        public void SetFragmentsButton(bool state)
-        {
-            View.SetFragmentsButtonState(state);   
-        }
 
         void ICommand<InitalizeCommandArgs>.Execute(InitalizeCommandArgs commandData)
         {
@@ -84,7 +85,12 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
         void IEventHandler<MainPaneClosed>.Handle(MainPaneClosed eventData)
         {
-            View.SetPeriodButtonState(false);
+            View.SetPaneVisibleState(_isPaneVisible = false);
+        }
+                
+        void IEventHandler<RestoreMenuStateEventData>.Handle(RestoreMenuStateEventData eventData)
+        {
+            View.SetPaneVisibleState(_isPaneVisible);
         }
 
     }

@@ -8,9 +8,6 @@ using SeriesEngine.ExcelAddIn.Presenters;
 using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
 using StructureMap.Building.Interception;
-using System.Linq.Expressions;
-using System;
-using SeriesEngine.App.EventData;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -75,7 +72,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Configure
                     .Singleton()
                     .InterceptWith(new FuncInterceptor<MainPanePresenter>(m => RegisterHandlers(m)));
-                
+
                 _.For<ICommand<ShowCustomPaneCommandArgs>>()
                     .Use(c => c.GetInstance<MainPanePresenter>());
 
@@ -132,19 +129,5 @@ namespace SeriesEngine.ExcelAddIn.Models
             return eventHandler;
         }
 
-        private bool isPeriodPaneOpen;
-        private bool isFragmentPaneOpen;
-
-        public void SaveRibbonState()
-        {
-            isPeriodPaneOpen = MainRibbon.toggleButtonShowPane.Checked;
-            isFragmentPaneOpen = MainRibbon.toggleButtonShowFragmetns.Checked;
-        }
-
-        public void RestoreRibbonState()
-        {
-            MainRibbon.toggleButtonShowPane.Checked = isPeriodPaneOpen;
-            MainRibbon.toggleButtonShowFragmetns.Checked = isFragmentPaneOpen;
-        }
     }
 }

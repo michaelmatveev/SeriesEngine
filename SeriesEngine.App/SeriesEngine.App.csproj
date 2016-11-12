@@ -54,6 +54,7 @@
     <Compile Include="CommandArgs\SwitchToFragmentsCommandArgs.cs" />
     <Compile Include="CommandArgs\SwitchToPeriodCommandArgs.cs" />
     <Compile Include="EventData\InitializeEventData.cs" />
+    <Compile Include="EventData\RestoreMenuStateEventData.cs" />
     <Compile Include="EventData\SwitchToViewEventData.cs" />
     <Compile Include="EventData\MainPaneClosed.cs" />
     <Compile Include="EventHandlerOptions.cs" />

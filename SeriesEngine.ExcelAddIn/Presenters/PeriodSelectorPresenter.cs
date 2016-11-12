@@ -18,6 +18,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
         public void Execute(SwitchToPeriodCommandArgs commandData)
         {
+            View.SelectedPeriod = _fragmentsProvider.GetDefaultPeriod();
             Controller.Raise(new SwitchToViewEventData
             {
                 InflatedControl = (Control)View

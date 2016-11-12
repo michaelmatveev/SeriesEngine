@@ -37,15 +37,11 @@
             this.tab1 = this.Factory.CreateRibbonTab();
             this.tab2 = this.Factory.CreateRibbonTab();
             this.group2 = this.Factory.CreateRibbonGroup();
-            this.group1 = this.Factory.CreateRibbonGroup();
             this.buttonRefresh = this.Factory.CreateRibbonButton();
             this.buttonSave = this.Factory.CreateRibbonButton();
+            this.group1 = this.Factory.CreateRibbonGroup();
             this.toggleButtonShowPane = this.Factory.CreateRibbonToggleButton();
-            this.toggleButtonShowFragmetns = this.Factory.CreateRibbonToggleButton();
             this.menuFilter = this.Factory.CreateRibbonMenu();
-            this.splitButtonFilters = this.Factory.CreateRibbonSplitButton();
-            this.button1 = this.Factory.CreateRibbonButton();
-            this.checkBox1 = this.Factory.CreateRibbonCheckBox();
             this.tab1.SuspendLayout();
             this.tab2.SuspendLayout();
             this.group2.SuspendLayout();
@@ -69,17 +65,8 @@
             // 
             this.group2.Items.Add(this.buttonRefresh);
             this.group2.Items.Add(this.buttonSave);
-            this.group2.Label = "group2";
+            this.group2.Label = "Данные";
             this.group2.Name = "group2";
-            // 
-            // group1
-            // 
-            this.group1.Items.Add(this.toggleButtonShowPane);
-            this.group1.Items.Add(this.toggleButtonShowFragmetns);
-            this.group1.Items.Add(this.menuFilter);
-            this.group1.Items.Add(this.splitButtonFilters);
-            this.group1.Label = "group1";
-            this.group1.Name = "group1";
             // 
             // buttonRefresh
             // 
@@ -97,42 +84,24 @@
             this.buttonSave.ShowImage = true;
             this.buttonSave.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonSave_Click);
             // 
+            // group1
+            // 
+            this.group1.Items.Add(this.toggleButtonShowPane);
+            this.group1.Items.Add(this.menuFilter);
+            this.group1.Label = "Запрос";
+            this.group1.Name = "group1";
+            // 
             // toggleButtonShowPane
             // 
             this.toggleButtonShowPane.Label = "Параметры";
             this.toggleButtonShowPane.Name = "toggleButtonShowPane";
             this.toggleButtonShowPane.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButtonShowPane_Click);
             // 
-            // toggleButtonShowFragmetns
-            // 
-            this.toggleButtonShowFragmetns.Label = "Фрагменты";
-            this.toggleButtonShowFragmetns.Name = "toggleButtonShowFragmetns";
-            this.toggleButtonShowFragmetns.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButtonShowFragmetns_Click);
-            // 
             // menuFilter
             // 
             this.menuFilter.Dynamic = true;
             this.menuFilter.Label = "Фильтр";
             this.menuFilter.Name = "menuFilter";
-            // 
-            // splitButtonFilters
-            // 
-            this.splitButtonFilters.ButtonType = Microsoft.Office.Tools.Ribbon.RibbonButtonType.ToggleButton;
-            this.splitButtonFilters.Items.Add(this.button1);
-            this.splitButtonFilters.Items.Add(this.checkBox1);
-            this.splitButtonFilters.Label = "Выбор объектов";
-            this.splitButtonFilters.Name = "splitButtonFilters";
-            // 
-            // button1
-            // 
-            this.button1.Label = "button1";
-            this.button1.Name = "button1";
-            this.button1.ShowImage = true;
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.Label = "checkBox1";
-            this.checkBox1.Name = "checkBox1";
             // 
             // Ribbon
             // 
@@ -159,12 +128,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonShowPane;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
-        internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonShowFragmetns;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonRefresh;
-        internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton splitButtonFilters;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFilter;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonSave;
     }
 

@@ -36,7 +36,6 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             using (new ActiveRangeKeeper(_workbook))
             {
-
                 foreach (var f in fragments)
                 {
                     //if(f is NodeFragment)
@@ -116,6 +115,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             var results = xmlMap.ImportXml(fragment.GetXml(_networksProvider.GetNetworks(string.Empty)), true);
 
             fragment.Tag = listObject;
+            //listObject.TableObject.EnableEditing = listObject.TableObject.EnableRefresh = true;
             //listObject.ListColumns[4].Range.NumberFormat = "General";
   
             //xmlMap.Application.DisplayAlerts = true;
