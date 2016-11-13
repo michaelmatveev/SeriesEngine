@@ -22,6 +22,11 @@ namespace SeriesEngine.ExcelAddIn.Models
             return data;
         }
 
+        public void LoadFromXml(XDocument document)
+        {
+
+        }
+
         private IEnumerable<XElement> GetSubElements(
             IEnumerable<TreeItem<NetworkTreeNode>> currentItems,
             IEnumerable<SubFragment> queryParamers)

@@ -16,5 +16,8 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
             CustomPeriod = defaultPeriod;
         }
 
+        public abstract void Import(BaseDataImporter importer);
+        public abstract void Export(BaseDataExporter exproter);        
+
     }
 }

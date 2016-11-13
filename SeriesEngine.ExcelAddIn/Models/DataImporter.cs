@@ -11,7 +11,8 @@ using SeriesEngine.ExcelAddIn.Helpers;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
-    public class DataImporter : ICommand<ReloadAllCommandArgs>
+    public class DataImporter : BaseDataImporter,
+        ICommand<ReloadAllCommandArgs>
     {
         private readonly Workbook _workbook;
         private readonly IFragmentsProvider _fragmentsProvider;
@@ -27,51 +28,36 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void Execute(ReloadAllCommandArgs commandData)
         {
-            ImportFromFragments(
-                _fragmentsProvider.GetFragments(string.Empty).OfType<SheetFragment>(),
-                _fragmentsProvider.GetDefaultPeriod());
-        }
-
-        public void ImportFromFragments(IEnumerable<SheetFragment> fragments, Period period)
-        {
             using (new ActiveRangeKeeper(_workbook))
             {
-                foreach (var f in fragments)
-                {
-                    //if(f is NodeFragment)
-                    //{
-                    //    ImportNodeFragment((NodeFragment)f);
-                    //}
-                    if (f is ObjectGridFragment)
-                    {
-                        ImportGridFragment((ObjectGridFragment)f);
-                    }
-                }
-            }            
-        }
-
-        private void ImportNodeFragment(NodeFragment fragment)
-        {
-            Excel.Worksheet sheet = _workbook.Sheets[fragment.Sheet];
-            sheet.get_Range(fragment.Cell).Value = fragment.Name;
-
-            MockNetworkProvider netwrokProvider = new MockNetworkProvider();
-            var network = netwrokProvider.GetNetworks(string.Empty);
-
-            int i = 1;
-            foreach(var node in (network.First() as NetworkTree).Nodes.Where(n => n.LinkedObject.ObjectModel == fragment.Model))
-            {
-                var cell = sheet.get_Range(fragment.Cell).Offset[i++, 0];
-                switch (fragment.NodeValue)
-                {
-                    case ExportNodeValue.Name: cell.Value2 = node.NodeName; break;
-                    case ExportNodeValue.Since: cell.Value2 = node.Since; break;
-                    case ExportNodeValue.Till: cell.Value2 = node.Till; break;
-                }
+                ImportFromFragments(
+                    _fragmentsProvider.GetFragments(string.Empty).OfType<SheetFragment>(),
+                    _fragmentsProvider.GetDefaultPeriod());
             }
         }
 
-        private void ImportGridFragment(ObjectGridFragment fragment)
+        //private void ImportNodeFragment(NodeFragment fragment)
+        //{
+        //    Excel.Worksheet sheet = _workbook.Sheets[fragment.Sheet];
+        //    sheet.get_Range(fragment.Cell).Value = fragment.Name;
+
+        //    MockNetworkProvider netwrokProvider = new MockNetworkProvider();
+        //    var network = netwrokProvider.GetNetworks(string.Empty);
+
+        //    int i = 1;
+        //    foreach(var node in (network.First() as NetworkTree).Nodes.Where(n => n.LinkedObject.ObjectModel == fragment.Model))
+        //    {
+        //        var cell = sheet.get_Range(fragment.Cell).Offset[i++, 0];
+        //        switch (fragment.NodeValue)
+        //        {
+        //            case ExportNodeValue.Name: cell.Value2 = node.NodeName; break;
+        //            case ExportNodeValue.Since: cell.Value2 = node.Since; break;
+        //            case ExportNodeValue.Till: cell.Value2 = node.Till; break;
+        //        }
+        //    }
+        //}
+
+        public override void ImportFragment(ObjectGridFragment fragment)
         {
             Excel.Worksheet sheet = _workbook.Sheets[fragment.Sheet];
             sheet.Activate();
@@ -84,7 +70,6 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
             xmlMap = _workbook.XmlMaps.Add(fragment.GetSchema(), "DataToImport");
             xmlMap.Name = fragment.Name;
-            //xmlMap.Application.DisplayAlerts = false;
             
             var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == fragment.Name);
             if(listObject != null)
@@ -113,12 +98,6 @@ namespace SeriesEngine.ExcelAddIn.Models
 
             listObject.ShowHeaders = fragment.ShowHeader;
             var results = xmlMap.ImportXml(fragment.GetXml(_networksProvider.GetNetworks(string.Empty)), true);
-
-            fragment.Tag = listObject;
-            //listObject.TableObject.EnableEditing = listObject.TableObject.EnableRefresh = true;
-            //listObject.ListColumns[4].Range.NumberFormat = "General";
-  
-            //xmlMap.Application.DisplayAlerts = true;
         }
 
         //public void ImportFromFragments(IEnumerable<Fragment> fragments, Period period)

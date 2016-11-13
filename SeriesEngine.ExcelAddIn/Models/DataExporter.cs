@@ -9,10 +9,13 @@ using SeriesEngine.ExcelAddIn.Models.Fragments;
 using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
 using System.Diagnostics;
+using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
-    public class DataExporter : ICommand<SaveAllCommandArgs>
+    public class DataExporter : BaseDataExporter,
+        ICommand<SaveAllCommandArgs>
     {
         private Workbook _workbook;
         private readonly IFragmentsProvider _fragmentsProvider;
@@ -32,68 +35,115 @@ namespace SeriesEngine.ExcelAddIn.Models
             ExportFromFragments(fragmentsToExport);
         }
 
-        private void ExportFromFragments(IEnumerable<SheetFragment> fragments)
+        public override void ExportFragment(ObjectGridFragment fragment)
         {
-            foreach(var f in fragments)
+            var network = _networksProvider.GetNetworks(string.Empty).First() as NetworkTree;
+
+            var doc = new XDocument(new XElement("DataToImport"));
+            Excel.Worksheet sheet = _workbook.Sheets[fragment.Sheet];
+            var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == fragment.Name);          
+
+            var schema = fragment.GetSchema();
+
+            //var xmlMap = _workbook.XmlMaps.Cast<Excel.XmlMap>().SingleOrDefault(m => m.Name == fragment.Name);
+            //string xmlData;
+            //xmlMap.ExportXml(out xmlData);
+
+            //foreach (var c in listObject.ListColumns.Cast<Excel.ListColumn>())
+            //{
+            //    var v = c.XPath.Value;
+            //}
+
+            for (int row = 1; row <= listObject.DataBodyRange.Rows.Count; row++)
             {
-                if (f is ObjectGridFragment)
+                //for (int col = 1; col <= listObject.DataBodyRange.Columns.Count; col++)
+                foreach (var sf in fragment.SubFragments)
                 {
-                    ExportGridFragment((ObjectGridFragment)f);
+                    ConstructForSubFragment(doc, listObject, row, sf, fragment.SubFragments);
                 }
             }
+
+            network.LoadFromXml(doc);
         }
 
-        private void ExportGridFragment(ObjectGridFragment fragment)
+        private string GetParentPath(SubFragment sf)
         {
-            var listObject = fragment.Tag as ListObject;
-            foreach(Excel.Range row in listObject.DataBodyRange.Rows)
-            {
-                foreach (Excel.ListColumn column in listObject.ListColumns)
-                {
-                    var v = row[1, column.Index].Value;
-                    Trace.WriteLine(v);
-                }
-            }
+            //return "parent::" + sf.XmlPath.Split('@').First();
+            var end = sf.XmlPath.LastIndexOf('/');
+            return sf.XmlPath.Substring(0, end);
         }
 
-        //public void ExportFromFragments(IEnumerable<SheetFragment> fragments)
-        //{
-        //    foreach (var f in fragments)
-        //    {
-        //        if (f is NodeFragment)
-        //        {
-        //            ExportNodeFragment((NodeFragment)f);
-        //        }
-        //    }
-        //}
+        private XElement ConstructForSubFragment(XDocument doc, Excel.ListObject listObject, int row, SubFragment sf, IList<SubFragment> subFragments)
+        {
+            int col = subFragments.IndexOf(sf) + 1;
 
-        //private void ExportNodeFragment(NodeFragment fragment)
-        //{
-        //    Excel.Worksheet sheet = _workbook.Sheets[fragment.Sheet];
+            var cellValue = (listObject.DataBodyRange[row, col] as Excel.Range).Value2;
+            XElement element = null;
+            string parentPath = null;
 
-        //    MockNetworkProvider netwrokProvider = new MockNetworkProvider();
-        //    var network = netwrokProvider.GetNetworks(string.Empty).FirstOrDefault() as NetworkTree;
-        //    int i = 1;
-        //    var objectName = sheet.get_Range(fragment.Cell).Offset[i, 0].Value2;
-        //    while(objectName != null)
-        //    {
-        //        if (!network.Nodes
-        //            .Where(n => n.LinkedObject.ObjectModel == fragment.Model)
-        //            .Any(n => n.NodeName == objectName))
-        //        {
-        //            MockNetworkProvider.mainTree.Nodes.Add(new NetworkTreeNode
-        //            {
-        //                Parent = null,
-        //                LinkedObject = new ManagedObject()
-        //                {
-        //                    Name = objectName,
-        //                    ObjectModel = fragment.Model
-        //                }
-        //            });
-        //        }
-        //        objectName = sheet.get_Range(fragment.Cell).Offset[i++, 0].Value2;
-        //    }
-        //}
+            var nsf = sf as NodeSubFragment;
+            if (nsf != null)
+            {
+                var endIndex = sf.XmlPath.LastIndexOf('/'); //remove attribure name
+                var elementPath = sf.XmlPath.Substring(0, endIndex);
+                var attribute = sf.XmlPath.Substring(endIndex + 1, sf.XmlPath.Length - (endIndex + 1));
 
+                //element = doc.XPathSelectElement($"{elementPath}[{attribute}='{cellValue}']");
+                element = doc.XPathSelectElement(elementPath);
+                if (element == null)
+                {
+                    element = new XElement(sf.RefObject);
+                }
+
+                switch (nsf.NodeType)
+                {
+                    case NodeType.UniqueName:
+                        element.Add(new XAttribute("UniqueName", cellValue));
+                        break;
+                    case NodeType.Since:
+                        element.Add(new XAttribute("Since", cellValue));
+                        break;
+                    case NodeType.Till:
+                        element.Add(new XAttribute("Till", cellValue));
+                        break;
+                    default:
+                        throw new NotSupportedException("this operation is not supported");
+                }
+                                
+                endIndex = elementPath.LastIndexOf('/'); // remove current element name
+                parentPath = sf.XmlPath.Substring(0, endIndex);
+            }
+
+            // одна переменная не может быть связана с двумя столбцами???
+            var vsf = sf as VariableSubFragment;
+            if (vsf != null)
+            {
+                element = doc.XPathSelectElement(sf.XmlPath);
+                if (element == null)
+                {
+                    element = new XElement(vsf.VariableName, cellValue);
+                }
+
+                var endIndex = sf.XmlPath.LastIndexOf('/');
+                parentPath = sf.XmlPath.Substring(0, endIndex);
+
+            }
+
+            if(parentPath == "/DataToImport")
+            {
+                doc.Root.Add(element);
+                return doc.Root;
+            }
+
+            var parent = doc.XPathSelectElement(parentPath);
+            if (parent == null)
+            {
+                var parentSf = subFragments.First(p => p.XmlPath.StartsWith(parentPath));
+                parent = ConstructForSubFragment(doc, listObject, row, parentSf, subFragments);
+            }
+
+            parent.Add(element);
+            return parent;
+        }
     }
 }

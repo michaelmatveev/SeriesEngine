@@ -87,5 +87,15 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
         }
 
         public IList<SubFragment> SubFragments = new List<SubFragment>();
+
+        public override void Export(BaseDataExporter exproter)
+        {
+            exproter.ExportFragment(this);
+        }
+
+        public override void Import(BaseDataImporter importer)
+        {
+            importer.ImportFragment(this);
+        }
     }
 }

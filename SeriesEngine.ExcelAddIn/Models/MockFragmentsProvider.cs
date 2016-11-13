@@ -94,14 +94,14 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public HashSet<SheetFragment> _fragments = new HashSet<SheetFragment>
         {
-            new NodeFragment(null, DefaultPeriod)
-            {
-                Name = "НазваниеРегиона",
-                Sheet = "Лист1",
-                Cell = "A4",
-                NodeValue = ExportNodeValue.Name,
-                Model = MockModelProvider.Region
-            }
+            //new NodeFragment(null, DefaultPeriod)
+            //{
+            //    Name = "НазваниеРегиона",
+            //    Sheet = "Лист1",
+            //    Cell = "A4",
+            //    NodeValue = ExportNodeValue.Name,
+            //    Model = MockModelProvider.Region
+            //}
         };
 
         //public HashSet<BaseFragment> _fragments = new HashSet<BaseFragment>
