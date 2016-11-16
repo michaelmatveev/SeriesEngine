@@ -21,6 +21,7 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
         }
 
         private static XNamespace ns = "http://www.w3.org/2001/XMLSchema";
+        private static XNamespace msdata = "urn:schemas-microsoft-com:xml-msdata";
 
         public string GetSchema()
         {            
@@ -71,7 +72,12 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
 
         private XElement GetShemaForNode(NodeSubFragment sf)
         {
-            return new XElement(ns + "attribute", new XAttribute("name", sf.NodeType.ToString()), new XAttribute("type", "xs:string"), new XAttribute("use", sf.NodeType == NodeType.UniqueName ? "required" : "optional"), new XAttribute("form", "unqualified"));
+            return new XElement(ns + "attribute", 
+                new XAttribute("name", sf.NodeType.ToString()),
+                new XAttribute("type", "xs:string"),
+                new XAttribute("use", sf.NodeType == NodeType.UniqueName ? "required" : "optional"),
+                new XAttribute("form", "unqualified"),
+                new XAttribute(msdata + "PrimaryKey", sf.NodeType == NodeType.UniqueName ? "true" : "false"));
         }
 
         private XElement GetShemaForVariable(VariableSubFragment sf)
