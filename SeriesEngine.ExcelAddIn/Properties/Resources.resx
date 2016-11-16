@@ -133,7 +133,7 @@
   </data>
   <data name="TestGridData" xml:space="preserve">
     <value>&lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;DataToImport&gt;
+&lt;DataImportExport&gt;
   &lt;!-- Данные импортируются с максимального уровня--&gt;
   &lt;Region UniqueName="Пензенская область"&gt;
     &lt;Customer UniqueName="ООО &amp;quot;МагнитЭнерго&amp;quot;"&gt;
@@ -155,6 +155,6 @@
       &lt;/Contract&gt;
     &lt;/Customer&gt;
   &lt;/Region&gt;
-&lt;/DataToImport&gt;</value>
+&lt;/DataImportExport&gt;</value>
   </data>
 </root>

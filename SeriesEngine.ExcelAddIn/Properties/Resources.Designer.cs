@@ -76,7 +76,7 @@ namespace SeriesEngine.ExcelAddIn.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
-        ///&lt;DataToImport&gt;
+        ///&lt;DataImportExport&gt;
         ///  &lt;!-- Данные импортируются с максимального уровня--&gt;
         ///  &lt;Region UniqueName=&quot;Пензенская область&quot;&gt;
         ///    &lt;Customer UniqueName=&quot;ООО &amp;quot;МагнитЭнерго&amp;quot;&quot;&gt;
@@ -84,7 +84,7 @@ namespace SeriesEngine.ExcelAddIn.Properties {
         ///        &lt;ContractType&gt;КП&lt;/ContractType&gt;
         ///        &lt;ConsumerObject UniqueName=&quot;ММ &amp;quot;Влад&amp;quot; г. Пенза пр-т. Строителей, 24а&quot;&gt;
         ///          &lt;Point UniqueName=&quot;ТП-530&quot;&gt;
-        ///            &lt;VoltageLevel&gt;СН-2&lt; [rest of string was truncated]&quot;;.
+        ///            &lt;VoltageLevel&gt;С [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TestGridData {
             get {

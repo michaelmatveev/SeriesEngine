@@ -8,12 +8,13 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public class NetworkTree : Network
     {
+        public const string RootName = "DataImportExport";
         public List<NetworkTreeNode> Nodes { get; } = new List<NetworkTreeNode>();
 
         public XDocument ConvertToXml(IEnumerable<SubFragment> queryParamers)
         {
             var data = new XDocument();
-            var rootElement = new XElement("DataToImport");
+            var rootElement = new XElement(RootName);
 
             var tree = Nodes.GenerateTree(n => n.NodeName, n => n.Parent?.NodeName);
             rootElement.Add(GetSubElements(tree, queryParamers));
@@ -24,7 +25,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void LoadFromXml(XDocument document)
         {
-
+            // Convert XML document into DB objects
         }
 
         private IEnumerable<XElement> GetSubElements(

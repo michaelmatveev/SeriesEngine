@@ -27,13 +27,15 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
         {            
             var schema = new XDocument(
                 new XElement(ns +"schema",
-                    new XElement(ns + "element", new XAttribute("name", "DataToImport"), new XAttribute("nillable", "true"),
+                    new XElement(ns + "element", 
+                        new XAttribute("name", NetworkTree.RootName), 
+                        new XAttribute("nillable", "true"),
                         new XElement(ns + "complexType",
                             new XElement(ns + "sequence", new XAttribute("minOccurs", "0"))))));
 
             schema.Root.SetAttributeValue(XNamespace.Xmlns + "xs", ns);
             var lastElement = schema.Descendants().Where(d => !d.HasElements).Single();
-            var currentPath = "/DataToImport"; 
+            var currentPath = $"/{NetworkTree.RootName}"; 
 
             foreach (var sfGroup in SubFragments.GroupBy(sf => sf.Level).OrderBy(sfg => sfg.Key))
             {
@@ -46,7 +48,12 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
                     if (!lastElement.Descendants(ns + "element").Any(d => d.Attribute("name").Value == sf.RefObject))
                     {
                         lastElement.Add(
-                            new XElement(ns + "element", new XAttribute("name", sf.RefObject), new XAttribute("minOccurs", "0"), new XAttribute("maxOccurs", "unbounded"), new XAttribute("nillable", "true"), new XAttribute("form", "unqualified"),
+                            new XElement(ns + "element", 
+                                new XAttribute("name", sf.RefObject), 
+                                new XAttribute("minOccurs", "0"), 
+                                new XAttribute("maxOccurs", "unbounded"), 
+                                new XAttribute("nillable", "true"), 
+                                new XAttribute("form", "unqualified"),
                                 complexType));
                         currentPath = $"{currentPath}/{sf.RefObject}";
                     }
@@ -72,17 +79,23 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
 
         private XElement GetShemaForNode(NodeSubFragment sf)
         {
-            return new XElement(ns + "attribute", 
+            return new XElement(ns + "attribute",
                 new XAttribute("name", sf.NodeType.ToString()),
                 new XAttribute("type", "xs:string"),
                 new XAttribute("use", sf.NodeType == NodeType.UniqueName ? "required" : "optional"),
-                new XAttribute("form", "unqualified"),
-                new XAttribute(msdata + "PrimaryKey", sf.NodeType == NodeType.UniqueName ? "true" : "false"));
+                new XAttribute("form", "unqualified"));//,
+                //new XAttribute(msdata + "PrimaryKey", sf.NodeType == NodeType.UniqueName ? "true" : "false"));
         }
 
         private XElement GetShemaForVariable(VariableSubFragment sf)
         {
-            return new XElement(ns + "element", new XAttribute("name", sf.VariableName), new XAttribute("type", "xs:string"), new XAttribute("minOccurs", "1"), new XAttribute("maxOccurs", "1"), new XAttribute("nillable", "true"), new XAttribute("form", "unqualified"));
+            return new XElement(ns + "element", 
+                new XAttribute("name", sf.VariableName), 
+                new XAttribute("type", "xs:string"), 
+                new XAttribute("minOccurs", "1"), 
+                new XAttribute("maxOccurs", "1"), 
+                new XAttribute("nillable", "true"), 
+                new XAttribute("form", "unqualified"));
         }
 
         public string GetXml(ICollection<Network> networks)

@@ -68,7 +68,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 xmlMap.Delete();
             }
-            xmlMap = _workbook.XmlMaps.Add(fragment.GetSchema(), "DataToImport");
+            xmlMap = _workbook.XmlMaps.Add(fragment.GetSchema(), NetworkTree.RootName);
             xmlMap.Name = fragment.Name;
             
             var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == fragment.Name);
