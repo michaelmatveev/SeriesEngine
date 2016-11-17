@@ -29,13 +29,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Configure
                     .Singleton()
                     .Ctor<CustomTaskPaneCollection>()
-                    .Is(PaneCollection);
-                    
-                //_.For<IViewEmbedder>()
-                //    .Singleton()
-                //    .Use<PanesManager>()
-                //    .Ctor<CustomTaskPaneCollection>()
-                //    .Is(PaneCollection);
+                    .Is(PaneCollection);                 
 
                 _.For<IMainMenuView>()
                     .Use(MainRibbon);
