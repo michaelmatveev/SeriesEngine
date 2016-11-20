@@ -244,3 +244,4 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 /SeriesEngine.Core/CreateDatabaseSchema.test1.sql
+/SeriesEngine.Core/CreateDatabaseSchema.msk1.sql

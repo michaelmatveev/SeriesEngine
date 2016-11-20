@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Model Name="PowerCompany1" Prefix="pwk1" TargetDatabase="MsSqlServer">
+
+  <Stereotype Name="Region">
+    <Variable Name="Name" DataType="String200">
+      <Family Rank="10">Основные свойства</Family>
+      <Help Context="Регион">Название региона</Help>
+    </Variable>
+  </Stereotype>
+
+  <Stereotype Name="Consumer">
+    <Variable Name="Name" DataType="String200">
+      <Family Rank="10">Основные свойства</Family>
+      <Help Context="Потребитель">Наименование потребителя</Help>
+    </Variable>
+  </Stereotype>
+
+  <Stereotype Name="Contract">
+    <Variable Name="Name" DataType="String200">
+      <Family Rank="10">Основные свойства</Family>
+      <Help Context="Договор">Номер договора</Help>
+    </Variable>
+    <Variable Name="ContractType" DataType="String200">
+      <Family Rank="10">Основные свойства</Family>
+      <Help Context="Тип договора">Тип договора</Help>
+    </Variable>
+  </Stereotype>
+
+  <Stereotype Name="ConsumerObject">
+    <Variable Name="Name" DataType="String200">
+      <Family Rank="10">Основные свойства</Family>
+      <Help Context="Объект">Объект потребления</Help>
+    </Variable>
+  </Stereotype>
+
+  <Stereotype Name="Point">
+    <Variable Name="Name" DataType="String200">
+      <Family Rank="10">Основные свойства</Family>
+      <Help Context="Точка">Точка</Help>
+    </Variable>
+    <Variable Name="VoltageLevel" DataType="String200">
+      <Family Rank="10">Основные свойства</Family>
+      <Help Context="Уровень напряжения">Уровень напряжения</Help>
+    </Variable>
+    <Variable Name="MaxPower" DataType="String200">
+      <Family Rank="10">Основные свойства</Family>
+      <Help Context="Максимальная мощность">Максимальная мощность</Help>
+    </Variable>
+  </Stereotype>
+
+</Model>

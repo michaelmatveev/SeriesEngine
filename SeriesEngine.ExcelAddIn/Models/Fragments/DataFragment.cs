@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SeriesEngine.Msk1;
+using System;
 
 namespace SeriesEngine.ExcelAddIn.Models.Fragments
 {

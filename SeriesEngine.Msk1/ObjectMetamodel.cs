@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SeriesEngine.ExcelAddIn.Models
+namespace SeriesEngine.Msk1
 {
     public class Variable
     {

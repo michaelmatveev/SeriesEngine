@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.ExcelAddIn.Helpers;
+using SeriesEngine.Msk1;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
@@ -33,7 +34,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         public void RefreshFilter(NetworkTree selectedNetwork, string currentRoute)
         {
             var items = new List<BreadCrumbs.BreadCrumbItem>();
-            items.AddRange(selectedNetwork.Nodes.Select(n => new BreadCrumbs.BreadCrumbItem(n.NodeName, 0, 0, 0, n)));
+            items.AddRange(selectedNetwork.MainHierarchies.Select(n => new BreadCrumbs.BreadCrumbItem(n.NodeName, 0, 0, 0, n)));
             foreach(var item in items)
             {
                 var parent = ((NetworkTreeNode)item.Tag).Parent;

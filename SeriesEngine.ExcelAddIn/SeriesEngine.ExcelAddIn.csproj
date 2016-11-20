@@ -186,12 +186,8 @@
     <Compile Include="Models\MockModelProvider.cs" />
     <Compile Include="Models\NamedCollection.cs" />
     <Compile Include="Models\MockNetworkProvider.cs" />
-    <Compile Include="Models\Network.cs" />
     <Compile Include="Models\NetworkTree.cs" />
-    <Compile Include="Models\NetworkTreeNode.cs" />
-    <Compile Include="Models\NetwrokList.cs" />
     <Compile Include="Models\Fragments\NodeFragment.cs" />
-    <Compile Include="Models\ObjectMetamodel.cs" />
     <Compile Include="Models\Period.cs" />
     <Compile Include="Models\SubscribeInterceptor.cs" />
     <Compile Include="Models\TimeInterval.cs" />
@@ -323,6 +319,10 @@
     <ProjectReference Include="..\SeriesEngine.App\SeriesEngine.App.csproj">
       <Project>{bcb7a219-851b-46d2-a8d3-107a2c81e22f}</Project>
       <Name>SeriesEngine.App</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SeriesEngine.Msk1\SeriesEngine.Msk1.csproj">
+      <Project>{039797c1-a3f3-47c7-b887-75073b9b8e5e}</Project>
+      <Name>SeriesEngine.Msk1</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

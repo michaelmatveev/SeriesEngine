@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeriesEngine.ExcelAddIn", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeriesEngine.App", "SeriesEngine.App\SeriesEngine.App.csproj", "{BCB7A219-851B-46D2-A8D3-107A2C81E22F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeriesEngine.Msk1", "SeriesEngine.Msk1\SeriesEngine.Msk1.csproj", "{039797C1-A3F3-47C7-B887-75073B9B8E5E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{BCB7A219-851B-46D2-A8D3-107A2C81E22F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCB7A219-851B-46D2-A8D3-107A2C81E22F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCB7A219-851B-46D2-A8D3-107A2C81E22F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{039797C1-A3F3-47C7-B887-75073B9B8E5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{039797C1-A3F3-47C7-B887-75073B9B8E5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{039797C1-A3F3-47C7-B887-75073B9B8E5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{039797C1-A3F3-47C7-B887-75073B9B8E5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,6 @@
 ﻿using FluentDateTime;
 using SeriesEngine.ExcelAddIn.Models.Fragments;
+using SeriesEngine.Msk1;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -270,25 +271,25 @@ namespace SeriesEngine.ExcelAddIn.Models
                     Cell = "A1",
                 };
 
-                var supportedModels = new List<ObjectMetamodel>();
-                if (network is NetworkTree)
-                {
-                    var netTree = network as NetworkTree;
-                    var groupedObjects = netTree.Nodes.GroupBy((n) => n.LinkedObject.ObjectModel);
+                //var supportedModels = new List<ObjectMetamodel>();
+                //if (network is NetworkTree)
+                //{
+                //    var netTree = network as NetworkTree;
+                //    var groupedObjects = netTree.Nodes.GroupBy((n) => n.LinkedObject.ObjectModel);
                     
-                    foreach(var g in groupedObjects)
-                    {
-                        supportedModels.Add(g.Key);
-                        var newFragment = new CollectionFragment
-                        {
-                            Name = $"{g.Key.Name} ({g.Count()})",
-                            Parent = source,
-                            SupportedModels = supportedModels.ToArray()
-                        };
-                        yield return newFragment;
-                        source = newFragment;
-                    }
-                }
+                //    foreach(var g in groupedObjects)
+                //    {
+                //        supportedModels.Add(g.Key);
+                //        var newFragment = new CollectionFragment
+                //        {
+                //            Name = $"{g.Key.Name} ({g.Count()})",
+                //            Parent = source,
+                //            SupportedModels = supportedModels.ToArray()
+                //        };
+                //        yield return newFragment;
+                //        source = newFragment;
+                //    }
+                //}
             }
 
             // source - последний CollectionFragment, к котрому можно цеплять DataFragmet

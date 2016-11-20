@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Hierarchies>
+  <Hierarchy Name="MainHierarchy" WithHistory="True">
+    <Level>
+      <UsedStereotype Name="Region"/>
+      <Level>
+        <UsedStereotype Name="Consumer"/>
+        <Level>
+          <UsedStereotype Name="Contract"/>
+          <Level>
+            <UsedStereotype Name="ConsumerObject"/>
+            <Level>
+              <UsedStereotype Name="Point" />  
+            </Level>
+          </Level>
+        </Level>
+      </Level>
+    </Level>
+  </Hierarchy>
+</Hierarchies>

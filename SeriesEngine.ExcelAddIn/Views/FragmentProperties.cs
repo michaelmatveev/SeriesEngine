@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.ExcelAddIn.Models.Fragments;
+using SeriesEngine.Msk1;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {

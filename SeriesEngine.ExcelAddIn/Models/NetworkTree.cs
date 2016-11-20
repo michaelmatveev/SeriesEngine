@@ -1,4 +1,5 @@
 ﻿using SeriesEngine.ExcelAddIn.Helpers;
+using SeriesEngine.Msk1;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,14 @@ namespace SeriesEngine.ExcelAddIn.Models
     public class NetworkTree : Network
     {
         public const string RootName = "DataImportExport";
-        public List<NetworkTreeNode> Nodes { get; } = new List<NetworkTreeNode>();
+        //public List<NetworkTreeNode> Nodes { get; } = new List<NetworkTreeNode>();
 
         public XDocument ConvertToXml(IEnumerable<SubFragment> queryParamers)
         {
             var data = new XDocument();
             var rootElement = new XElement(RootName);
 
-            var tree = Nodes.GenerateTree(n => n.NodeName, n => n.Parent?.NodeName);
+            var tree = MainHierarchies.Cast<NetworkTreeNode>().GenerateTree(n => n.NodeName, n => n.Parent?.NodeName);
             rootElement.Add(GetSubElements(tree, queryParamers));
             data.Add(rootElement);
 
@@ -60,10 +61,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                         newElement.Add(new XAttribute("UniqueName", node.NodeName));
                         break;
                     case NodeType.Since:
-                        newElement.Add(new XAttribute("Since", node.Since));
+                        newElement.Add(new XAttribute("Since", node.ValidFrom));
                         break;
                     case NodeType.Till:
-                        newElement.Add(new XAttribute("Till", node.Till));
+                        newElement.Add(new XAttribute("Till", node.ValidTill));
                         break;
                     default:
                         throw new NotSupportedException("this operation is not supported");
@@ -72,7 +73,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             else if (qp is VariableSubFragment) // переменные только для данного объекта
             {
                 var vsf = (VariableSubFragment)qp;
-                newElement.Add(new XElement(vsf.VariableName, node.LinkedObject[vsf.VariableName]));
+                newElement.Add(new XElement(vsf.VariableName, node.LinkedObject.GetVariableValue(vsf.VariableName)));
             }
         }
     }
