@@ -12,7 +12,7 @@ public class CreateHeirarchyTemplate : CSharpTemplate
     public XElement Hierarchy;
 	public override string TransformText()
 	{
-        String hName = Hierarchy.Attribute("Name").Value;
+        String hName = Hierarchy.Attribute("Name").Value + "Nodes";
 		Boolean withHistory = (Hierarchy.Attribute("WithHistory") != null && Hierarchy.Attribute("WithHistory").Value == "True");
         var stereotypes = Hierarchy.Descendants("UsedStereotype").Select(us => us.Attribute("Name").Value).Distinct();
 #>
@@ -38,7 +38,6 @@ CREATE TABLE [<#= Schema #>].[<#= hName #>] (
 #>
 	ValidFrom datetime NULL,
 	ValidTill datetime NULL,
-	ReplaceId INT NULL,
 <#+
 		}
 #>
@@ -57,16 +56,6 @@ CREATE NONCLUSTERED INDEX [IX_<#= hName #>_NetHidIndex] ON [<#= Schema #>].[<#= 
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
 GO
 
-<#+ 
-	if(withHistory)
-	{
-#>
-ALTER TABLE [<#= Schema #>].[<#= hName #>] WITH CHECK ADD CONSTRAINT [FK_<#= hName #>_History] FOREIGN KEY([ReplaceId])
-REFERENCES [<#= Schema #>].[<#= hName #>] ([Id])
-GO
-<#+
-	}
-#>
 <#+
         foreach(String stereotype in stereotypes)
         {

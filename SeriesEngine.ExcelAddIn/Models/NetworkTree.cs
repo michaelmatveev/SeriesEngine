@@ -1,4 +1,5 @@
-﻿using SeriesEngine.ExcelAddIn.Helpers;
+﻿using AutoMapper;
+using SeriesEngine.ExcelAddIn.Helpers;
 using SeriesEngine.Msk1;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             var data = new XDocument();
             var rootElement = new XElement(RootName);
 
-            var tree = MainHierarchies.Cast<NetworkTreeNode>().GenerateTree(n => n.NodeName, n => n.Parent?.NodeName);
+            var tree = MainHierarchyNodes.Cast<NetworkTreeNode>().GenerateTree(n => n.NodeName, n => n.Parent?.NodeName);
             rootElement.Add(GetSubElements(tree, queryParamers));
             data.Add(rootElement);
 
@@ -27,7 +28,30 @@ namespace SeriesEngine.ExcelAddIn.Models
         public void LoadFromXml(XDocument document)
         {
             // Convert XML document into DB objects
+            Mapper.Initialize(cfg => 
+            {
+                cfg.CreateMap<XElement, Region>()
+                    .ForMember(
+                        r => r.Name,
+                        opt => opt.ResolveUsing(new XAttributeResolver<Region, string>("UniqueName")));
+
+                //cfg.CreateMap<XElement, MainHierarchyNode>()
+                //    .ForMember(
+                //        n => n.,
+                //        opt => opt.MapFrom(src => src.Elements("Region").ToList()));
+                cfg.CreateMap<XElement, MainHierarchyNode>()
+                    .ForMember(
+                        n => n.Region,
+                        opt => opt.MapFrom(src => src));
+            });                    
+
+            var mh = Mapper.Map<XElement, MainHierarchyNode>(document.Root);
         }
+
+        //private static Func<XElement, string, string, List<XElement>> _mapItems =
+        //    (src, collectionName, elementName) =>
+        //    (src.Element(collectionName) ?? new XElement(collectionName)).Elements(elementName).ToList();
+
 
         private IEnumerable<XElement> GetSubElements(
             IEnumerable<TreeItem<NetworkTreeNode>> currentItems,
@@ -75,6 +99,37 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var vsf = (VariableSubFragment)qp;
                 newElement.Add(new XElement(vsf.VariableName, node.LinkedObject.GetVariableValue(vsf.VariableName)));
             }
+        }
+    }
+
+    public class XElementResolver<D, T> : IValueResolver<XElement, D, T>
+    {
+        public T Resolve(XElement source, D destination, T destMember, ResolutionContext context)
+        {
+            if (source == null || string.IsNullOrEmpty(source.Value))
+                return default(T);
+            return (T)Convert.ChangeType(source.Value, typeof(T));
+        }
+    }
+
+    public class XAttributeResolver<D, T> : IValueResolver<XElement, D, T>
+    {
+        public XAttributeResolver(string attributeName)
+        {
+            Name = attributeName;
+        }
+
+        public string Name { get; set; }
+
+        public T Resolve(XElement source, D destination, T destMember, ResolutionContext context)
+        {
+            if (source == null)
+                return default(T);
+            var attribute = source.Attribute(Name);
+            if (attribute == null || String.IsNullOrEmpty(attribute.Value))
+                return default(T);
+
+            return (T)Convert.ChangeType(attribute.Value, typeof(T));
         }
     }
 }

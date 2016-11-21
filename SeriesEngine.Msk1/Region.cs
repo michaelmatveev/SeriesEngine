@@ -12,7 +12,7 @@ namespace SeriesEngine.Msk1
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Region()
         {
-            MainHierarchies = new HashSet<MainHierarchy>();
+            MainHierarchyNodes = new HashSet<MainHierarchyNode>();
         }
 
         public int Id { get; set; }
@@ -37,7 +37,7 @@ namespace SeriesEngine.Msk1
         public virtual User User { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MainHierarchy> MainHierarchies { get; set; }
+        public virtual ICollection<MainHierarchyNode> MainHierarchyNodes { get; set; }
 
         public override string GetName()
         {

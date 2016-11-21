@@ -10,7 +10,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         static MockNetworkProvider()
         {
-            var region1 = new MainHierarchy
+            var region1 = new MainHierarchyNode
             {
                 Region = new Region
                 {
@@ -18,18 +18,18 @@ namespace SeriesEngine.ExcelAddIn.Models
                     ObjectModel = MockModelProvider.Region
                 }
             };
-            var consumer1 = new MainHierarchy
+            var consumer1 = new MainHierarchyNode
             {
-                MainHierarchy2 = region1,
+                Parent = region1,
                 Consumer = new Consumer
                 {
                     Name = "OOO \"МагнитЭнерго\"",
                     ObjectModel = MockModelProvider.Customer
                 }
             };
-            var contract1 = new MainHierarchy
+            var contract1 = new MainHierarchyNode
             {
-                MainHierarchy2 = consumer1,
+                Parent = consumer1,
                 ValidFrom = new DateTime(2016, 01, 01),
                 ValidTill = new DateTime(2016, 06, 05),
                 Contract = new Contract
@@ -40,18 +40,18 @@ namespace SeriesEngine.ExcelAddIn.Models
             };
             contract1.Contract.ContractType = "КП";
 
-            var consumerObject1 = new MainHierarchy
+            var consumerObject1 = new MainHierarchyNode
             {
-                MainHierarchy2 = contract1,
+                Parent = contract1,
                 ConsumerObject = new ConsumerObject
                 {
                     Name = "ММ \"Влад\"; г. Пенза пр-т. Строителей, 24а",
                     ObjectModel = MockModelProvider.ConsumerObject
                 }
             };
-            var point1 = new MainHierarchy
+            var point1 = new MainHierarchyNode
             {
-                MainHierarchy2 = consumerObject1,
+                Parent = consumerObject1,
                 Point = new Point
                 {
                     Name = "ТП-530",
@@ -60,9 +60,9 @@ namespace SeriesEngine.ExcelAddIn.Models
             };
             point1.Point.VoltageLevel = "СН-2";
 
-            var point2 = new MainHierarchy
+            var point2 = new MainHierarchyNode
             {
-                MainHierarchy2 = consumerObject1,
+                Parent = consumerObject1,
                 Point = new Point
                 {
                     Name = "ТП-531",
@@ -71,9 +71,9 @@ namespace SeriesEngine.ExcelAddIn.Models
             };
             point2.Point.VoltageLevel = "СН-2";
 
-            var consumerObject2 = new MainHierarchy
+            var consumerObject2 = new MainHierarchyNode
             {
-                MainHierarchy2 = contract1,
+                Parent = contract1,
                 ConsumerObject = new ConsumerObject
                 {
                     Name = "ММ \"Арбеково\" г.Пенза пр. Строителей, 63",
@@ -81,9 +81,9 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
             };
 
-            var point3 = new MainHierarchy
+            var point3 = new MainHierarchyNode
             {
-                MainHierarchy2 = consumerObject2,
+                Parent = consumerObject2,
                 Point = new Point
                 {
                     Name = "ТП-796",
@@ -97,14 +97,14 @@ namespace SeriesEngine.ExcelAddIn.Models
                 Name = "Основные объекты",
             };
 
-            mainTree.MainHierarchies.Add(region1);
-            mainTree.MainHierarchies.Add(consumer1);
-            mainTree.MainHierarchies.Add(contract1);
-            mainTree.MainHierarchies.Add(consumerObject1);
-            mainTree.MainHierarchies.Add(point1);
-            mainTree.MainHierarchies.Add(point2);
-            mainTree.MainHierarchies.Add(consumerObject2);
-            mainTree.MainHierarchies.Add(point3);
+            mainTree.MainHierarchyNodes.Add(region1);
+            mainTree.MainHierarchyNodes.Add(consumer1);
+            mainTree.MainHierarchyNodes.Add(contract1);
+            mainTree.MainHierarchyNodes.Add(consumerObject1);
+            mainTree.MainHierarchyNodes.Add(point1);
+            mainTree.MainHierarchyNodes.Add(point2);
+            mainTree.MainHierarchyNodes.Add(consumerObject2);
+            mainTree.MainHierarchyNodes.Add(point3);
         }
 
         public ICollection<Network> GetNetworks(string filter)

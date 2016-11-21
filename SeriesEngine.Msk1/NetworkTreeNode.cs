@@ -12,7 +12,7 @@ namespace SeriesEngine.Msk1
             }
         }
 
-        public abstract NetworkTreeNode Parent { get; }
+        public NetworkTreeNode Parent { get; set; }
         public abstract NamedObject LinkedObject { get; }
 
         public DateTime? ValidFrom { get; set; }

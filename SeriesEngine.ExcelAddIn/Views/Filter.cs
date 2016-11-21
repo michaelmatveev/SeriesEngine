@@ -34,7 +34,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         public void RefreshFilter(NetworkTree selectedNetwork, string currentRoute)
         {
             var items = new List<BreadCrumbs.BreadCrumbItem>();
-            items.AddRange(selectedNetwork.MainHierarchies.Select(n => new BreadCrumbs.BreadCrumbItem(n.NodeName, 0, 0, 0, n)));
+            items.AddRange(selectedNetwork.MainHierarchyNodes.Select(n => new BreadCrumbs.BreadCrumbItem(n.NodeName, 0, 0, 0, n)));
             foreach(var item in items)
             {
                 var parent = ((NetworkTreeNode)item.Tag).Parent;

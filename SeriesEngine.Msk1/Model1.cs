@@ -18,18 +18,9 @@ namespace SeriesEngine.Msk1
         public virtual DbSet<ConsumerObject> ConsumerObjects { get; set; }
         public virtual DbSet<Consumer> Consumers { get; set; }
         public virtual DbSet<Contract> Contracts { get; set; }
-        public virtual DbSet<MainHierarchy> MainHierarchies { get; set; }
+        public virtual DbSet<MainHierarchyNode> MainHierarchyNodes { get; set; }
         public virtual DbSet<Point> Points { get; set; }
         public virtual DbSet<Region> Regions { get; set; }
-        public virtual DbSet<MainHierarchy1> MainHierarchy1 { get; set; }
-        public virtual DbSet<ObjectA_PeriodDecimalVariables> ObjectA_PeriodDecimalVariables { get; set; }
-        public virtual DbSet<ObjectA_PeriodEnumVariables> ObjectA_PeriodEnumVariables { get; set; }
-        public virtual DbSet<ObjectA_PeriodIntVariables> ObjectA_PeriodIntVariables { get; set; }
-        public virtual DbSet<ObjectA_PeriodSmallIntVariables> ObjectA_PeriodSmallIntVariables { get; set; }
-        public virtual DbSet<ObjectA> ObjectAs { get; set; }
-        public virtual DbSet<ObjectB> ObjectBs { get; set; }
-        public virtual DbSet<ObjectC> ObjectCs { get; set; }
-        public virtual DbSet<SecondHierarchy> SecondHierarchies { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -38,7 +29,7 @@ namespace SeriesEngine.Msk1
                 .IsUnicode(false);
 
             modelBuilder.Entity<Network>()
-                .HasMany(e => e.MainHierarchies)
+                .HasMany(e => e.MainHierarchyNodes)
                 .WithRequired(e => e.Network)
                 .HasForeignKey(e => e.NetId)
                 .WillCascadeOnDelete(false);
@@ -78,7 +69,7 @@ namespace SeriesEngine.Msk1
                 .IsFixedLength();
 
             modelBuilder.Entity<ConsumerObject>()
-                .HasMany(e => e.MainHierarchies)
+                .HasMany(e => e.MainHierarchyNodes)
                 .WithOptional(e => e.ConsumerObject)
                 .HasForeignKey(e => e.ConsumerObject_Id);
 
@@ -87,7 +78,7 @@ namespace SeriesEngine.Msk1
                 .IsFixedLength();
 
             modelBuilder.Entity<Consumer>()
-                .HasMany(e => e.MainHierarchies)
+                .HasMany(e => e.MainHierarchyNodes)
                 .WithOptional(e => e.Consumer)
                 .HasForeignKey(e => e.Consumer_Id);
 
@@ -96,21 +87,16 @@ namespace SeriesEngine.Msk1
                 .IsFixedLength();
 
             modelBuilder.Entity<Contract>()
-                .HasMany(e => e.MainHierarchies)
+                .HasMany(e => e.MainHierarchyNodes)
                 .WithOptional(e => e.Contract)
                 .HasForeignKey(e => e.Contract_Id);
-
-            modelBuilder.Entity<MainHierarchy>()
-                .HasMany(e => e.MainHierarchy1)
-                .WithOptional(e => e.MainHierarchy2)
-                .HasForeignKey(e => e.ReplaceId);
 
             modelBuilder.Entity<Point>()
                 .Property(e => e.ConcurrencyStamp)
                 .IsFixedLength();
 
             modelBuilder.Entity<Point>()
-                .HasMany(e => e.MainHierarchies)
+                .HasMany(e => e.MainHierarchyNodes)
                 .WithOptional(e => e.Point)
                 .HasForeignKey(e => e.Point_Id);
 
@@ -119,33 +105,9 @@ namespace SeriesEngine.Msk1
                 .IsFixedLength();
 
             modelBuilder.Entity<Region>()
-                .HasMany(e => e.MainHierarchies)
+                .HasMany(e => e.MainHierarchyNodes)
                 .WithOptional(e => e.Region)
                 .HasForeignKey(e => e.Region_Id);
-
-            modelBuilder.Entity<ObjectA_PeriodDecimalVariables>()
-                .Property(e => e.PeriodDecimalVariable)
-                .HasPrecision(38, 20);
-
-            modelBuilder.Entity<ObjectA_PeriodIntVariables>()
-                .Property(e => e.ConcurrencyStamp)
-                .IsFixedLength();
-
-            modelBuilder.Entity<ObjectA_PeriodSmallIntVariables>()
-                .Property(e => e.ConcurrencyStamp)
-                .IsFixedLength();
-
-            modelBuilder.Entity<ObjectA>()
-                .Property(e => e.ConcurrencyStamp)
-                .IsFixedLength();
-
-            modelBuilder.Entity<ObjectB>()
-                .Property(e => e.ConcurrencyStamp)
-                .IsFixedLength();
-
-            modelBuilder.Entity<ObjectC>()
-                .Property(e => e.ConcurrencyStamp)
-                .IsFixedLength();
         }
     }
 }

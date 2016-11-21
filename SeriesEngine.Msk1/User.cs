@@ -52,5 +52,6 @@ namespace SeriesEngine.Msk1
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Region> Regions { get; set; }
+
     }
 }
