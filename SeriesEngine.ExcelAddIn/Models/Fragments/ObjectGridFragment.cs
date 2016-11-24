@@ -99,9 +99,9 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
                 new XAttribute("form", "unqualified"));
         }
 
-        public string GetXml(ICollection<Network> networks)
+        public string GetXml(ICollection<NetworkTree> networks)
         {
-            var network = networks.OfType<NetworkTree>().First();
+            var network = networks.OfType<NetworkTree>().Last();
             var xml = network.ConvertToXml(SubFragments);
             return xml.ToString();
         }

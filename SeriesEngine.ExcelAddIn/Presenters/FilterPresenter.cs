@@ -32,7 +32,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             }
             else
             {
-                View.RefreshFilter(network as NetworkTree, string.Empty);
+                //View.RefreshFilter(network as NetworkTree, string.Empty);
                 View.ShowIt(PaneLocation.Top);
             }
         }

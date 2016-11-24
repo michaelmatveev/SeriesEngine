@@ -9,6 +9,6 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public interface INetworksProvider
     {
-        ICollection<Network> GetNetworks(string filter); 
+        ICollection<NetworkTree> GetNetworks(string filter); 
     }
 }

@@ -180,6 +180,7 @@
     <Compile Include="Helpers\TreeHelpers.cs" />
     <Compile Include="Models\BaseDataExporter.cs" />
     <Compile Include="Models\BaseDataImporter.cs" />
+    <Compile Include="Models\DataBaseNetworkProvider.cs" />
     <Compile Include="Models\NetworkTree.cs" />
     <Compile Include="Models\SubFragment.cs" />
     <Compile Include="Models\CustomInterceptorPolicy.cs" />
@@ -269,6 +270,7 @@
     <EmbeddedResource Include="Views\Ribbon.resx">
       <DependentUpon>Ribbon.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

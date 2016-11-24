@@ -11,7 +11,7 @@ namespace SeriesEngine.Msk1
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Network()
         {
-            MainHierarchyNodes = new HashSet<MainHierarchyNode>();
+            Nodes = new HashSet<MainHierarchyNode>();
         }
 
         public int Id { get; set; }
@@ -32,7 +32,7 @@ namespace SeriesEngine.Msk1
         public int? Tag { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MainHierarchyNode> MainHierarchyNodes { get; set; }
+        public virtual ICollection<MainHierarchyNode> Nodes { get; set; }
 
         public virtual Solution Solution { get; set; }
     }

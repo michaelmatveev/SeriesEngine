@@ -9,9 +9,20 @@ namespace SeriesEngine.Msk1
     [Table("pwk1.MainHierarchyNodes")]
     public partial class MainHierarchyNode : NetworkTreeNode
     {
-        public int Id { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public MainHierarchyNode()
+        {
+            Children = new HashSet<MainHierarchyNode>();
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MainHierarchyNode> Children { get; set; }
 
         public int NetId { get; set; }
+
+        public virtual Network Network { get; set; }
+
+        public int? ParentId { get; set; }
 
         public int? Region_Id { get; set; }
 
@@ -24,8 +35,6 @@ namespace SeriesEngine.Msk1
         public int? Point_Id { get; set; }
 
         public int? Tag { get; set; }
-
-        public virtual Network Network { get; set; }
 
         public virtual ConsumerObject ConsumerObject { get; set; }
 
@@ -41,14 +50,94 @@ namespace SeriesEngine.Msk1
         {
             get
             {
-                if (Region != null) return Region;
-                if (Consumer != null) return Consumer;
-                if (Contract != null) return Contract;
-                if (ConsumerObject != null) return ConsumerObject;
-                if (Point != null) return Point;
+                if (Region != null)
+                {
+                    Region.ObjectModel = RegionModel;
+                    return Region;
+                }
 
+                if (Consumer != null)
+                {
+                    Consumer.ObjectModel = ConsumerModel;
+                    return Consumer;
+                }
+                if (Contract != null)
+                {
+                    Contract.ObjectModel = ContractModel;
+                    return Contract;
+                }
+                if (ConsumerObject != null)
+                {
+                    ConsumerObject.ObjectModel = ConsumerObjectModel;
+                    return ConsumerObject;
+                }
+                if (Point != null)
+                {
+                    Point.ObjectModel = PointModel;
+                    return Point;
+                }
                 return null;
             }
         }
+
+        internal static ObjectMetamodel RegionModel = new ObjectMetamodel
+        {
+            Name = "Region",
+        };
+
+        internal static ObjectMetamodel ConsumerModel = new ObjectMetamodel
+        {
+            Name = "Customer",
+        };
+
+        internal static ObjectMetamodel ContractModel = new ObjectMetamodel
+        {
+            Name = "Contract",
+            Variables = new List<Variable>
+            {
+                new Variable
+                {
+                    Name = "Номер договора"
+                },
+                new Variable
+                {
+                    Name = "Дата договора"
+                },
+                new Variable
+                {
+                    Name = "Ценовая категория"
+                },
+            }
+        };
+
+        internal static ObjectMetamodel ConsumerObjectModel = new ObjectMetamodel
+        {
+            Name = "ConsumerObject",
+        };
+
+        internal static ObjectMetamodel PointModel = new ObjectMetamodel
+        {
+            Name = "Point",
+            Variables = new List<Variable>
+            {
+                new Variable
+                {
+                    Name = "Наименование"
+                },
+                new Variable
+                {
+                    Name = "Уровень напряжения"
+                },
+                new Variable
+                {
+                    Name = "Максимальная мощность"
+                },
+                new Variable
+                {
+                    Name = "Ценовая категория"
+                }
+            }
+        };
+
     }
 }

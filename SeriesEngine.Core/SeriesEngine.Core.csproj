@@ -52,8 +52,6 @@
     <Compile Include="DataAccess\Context.cs" />
     <Compile Include="DataAccess\Network.cs" />
     <Compile Include="DataAccess\Solution.cs" />
-    <Compile Include="DataAccess\TreeHierarchy.cs" />
-    <Compile Include="DataAccess\TreeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reliability.cs" />
   </ItemGroup>

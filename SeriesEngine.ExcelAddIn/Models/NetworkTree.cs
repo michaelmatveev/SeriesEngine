@@ -8,50 +8,87 @@ using System.Xml.Linq;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
-    public class NetworkTree : Network
+    public class NetworkTree
     {
         public const string RootName = "DataImportExport";
-        //public List<NetworkTreeNode> Nodes { get; } = new List<NetworkTreeNode>();
+        private readonly Network _network;
+
+        public NetworkTree(Network network)
+        {
+            _network = network;
+        }
+
+        public string Name
+        {
+            get
+            {
+                return _network.Name;
+            }
+        }
 
         public XDocument ConvertToXml(IEnumerable<SubFragment> queryParamers)
         {
             var data = new XDocument();
             var rootElement = new XElement(RootName);
 
-            var tree = MainHierarchyNodes.Cast<NetworkTreeNode>().GenerateTree(n => n.NodeName, n => n.Parent?.NodeName);
+            var tree = _network.Nodes.Cast<NetworkTreeNode>().GenerateTree(n => n.NodeName, n => n.Parent?.NodeName);
             rootElement.Add(GetSubElements(tree, queryParamers));
             data.Add(rootElement);
 
             return data;
         }
 
-        public void LoadFromXml(XDocument document)
+        public void LoadFromXml(XDocument target)
         {
-            // Convert XML document into DB objects
-            Mapper.Initialize(cfg => 
+            // TODO find diffrence
+            //XDocument source = ConvertToXml(queryParamers);
+
+            using (var context = new Model1())
             {
-                cfg.CreateMap<XElement, Region>()
-                    .ForMember(
-                        r => r.Name,
-                        opt => opt.ResolveUsing(new XAttributeResolver<Region, string>("UniqueName")));
+                foreach (var re in target.Root.Elements("Region"))
+                {
+                    var newNode = new MainHierarchyNode()
+                    {
+                        Region = new Region()
+                        {
+                            Name = re.Attribute("UniqueName").Value
+                        }
+                    };
 
-                //cfg.CreateMap<XElement, MainHierarchyNode>()
-                //    .ForMember(
-                //        n => n.,
-                //        opt => opt.MapFrom(src => src.Elements("Region").ToList()));
-                cfg.CreateMap<XElement, MainHierarchyNode>()
-                    .ForMember(
-                        n => n.Region,
-                        opt => opt.MapFrom(src => src));
-            });                    
+                    _network.Nodes.Add(newNode);
+                }
 
-            var mh = Mapper.Map<XElement, MainHierarchyNode>(document.Root);
+
+                context.SaveChanges();
+            }
+
+            // Convert XML document into DB objects
+            //Mapper.Initialize(cfg => 
+            //{
+            //    cfg.CreateMap<XElement, Network>()
+            //        .ForMember(
+            //            n => n.MainHierarchyNodes,
+            //            opt => opt.MapFrom(src => src.Elements("Region").ToList()));
+
+            //    cfg.CreateMap<XElement, MainHierarchyNode>()
+            //        .ForMember(
+            //            n => n.Parent,
+            //            opt => opt.MapFrom(src => src.Parent));
+
+            //    cfg.CreateMap<XElement, MainHierarchyNode>()
+            //        .ForMember(
+            //            n => n.Region,
+            //            opt => opt.MapFrom(src => src));
+
+            //    cfg.CreateMap<XElement, Region>()
+            //        .ForMember(
+            //            r => r.Name,
+            //            opt => opt.ResolveUsing(new XAttributeResolver<Region, string>("UniqueName")));
+
+            //});                    
+
+            //var network = Mapper.Map<XElement, Network>(document.Root);
         }
-
-        //private static Func<XElement, string, string, List<XElement>> _mapItems =
-        //    (src, collectionName, elementName) =>
-        //    (src.Element(collectionName) ?? new XElement(collectionName)).Elements(elementName).ToList();
-
 
         private IEnumerable<XElement> GetSubElements(
             IEnumerable<TreeItem<NetworkTreeNode>> currentItems,
@@ -85,10 +122,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                         newElement.Add(new XAttribute("UniqueName", node.NodeName));
                         break;
                     case NodeType.Since:
-                        newElement.Add(new XAttribute("Since", node.ValidFrom));
+                        newElement.Add(new XAttribute("Since", node.ValidFrom ?? default(DateTime)));
                         break;
                     case NodeType.Till:
-                        newElement.Add(new XAttribute("Till", node.ValidTill));
+                        newElement.Add(new XAttribute("Till", node.ValidTill ?? default(DateTime)));
                         break;
                     default:
                         throw new NotSupportedException("this operation is not supported");

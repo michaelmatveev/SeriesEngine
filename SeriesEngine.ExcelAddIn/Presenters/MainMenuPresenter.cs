@@ -75,12 +75,12 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
         void ICommand<InitalizeCommandArgs>.Execute(InitalizeCommandArgs commandData)
         {
-            View.InitializeFilters(_networkProvider.GetNetworks(string.Empty));
+           // View.InitializeFilters(_networkProvider.GetNetworks(string.Empty));
         }
 
         void IEventHandler<InitializeEventData>.Handle(InitializeEventData eventData)
         {
-            View.InitializeFilters(_networkProvider.GetNetworks(string.Empty));
+           // View.InitializeFilters(_networkProvider.GetNetworks(string.Empty));
         }
 
         void IEventHandler<MainPaneClosed>.Handle(MainPaneClosed eventData)

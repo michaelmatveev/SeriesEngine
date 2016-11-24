@@ -82,7 +82,8 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 _.For<INetworksProvider>()
                     .Singleton()
-                    .Use<MockNetworkProvider>();
+                    //.Use<MockNetworkProvider>();
+                    .Use<DataBaseNetworkProvider>();
 
                 _.For<Workbook>()
                     .Use(CurrentDocument);

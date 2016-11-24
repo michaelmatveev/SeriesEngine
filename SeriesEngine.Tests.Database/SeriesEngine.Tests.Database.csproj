@@ -63,14 +63,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SeriesEngine.Core\SeriesEngine.Core.csproj">
-      <Project>{87d29b27-20d3-4cc8-aa8c-6a85987db69c}</Project>
-      <Name>SeriesEngine.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SeriesEngine.Msk1\SeriesEngine.Msk1.csproj">
+      <Project>{039797c1-a3f3-47c7-b887-75073b9b8e5e}</Project>
+      <Name>SeriesEngine.Msk1</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

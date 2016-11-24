@@ -29,10 +29,15 @@ namespace SeriesEngine.Msk1
                 .IsUnicode(false);
 
             modelBuilder.Entity<Network>()
-                .HasMany(e => e.MainHierarchyNodes)
+                .HasMany(e => e.Nodes)
                 .WithRequired(e => e.Network)
                 .HasForeignKey(e => e.NetId)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<MainHierarchyNode>()
+                .HasMany(e => e.Children)
+                .WithOptional(e => e.Parent)
+                .HasForeignKey(e => e.ParentId);
 
             modelBuilder.Entity<Solution>()
                 .HasMany(e => e.Networks)

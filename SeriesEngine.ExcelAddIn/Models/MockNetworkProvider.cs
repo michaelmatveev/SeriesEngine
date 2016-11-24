@@ -6,7 +6,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public class MockNetworkProvider : INetworksProvider
     {
-        public static NetworkTree mainTree;
+        public static Network mainTree;
 
         static MockNetworkProvider()
         {
@@ -92,22 +92,22 @@ namespace SeriesEngine.ExcelAddIn.Models
             };
             point3.Point.VoltageLevel = "СН-2";
 
-            mainTree = new NetworkTree
+            mainTree = new Network()
             {
                 Name = "Основные объекты",
             };
 
-            mainTree.MainHierarchyNodes.Add(region1);
-            mainTree.MainHierarchyNodes.Add(consumer1);
-            mainTree.MainHierarchyNodes.Add(contract1);
-            mainTree.MainHierarchyNodes.Add(consumerObject1);
-            mainTree.MainHierarchyNodes.Add(point1);
-            mainTree.MainHierarchyNodes.Add(point2);
-            mainTree.MainHierarchyNodes.Add(consumerObject2);
-            mainTree.MainHierarchyNodes.Add(point3);
+            mainTree.Nodes.Add(region1);
+            mainTree.Nodes.Add(consumer1);
+            mainTree.Nodes.Add(contract1);
+            mainTree.Nodes.Add(consumerObject1);
+            mainTree.Nodes.Add(point1);
+            mainTree.Nodes.Add(point2);
+            mainTree.Nodes.Add(consumerObject2);
+            mainTree.Nodes.Add(point3);
         }
 
-        public ICollection<Network> GetNetworks(string filter)
+        public ICollection<NetworkTree> GetNetworks(string filter)
         {
             //var result = new NetworkTree
             //{
@@ -121,7 +121,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
             //return new[] { result };
 
-            return new[] { mainTree };
+            return new[] { new NetworkTree(mainTree) };
         }
     }
 }

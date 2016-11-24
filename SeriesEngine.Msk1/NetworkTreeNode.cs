@@ -4,6 +4,8 @@ namespace SeriesEngine.Msk1
 {
     public abstract class NetworkTreeNode
     {
+        public int Id { get; set; }
+
         public string NodeName
         {
             get
@@ -12,7 +14,7 @@ namespace SeriesEngine.Msk1
             }
         }
 
-        public NetworkTreeNode Parent { get; set; }
+        public virtual MainHierarchyNode Parent { get; set; }
         public abstract NamedObject LinkedObject { get; }
 
         public DateTime? ValidFrom { get; set; }

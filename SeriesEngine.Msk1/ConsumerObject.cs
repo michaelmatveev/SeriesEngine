@@ -17,10 +17,6 @@ namespace SeriesEngine.Msk1
 
         public int Id { get; set; }
 
-        public DateTime ObjectCreationTime { get; set; }
-
-        public DateTime UpdateTime { get; set; }
-
         public int? AuthorId { get; set; }
 
         [Required]
