@@ -1,4 +1,5 @@
 ﻿using Microsoft.Office.Tools.Excel;
+using Microsoft.XmlDiffPatch;
 using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
 using SeriesEngine.ExcelAddIn.Helpers;
@@ -7,6 +8,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -34,7 +37,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public override void ExportFragment(ObjectGridFragment fragment)
         {
-            var network = _networksProvider.GetNetworks(string.Empty).First() as NetworkTree;
+            var network = _networksProvider.GetNetworks(string.Empty).Last() as NetworkTree;
             Excel.Worksheet sheet = _workbook.Sheets[fragment.Sheet];
             var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == fragment.Name);
             // another way http://stackoverflow.com/questions/12572439/why-does-readxmlschema-create-extra-id-column
@@ -44,6 +47,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var dataSet = new DataSet();
                 dataSet.ReadXmlSchema(sr);
 
+                //var currentNetworkState = network.ConvertToXml(fragment.SubFragments);
+                //dataSet.ReadXml(currentNetworkState.CreateReader());
+                //dataSet.AcceptChanges();
+
                 var tree = fragment
                     .SubFragments
                     .Select((f, i) => new ColumnIdentity(f, i))
@@ -52,15 +59,45 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 for (int row = 1; row <= listObject.DataBodyRange.Rows.Count; row++)
                 {
-                    InsertRowInDataSet(row, dataSet, listObject, 0, tree);
+                    //RemoveRowInDataSet(row, dataSet, listObject, 0, tree);
+                    CreateOrUpdateRowInDataSet(row, dataSet, listObject, 0, tree);
                 }
 
+                //var added = dataSet.GetChanges(DataRowState.Added);
+                //if (added != null)
+                //{
+                //    var addedDoc = XDocument.Parse(added.GetXml());
+                //}
+
+                //var removed = dataSet.GetChanges(DataRowState.Deleted);
+                //if(removed != null)
+                //{
+                //    var removedDoc = XDocument.Parse(removed.GetXml());
+                //}
+
+                //var changed = dataSet.GetChanges(DataRowState.Modified);
+                //if(changed != null)
+                //{
+                //    var changedDoc = XDocument.Parse(changed.GetXml());
+                //}
                 var doc = XDocument.Parse(dataSet.GetXml());
-                network.LoadFromXml(doc);
+                //network.LoadFromXml(doc);
+                var sb = new StringBuilder();
+                using (var diffgramWriter = XmlWriter.Create(sb))
+                {
+                    XmlDiff xmldiff = new XmlDiff(XmlDiffOptions.IgnoreChildOrder |
+                        XmlDiffOptions.IgnoreNamespaces |
+                        XmlDiffOptions.IgnorePrefixes);
+                    var identical = xmldiff.Compare(
+                        network.ConvertToXml(fragment.SubFragments).ToXmlNode(), 
+                        doc.ToXmlNode(), diffgramWriter);
+                    diffgramWriter.Close();
+                }
+
             }
         }
 
-        private void InsertRowInDataSet(int row, DataSet dataSet, Excel.ListObject listObject, int rootId, IEnumerable<TreeItem<IGrouping<ObjectIdentity, ColumnIdentity>>> currentItems)
+        private void CreateOrUpdateRowInDataSet(int row, DataSet dataSet, Excel.ListObject listObject, int rootId, IEnumerable<TreeItem<IGrouping<ObjectIdentity, ColumnIdentity>>> currentItems)
         {
             foreach (var node in currentItems)
             {
@@ -71,6 +108,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                     var cellValue = (listObject.DataBodyRange[row, column.Index + 1] as Excel.Range).Value2;
                     dataRow[column.FieldName] = cellValue;
                 }
+                if (dataRow["UniqueName"] is System.DBNull)
+                {
+                    return;
+                }
 
                 var rows = table.AsEnumerable();
 
@@ -79,13 +120,23 @@ namespace SeriesEngine.ExcelAddIn.Models
                     rows = rows.Where(r => r[$"{node.Item.Key.Parent}_Id"].Equals(rootId));
                     dataRow[$"{node.Item.Key.Parent}_Id"] = rootId;
                 }
-                    
+                                       
                 var match = rows.FirstOrDefault(r => r["UniqueName"].Equals(dataRow["UniqueName"]));
                 int id = match != null ? (int)match[$"{table.TableName}_Id"] : -1;
 
                 if (id == -1)
                 {
-                    dataSet.Tables[node.Item.Key.RefObject].Rows.Add(dataRow);
+                    table.Rows.Add(dataRow);
+                }
+                else
+                {
+                    foreach(var column in node.Item)
+                    {
+                        if (!match[column.FieldName].Equals(dataRow[column.FieldName]))
+                        {
+                            match[column.FieldName] = dataRow[column.FieldName];
+                        }
+                    }
                 }
 
                 if (node.Children.Any())
@@ -94,11 +145,65 @@ namespace SeriesEngine.ExcelAddIn.Models
                     {
                         id = (int)dataRow[$"{node.Item.Key.RefObject}_Id"];
                     }
-                    InsertRowInDataSet(row, dataSet, listObject, id, node.Children);
+                    CreateOrUpdateRowInDataSet(row, dataSet, listObject, id, node.Children);
                 }
 
             }
         }
+
+        //private void RemoveRowInDataSet(int row, DataSet dataSet, Excel.ListObject listObject, int rootId, IEnumerable<TreeItem<IGrouping<ObjectIdentity, ColumnIdentity>>> currentItems)
+        //{
+        //    foreach (var node in currentItems)
+        //    {
+        //        var table = dataSet.Tables[node.Item.Key.RefObject];
+        //        //var dataRow = table.NewRow();
+        //        //foreach (var column in node.Item)
+        //        //{
+        //        //    var cellValue = (listObject.DataBodyRange[row, column.Index + 1] as Excel.Range).Value2;
+        //        //    dataRow[column.FieldName] = cellValue;
+        //        //}
+        //        //if (dataRow["UniqueName"] is System.DBNull)
+        //        //{
+        //        //    return;
+        //        //}
+
+        //        var rows = table.AsEnumerable();
+
+        //        if (node.Item.Key.Parent != NetworkTree.RootName)
+        //        {
+        //            rows = rows.Where(r => r[$"{node.Item.Key.Parent}_Id"].Equals(rootId));
+        //        }
+
+        //        var match = rows.FirstOrDefault(r => r["UniqueName"].Equals(dataRow["UniqueName"]));
+
+        //        int id = match != null ? (int)match[$"{table.TableName}_Id"] : -1;
+
+        //        if (id == -1)
+        //        {
+        //            table.Rows.Add(dataRow);
+        //        }
+        //        else
+        //        {
+        //            foreach (var column in node.Item)
+        //            {
+        //                if (!match[column.FieldName].Equals(dataRow[column.FieldName]))
+        //                {
+        //                    match[column.FieldName] = dataRow[column.FieldName];
+        //                }
+        //            }
+        //        }
+
+        //        if (node.Children.Any())
+        //        {
+        //            if (id == -1)
+        //            {
+        //                id = (int)dataRow[$"{node.Item.Key.RefObject}_Id"];
+        //            }
+        //            CreateOrUpdateRowInDataSet(row, dataSet, listObject, id, node.Children);
+        //        }
+
+        //    }
+        //}
 
         #region Helper classes
 
