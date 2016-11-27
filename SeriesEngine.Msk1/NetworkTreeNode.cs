@@ -17,6 +17,12 @@ namespace SeriesEngine.Msk1
         public virtual MainHierarchyNode Parent { get; set; }
         public abstract NamedObject LinkedObject { get; }
 
+        public void SetLinkedObject(NamedObject obj)
+        {
+            var property = this.GetType().GetProperty(obj.ObjectModel.Name);
+            property.SetValue(this, obj);
+        }
+
         public DateTime? ValidFrom { get; set; }
         public DateTime? ValidTill { get; set; }
     }

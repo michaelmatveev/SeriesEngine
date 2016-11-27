@@ -14,9 +14,9 @@ namespace SeriesEngine.ExcelAddIn.Models
             Name = "Region",
         };
 
-        internal static ObjectMetamodel Customer = new ObjectMetamodel
+        internal static ObjectMetamodel Consumer = new ObjectMetamodel
         {
-            Name = "Customer",
+            Name = "Consumer",
         };
 
         internal static ObjectMetamodel Contract = new ObjectMetamodel
@@ -106,7 +106,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         internal static List<ObjectMetamodel> _metamodels = new List<ObjectMetamodel>
         {
-            Region, Customer, Contract, ConsumerObject, Point, Device,
+            Region, Consumer, Contract, ConsumerObject, Point, Device,
         };
 
         public IEnumerable<ObjectMetamodel> GetObjectMetamodels()

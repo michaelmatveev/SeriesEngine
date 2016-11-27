@@ -24,7 +24,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 Consumer = new Consumer
                 {
                     Name = "OOO \"МагнитЭнерго\"",
-                    ObjectModel = MockModelProvider.Customer
+                    ObjectModel = MockModelProvider.Consumer
                 }
             };
             var contract1 = new MainHierarchyNode

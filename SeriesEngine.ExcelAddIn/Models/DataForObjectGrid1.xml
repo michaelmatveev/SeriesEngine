@@ -2,7 +2,7 @@
 <DataImportExport>
   <!-- Данные импортируются с максимального уровня-->
   <Region UniqueName="Пензенская область">
-    <Customer UniqueName="ООО &quot;МагнитЭнерго&quot;">
+    <Consumer UniqueName="ООО &quot;МагнитЭнерго&quot;">
       <Contract UniqueName="1001014-ЭН" Since="2002-05-30T09:00:00" Till="2008-05-30T09:00:00">
         <ContractType>КП</ContractType>
         <ConsumerObject UniqueName="ММ &quot;Влад&quot; г. Пенза пр-т. Строителей, 24а">
@@ -19,6 +19,6 @@
           </Point>
         </ConsumerObject>
       </Contract>
-    </Customer>
+    </Consumer>
   </Region>
 </DataImportExport>

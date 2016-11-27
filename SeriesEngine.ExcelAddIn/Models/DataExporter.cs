@@ -43,14 +43,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             // another way http://stackoverflow.com/questions/12572439/why-does-readxmlschema-create-extra-id-column
             var schema = fragment.GetSchema();
             var sr = new StringReader(schema);
-                      
-            var dsOriginal = new DataSet();
-            dsOriginal.ReadXmlSchema(sr);
-            var currentNetworkState = network.ConvertToXml(fragment.SubFragments);
-            dsOriginal.ReadXml(currentNetworkState.CreateReader());
-            dsOriginal.AcceptChanges();
-
-            sr = new StringReader(schema);
+                     
             var dsChanged = new DataSet();
             dsChanged.ReadXmlSchema(sr);
 
@@ -64,49 +57,9 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 CreateOrUpdateRowInDataSet(row, dsChanged, listObject, 0, tree);
             }
-            //dsChanged.AcceptChanges();
 
-            dsOriginal.Merge(dsChanged);
-            var dsDifferences = dsOriginal.GetChanges();
-
-            if(dsDifferences == null)
-            {
-                return;
-            }
-
-            var added = dsDifferences.GetChanges(DataRowState.Added);
-            if (added != null)
-            {
-                var addedDoc = XDocument.Parse(added.GetXml());
-            }
-
-            var removed = dsDifferences.GetChanges(DataRowState.Deleted);
-            if (removed != null)
-            {
-                var removedDoc = XDocument.Parse(removed.GetXml());
-            }
-
-            var changed = dsDifferences.GetChanges(DataRowState.Modified);
-            if (changed != null)
-            {
-                var changedDoc = XDocument.Parse(changed.GetXml());
-            }
-
-            var doc = XDocument.Parse(dsDifferences.GetXml());
-            //network.LoadFromXml(doc);
-            //var sb = new StringBuilder();
-            //using (var diffgramWriter = XmlWriter.Create(sb))
-            //{
-            //    XmlDiff xmldiff = new XmlDiff(XmlDiffOptions.IgnoreChildOrder |
-            //        XmlDiffOptions.IgnoreNamespaces |
-            //        XmlDiffOptions.IgnorePrefixes);
-            //    var identical = xmldiff.Compare(
-            //        network.ConvertToXml(fragment.SubFragments).ToXmlNode(), 
-            //        doc.ToXmlNode(), diffgramWriter);
-            //    diffgramWriter.Close();
-            //}
-
-            
+            var doc = XDocument.Parse(dsChanged.GetXml());
+            network.LoadFromXml(fragment.SubFragments, doc);           
         }
 
         private void CreateOrUpdateRowInDataSet(int row, DataSet dataSet, Excel.ListObject listObject, int rootId, IEnumerable<TreeItem<IGrouping<ObjectIdentity, ColumnIdentity>>> currentItems)

@@ -78,19 +78,20 @@ namespace SeriesEngine.Msk1
                 }
                 return null;
             }
+
         }
 
-        internal static ObjectMetamodel RegionModel = new ObjectMetamodel
+        public static ObjectMetamodel RegionModel = new ObjectMetamodel
         {
             Name = "Region",
         };
 
-        internal static ObjectMetamodel ConsumerModel = new ObjectMetamodel
+        public static ObjectMetamodel ConsumerModel = new ObjectMetamodel
         {
-            Name = "Customer",
+            Name = "Consumer",
         };
 
-        internal static ObjectMetamodel ContractModel = new ObjectMetamodel
+        public static ObjectMetamodel ContractModel = new ObjectMetamodel
         {
             Name = "Contract",
             Variables = new List<Variable>
@@ -110,12 +111,12 @@ namespace SeriesEngine.Msk1
             }
         };
 
-        internal static ObjectMetamodel ConsumerObjectModel = new ObjectMetamodel
+        public static ObjectMetamodel ConsumerObjectModel = new ObjectMetamodel
         {
             Name = "ConsumerObject",
         };
 
-        internal static ObjectMetamodel PointModel = new ObjectMetamodel
+        public static ObjectMetamodel PointModel = new ObjectMetamodel
         {
             Name = "Point",
             Variables = new List<Variable>

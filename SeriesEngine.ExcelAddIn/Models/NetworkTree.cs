@@ -3,8 +3,10 @@ using SeriesEngine.ExcelAddIn.Helpers;
 using SeriesEngine.Msk1;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -38,57 +40,159 @@ namespace SeriesEngine.ExcelAddIn.Models
             return data;
         }
 
-        public void LoadFromXml(XDocument target)
+        public void LoadFromXml(IEnumerable<SubFragment> queryParamers, XDocument target)
         {
-            // TODO find diffrence
-            //XDocument source = ConvertToXml(queryParamers);
-
+            var currentTreeState = _network
+                .Nodes
+                .Cast<NetworkTreeNode>()
+                .GenerateTree(n => n.NodeName, n => n.Parent?.NodeName);
             using (var context = new Model1())
             {
-                foreach (var re in target.Root.Elements("Region"))
+                var nodesToDelete = new List<NetworkTreeNode>();
+                DeleteNodes(currentTreeState, context, nodesToDelete);
+                RestoreNodes(target.Root.Elements(), null, nodesToDelete, context);
+                foreach(var n in nodesToDelete)
                 {
-                    var newNode = new MainHierarchyNode()
-                    {
-                        Region = new Region()
-                        {
-                            Name = re.Attribute("UniqueName").Value
-                        }
-                    };
-
-                    _network.Nodes.Add(newNode);
-                }
-
-
+                    context.Entry(n).State = EntityState.Deleted;
+                }        
                 context.SaveChanges();
             }
-
-            // Convert XML document into DB objects
-            //Mapper.Initialize(cfg => 
-            //{
-            //    cfg.CreateMap<XElement, Network>()
-            //        .ForMember(
-            //            n => n.MainHierarchyNodes,
-            //            opt => opt.MapFrom(src => src.Elements("Region").ToList()));
-
-            //    cfg.CreateMap<XElement, MainHierarchyNode>()
-            //        .ForMember(
-            //            n => n.Parent,
-            //            opt => opt.MapFrom(src => src.Parent));
-
-            //    cfg.CreateMap<XElement, MainHierarchyNode>()
-            //        .ForMember(
-            //            n => n.Region,
-            //            opt => opt.MapFrom(src => src));
-
-            //    cfg.CreateMap<XElement, Region>()
-            //        .ForMember(
-            //            r => r.Name,
-            //            opt => opt.ResolveUsing(new XAttributeResolver<Region, string>("UniqueName")));
-
-            //});                    
-
-            //var network = Mapper.Map<XElement, Network>(document.Root);
         }
+
+        private void DeleteNodes(IEnumerable<TreeItem<NetworkTreeNode>> treeItems, Model1 context, List<NetworkTreeNode> nodesToDelete)
+        {
+            foreach(var c in treeItems)
+            {
+                nodesToDelete.Add(c.Item);
+                //context.Entry(c.Item).State = EntityState.Deleted;
+                DeleteNodes(c.Children, context, nodesToDelete);
+            }
+        }
+
+        private void RestoreNodes(IEnumerable<XElement> elements, MainHierarchyNode parent, List<NetworkTreeNode> nodesToDelete, Model1 context)
+        {
+            foreach(var element in elements)
+            {
+                // try to find object for node
+                var nameAttr = element.Attribute("UniqueName");
+                var sinceAttr = element.Attribute("Since");
+                var tillAttr = element.Attribute("Till");
+
+                if (nameAttr != null)
+                {
+                    var node = _network.Nodes.FirstOrDefault(n => n.NodeName == nameAttr.Value && n.Parent == parent);
+                    if (node == null)
+                    {
+                        node = new MainHierarchyNode
+                        {
+                            Network = _network,
+                            Parent = parent
+                        };
+                        // create a new object and node
+                        node.SetLinkedObject(CreateObject(element));
+                        context.MainHierarchyNodes.Add(node);
+                    }
+                    else
+                    {
+                        nodesToDelete.Remove(node);
+                        // object exists for the same node
+                        //context.Entry(node).State = EntityState.Unchanged;
+                    }
+                    RestoreNodes(element.Elements(), node, nodesToDelete, context);
+                }
+            }
+        }
+
+        public NamedObject CreateObject(XElement element)
+        {
+            var objName = element.Attribute("UniqueName").Value;
+            switch (element.Name.LocalName)
+            {
+                case "Region":
+                    return new Region
+                    {
+                        ObjectModel = MainHierarchyNode.RegionModel,
+                        Name = objName
+                    };
+                case "Consumer":
+                    return new Consumer
+                    {
+                        ObjectModel = MainHierarchyNode.ConsumerModel,
+                        Name = objName
+                    };
+                case "Contract":
+                    return new Contract
+                    {
+                        ObjectModel = MainHierarchyNode.ContractModel,
+                        Name = objName
+                    };
+                case "ConsumerObject":
+                    return new ConsumerObject
+                    {
+                        ObjectModel = MainHierarchyNode.ConsumerObjectModel,
+                        Name = objName
+                    };
+                case "Point":
+                    return new Point
+                    {
+                        ObjectModel = MainHierarchyNode.PointModel,
+                        Name = objName
+                    };
+
+                default: throw new NotSupportedException();
+            }
+        }
+
+        //public void LoadFromXml(IEnumerable<SubFragment> queryParamers, XDocument target)
+        //{
+        //    // TODO find diffrence
+        //    XDocument source = ConvertToXml(queryParamers);
+        //    // get current state of network
+        //    var currentTreeState = _network.Nodes.GenerateTree(n => n.NodeName, n => n.Parent?.NodeName);
+        //    using (var context = new Model1())
+        //    {
+        //        context.Networks.Attach(_network);
+        //        foreach (var c in currentTreeState)
+        //        {
+        //            // try to find node that corresponds target
+        //            var currentObject = c.Item.LinkedObject;
+        //            var element = target.XPathSelectElement($"/{RootName}/Region[@UniqueName='{c.Item.NodeName}']");
+        //            if (element == null) // cannot find element in target, have to delete node
+        //            {
+        //                //context.MainHierarchyNodes.Attach(c.Item);
+        //                context.Entry(c.Item).State = System.Data.Entity.EntityState.Deleted;
+        //            }
+        //        }
+
+        //        foreach(var x in target.Root.Descendants())
+        //        {
+
+        //        }
+
+        //        //context.SaveChanges();
+        //    }
+
+        //    //using (var context = new Model1())
+        //    //{
+        //    //    foreach (var re in target.Root.Elements("Region"))
+        //    //    {
+        //    //        var newNode = new MainHierarchyNode()
+        //    //        {
+        //    //            Region = new Region()
+        //    //            {
+        //    //                Name = re.Attribute("UniqueName").Value
+        //    //            }
+        //    //        };
+
+        //    //        _network.Nodes.Add(newNode);
+        //    //    }
+
+
+        //    //    context.SaveChanges();
+        //    //}
+
+
+        //}
 
         private IEnumerable<XElement> GetSubElements(
             IEnumerable<TreeItem<NetworkTreeNode>> currentItems,

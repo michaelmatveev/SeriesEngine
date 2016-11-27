@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ObjectGrid xmlns="http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments" Version="1" Name="Таблица1" Sheet="Лист1" Cell="C2">
   <CFragment Caption="Регион" CollectionName="Main" Level="1" RefObject="Region" Type="UniqueName"/>
-  <CFragment Caption="Потребитель" CollectionName="Main" Level="2" RefObject="Customer" Type="UniqueName"/>
+  <CFragment Caption="Потребитель" CollectionName="Main" Level="2" RefObject="Consumer" Type="UniqueName"/>
   <CFragment Caption="Договор" CollectionName="Main" Level="3" RefObject="Contract" Type="UniqueName"/>
   <VFragment Caption="Тип договора" CollectionName="Main" Level="3" RefObject="Contract" Variable="ContractType" Kind="Fact"/>
   <CFragment Caption="Дата договора с потребителем" CollectionName="Main" Level="3" RefObject="Contract" Type="Since"/>
