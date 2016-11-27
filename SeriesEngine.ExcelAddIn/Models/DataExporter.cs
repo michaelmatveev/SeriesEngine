@@ -42,59 +42,71 @@ namespace SeriesEngine.ExcelAddIn.Models
             var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == fragment.Name);
             // another way http://stackoverflow.com/questions/12572439/why-does-readxmlschema-create-extra-id-column
             var schema = fragment.GetSchema();
-            using (var sr = new StringReader(schema))
+            var sr = new StringReader(schema);
+                      
+            var dsOriginal = new DataSet();
+            dsOriginal.ReadXmlSchema(sr);
+            var currentNetworkState = network.ConvertToXml(fragment.SubFragments);
+            dsOriginal.ReadXml(currentNetworkState.CreateReader());
+            dsOriginal.AcceptChanges();
+
+            sr = new StringReader(schema);
+            var dsChanged = new DataSet();
+            dsChanged.ReadXmlSchema(sr);
+
+            var tree = fragment
+                .SubFragments
+                .Select((f, i) => new ColumnIdentity(f, i))
+                .GroupBy(ei => new ObjectIdentity(ei.RefObject, ei.Parent))
+                .GenerateTree(n => n.Key.RefObject, p => p.Key.Parent, NetworkTree.RootName);
+
+            for (int row = 1; row <= listObject.DataBodyRange.Rows.Count; row++)
             {
-                var dataSet = new DataSet();
-                dataSet.ReadXmlSchema(sr);
-
-                //var currentNetworkState = network.ConvertToXml(fragment.SubFragments);
-                //dataSet.ReadXml(currentNetworkState.CreateReader());
-                //dataSet.AcceptChanges();
-
-                var tree = fragment
-                    .SubFragments
-                    .Select((f, i) => new ColumnIdentity(f, i))
-                    .GroupBy(ei => new ObjectIdentity(ei.RefObject, ei.Parent))
-                    .GenerateTree(n => n.Key.RefObject, p => p.Key.Parent, NetworkTree.RootName);
-
-                for (int row = 1; row <= listObject.DataBodyRange.Rows.Count; row++)
-                {
-                    //RemoveRowInDataSet(row, dataSet, listObject, 0, tree);
-                    CreateOrUpdateRowInDataSet(row, dataSet, listObject, 0, tree);
-                }
-
-                //var added = dataSet.GetChanges(DataRowState.Added);
-                //if (added != null)
-                //{
-                //    var addedDoc = XDocument.Parse(added.GetXml());
-                //}
-
-                //var removed = dataSet.GetChanges(DataRowState.Deleted);
-                //if(removed != null)
-                //{
-                //    var removedDoc = XDocument.Parse(removed.GetXml());
-                //}
-
-                //var changed = dataSet.GetChanges(DataRowState.Modified);
-                //if(changed != null)
-                //{
-                //    var changedDoc = XDocument.Parse(changed.GetXml());
-                //}
-                var doc = XDocument.Parse(dataSet.GetXml());
-                //network.LoadFromXml(doc);
-                var sb = new StringBuilder();
-                using (var diffgramWriter = XmlWriter.Create(sb))
-                {
-                    XmlDiff xmldiff = new XmlDiff(XmlDiffOptions.IgnoreChildOrder |
-                        XmlDiffOptions.IgnoreNamespaces |
-                        XmlDiffOptions.IgnorePrefixes);
-                    var identical = xmldiff.Compare(
-                        network.ConvertToXml(fragment.SubFragments).ToXmlNode(), 
-                        doc.ToXmlNode(), diffgramWriter);
-                    diffgramWriter.Close();
-                }
-
+                CreateOrUpdateRowInDataSet(row, dsChanged, listObject, 0, tree);
             }
+            //dsChanged.AcceptChanges();
+
+            dsOriginal.Merge(dsChanged);
+            var dsDifferences = dsOriginal.GetChanges();
+
+            if(dsDifferences == null)
+            {
+                return;
+            }
+
+            var added = dsDifferences.GetChanges(DataRowState.Added);
+            if (added != null)
+            {
+                var addedDoc = XDocument.Parse(added.GetXml());
+            }
+
+            var removed = dsDifferences.GetChanges(DataRowState.Deleted);
+            if (removed != null)
+            {
+                var removedDoc = XDocument.Parse(removed.GetXml());
+            }
+
+            var changed = dsDifferences.GetChanges(DataRowState.Modified);
+            if (changed != null)
+            {
+                var changedDoc = XDocument.Parse(changed.GetXml());
+            }
+
+            var doc = XDocument.Parse(dsDifferences.GetXml());
+            //network.LoadFromXml(doc);
+            //var sb = new StringBuilder();
+            //using (var diffgramWriter = XmlWriter.Create(sb))
+            //{
+            //    XmlDiff xmldiff = new XmlDiff(XmlDiffOptions.IgnoreChildOrder |
+            //        XmlDiffOptions.IgnoreNamespaces |
+            //        XmlDiffOptions.IgnorePrefixes);
+            //    var identical = xmldiff.Compare(
+            //        network.ConvertToXml(fragment.SubFragments).ToXmlNode(), 
+            //        doc.ToXmlNode(), diffgramWriter);
+            //    diffgramWriter.Close();
+            //}
+
+            
         }
 
         private void CreateOrUpdateRowInDataSet(int row, DataSet dataSet, Excel.ListObject listObject, int rootId, IEnumerable<TreeItem<IGrouping<ObjectIdentity, ColumnIdentity>>> currentItems)
@@ -102,42 +114,47 @@ namespace SeriesEngine.ExcelAddIn.Models
             foreach (var node in currentItems)
             {
                 var table = dataSet.Tables[node.Item.Key.RefObject];
-                var dataRow = table.NewRow();
-                foreach (var column in node.Item)
-                {
-                    var cellValue = (listObject.DataBodyRange[row, column.Index + 1] as Excel.Range).Value2;
-                    dataRow[column.FieldName] = cellValue;
-                }
-                if (dataRow["UniqueName"] is System.DBNull)
+                var nameColumn = node.Item.SingleOrDefault(c => c.FieldName == "UniqueName");
+                var objectName = (listObject.DataBodyRange[row, nameColumn.Index + 1] as Excel.Range).Value2;
+                if (objectName == null)
                 {
                     return;
                 }
 
                 var rows = table.AsEnumerable();
-
                 if (node.Item.Key.Parent != NetworkTree.RootName)
                 {
                     rows = rows.Where(r => r[$"{node.Item.Key.Parent}_Id"].Equals(rootId));
-                    dataRow[$"{node.Item.Key.Parent}_Id"] = rootId;
                 }
-                                       
-                var match = rows.FirstOrDefault(r => r["UniqueName"].Equals(dataRow["UniqueName"]));
-                int id = match != null ? (int)match[$"{table.TableName}_Id"] : -1;
+
+                var dataRow = rows.FirstOrDefault(r => r["UniqueName"].Equals(objectName));
+                int id = dataRow != null ? (int)dataRow[$"{table.TableName}_Id"] : -1;
 
                 if (id == -1)
                 {
-                    table.Rows.Add(dataRow);
-                }
-                else
-                {
-                    foreach(var column in node.Item)
+                    dataRow = table.NewRow();
+                    foreach (var column in node.Item)
                     {
-                        if (!match[column.FieldName].Equals(dataRow[column.FieldName]))
-                        {
-                            match[column.FieldName] = dataRow[column.FieldName];
-                        }
+                        var cellValue = (listObject.DataBodyRange[row, column.Index + 1] as Excel.Range).Value2;
+                        dataRow[column.FieldName] = cellValue;
                     }
-                }
+                    if (node.Item.Key.Parent != NetworkTree.RootName)
+                    {
+                        dataRow[$"{node.Item.Key.Parent}_Id"] = rootId;
+                    }
+                    table.Rows.Add(dataRow);
+                }                                       
+
+                //else
+                //{
+                //    foreach(var column in node.Item)
+                //    {
+                //        if (!match[column.FieldName].Equals(dataRow[column.FieldName]))
+                //        {
+                //            match[column.FieldName] = dataRow[column.FieldName];
+                //        }
+                //    }
+                //}
 
                 if (node.Children.Any())
                 {
