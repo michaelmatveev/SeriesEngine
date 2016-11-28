@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Xml.Linq;
-using System.Xml.XPath;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -32,8 +31,11 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             var data = new XDocument();
             var rootElement = new XElement(RootName);
+            var tree = _network
+                .Nodes
+                .Cast<NetworkTreeNode>()
+                .GenerateTree(n => n.NodeName, n => n.Parent?.NodeName);
 
-            var tree = _network.Nodes.Cast<NetworkTreeNode>().GenerateTree(n => n.NodeName, n => n.Parent?.NodeName);
             rootElement.Add(GetSubElements(tree, queryParamers));
             data.Add(rootElement);
 
@@ -46,12 +48,15 @@ namespace SeriesEngine.ExcelAddIn.Models
                 .Nodes
                 .Cast<NetworkTreeNode>()
                 .GenerateTree(n => n.NodeName, n => n.Parent?.NodeName);
+
             using (var context = new Model1())
             {
-                var nodesToDelete = new List<NetworkTreeNode>();
-                DeleteNodes(currentTreeState, context, nodesToDelete);
-                RestoreNodes(target.Root.Elements(), null, nodesToDelete, context);
-                foreach(var n in nodesToDelete)
+                var allNodes = new List<NetworkTreeNode>(_network.Nodes); //new List<NetworkTreeNode>();
+                // Consider all nodes to delete first
+                //DeleteNodes(currentTreeState, context, allNodes);
+                // Leave in nodesToDelete only nodes to remove 
+                RestoreNodes(target.Root.Elements(), null, allNodes, context);
+                foreach(var n in allNodes)
                 {
                     context.Entry(n).State = EntityState.Deleted;
                 }        
@@ -59,17 +64,16 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        private void DeleteNodes(IEnumerable<TreeItem<NetworkTreeNode>> treeItems, Model1 context, List<NetworkTreeNode> nodesToDelete)
-        {
-            foreach(var c in treeItems)
-            {
-                nodesToDelete.Add(c.Item);
-                //context.Entry(c.Item).State = EntityState.Deleted;
-                DeleteNodes(c.Children, context, nodesToDelete);
-            }
-        }
+        //private void DeleteNodes(IEnumerable<TreeItem<NetworkTreeNode>> treeItems, Model1 context, List<NetworkTreeNode> nodesToDelete)
+        //{
+        //    foreach(var c in treeItems)
+        //    {
+        //        nodesToDelete.Add(c.Item);
+        //        DeleteNodes(c.Children, context, nodesToDelete);
+        //    }
+        //}
 
-        private void RestoreNodes(IEnumerable<XElement> elements, MainHierarchyNode parent, List<NetworkTreeNode> nodesToDelete, Model1 context)
+        private void RestoreNodes(IEnumerable<XElement> elements, MainHierarchyNode parent, List<NetworkTreeNode> allNodes, Model1 context)
         {
             foreach(var element in elements)
             {
@@ -78,7 +82,11 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var sinceAttr = element.Attribute("Since");
                 var tillAttr = element.Attribute("Till");
 
-                if (nameAttr != null)
+                if(nameAttr == null)
+                {
+                    parent.LinkedObject.SetVariableValue(element.Name.LocalName, element.Value);
+                }
+                else
                 {
                     var node = _network.Nodes.FirstOrDefault(n => n.NodeName == nameAttr.Value && n.Parent == parent);
                     if (node == null)
@@ -94,11 +102,9 @@ namespace SeriesEngine.ExcelAddIn.Models
                     }
                     else
                     {
-                        nodesToDelete.Remove(node);
-                        // object exists for the same node
-                        //context.Entry(node).State = EntityState.Unchanged;
+                        allNodes.Remove(node);
                     }
-                    RestoreNodes(element.Elements(), node, nodesToDelete, context);
+                    RestoreNodes(element.Elements(), node, allNodes, context);
                 }
             }
         }

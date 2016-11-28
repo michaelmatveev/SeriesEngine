@@ -20,9 +20,16 @@ namespace SeriesEngine.Msk1
         public ObjectMetamodel ObjectModel { get; set; }
         public object GetVariableValue(string variableName)
         {
-            var thisType = this.GetType();
+            var thisType = GetType();
             var property = thisType.GetProperty(variableName);
             return property.GetValue(this, null);
+        }
+
+        public void SetVariableValue(string variableName, object value)
+        {
+            var thisType = GetType();
+            var property = thisType.GetProperty(variableName);
+            property.SetValue(this, value);
         }
     }
 }
