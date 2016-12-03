@@ -42,7 +42,7 @@
       <Family Rank="10">Основные свойства</Family>
       <Help Context="Уровень напряжения">Уровень напряжения</Help>
     </Variable>
-    <Variable Name="MaxPower" DataType="String200">
+    <Variable Name="MaxPower" DataType="String200" Optional="True">
       <Family Rank="10">Основные свойства</Family>
       <Help Context="Максимальная мощность">Максимальная мощность</Help>
     </Variable>

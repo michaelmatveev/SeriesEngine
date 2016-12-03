@@ -260,15 +260,16 @@ GO
         {            
             String varName = variable.Attribute("Name").Value;
             String typeName= variable.Attribute("DataType").Value;
-            // по умолчанию считаем что все поля обязательны
+ 
+             // по умолчанию считаем что все поля обязательными
             String nullConstraint;
-            if(variable.Attribute("Presence") == null || variable.Attribute("Presence").Value == "Required") 
+            if(variable.Attribute("Optional") != null && variable.Attribute("Optional").Value == "True") 
             {
-                nullConstraint = "NOT NULL";
+                nullConstraint = "NULL";
             }
             else 
             {
-                nullConstraint = String.Empty;
+                nullConstraint = "NOT NULL";
             }
             XElement dataType = DataTypes[typeName];
             if(dataType.Name == "PrimitiveDataType") 

@@ -27,7 +27,6 @@ namespace SeriesEngine.Msk1
         [StringLength(200)]
         public string VoltageLevel { get; set; }
 
-        [Required]
         [StringLength(200)]
         public string MaxPower { get; set; }
 
