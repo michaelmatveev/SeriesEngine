@@ -51,7 +51,7 @@
     <Compile Include="CommandArgs\SaveAllCommandArgs.cs" />
     <Compile Include="CommandArgs\ShowPeriodCommandArgs.cs" />
     <Compile Include="CommandArgs\SwitchToFiltersCommandArgs.cs" />
-    <Compile Include="CommandArgs\SwitchToFragmentsCommandArgs.cs" />
+    <Compile Include="CommandArgs\SwitchToDataBlocksCommandArgs.cs" />
     <Compile Include="CommandArgs\SwitchToPeriodCommandArgs.cs" />
     <Compile Include="EventData\InitializeEventData.cs" />
     <Compile Include="EventData\RestoreMenuStateEventData.cs" />

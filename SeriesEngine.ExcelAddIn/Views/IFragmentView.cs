@@ -1,4 +1,4 @@
-﻿using SeriesEngine.ExcelAddIn.Models.Fragments;
+﻿using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System;
 using System.Collections.Generic;
 
@@ -6,8 +6,8 @@ namespace SeriesEngine.ExcelAddIn.Views
 {
     public class SelectEntityEventArgs : EventArgs
     {
-        public DataFragment Fragment { get; set; }
-        public CollectionFragment SourceCollection { get; set; }
+        public DataBlock Fragment { get; set; }
+        public CollectionDataBlock SourceCollection { get; set; }
     } 
 
     public interface IFragmentView : IPanes
@@ -16,6 +16,6 @@ namespace SeriesEngine.ExcelAddIn.Views
         event EventHandler<SelectEntityEventArgs> NewFragmentRequested;
         event EventHandler<SelectEntityEventArgs> FragmentDeleted;
         event EventHandler<SelectEntityEventArgs> FragmentCopied;
-        void RefreshFragmentsView(IEnumerable<BaseFragment> fragments);
+        void RefreshFragmentsView(IEnumerable<BaseDataBlock> fragments);
     }
 }

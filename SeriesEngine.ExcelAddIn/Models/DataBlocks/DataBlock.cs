@@ -1,10 +1,15 @@
 ﻿using SeriesEngine.Msk1;
-using System;
 
-namespace SeriesEngine.ExcelAddIn.Models.Fragments
+namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
 {
-    public class DataFragment : SheetFragment
+    public class DataBlock : BaseDataBlock
     {
+        public string XmlPath { get; set; }
+        public string Caption { get; set; }
+        public int Level { get; set; }
+        public string CollectionName { get; set; }
+        public string RefObject { get; set; }
+
         public ObjectMetamodel ObjectMetamodel { get; set; }
         public Variable VariableMetamodel { get; set; }
         public Kind Kind { get; set; }
@@ -29,20 +34,31 @@ namespace SeriesEngine.ExcelAddIn.Models.Fragments
         public int Shift { get; set; }
         public TimeInterval ShiftPeriod { get; set; }
 
-        public DataFragment(BaseFragment parent, Period defaultPeriod) : base(parent, defaultPeriod)
+        public DataBlock(BaseDataBlock parent) : base(parent)
         {
+            Parent = parent;
             IntervalsByRows = true;
             UseCommonPeriod = true;
         }
 
-        public override void Import(BaseDataImporter importer)
-        {
-            throw new NotImplementedException();
-        }
+    }
 
-        public override void Export(BaseDataExporter exproter)
+    public class NodeDataBlock : DataBlock
+    {
+        public NodeType NodeType;
+
+        public NodeDataBlock(BaseDataBlock parent) : base(parent)
         {
-            throw new NotImplementedException();
+        }
+    }
+
+    public class VariableDataBlock : DataBlock
+    {
+        public Kind Kind;
+        public string VariableName;
+
+        public VariableDataBlock(BaseDataBlock parent) : base(parent)
+        {
         }
     }
 }

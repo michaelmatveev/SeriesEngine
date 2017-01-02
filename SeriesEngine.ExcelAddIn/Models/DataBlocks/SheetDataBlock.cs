@@ -1,23 +1,22 @@
 ﻿using System;
 
-namespace SeriesEngine.ExcelAddIn.Models.Fragments
+namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
 {
     [Serializable]
-    public abstract class SheetFragment : BaseFragment
+    public abstract class SheetDataBlock : BaseDataBlock
     {
         public Period CustomPeriod { get; set; }
 
         public string Sheet { get; set; }
         public string Cell { get; set; }
 
-        public SheetFragment(BaseFragment parent, Period defaultPeriod)
+        public SheetDataBlock(BaseDataBlock parent, Period defaultPeriod)
         {
             Parent = parent;
             CustomPeriod = defaultPeriod;
         }
 
         public abstract void Import(BaseDataImporter importer);
-        public abstract void Export(BaseDataExporter exproter);        
-
+        public abstract void Export(BaseDataExporter exproter);
     }
 }

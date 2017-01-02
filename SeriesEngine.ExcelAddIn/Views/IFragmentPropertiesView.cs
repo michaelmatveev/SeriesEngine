@@ -1,4 +1,4 @@
-﻿using SeriesEngine.ExcelAddIn.Models.Fragments;
+﻿using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System;
 
 namespace SeriesEngine.ExcelAddIn.Views
@@ -6,7 +6,7 @@ namespace SeriesEngine.ExcelAddIn.Views
     public interface IFragmentPropertiesView : IView
     {
         event EventHandler FragmentChanged;
-        DataFragment Fragment { get; set; }
+        DataBlock Fragment { get; set; }
         //IEnumerable<Network> Networks { get; set; }
         void ShowIt();
     }

@@ -9,8 +9,8 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 {
     public class PeriodSelectorPresenter : Presenter<IPeriodView>, ICommand<SwitchToPeriodCommandArgs>
     {
-        private IFragmentsProvider _fragmentsProvider;
-        public PeriodSelectorPresenter(IPeriodView view, IApplicationController controller, IFragmentsProvider fragmentsProvider) : base(view, controller)
+        private IDataBlockProvider _fragmentsProvider;
+        public PeriodSelectorPresenter(IPeriodView view, IApplicationController controller, IDataBlockProvider fragmentsProvider) : base(view, controller)
         {
             _fragmentsProvider = fragmentsProvider;
             View.PeriodChanged += (s, e) => _fragmentsProvider.SetDefaultPeriod(View.SelectedPeriod);

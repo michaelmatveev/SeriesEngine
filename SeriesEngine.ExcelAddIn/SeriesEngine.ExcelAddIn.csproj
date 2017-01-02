@@ -194,17 +194,17 @@
     <Compile Include="Models\SubFragment.cs" />
     <Compile Include="Models\CustomInterceptorPolicy.cs" />
     <Compile Include="Models\Extensions.cs" />
-    <Compile Include="Models\Fragments\BaseFragment.cs" />
+    <Compile Include="Models\DataBlocks\BaseDataBlock.cs" />
     <Compile Include="Models\DataExporter.cs" />
-    <Compile Include="Models\Fragments\SheetFragment.cs" />
+    <Compile Include="Models\DataBlocks\SheetDataBlock.cs" />
     <Compile Include="Models\DataImporter.cs" />
     <Compile Include="Models\ExcelApplicationController.cs" />
-    <Compile Include="Models\Fragments\CollectionFragment.cs" />
-    <Compile Include="Models\Fragments\ObjectGridFragment.cs" />
-    <Compile Include="Models\Fragments\DataFragment.cs" />
+    <Compile Include="Models\DataBlocks\CollectionFragment.cs" />
+    <Compile Include="Models\DataBlocks\CollectionDataBlock.cs" />
+    <Compile Include="Models\DataBlocks\DataBlock.cs" />
     <Compile Include="Models\MockFragmentsProvider.cs" />
     <Compile Include="Models\IController.cs" />
-    <Compile Include="Models\IFragmentsProvider.cs" />
+    <Compile Include="Models\IDataBlockProvider.cs" />
     <Compile Include="Models\IModelProvider.cs" />
     <Compile Include="Models\INetworksProvider.cs" />
     <Compile Include="Models\Kind.cs" />
@@ -212,7 +212,7 @@
     <Compile Include="Models\MockModelProvider.cs" />
     <Compile Include="Models\NamedCollection.cs" />
     <Compile Include="Models\MockNetworkProvider.cs" />
-    <Compile Include="Models\Fragments\NodeFragment.cs" />
+    <Compile Include="Models\DataBlocks\NodeFragment.cs" />
     <Compile Include="Models\Period.cs" />
     <Compile Include="Models\SubscribeInterceptor.cs" />
     <Compile Include="Models\TimeInterval.cs" />
@@ -339,7 +339,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Models\DataForObjectGrid1.xml" />
-    <Content Include="Models\Fragments\ObjectGrid1.xml" />
+    <Content Include="Models\DataBlocks\ObjectGrid1.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SeriesEngine.App\SeriesEngine.App.csproj">

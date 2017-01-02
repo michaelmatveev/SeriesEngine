@@ -13,8 +13,8 @@ namespace SeriesEngine.ExcelAddIn.Presenters
         private ICollection<string> ViewsToSwitch = new List<string>
         {
             "Периоды",
-            "Фрагменты",
-            "Фильтры"
+            "Блоки данных",
+            //"Фильтры"
         };
 
         public MainPanePresenter(IMainPane view, IApplicationController controller) : base(view, controller)
@@ -26,8 +26,8 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                 {
                     case "Периоды":
                         Controller.Execute(new SwitchToPeriodCommandArgs()); break;
-                    case "Фрагменты":
-                        Controller.Execute(new SwitchToFragmentsCommandArgs()); break;
+                    case "Блоки данных":
+                        Controller.Execute(new SwitchToDataBlocksCommandArgs()); break;
                     case "Фильтры":
                         View.InflateControl(null); break;
                     //Controller.Execute(new SwitchToFiltersCommandArgs()); break;

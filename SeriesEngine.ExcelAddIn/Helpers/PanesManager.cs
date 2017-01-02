@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Tools;
+﻿using Microsoft.Office.Core;
+using Microsoft.Office.Tools;
 using SeriesEngine.ExcelAddIn.Views;
 using System.Linq;
 using System.Windows.Forms;
@@ -28,7 +29,7 @@ namespace SeriesEngine.ExcelAddIn.Helpers
                 panel = _panesCollection.Add(viewToEmbed as UserControl, caption);
                 if(location == PaneLocation.Top)
                 {
-                    panel.DockPosition = Microsoft.Office.Core.MsoCTPDockPosition.msoCTPDockPositionTop;
+                    panel.DockPosition = MsoCTPDockPosition.msoCTPDockPositionTop;
                     panel.Height = 60;
                 }
                 else

@@ -3,7 +3,7 @@ using Microsoft.XmlDiffPatch;
 using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
 using SeriesEngine.ExcelAddIn.Helpers;
-using SeriesEngine.ExcelAddIn.Models.Fragments;
+using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -19,10 +19,10 @@ namespace SeriesEngine.ExcelAddIn.Models
         ICommand<SaveAllCommandArgs>
     {
         private Workbook _workbook;
-        private readonly IFragmentsProvider _fragmentsProvider;
+        private readonly IDataBlockProvider _fragmentsProvider;
         private readonly INetworksProvider _networksProvider;
 
-        public DataExporter(Workbook workbook, IFragmentsProvider fragmentsProvider, INetworksProvider networksProvider)
+        public DataExporter(Workbook workbook, IDataBlockProvider fragmentsProvider, INetworksProvider networksProvider)
         {
             _workbook = workbook;
             _fragmentsProvider = fragmentsProvider;
@@ -31,24 +31,24 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void Execute(SaveAllCommandArgs commandData)
         {
-            var fragmentsToExport = _fragmentsProvider.GetFragments(string.Empty).OfType<SheetFragment>();
+            var fragmentsToExport = _fragmentsProvider.GetDataBlocks(string.Empty).OfType<SheetDataBlock>();
             ExportFromFragments(fragmentsToExport);
         }
 
-        public override void ExportFragment(ObjectGridFragment fragment)
+        public override void ExportFragment(CollectionDataBlock collection)
         {
             var network = _networksProvider.GetNetworks(string.Empty).Last() as NetworkTree;
-            Excel.Worksheet sheet = _workbook.Sheets[fragment.Sheet];
-            var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == fragment.Name);
+            Excel.Worksheet sheet = _workbook.Sheets[collection.Sheet];
+            var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == collection.Name);
             // another way http://stackoverflow.com/questions/12572439/why-does-readxmlschema-create-extra-id-column
-            var schema = fragment.GetSchema();
+            var schema = collection.GetSchema();
             var sr = new StringReader(schema);
                      
             var dsChanged = new DataSet();
             dsChanged.ReadXmlSchema(sr);
 
-            var tree = fragment
-                .SubFragments
+            var tree = collection
+                .DataBlocks
                 .Select((f, i) => new ColumnIdentity(f, i))
                 .GroupBy(ei => new ObjectIdentity(ei.RefObject, ei.Parent))
                 .GenerateTree(n => n.Key.RefObject, p => p.Key.Parent, NetworkTree.RootName);
@@ -59,7 +59,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
 
             var doc = XDocument.Parse(dsChanged.GetXml());
-            network.LoadFromXml(fragment.SubFragments, doc);           
+            network.LoadFromXml(collection.DataBlocks, doc);           
         }
 
         private void CreateOrUpdateRowInDataSet(int row, DataSet dataSet, Excel.ListObject listObject, int rootId, IEnumerable<TreeItem<IGrouping<ObjectIdentity, ColumnIdentity>>> currentItems)
@@ -188,7 +188,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 Parent = parentName;
             }
 
-            protected ObjectIdentity(SubFragment sf)
+            protected ObjectIdentity(DataBlock sf)
             {
                 RefObject = sf.RefObject;
                 Parent = sf.XmlPath.Split('/').Reverse().Skip(2).First();
@@ -212,18 +212,18 @@ namespace SeriesEngine.ExcelAddIn.Models
             public string FieldName { get; private set; }
             public int Index { get; private set; }
 
-            public ColumnIdentity(SubFragment sf, int index) : base(sf)
+            public ColumnIdentity(DataBlock sf, int index) : base(sf)
             {
                 Index = index;
                 int start = -1;
 
-                var nsf = sf as NodeSubFragment;
+                var nsf = sf as NodeDataBlock;
                 if (nsf != null)
                 {
                     start = sf.XmlPath.LastIndexOf('@');
                 }
 
-                var vsf = sf as VariableSubFragment;
+                var vsf = sf as VariableDataBlock;
                 if (vsf != null)
                 {
                     start = sf.XmlPath.LastIndexOf('/');

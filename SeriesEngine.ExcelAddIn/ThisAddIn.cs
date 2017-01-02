@@ -22,10 +22,7 @@ namespace SeriesEngine.ExcelAddIn
             Application.WorkbookOpen += (w) => CreateWorkbookController(w);            
             ((Excel.AppEvents_Event)Application).NewWorkbook += (w) => CreateWorkbookController(w);
             Application.WorkbookBeforeClose += (Excel.Workbook wb, ref bool c) => ApplicationControllers.Remove(wb);
-            Application.WorkbookActivate += (wb) =>
-            {
-                ApplicationControllers[wb].Raise(new RestoreMenuStateEventData());
-            };
+            Application.WorkbookActivate += (wb) => ApplicationControllers[wb].Raise(new RestoreMenuStateEventData());
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
@@ -36,7 +33,7 @@ namespace SeriesEngine.ExcelAddIn
         {
             var controller = new ExcelApplicationController
             {
-                IsActive = true,
+                //IsActive = true,
                 PaneCollection = CustomTaskPanes,
                 MainRibbon = Globals.Ribbons.Ribbon,
                 CurrentDocument = Globals.Factory.GetVstoObject(wb)

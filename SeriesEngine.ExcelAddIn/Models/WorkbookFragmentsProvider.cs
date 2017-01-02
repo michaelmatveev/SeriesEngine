@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SeriesEngine.ExcelAddIn.Models.Fragments;
+using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using Microsoft.Office.Tools.Excel;
 using FluentDateTime;
 using Microsoft.Office.Core;
@@ -13,7 +13,7 @@ using System.Xml.Linq;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
-    public class WorkbookFragmentsProvider : IFragmentsProvider
+    public class WorkbookFragmentsProvider : IDataBlockProvider
     {
         private readonly Workbook _workbook;
         public WorkbookFragmentsProvider(Workbook workbook)
@@ -21,22 +21,22 @@ namespace SeriesEngine.ExcelAddIn.Models
             _workbook = workbook;
         }
 
-        public void AddFragment(DataFragment fragment)
+        public void AddDataBlock(DataBlock fragment)
         {
             throw new NotImplementedException();
         }
 
-        public DataFragment CopyFragment(DataFragment sourceFragment, CollectionFragment sourceCollection)
+        public DataBlock CopyDataBlock(DataBlock sourceFragment, CollectionDataBlock sourceCollection)
         {
             throw new NotImplementedException();
         }
 
-        public DataFragment CreateFragment(CollectionFragment source)
+        public DataBlock CreateDataBlock(CollectionDataBlock source)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteFragment(DataFragment fragment)
+        public void DeleteDataBlock(DataBlock fragment)
         {
             throw new NotImplementedException();
         }
@@ -86,9 +86,9 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         private const string XmlNamespace = "http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments";
 
-        public IEnumerable<BaseFragment> GetFragments(string filter)
+        public IEnumerable<BaseDataBlock> GetDataBlocks(string filter)
         {
-            var result = new List<BaseFragment>();
+            var result = new List<BaseDataBlock>();
             var gridParts = _workbook.CustomXMLParts
                 .Cast<CustomXMLPart>()
                 .Where(p => !p.BuiltIn && p.NamespaceURI == XmlNamespace);

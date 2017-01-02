@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 using SeriesEngine.ExcelAddIn.Models;
-using SeriesEngine.ExcelAddIn.Models.Fragments;
+using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using SeriesEngine.Msk1;
 
 namespace SeriesEngine.ExcelAddIn.Views
@@ -25,13 +25,13 @@ namespace SeriesEngine.ExcelAddIn.Views
         }
 
         public event EventHandler FragmentChanged;
-        public DataFragment Fragment { get; set; }
+        public DataBlock Fragment { get; set; }
 
         public void ShowIt()
         {
             textBoxName.DataBindings.Add(nameof(textBoxName.Text), Fragment, nameof(Fragment.Name));
-            comboBoxSheet.DataBindings.Add(nameof(comboBoxInterval.SelectedItem), Fragment, nameof(Fragment.Sheet));
-            textBoxCell.DataBindings.Add(nameof(textBoxCell.Text), Fragment, nameof(Fragment.Cell));
+            //comboBoxSheet.DataBindings.Add(nameof(comboBoxInterval.SelectedItem), Fragment, nameof(Fragment.Sheet));
+            //textBoxCell.DataBindings.Add(nameof(textBoxCell.Text), Fragment, nameof(Fragment.Cell));
 
             labelCollectionName.Text = Fragment.Parent.Name;
             comboBoxObjectTypes.DataBindings.Add(nameof(comboBoxObjectTypes.SelectedValue), Fragment, nameof(Fragment.ObjectMetamodel));//, false, DataSourceUpdateMode.OnPropertyChanged);
@@ -40,7 +40,7 @@ namespace SeriesEngine.ExcelAddIn.Views
 
             comboBoxObjectTypes.DisplayMember = "Name";
             comboBoxObjectTypes.ValueMember = "ObjectModel";
-            var objectsMetamodels = ((CollectionFragment)Fragment.Parent)
+            var objectsMetamodels = ((CollectionDataBlock)Fragment.Parent)
                 .SupportedModels
                 .Select(om => new { Name = om.Name, ObjectModel = om }).ToList();
             comboBoxObjectTypes.DataSource = objectsMetamodels;
@@ -54,7 +54,7 @@ namespace SeriesEngine.ExcelAddIn.Views
             checkBoxUseShift.DataBindings.Add(nameof(checkBoxUseShift.Checked), Fragment, nameof(Fragment.UseShift));
             numericUpDownShift.DataBindings.Add(nameof(numericUpDownShift.Value), Fragment, nameof(Fragment.Shift));
             comboBoxShiftInterval.DataBindings.Add(nameof(comboBoxShiftInterval.SelectedItem), Fragment, nameof(Fragment.ShiftPeriod));
-            periodSelectorCustom.DataBindings.Add(nameof(periodSelectorCustom.SelectedPeriod), Fragment, nameof(Fragment.CustomPeriod));
+            //periodSelectorCustom.DataBindings.Add(nameof(periodSelectorCustom.SelectedPeriod), Fragment, nameof(Fragment.CustomPeriod));
 
             SetUseCommonPeriodState(Fragment.UseCommonPeriod);
             SetShiftState(Fragment.UseShift);

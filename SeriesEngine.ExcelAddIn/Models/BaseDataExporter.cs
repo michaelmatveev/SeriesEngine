@@ -1,4 +1,4 @@
-﻿using SeriesEngine.ExcelAddIn.Models.Fragments;
+﻿using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public abstract class BaseDataExporter
     {
-        protected void ExportFromFragments(IEnumerable<SheetFragment> fragments)
+        protected void ExportFromFragments(IEnumerable<SheetDataBlock> fragments)
         {
             foreach (var f in fragments)
             {
@@ -17,7 +17,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        public abstract void ExportFragment(ObjectGridFragment fragment);
+        public abstract void ExportFragment(CollectionDataBlock fragment);
 
         //protected virtual void ExportGridFragment(ObjectGridFragment fragment)
         //{

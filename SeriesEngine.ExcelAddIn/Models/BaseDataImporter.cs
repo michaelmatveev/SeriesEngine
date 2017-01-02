@@ -1,15 +1,11 @@
-﻿using SeriesEngine.ExcelAddIn.Models.Fragments;
-using System;
+﻿using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
     public abstract class BaseDataImporter
     {
-        protected void ImportFromFragments(IEnumerable<SheetFragment> fragments, Period period)
+        protected void ImportDataForFragments(IEnumerable<SheetDataBlock> fragments, Period period)
         {
             foreach (var f in fragments)
             {
@@ -17,6 +13,6 @@ namespace SeriesEngine.ExcelAddIn.Models
             }            
         }
 
-        public abstract void ImportFragment(ObjectGridFragment fragment);
+        public abstract void ImportFragment(CollectionDataBlock fragment);
     }
 }

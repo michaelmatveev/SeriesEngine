@@ -12,10 +12,10 @@ using System.Windows.Forms;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
-    public class FragmentPresenter : Presenter<IFragmentView>, ICommand<SwitchToFragmentsCommandArgs>
+    public class FragmentPresenter : Presenter<IFragmentView>, ICommand<SwitchToDataBlocksCommandArgs>
     {
-        private IFragmentsProvider _fragmentsProvider;
-        public FragmentPresenter(IFragmentView view, IApplicationController controller, IFragmentsProvider fragmentsProvider) : base(view, controller)
+        private IDataBlockProvider _fragmentsProvider;
+        public FragmentPresenter(IFragmentView view, IApplicationController controller, IDataBlockProvider fragmentsProvider) : base(view, controller)
         {
             _fragmentsProvider = fragmentsProvider;
             //View.PaneClosed += (s, e) => Controller.GetInstance<MainMenuPresenter>().SetFragmentsButton(false);
@@ -56,9 +56,9 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             //}
         }
 
-        void ICommand<SwitchToFragmentsCommandArgs>.Execute(SwitchToFragmentsCommandArgs commandData)
+        void ICommand<SwitchToDataBlocksCommandArgs>.Execute(SwitchToDataBlocksCommandArgs commandData)
         {
-            View.RefreshFragmentsView(_fragmentsProvider.GetFragments(string.Empty));
+            View.RefreshFragmentsView(_fragmentsProvider.GetDataBlocks(string.Empty));
             Controller.Raise(new SwitchToViewEventData
             {
                 InflatedControl = (Control)View

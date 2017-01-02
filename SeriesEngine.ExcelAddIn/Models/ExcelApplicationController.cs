@@ -16,7 +16,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         public Ribbon MainRibbon { get; set; }
         public CustomTaskPaneCollection PaneCollection { get; set; }
         public Workbook CurrentDocument { get; set; }
-        public bool IsActive { get; set; }
+        //public bool IsActive { get; set; }
 
         public void Configure()
         {
@@ -76,7 +76,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 _.ForConcreteType<FilterPresenter>();
 
-                _.For<IFragmentsProvider>()
+                _.For<IDataBlockProvider>()
                     .Singleton()
                     .Use<WorkbookFragmentsProvider>();
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SeriesEngine.ExcelAddIn.Helpers;
+using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using SeriesEngine.Msk1;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        public XDocument ConvertToXml(IEnumerable<SubFragment> queryParamers)
+        public XDocument ConvertToXml(IEnumerable<DataBlock> queryParamers)
         {
             var data = new XDocument();
             var rootElement = new XElement(RootName);
@@ -42,7 +43,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             return data;
         }
 
-        public void LoadFromXml(IEnumerable<SubFragment> queryParamers, XDocument target)
+        public void LoadFromXml(IEnumerable<DataBlock> queryParamers, XDocument target)
         {
             var currentTreeState = _network
                 .Nodes
@@ -202,7 +203,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         private IEnumerable<XElement> GetSubElements(
             IEnumerable<TreeItem<NetworkTreeNode>> currentItems,
-            IEnumerable<SubFragment> queryParamers)
+            IEnumerable<DataBlock> queryParamers)
         {
             var result = new List<XElement>();
             foreach(var groupOfSameObjects in currentItems.GroupBy(c => c.Item.LinkedObject.ObjectModel.Name))
@@ -221,11 +222,11 @@ namespace SeriesEngine.ExcelAddIn.Models
             return result;           
         }
 
-        private static void ProcessObjectElement(XElement newElement, NetworkTreeNode node, SubFragment qp)
+        private static void ProcessObjectElement(XElement newElement, NetworkTreeNode node, DataBlock qp)
         {
-            if (qp is NodeSubFragment)
+            if (qp is NodeDataBlock)
             {
-                var nsf = (NodeSubFragment)qp;
+                var nsf = (NodeDataBlock)qp;
                 switch (nsf.NodeType)
                 {
                     case NodeType.UniqueName:
@@ -241,9 +242,9 @@ namespace SeriesEngine.ExcelAddIn.Models
                         throw new NotSupportedException("this operation is not supported");
                 }
             }
-            else if (qp is VariableSubFragment) // переменные только для данного объекта
+            else if (qp is VariableDataBlock) // переменные только для данного объекта
             {
-                var vsf = (VariableSubFragment)qp;
+                var vsf = (VariableDataBlock)qp;
                 newElement.Add(new XElement(vsf.VariableName, node.LinkedObject.GetVariableValue(vsf.VariableName)));
             }
         }

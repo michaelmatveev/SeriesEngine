@@ -1,5 +1,5 @@
 ﻿using FluentDateTime;
-using SeriesEngine.ExcelAddIn.Models.Fragments;
+using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using SeriesEngine.Msk1;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
-    public class MockFragmentsProvider : IFragmentsProvider
+    public class MockFragmentsProvider : IDataBlockProvider
     {
         private static Period DefaultPeriod = new Period
         {
@@ -15,7 +15,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             Till = DateTime.Now.AddMonths(1).FirstDayOfMonth()
         };
 
-        private static CollectionFragment SourceCollection = new CollectionFragment
+        private static CollectionDataBlock SourceCollection = new CollectionDataBlock
         {
             Name = "Потребители-Точки учета",
             SupportedModels = new []
@@ -93,7 +93,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         //    }
         //};
 
-        public HashSet<SheetFragment> _fragments = new HashSet<SheetFragment>
+        public HashSet<DataBlock> _fragments = new HashSet<DataBlock>
         {
             //new NodeFragment(null, DefaultPeriod)
             //{
@@ -253,18 +253,18 @@ namespace SeriesEngine.ExcelAddIn.Models
         //    }
         //};
 
-        public IEnumerable<BaseFragment> GetFragments(string filter)
+        public IEnumerable<BaseDataBlock> GetDataBlocks(string filter)
         {
             MockNetworkProvider networkProvider = new MockNetworkProvider();
-            CollectionFragment source = null;
+            CollectionDataBlock source = null;
             foreach(var network in networkProvider.GetNetworks(filter))
             {
-                source = new CollectionFragment
+                source = new CollectionDataBlock
                 {
                     Name = network.Name
                 };
                 yield return source;
-                yield return new ObjectGridFragment(source, DefaultPeriod)
+                yield return new CollectionDataBlock(source, DefaultPeriod)
                 {
                     Name = "СтруктураОбъектов",
                     Sheet = "Лист1",
@@ -301,23 +301,21 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         }
 
-        public DataFragment CreateFragment(CollectionFragment source)
+        public DataBlock CreateDataBlock(CollectionDataBlock source)
         {
             var mock = new MockModelProvider();
-            return new DataFragment(SourceCollection, DefaultPeriod)
+            return new DataBlock(SourceCollection)
             {
                 ObjectMetamodel = mock.GetObjectMetamodels().First(),
                 VariableMetamodel = mock.GetObjectMetamodels().First().Variables.First()
             };
         }
 
-        public DataFragment CopyFragment(DataFragment sourceFragment, CollectionFragment sourceCollection)
+        public DataBlock CopyDataBlock(DataBlock sourceFragment, CollectionDataBlock sourceCollection)
         {
-            return new DataFragment(sourceCollection, sourceFragment.CustomPeriod)
+            return new DataBlock(sourceCollection)
             {
                 Name = $"{sourceFragment.Name}_копия",
-                Sheet = sourceFragment.Sheet,
-                Cell = sourceFragment.Cell,
                 ObjectMetamodel = sourceFragment.ObjectMetamodel,
                 VariableMetamodel = sourceFragment.VariableMetamodel,
                 Kind = sourceFragment.Kind,
@@ -328,11 +326,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                 UseShift = sourceFragment.UseShift,
                 Shift = sourceFragment.Shift,
                 ShiftPeriod = sourceFragment.ShiftPeriod,
-                CustomPeriod = sourceFragment.CustomPeriod
             };
         }
 
-        public void AddFragment(DataFragment fragment)
+        public void AddDataBlock(DataBlock fragment)
         {
             //if (!_fragments.Contains(fragment))
             //{
@@ -340,7 +337,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             //}
         }
 
-        public void DeleteFragment(DataFragment fragment)
+        public void DeleteDataBlock(DataBlock fragment)
         {
             _fragments.Remove(fragment);
         }

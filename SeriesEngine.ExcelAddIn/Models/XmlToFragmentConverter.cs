@@ -1,4 +1,4 @@
-﻿using SeriesEngine.ExcelAddIn.Models.Fragments;
+﻿using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +10,9 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public static class XmlToFragmentConverter
     {
-        public static BaseFragment GetFragment(XDocument source, Period defaultPeriod)
+        public static BaseDataBlock GetFragment(XDocument source, Period defaultPeriod)
         {
-            var result = new ObjectGridFragment();
+            var result = new CollectionDataBlock();
             result.CustomPeriod = defaultPeriod;
             result.Name = source.Root.Attribute("Name").Value;
             result.Sheet = source.Root.Attribute("Sheet").Value;
@@ -20,17 +20,17 @@ namespace SeriesEngine.ExcelAddIn.Models
 
             foreach (var f in source.Root.Descendants())
             {
-                SubFragment newFragment;
+                DataBlock newFragment;
                 if(f.Name.LocalName == "CFragment")
                 {
-                    newFragment = new NodeSubFragment
+                    newFragment = new NodeDataBlock(result)
                     {
                         NodeType = (NodeType)Enum.Parse(typeof(NodeType), f.Attribute("Type").Value)
                     };
                 }
                 else
                 {
-                    newFragment = new VariableSubFragment
+                    newFragment = new VariableDataBlock(result)
                     {
                         Kind = (Kind)Enum.Parse(typeof(Kind), f.Attribute("Kind").Value),
                         VariableName = f.Attribute("Variable").Value
@@ -42,7 +42,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 newFragment.CollectionName = f.Attribute("CollectionName").Value;
                 newFragment.RefObject = f.Attribute("RefObject").Value;
 
-                result.SubFragments.Add(newFragment);
+                result.DataBlocks.Add(newFragment);
             }
             return result;
         }
