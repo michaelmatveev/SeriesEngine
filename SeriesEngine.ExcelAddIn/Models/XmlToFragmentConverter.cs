@@ -1,16 +1,12 @@
 ﻿using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
-    public static class XmlToFragmentConverter
+    public static class XmlToDataBlockConverter
     {
-        public static BaseDataBlock GetFragment(XDocument source, Period defaultPeriod)
+        public static BaseDataBlock GetDataBlock(XDocument source, Period defaultPeriod)
         {
             var result = new CollectionDataBlock();
             result.CustomPeriod = defaultPeriod;

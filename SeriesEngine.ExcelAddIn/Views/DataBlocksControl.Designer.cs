@@ -1,6 +1,6 @@
 ﻿namespace SeriesEngine.ExcelAddIn.Views
 {
-    partial class FragmentsControl
+    partial class DataBlocksControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -32,10 +32,10 @@
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.linkLabelAddFragment = new System.Windows.Forms.LinkLabel();
+            this.linkLabelCopyFragment = new System.Windows.Forms.LinkLabel();
             this.linkLabel4 = new System.Windows.Forms.LinkLabel();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
-            this.treeViewFragments = new System.Windows.Forms.TreeView();
-            this.linkLabelCopyFragment = new System.Windows.Forms.LinkLabel();
+            this.treeViewSheetsAndBlocks = new System.Windows.Forms.TreeView();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -45,7 +45,7 @@
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel2, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.treeViewFragments, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.treeViewSheetsAndBlocks, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(10);
@@ -79,7 +79,7 @@
             this.linkLabel1.Location = new System.Drawing.Point(3, 0);
             this.linkLabel1.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(106, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(116, 13);
             this.linkLabel1.TabIndex = 3;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "Добавить коллекцию";
@@ -95,6 +95,18 @@
             this.linkLabelAddFragment.TabStop = true;
             this.linkLabelAddFragment.Text = "Добавить фрагмент";
             this.linkLabelAddFragment.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelAddFragment_LinkClicked);
+            // 
+            // linkLabelCopyFragment
+            // 
+            this.linkLabelCopyFragment.AutoSize = true;
+            this.flowLayoutPanel2.SetFlowBreak(this.linkLabelCopyFragment, true);
+            this.linkLabelCopyFragment.Location = new System.Drawing.Point(119, 16);
+            this.linkLabelCopyFragment.Name = "linkLabelCopyFragment";
+            this.linkLabelCopyFragment.Size = new System.Drawing.Size(120, 13);
+            this.linkLabelCopyFragment.TabIndex = 7;
+            this.linkLabelCopyFragment.TabStop = true;
+            this.linkLabelCopyFragment.Text = "Копировать фрагмент";
+            this.linkLabelCopyFragment.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelCopyFragment_LinkClicked);
             // 
             // linkLabel4
             // 
@@ -120,33 +132,21 @@
             this.linkLabel3.Text = "Удалить";
             this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
             // 
-            // treeViewFragments
+            // treeViewSheetsAndBlocks
             // 
-            this.treeViewFragments.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeViewFragments.Location = new System.Drawing.Point(13, 13);
-            this.treeViewFragments.Name = "treeViewFragments";
-            this.treeViewFragments.Size = new System.Drawing.Size(312, 335);
-            this.treeViewFragments.TabIndex = 5;
-            this.treeViewFragments.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewFragments_NodeMouseDoubleClick);
+            this.treeViewSheetsAndBlocks.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeViewSheetsAndBlocks.Location = new System.Drawing.Point(13, 13);
+            this.treeViewSheetsAndBlocks.Name = "treeViewSheetsAndBlocks";
+            this.treeViewSheetsAndBlocks.Size = new System.Drawing.Size(312, 335);
+            this.treeViewSheetsAndBlocks.TabIndex = 5;
+            this.treeViewSheetsAndBlocks.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewFragments_NodeMouseDoubleClick);
             // 
-            // linkLabelCopyFragment
-            // 
-            this.linkLabelCopyFragment.AutoSize = true;
-            this.flowLayoutPanel2.SetFlowBreak(this.linkLabelCopyFragment, true);
-            this.linkLabelCopyFragment.Location = new System.Drawing.Point(109, 16);
-            this.linkLabelCopyFragment.Name = "linkLabelCopyFragment";
-            this.linkLabelCopyFragment.Size = new System.Drawing.Size(120, 13);
-            this.linkLabelCopyFragment.TabIndex = 7;
-            this.linkLabelCopyFragment.TabStop = true;
-            this.linkLabelCopyFragment.Text = "Копировать фрагмент";
-            this.linkLabelCopyFragment.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelCopyFragment_LinkClicked);
-            // 
-            // Fragments
+            // DataBlocksControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "Fragments";
+            this.Name = "DataBlocksControl";
             this.Size = new System.Drawing.Size(338, 415);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -159,7 +159,7 @@
         #endregion
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
-        private System.Windows.Forms.TreeView treeViewFragments;
+        private System.Windows.Forms.TreeView treeViewSheetsAndBlocks;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.LinkLabel linkLabelAddFragment;
         private System.Windows.Forms.LinkLabel linkLabel4;

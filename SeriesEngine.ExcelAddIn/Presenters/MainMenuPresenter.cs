@@ -54,22 +54,15 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             //    }
             //};
 
-            View.RefreshAll += (s, e) =>
-            {
-                Controller.Execute(new ReloadAllCommandArgs());
-            };
+            View.RefreshAll += (s, e) => Controller.Execute(new ReloadAllCommandArgs());
+            View.SaveAll += (s, e) => Controller.Execute(new SaveAllCommandArgs());
 
-            View.SaveAll += (s, e) =>
+            View.InsertNewDataBlock += (s, e) => Controller.Execute(new InsertDataBlockCommandArgs
             {
-                Controller.Execute(new SaveAllCommandArgs());
-            };
-            //    if (Controller.IsActive)
-            //    {
-            //        var framgmentsProvider = Controller.GetInstance<IFragmentsProvider>();
-            //        var dataExporter = Controller.GetInstance<IDataExporter>();
-            //        dataExporter.ExportFromFragments(framgmentsProvider.GetFragments(string.Empty).OfType<SheetFragment>());
-            //    }
-            //};
+                Name = e.Name,
+                Cell = e.Cell,
+                Sheet = e.Sheet
+            });
         }
 
 

@@ -42,11 +42,11 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _.For<ICommand<InitalizeCommandArgs>>()
                     .Use(c => c.GetInstance<MainMenuPresenter>());
 
-                _.For<IFragmentView>()
+                _.For<IDataBlockView>()
                     .Singleton()
-                    .Use<FragmentsControl>();
+                    .Use<DataBlocksControl>();
 
-                _.ForConcreteType<FragmentPresenter>()
+                _.ForConcreteType<DataBlockPresenter>()
                     .Configure
                     .Singleton();
 
@@ -78,7 +78,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 _.For<IDataBlockProvider>()
                     .Singleton()
-                    .Use<WorkbookFragmentsProvider>();
+                    .Use<WorkbookDataBlockProvider>();
 
                 _.For<INetworksProvider>()
                     .Singleton()

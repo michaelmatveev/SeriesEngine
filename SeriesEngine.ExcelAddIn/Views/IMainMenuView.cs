@@ -18,6 +18,13 @@ namespace SeriesEngine.ExcelAddIn.Views
         public Network SelectedNetwork { get; set; }
     }
 
+    public class CurrentSelectionArgs: EventArgs
+    {
+        public string Cell { get; set; }
+        public string Name { get; internal set; }
+        public string Sheet { get; set; }
+    } 
+
     public interface IMainMenuView : IView
     {
         //event EventHandler<PaneArgs> ShowFragmentsPane;
@@ -25,6 +32,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         event EventHandler RefreshAll;
         event EventHandler SaveAll;
         event EventHandler<FilterArgs> FilterSelected;
+        event EventHandler<CurrentSelectionArgs> InsertNewDataBlock;
 
         void InitializeFilters(IEnumerable<Network> networks);
         //void SetFragmentsButtonState(bool isChecked);

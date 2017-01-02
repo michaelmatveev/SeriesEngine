@@ -42,6 +42,7 @@
             this.group1 = this.Factory.CreateRibbonGroup();
             this.toggleButtonShowPane = this.Factory.CreateRibbonToggleButton();
             this.menuFilter = this.Factory.CreateRibbonMenu();
+            this.buttonAddDataBlock = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.tab2.SuspendLayout();
             this.group2.SuspendLayout();
@@ -86,9 +87,10 @@
             // 
             // group1
             // 
+            this.group1.Items.Add(this.buttonAddDataBlock);
             this.group1.Items.Add(this.toggleButtonShowPane);
             this.group1.Items.Add(this.menuFilter);
-            this.group1.Label = "Запрос";
+            this.group1.Label = "Блок данных";
             this.group1.Name = "group1";
             // 
             // toggleButtonShowPane
@@ -102,6 +104,14 @@
             this.menuFilter.Dynamic = true;
             this.menuFilter.Label = "Фильтр";
             this.menuFilter.Name = "menuFilter";
+            // 
+            // buttonAddDataBlock
+            // 
+            this.buttonAddDataBlock.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonAddDataBlock.Label = "Вставить новый";
+            this.buttonAddDataBlock.Name = "buttonAddDataBlock";
+            this.buttonAddDataBlock.ShowImage = true;
+            this.buttonAddDataBlock.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonAddDataBlock_Click);
             // 
             // Ribbon
             // 
@@ -131,6 +141,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonRefresh;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFilter;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonSave;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonAddDataBlock;
     }
 
     partial class ThisRibbonCollection

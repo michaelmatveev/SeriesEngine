@@ -13,17 +13,33 @@ using System.Xml.Linq;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
-    public class WorkbookFragmentsProvider : IDataBlockProvider
+    public class WorkbookDataBlockProvider : IDataBlockProvider
     {
+        private const string XmlNamespace = "http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments";
         private readonly Workbook _workbook;
-        public WorkbookFragmentsProvider(Workbook workbook)
+
+        public WorkbookDataBlockProvider(Workbook workbook)
         {
             _workbook = workbook;
         }
 
-        public void AddDataBlock(DataBlock fragment)
+        public void AddDataBlock(CollectionDataBlock fragment)
         {
-            throw new NotImplementedException();
+            var ns = XNamespace.Get(XmlNamespace);
+            //var doc = new XDocument(
+            //    new XElement(ns + "ObjectGrid",
+            //        new XAttribute(ns + "Version", "1"),
+            //        new XAttribute(ns + "Name", fragment.Name),
+            //        new XAttribute(ns + "Sheet", fragment.Sheet),
+            //        new XAttribute(ns + "Cell", fragment.Cell)));
+            var doc = new XDocument(
+                new XElement(ns + "ObjectGrid",
+                    new XAttribute("Version", "1"),
+                    new XAttribute("Name", fragment.Name),
+                    new XAttribute("Sheet", fragment.Sheet),
+                    new XAttribute("Cell", fragment.Cell)));
+
+            _workbook.CustomXMLParts.Add(doc.ToString());            
         }
 
         public DataBlock CopyDataBlock(DataBlock sourceFragment, CollectionDataBlock sourceCollection)
@@ -33,7 +49,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public DataBlock CreateDataBlock(CollectionDataBlock source)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException();            
         }
 
         public void DeleteDataBlock(DataBlock fragment)
@@ -84,8 +100,6 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        private const string XmlNamespace = "http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments";
-
         public IEnumerable<BaseDataBlock> GetDataBlocks(string filter)
         {
             var result = new List<BaseDataBlock>();
@@ -96,15 +110,10 @@ namespace SeriesEngine.ExcelAddIn.Models
             foreach (var part in gridParts)
             {
                 var doc = XDocument.Parse(part.XML);
-                result.Add(XmlToFragmentConverter.GetFragment(doc, defaultPeriod));
+                result.Add(XmlToDataBlockConverter.GetDataBlock(doc, defaultPeriod));
             };
              
             return result;
-            //var defPeriod = GetDefaultPeriod();
-            //yield return new ObjectGridFragment(null, defPeriod)
-            //{
-            //    Name = "customPart"
-            //};
         }
 
     }

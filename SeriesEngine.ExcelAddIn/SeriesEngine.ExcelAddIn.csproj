@@ -216,7 +216,7 @@
     <Compile Include="Models\Period.cs" />
     <Compile Include="Models\SubscribeInterceptor.cs" />
     <Compile Include="Models\TimeInterval.cs" />
-    <Compile Include="Models\WorkbookFragmentsProvider.cs" />
+    <Compile Include="Models\WorkbookDataBlockProvider.cs" />
     <Compile Include="Models\XmlToFragmentConverter.cs" />
     <Compile Include="Presenters\FilterPresenter.cs" />
     <Compile Include="Presenters\FragmentPropertiesPresenter.cs" />
@@ -242,7 +242,7 @@
     <Compile Include="Views\IMainPane.cs" />
     <Compile Include="Views\IPanes.cs" />
     <Compile Include="Views\IPeriodView.cs" />
-    <Compile Include="Presenters\FragmentPresenter.cs" />
+    <Compile Include="Presenters\DataBlockPresenter.cs" />
     <Compile Include="Presenters\MainMenuPresenter.cs" />
     <Compile Include="Presenters\Presenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -267,8 +267,8 @@
     <EmbeddedResource Include="Views\FragmentProperties.resx">
       <DependentUpon>FragmentProperties.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FragmentsControl.resx">
-      <DependentUpon>FragmentsControl.cs</DependentUpon>
+    <EmbeddedResource Include="Views\DataBlocksControl.resx">
+      <DependentUpon>DataBlocksControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\MainPaneControl.resx">
       <DependentUpon>MainPaneControl.cs</DependentUpon>
@@ -295,13 +295,13 @@
     <Compile Include="Views\FragmentProperties.Designer.cs">
       <DependentUpon>FragmentProperties.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\FragmentsControl.cs">
+    <Compile Include="Views\DataBlocksControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\FragmentsControl.Designer.cs">
-      <DependentUpon>FragmentsControl.cs</DependentUpon>
+    <Compile Include="Views\DataBlocksControl.Designer.cs">
+      <DependentUpon>DataBlocksControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\IFragmentView.cs" />
+    <Compile Include="Views\IDataBlockView.cs" />
     <Compile Include="Views\IMainMenuView.cs" />
     <Compile Include="Views\IView.cs" />
     <Compile Include="Views\MainPaneControl.cs">

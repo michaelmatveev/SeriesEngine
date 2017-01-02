@@ -9,13 +9,16 @@ using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
 using SeriesEngine.App.EventData;
 using System.Windows.Forms;
+using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
-    public class FragmentPresenter : Presenter<IFragmentView>, ICommand<SwitchToDataBlocksCommandArgs>
+    public class DataBlockPresenter : Presenter<IDataBlockView>, 
+        ICommand<SwitchToDataBlocksCommandArgs>,
+        ICommand<InsertDataBlockCommandArgs>
     {
         private IDataBlockProvider _fragmentsProvider;
-        public FragmentPresenter(IFragmentView view, IApplicationController controller, IDataBlockProvider fragmentsProvider) : base(view, controller)
+        public DataBlockPresenter(IDataBlockView view, IApplicationController controller, IDataBlockProvider fragmentsProvider) : base(view, controller)
         {
             _fragmentsProvider = fragmentsProvider;
             //View.PaneClosed += (s, e) => Controller.GetInstance<MainMenuPresenter>().SetFragmentsButton(false);
@@ -58,11 +61,28 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
         void ICommand<SwitchToDataBlocksCommandArgs>.Execute(SwitchToDataBlocksCommandArgs commandData)
         {
-            View.RefreshFragmentsView(_fragmentsProvider.GetDataBlocks(string.Empty));
+            View.RefreshDataBlockView(_fragmentsProvider.GetDataBlocks(string.Empty));
             Controller.Raise(new SwitchToViewEventData
             {
                 InflatedControl = (Control)View
             });
+        }
+
+        void ICommand<InsertDataBlockCommandArgs>.Execute(InsertDataBlockCommandArgs commandData)
+        {
+            _fragmentsProvider.AddDataBlock(new CollectionDataBlock
+            {
+                Name = commandData.Name,
+                Sheet = commandData.Sheet,
+                Cell = commandData.Cell
+            });
+            
+            View.RefreshDataBlockView(_fragmentsProvider.GetDataBlocks(string.Empty));
+            Controller.Raise(new SwitchToViewEventData
+            {
+                InflatedControl = (Control)View
+            });
+            View.ShowIt();
         }
 
     }

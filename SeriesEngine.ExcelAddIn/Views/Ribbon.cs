@@ -4,6 +4,7 @@ using Microsoft.Office.Tools.Ribbon;
 using SeriesEngine.ExcelAddIn.Views;
 using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.Msk1;
+using Microsoft.Office.Interop.Excel;
 
 namespace SeriesEngine.ExcelAddIn
 {
@@ -14,6 +15,7 @@ namespace SeriesEngine.ExcelAddIn
         public event EventHandler RefreshAll;
         public event EventHandler SaveAll;
         public event EventHandler<FilterArgs> FilterSelected;
+        public event EventHandler<CurrentSelectionArgs> InsertNewDataBlock;
 
         private PaneArgs CreatePaneArgs(object toggleButton)
         {
@@ -42,9 +44,23 @@ namespace SeriesEngine.ExcelAddIn
         {
             SaveAll?.Invoke(this, EventArgs.Empty);
         }
+        
+        private void buttonAddDataBlock_Click(object sender, RibbonControlEventArgs e)
+        {
+            var range = (Range)Globals.ThisAddIn.Application.Selection;
+            var sheet = range.Parent.Name;
+            var cell = range.AddressLocal.Replace("$", string.Empty);
+            InsertNewDataBlock?.Invoke(this, new CurrentSelectionArgs
+            {
+                Sheet = sheet,
+                Cell = cell, 
+                Name = cell
+            });
+        }
 
         //public void SetFragmentsButtonState(bool isChecked)
         //{
+
         //    toggleButtonShowFragmetns.Checked = isChecked;
         //}
 

@@ -329,11 +329,11 @@ namespace SeriesEngine.ExcelAddIn.Models
             };
         }
 
-        public void AddDataBlock(DataBlock fragment)
+        public void AddDataBlock(CollectionDataBlock fragment)
         {
             //if (!_fragments.Contains(fragment))
             //{
-                _fragments.Add(fragment);
+            //    _fragments.Add(fragment);
             //}
         }
 

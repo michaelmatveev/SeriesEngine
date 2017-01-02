@@ -8,7 +8,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         IEnumerable<BaseDataBlock> GetDataBlocks(string filter);
         DataBlock CreateDataBlock(CollectionDataBlock source);
         DataBlock CopyDataBlock(DataBlock sourceFragment, CollectionDataBlock sourceCollection);
-        void AddDataBlock(DataBlock fragment);
+        void AddDataBlock(CollectionDataBlock fragment);
         void DeleteDataBlock(DataBlock fragment);
 
         Period GetDefaultPeriod();
