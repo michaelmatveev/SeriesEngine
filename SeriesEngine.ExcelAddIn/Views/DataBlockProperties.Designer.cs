@@ -1,6 +1,6 @@
 ﻿namespace SeriesEngine.ExcelAddIn.Views
 {
-    partial class FragmentProperties
+    partial class DataBlockProperties
     {
         /// <summary> 
         /// Required designer variable.

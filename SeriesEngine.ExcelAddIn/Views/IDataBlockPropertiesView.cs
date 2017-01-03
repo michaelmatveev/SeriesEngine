@@ -3,10 +3,10 @@ using System;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
-    public interface IFragmentPropertiesView : IView
+    public interface IDataBlockPropertiesView : IView
     {
         event EventHandler FragmentChanged;
-        DataBlock Fragment { get; set; }
+        CollectionDataBlock DataBlock { get; set; }
         //IEnumerable<Network> Networks { get; set; }
         void ShowIt();
     }

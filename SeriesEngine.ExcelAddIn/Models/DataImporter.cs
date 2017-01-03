@@ -31,7 +31,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 // it will call ImportFragment
                 ImportDataForFragments(
-                    _fragmentsProvider.GetDataBlocks(string.Empty).OfType<SheetDataBlock>(),
+                    _fragmentsProvider.GetDataBlocks().OfType<SheetDataBlock>(),
                     _fragmentsProvider.GetDefaultPeriod());
             }
         }

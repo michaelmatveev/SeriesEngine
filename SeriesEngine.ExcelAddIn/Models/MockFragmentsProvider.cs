@@ -253,11 +253,11 @@ namespace SeriesEngine.ExcelAddIn.Models
         //    }
         //};
 
-        public IEnumerable<BaseDataBlock> GetDataBlocks(string filter)
+        public IEnumerable<BaseDataBlock> GetDataBlocks()
         {
             MockNetworkProvider networkProvider = new MockNetworkProvider();
             CollectionDataBlock source = null;
-            foreach(var network in networkProvider.GetNetworks(filter))
+            foreach(var network in networkProvider.GetNetworks(string.Empty))
             {
                 source = new CollectionDataBlock
                 {

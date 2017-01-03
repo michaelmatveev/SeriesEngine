@@ -12,6 +12,7 @@ namespace SeriesEngine.ExcelAddIn.Views
 
     public interface IDataBlockView : IPanes
     {
+        BaseDataBlock SelectedBlock { get; set; }
         event EventHandler<SelectEntityEventArgs> DataBlockSelected;
         event EventHandler<SelectEntityEventArgs> NewDataBlockRequested;
         event EventHandler<SelectEntityEventArgs> DataBlockDeleted;

@@ -15,12 +15,12 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 {
     public class DataBlockPresenter : Presenter<IDataBlockView>, 
         ICommand<SwitchToDataBlocksCommandArgs>,
-        ICommand<InsertDataBlockCommandArgs>
+        ICommand<SelectDataBlockCommandArgs>
     {
-        private IDataBlockProvider _fragmentsProvider;
-        public DataBlockPresenter(IDataBlockView view, IApplicationController controller, IDataBlockProvider fragmentsProvider) : base(view, controller)
+        private IDataBlockProvider _dataBlockProvider;
+        public DataBlockPresenter(IDataBlockView view, IApplicationController controller, IDataBlockProvider dataBlockProvider) : base(view, controller)
         {
-            _fragmentsProvider = fragmentsProvider;
+            _dataBlockProvider = dataBlockProvider;
             //View.PaneClosed += (s, e) => Controller.GetInstance<MainMenuPresenter>().SetFragmentsButton(false);
             //View.FragmentSelected += (s, e) =>
             //{
@@ -59,31 +59,42 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             //}
         }
 
+        void ICommand<SelectDataBlockCommandArgs>.Execute(SelectDataBlockCommandArgs commandData)
+        {
+            View.RefreshDataBlockView(_dataBlockProvider.GetDataBlocks());
+            View.SelectedBlock = (BaseDataBlock)commandData.SelectedDataBlock;
+            //Controller.Raise(new SwitchToViewEventData
+            //{
+            //    InflatedControl = (Control)View
+            //});
+            View.ShowIt();
+        }
+
         void ICommand<SwitchToDataBlocksCommandArgs>.Execute(SwitchToDataBlocksCommandArgs commandData)
         {
-            View.RefreshDataBlockView(_fragmentsProvider.GetDataBlocks(string.Empty));
+            View.RefreshDataBlockView(_dataBlockProvider.GetDataBlocks());
             Controller.Raise(new SwitchToViewEventData
             {
                 InflatedControl = (Control)View
             });
         }
 
-        void ICommand<InsertDataBlockCommandArgs>.Execute(InsertDataBlockCommandArgs commandData)
-        {
-            _fragmentsProvider.AddDataBlock(new CollectionDataBlock
-            {
-                Name = commandData.Name,
-                Sheet = commandData.Sheet,
-                Cell = commandData.Cell
-            });
-            
-            View.RefreshDataBlockView(_fragmentsProvider.GetDataBlocks(string.Empty));
-            Controller.Raise(new SwitchToViewEventData
-            {
-                InflatedControl = (Control)View
-            });
-            View.ShowIt();
-        }
+        //void ICommand<InsertDataBlockCommandArgs>.Execute(InsertDataBlockCommandArgs commandData)
+        //{
+        //    _fragmentsProvider.AddDataBlock(new CollectionDataBlock
+        //    {
+        //        Name = commandData.Name,
+        //        Sheet = commandData.Sheet,
+        //        Cell = commandData.Cell
+        //    });
+
+        //    View.RefreshDataBlockView(_fragmentsProvider.GetDataBlocks(string.Empty));
+        //    Controller.Raise(new SwitchToViewEventData
+        //    {
+        //        InflatedControl = (Control)View
+        //    });
+        //    View.ShowIt();
+        //}
 
     }
 }

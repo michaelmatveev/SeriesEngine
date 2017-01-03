@@ -8,7 +8,9 @@ using System.Collections.Generic;
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
            
-    public class MainPanePresenter : Presenter<IMainPane>, ICommand<ShowCustomPaneCommandArgs>, IEventHandler<SwitchToViewEventData>
+    public class MainPanePresenter : Presenter<IMainPane>, 
+        ICommand<ShowCustomPaneCommandArgs>, 
+        IEventHandler<SwitchToViewEventData>
     {
         private ICollection<string> ViewsToSwitch = new List<string>
         {

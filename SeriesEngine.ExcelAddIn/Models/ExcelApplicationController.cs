@@ -49,6 +49,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _.ForConcreteType<DataBlockPresenter>()
                     .Configure
                     .Singleton();
+                    //.InterceptWith(new FuncInterceptor<DataBlockPresenter>(m => RegisterHandlers(m)));
 
                 _.For<IPeriodView>()
                     .Singleton()
@@ -102,14 +103,14 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _.For<ICommand<SaveAllCommandArgs>>()
                     .Use(c => c.GetInstance<DataExporter>());
 
-                _.ForConcreteType<FragmentPropertiesPresenter>();
+                _.ForConcreteType<DataBlockPropertiesPresenter>();
 
                 _.For<IModelProvider>()
                     .Singleton()
                     .Use<MockModelProvider>();
 
-                _.For<IFragmentPropertiesView>()
-                    .Use<FragmentProperties>()
+                _.For<IDataBlockPropertiesView>()
+                    .Use<DataBlockProperties>()
                     .Ctor<IList<string>>()
                     .Is(CurrentDocument.Worksheets.OfType<Microsoft.Office.Interop.Excel.Worksheet>().Select(ws => ws.Name).ToList());
 

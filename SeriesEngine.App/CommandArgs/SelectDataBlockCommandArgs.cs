@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace SeriesEngine.App.CommandArgs
 {
-    public class SwitchToDataBlocksCommandArgs
+    public class SelectDataBlockCommandArgs
     {
+        public Object SelectedDataBlock { get; set; } 
     }
 }

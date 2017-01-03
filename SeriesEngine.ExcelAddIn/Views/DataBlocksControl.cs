@@ -19,6 +19,35 @@ namespace SeriesEngine.ExcelAddIn.Views
             InitializeComponent();
         }
 
+        public BaseDataBlock SelectedBlock
+        {
+            get
+            {
+                return (BaseDataBlock)treeViewSheetsAndBlocks.SelectedNode.Tag;
+            }
+            set
+            {
+                var nodeToSelect = treeViewSheetsAndBlocks
+                    .Nodes
+                    .OfType<TreeNode>()
+                    .SelectMany(n => GetNodeBranch(n))
+                    .SingleOrDefault(t => t.Tag == value);
+                if (nodeToSelect != null)
+                {
+                    treeViewSheetsAndBlocks.SelectedNode = nodeToSelect;
+                }
+            }
+        }
+
+        private IEnumerable<TreeNode> GetNodeBranch(TreeNode node)
+        {
+            yield return node;
+
+            foreach (TreeNode child in node.Nodes)
+                foreach (var childChild in GetNodeBranch(child))
+                    yield return childChild;
+        }
+
         private void AddNodes(TreeNode newNode, TreeNode parent)
         {
 

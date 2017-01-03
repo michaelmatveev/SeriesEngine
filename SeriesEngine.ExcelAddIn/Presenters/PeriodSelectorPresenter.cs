@@ -7,7 +7,8 @@ using System.Windows.Forms;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
-    public class PeriodSelectorPresenter : Presenter<IPeriodView>, ICommand<SwitchToPeriodCommandArgs>
+    public class PeriodSelectorPresenter : Presenter<IPeriodView>, 
+        ICommand<SwitchToPeriodCommandArgs>
     {
         private IDataBlockProvider _fragmentsProvider;
         public PeriodSelectorPresenter(IPeriodView view, IApplicationController controller, IDataBlockProvider fragmentsProvider) : base(view, controller)

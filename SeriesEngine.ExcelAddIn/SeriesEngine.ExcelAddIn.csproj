@@ -217,9 +217,9 @@
     <Compile Include="Models\SubscribeInterceptor.cs" />
     <Compile Include="Models\TimeInterval.cs" />
     <Compile Include="Models\WorkbookDataBlockProvider.cs" />
-    <Compile Include="Models\XmlToFragmentConverter.cs" />
+    <Compile Include="Models\XmlToDataBlockConverter.cs" />
     <Compile Include="Presenters\FilterPresenter.cs" />
-    <Compile Include="Presenters\FragmentPropertiesPresenter.cs" />
+    <Compile Include="Presenters\DataBlockPropertiesPresenter.cs" />
     <Compile Include="Presenters\MainPanePresenter.cs" />
     <Compile Include="Presenters\PeriodSelectorPresenter.cs" />
     <Compile Include="Views\BreadCrumbs.cs">
@@ -238,7 +238,7 @@
       <DependentUpon>Filter.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\IFilterView.cs" />
-    <Compile Include="Views\IFragmentPropertiesView.cs" />
+    <Compile Include="Views\IDataBlockPropertiesView.cs" />
     <Compile Include="Views\IMainPane.cs" />
     <Compile Include="Views\IPanes.cs" />
     <Compile Include="Views\IPeriodView.cs" />
@@ -264,8 +264,8 @@
     <EmbeddedResource Include="Views\Filter.resx">
       <DependentUpon>Filter.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FragmentProperties.resx">
-      <DependentUpon>FragmentProperties.cs</DependentUpon>
+    <EmbeddedResource Include="Views\DataBlockProperties.resx">
+      <DependentUpon>DataBlockProperties.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\DataBlocksControl.resx">
       <DependentUpon>DataBlocksControl.cs</DependentUpon>
@@ -289,11 +289,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Views\FragmentProperties.cs">
+    <Compile Include="Views\DataBlockProperties.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\FragmentProperties.Designer.cs">
-      <DependentUpon>FragmentProperties.cs</DependentUpon>
+    <Compile Include="Views\DataBlockProperties.Designer.cs">
+      <DependentUpon>DataBlockProperties.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\DataBlocksControl.cs">
       <SubType>UserControl</SubType>

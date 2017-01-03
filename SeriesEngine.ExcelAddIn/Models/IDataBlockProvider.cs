@@ -5,7 +5,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public interface IDataBlockProvider
     {
-        IEnumerable<BaseDataBlock> GetDataBlocks(string filter);
+        IEnumerable<BaseDataBlock> GetDataBlocks();
         DataBlock CreateDataBlock(CollectionDataBlock source);
         DataBlock CopyDataBlock(DataBlock sourceFragment, CollectionDataBlock sourceCollection);
         void AddDataBlock(CollectionDataBlock fragment);

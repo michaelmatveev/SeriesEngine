@@ -31,7 +31,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void Execute(SaveAllCommandArgs commandData)
         {
-            var fragmentsToExport = _fragmentsProvider.GetDataBlocks(string.Empty).OfType<SheetDataBlock>();
+            var fragmentsToExport = _fragmentsProvider.GetDataBlocks().OfType<SheetDataBlock>();
             ExportFromFragments(fragmentsToExport);
         }
 
