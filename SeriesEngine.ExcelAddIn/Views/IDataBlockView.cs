@@ -13,10 +13,11 @@ namespace SeriesEngine.ExcelAddIn.Views
     public interface IDataBlockView : IPanes
     {
         BaseDataBlock SelectedBlock { get; set; }
+        void RefreshDataBlockView(IEnumerable<BaseDataBlock> blocks);
+
         event EventHandler<SelectEntityEventArgs> DataBlockSelected;
         event EventHandler<SelectEntityEventArgs> NewDataBlockRequested;
         event EventHandler<SelectEntityEventArgs> DataBlockDeleted;
         event EventHandler<SelectEntityEventArgs> DataBlockCopied;
-        void RefreshDataBlockView(IEnumerable<BaseDataBlock> blocks);
     }
 }

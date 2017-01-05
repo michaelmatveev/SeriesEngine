@@ -10,7 +10,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         DataBlock CreateDataBlock(CollectionDataBlock source);
         DataBlock CopyDataBlock(DataBlock sourceFragment, CollectionDataBlock sourceCollection);
         void AddDataBlock(CollectionDataBlock fragment);
-        void DeleteDataBlock(DataBlock fragment);
+        void DeleteDataBlock(BaseDataBlock fragment);
 
         Period GetDefaultPeriod();
         void SetDefaultPeriod(Period p);

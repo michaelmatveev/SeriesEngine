@@ -57,26 +57,26 @@ namespace SeriesEngine.ExcelAddIn.Views
 
         public void RefreshDataBlockView(IEnumerable<BaseDataBlock> dataBlocks)
         {
+            var state = treeViewSheetsAndBlocks.Nodes.GetExpansionState();
+            treeViewSheetsAndBlocks.BeginUpdate();
             treeViewSheetsAndBlocks.Nodes.Clear();
             var sheetNodes = new List<TreeNode>();
-
             foreach(var dcb in dataBlocks.OfType<CollectionDataBlock>())
             {
                 var sheetNode = sheetNodes.SingleOrDefault(n => n.Text == dcb.Sheet);
                 if(sheetNode == null)
                 {
                     sheetNode = new TreeNode(dcb.Sheet);
-                    sheetNodes.Add(sheetNode);
+                    sheetNodes.Add(sheetNode);                    
                 }
-
+                //sheetNode.Expand();
                 sheetNode.Nodes.Add(GetCollectionTreeNode(dcb));
             }
             var root = treeViewSheetsAndBlocks.Nodes.Add("Эта книга");
             root.Nodes.AddRange(sheetNodes.ToArray());
-            foreach(var n in sheetNodes)
-            {
-                n.Expand();
-            }
+            treeViewSheetsAndBlocks.Nodes.SetExpansionState(state);
+
+            treeViewSheetsAndBlocks.EndUpdate();
         }
 
         public TreeNode GetCollectionTreeNode(CollectionDataBlock dataBlock)
@@ -142,45 +142,15 @@ namespace SeriesEngine.ExcelAddIn.Views
             EditNode(e.Node);
         }
 
-        private void linkLabelAddFragment_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkLabelDeleteDataCollection_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            //if (treeViewFragments.SelectedNode?.Tag is NamedCollection)
-            //{
-            //    NewFragmentRequested?.Invoke(this, new SelectEntityEventArgs
-            //    {
-            //        SourceCollection = (NamedCollection)treeViewFragments.SelectedNode.Tag
-            //    });
-            //}
-        }
-
-        private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            EditNode(treeViewSheetsAndBlocks.SelectedNode);
-        }
-
-        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            if (treeViewSheetsAndBlocks.SelectedNode?.Tag is DataBlock)
+            if(treeViewSheetsAndBlocks.SelectedNode?.Tag is CollectionDataBlock)
             {
                 DataBlockDeleted?.Invoke(this, new SelectEntityEventArgs
                 {
-                    Block = (DataBlock)treeViewSheetsAndBlocks.SelectedNode.Tag
+                    SourceCollection = (CollectionDataBlock)treeViewSheetsAndBlocks.SelectedNode.Tag
                 });
             }
-
         }
-
-        private void linkLabelCopyFragment_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            if (treeViewSheetsAndBlocks.SelectedNode?.Tag is DataBlock)
-            {
-                //FragmentCopied?.Invoke(this, new SelectEntityEventArgs
-                //{
-                //    Fragment = (Fragment)treeViewFragments.SelectedNode.Tag,
-                //    SourceCollection = (NamedCollection)treeViewFragments.SelectedNode.Parent.Tag
-                //});
-            }
-        }
-
     }
 }

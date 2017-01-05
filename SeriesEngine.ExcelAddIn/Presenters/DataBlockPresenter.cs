@@ -21,6 +21,11 @@ namespace SeriesEngine.ExcelAddIn.Presenters
         public DataBlockPresenter(IDataBlockView view, IApplicationController controller, IDataBlockProvider dataBlockProvider) : base(view, controller)
         {
             _dataBlockProvider = dataBlockProvider;
+            View.DataBlockDeleted += (s, e) =>
+            {
+                _dataBlockProvider.DeleteDataBlock(e.SourceCollection);
+                View.RefreshDataBlockView(_dataBlockProvider.GetDataBlocks());
+            };
             //View.PaneClosed += (s, e) => Controller.GetInstance<MainMenuPresenter>().SetFragmentsButton(false);
             //View.FragmentSelected += (s, e) =>
             //{

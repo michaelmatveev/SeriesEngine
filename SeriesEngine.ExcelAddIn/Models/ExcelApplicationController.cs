@@ -8,15 +8,15 @@ using SeriesEngine.ExcelAddIn.Presenters;
 using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
 using StructureMap.Building.Interception;
+using SeriesEngine.App.EventData;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
     public class ExcelApplicationController : ApplicationController
     {        
-        public Ribbon MainRibbon { get; set; }
+        public IMainMenuView MainRibbon { get; set; }
         public CustomTaskPaneCollection PaneCollection { get; set; }
         public Workbook CurrentDocument { get; set; }
-        //public bool IsActive { get; set; }
 
         public void Configure()
         {
@@ -125,5 +125,15 @@ namespace SeriesEngine.ExcelAddIn.Models
             return eventHandler;
         }
 
+        public void Activate()
+        {
+            ((RibbonWrapper)MainRibbon).IsActive = true;
+            Raise(new RestoreMenuStateEventData());
+        }
+
+        public void Deactivate()
+        {
+            ((RibbonWrapper)MainRibbon).IsActive = false;
+        }
     }
 }

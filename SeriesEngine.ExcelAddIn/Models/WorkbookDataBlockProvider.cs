@@ -73,9 +73,9 @@ namespace SeriesEngine.ExcelAddIn.Models
             throw new NotImplementedException();            
         }
 
-        public void DeleteDataBlock(DataBlock fragment)
+        public void DeleteDataBlock(BaseDataBlock dataBlock)
         {
-            throw new NotImplementedException();
+            _dataBlocks.Remove(dataBlock);
         }
 
         private const string CustomPropertyPeriodId = "sePeriodId";

@@ -25,11 +25,6 @@ namespace SeriesEngine.ExcelAddIn
             };
         }
 
-        //private void toggleButtonShowFragmetns_Click(object sender, RibbonControlEventArgs e)
-        //{
-        //    ShowFragmentsPane?.Invoke(this, CreatePaneArgs(sender));
-        //}
-
         private void toggleButtonShowPane_Click(object sender, RibbonControlEventArgs e)
         {
             ShowCustomPane?.Invoke(this, CreatePaneArgs(sender));
@@ -58,34 +53,28 @@ namespace SeriesEngine.ExcelAddIn
             });
         }
 
-        //public void SetFragmentsButtonState(bool isChecked)
-        //{
-
-        //    toggleButtonShowFragmetns.Checked = isChecked;
-        //}
-
         public void SetPaneVisibleState(bool isChecked)
         {
             toggleButtonShowPane.Checked = isChecked;
         }
 
 
-        public void InitializeFilters(IEnumerable<Network> networks)
-        {
-            foreach (var network in networks)
-            {
-                var item = Factory.CreateRibbonButton();
-                item.Click += (s, e) =>
-                {
-                    FilterSelected?.Invoke(this, new FilterArgs
-                    {
-                        SelectedNetwork = network
-                    });
-                };
-                item.Label = network.Name;
-                menuFilter.Items.Add(item);
-            }
-        }
+        //public void InitializeFilters(IEnumerable<Network> networks)
+        //{
+        //    foreach (var network in networks)
+        //    {
+        //        var item = Factory.CreateRibbonButton();
+        //        item.Click += (s, e) =>
+        //        {
+        //            FilterSelected?.Invoke(this, new FilterArgs
+        //            {
+        //                SelectedNetwork = network
+        //            });
+        //        };
+        //        item.Label = network.Name;
+        //        menuFilter.Items.Add(item);
+        //    }
+        //}
 
     }
 }

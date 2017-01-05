@@ -3,6 +3,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.ExcelAddIn.Properties;
 using SeriesEngine.App.EventData;
+using SeriesEngine.ExcelAddIn.Views;
 
 namespace SeriesEngine.ExcelAddIn
 {
@@ -22,7 +23,8 @@ namespace SeriesEngine.ExcelAddIn
             Application.WorkbookOpen += (w) => CreateWorkbookController(w);            
             ((Excel.AppEvents_Event)Application).NewWorkbook += (w) => CreateWorkbookController(w);
             Application.WorkbookBeforeClose += (Excel.Workbook wb, ref bool c) => ApplicationControllers.Remove(wb);
-            Application.WorkbookActivate += (wb) => ApplicationControllers[wb].Raise(new RestoreMenuStateEventData());
+            Application.WorkbookActivate += (wb) => ApplicationControllers[wb].Activate();
+            Application.WorkbookDeactivate += (wb) => ApplicationControllers[wb].Deactivate();
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
@@ -33,9 +35,8 @@ namespace SeriesEngine.ExcelAddIn
         {
             var controller = new ExcelApplicationController
             {
-                //IsActive = true,
                 PaneCollection = CustomTaskPanes,
-                MainRibbon = Globals.Ribbons.Ribbon,
+                MainRibbon = new RibbonWrapper(Globals.Ribbons.Ribbon),
                 CurrentDocument = Globals.Factory.GetVstoObject(wb)
             };
             controller.Configure();

@@ -341,9 +341,9 @@ namespace SeriesEngine.ExcelAddIn.Models
             //}
         }
 
-        public void DeleteDataBlock(DataBlock fragment)
+        public void DeleteDataBlock(BaseDataBlock fragment)
         {
-            _fragments.Remove(fragment);
+            //_fragments.Remove(fragment);
         }
 
 
