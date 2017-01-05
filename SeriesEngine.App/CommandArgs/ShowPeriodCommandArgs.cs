@@ -9,5 +9,6 @@ namespace SeriesEngine.App.CommandArgs
     public class ShowCustomPaneCommandArgs
     {
         public bool IsVisible { get; set; }
+        public string ViewNameToOpen { get; set; }
     }
 }

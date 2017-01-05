@@ -31,22 +31,35 @@ namespace SeriesEngine.ExcelAddIn.Models
             foreach (var part in gridParts)
             {
                 var doc = XDocument.Parse(part.XML);
-                _dataBlocks.Add(XmlToDataBlockConverter.GetDataBlock(doc, defaultPeriod));
+                _dataBlocks.Add(DataBlockConverter.GetDataBlock(doc, defaultPeriod));
             };
+        }
 
+        public IEnumerable<BaseDataBlock> GetDataBlocks()
+        {
+            return _dataBlocks;
+        }
+
+        public void Save()
+        {
+            var gridParts = _workbook.CustomXMLParts
+                .Cast<CustomXMLPart>()
+                .Where(p => !p.BuiltIn && p.NamespaceURI == XmlNamespace)
+                .ToList();
+
+            foreach(var part in gridParts)
+            {
+                part.Delete();
+            }
+
+            foreach(var db in _dataBlocks)
+            {
+                _workbook.CustomXMLParts.Add(DataBlockConverter.GetXml(db).ToString());
+            }
         }
 
         public void AddDataBlock(CollectionDataBlock fragment)
         {
-            //var ns = XNamespace.Get(XmlNamespace);
-            //var doc = new XDocument(
-            //    new XElement(ns + "ObjectGrid",
-            //        new XAttribute("Version", "1"),
-            //        new XAttribute("Name", fragment.Name),
-            //        new XAttribute("Sheet", fragment.Sheet),
-            //        new XAttribute("Cell", fragment.Cell)));
-
-            //_workbook.CustomXMLParts.Add(doc.ToString());
             _dataBlocks.Add(fragment);
         }
 
@@ -106,11 +119,6 @@ namespace SeriesEngine.ExcelAddIn.Models
                 partId = _workbook.CustomXMLParts.Add(writer.ToString()).Id;
                 properties.CreateOrUpdateStringProperty(CustomPropertyPeriodId, partId);
             }
-        }
-
-        public IEnumerable<BaseDataBlock> GetDataBlocks()
-        {
-            return _dataBlocks;
         }
 
     }

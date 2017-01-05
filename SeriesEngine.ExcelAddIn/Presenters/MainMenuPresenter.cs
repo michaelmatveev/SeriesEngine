@@ -3,7 +3,6 @@ using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
 using SeriesEngine.App.EventData;
-using System;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
@@ -11,8 +10,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
         ICommand<InitalizeCommandArgs>, 
         IEventHandler<InitializeEventData>, 
         IEventHandler<MainPaneClosed>,
-        IEventHandler<RestoreMenuStateEventData>//,
-        //IEventHandler<SaveMenuStateEventData>
+        IEventHandler<RestoreMenuStateEventData>
     {
         private INetworksProvider _networkProvider;
         private bool _firstInitialization = true;
@@ -23,14 +21,6 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             INetworksProvider networkProvider) : base(view, controller)
         {
             _networkProvider = networkProvider;
-            //View.ShowFragmentsPane += (s, e) =>
-            //{
-            //    if (Controller.IsActive)
-            //    {
-            //        Controller.GetInstance<FragmentPresenter>().ShowFragments(e.Visible);
-            //    }
-            //};
-
             View.ShowCustomPane += (s, e) =>
             {
                 _isPaneVisible = e.Visible;
@@ -45,14 +35,6 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                     _firstInitialization = false;
                 }
             };
-
-            //View.FilterSelected += (s, e) =>
-            //{
-            //    if (Controller.IsActive)
-            //    {
-            //        Controller.GetInstance<FilterPresenter>().ShowFilterForNetwork(e.SelectedNetwork);
-            //    }
-            //};
 
             View.RefreshAll += (s, e) => Controller.Execute(new ReloadAllCommandArgs());
             View.SaveAll += (s, e) => Controller.Execute(new SaveAllCommandArgs());

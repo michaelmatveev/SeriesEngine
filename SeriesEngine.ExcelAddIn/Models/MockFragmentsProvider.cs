@@ -301,6 +301,10 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         }
 
+        public void Save()
+        {
+        }
+
         public DataBlock CreateDataBlock(CollectionDataBlock source)
         {
             var mock = new MockModelProvider();

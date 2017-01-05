@@ -34,7 +34,9 @@ namespace SeriesEngine.ExcelAddIn.Views
                     .SingleOrDefault(t => t.Tag == value);
                 if (nodeToSelect != null)
                 {
+                    nodeToSelect.EnsureVisible();
                     treeViewSheetsAndBlocks.SelectedNode = nodeToSelect;
+                    treeViewSheetsAndBlocks.Focus();
                 }
             }
         }

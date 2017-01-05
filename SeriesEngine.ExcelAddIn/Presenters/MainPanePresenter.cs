@@ -14,9 +14,8 @@ namespace SeriesEngine.ExcelAddIn.Presenters
     {
         private ICollection<string> ViewsToSwitch = new List<string>
         {
-            "Периоды",
-            "Блоки данных",
-            //"Фильтры"
+            ViewNames.PeriodSelectorViewName,
+            ViewNames.DataBlocksViewName,
         };
 
         public MainPanePresenter(IMainPane view, IApplicationController controller) : base(view, controller)
@@ -26,13 +25,10 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             {
                 switch (e.ViewName)
                 {
-                    case "Периоды":
+                    case ViewNames.PeriodSelectorViewName:
                         Controller.Execute(new SwitchToPeriodCommandArgs()); break;
-                    case "Блоки данных":
+                    case ViewNames.DataBlocksViewName:
                         Controller.Execute(new SwitchToDataBlocksCommandArgs()); break;
-                    case "Фильтры":
-                        View.InflateControl(null); break;
-                    //Controller.Execute(new SwitchToFiltersCommandArgs()); break;
                     default:
                         throw new InvalidOperationException();
                 }
@@ -43,7 +39,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
         {
             if (commandData.IsVisible)
             {
-                View.SetViews(ViewsToSwitch);
+                View.SetViews(ViewsToSwitch, commandData.ViewNameToOpen ?? ViewNames.PeriodSelectorViewName);
                 View.ShowIt();
             }
             else

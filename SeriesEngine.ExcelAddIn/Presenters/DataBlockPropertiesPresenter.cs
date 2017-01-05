@@ -1,10 +1,8 @@
-﻿using SeriesEngine.ExcelAddIn.Views;
+﻿using SeriesEngine.App;
+using SeriesEngine.App.CommandArgs;
 using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
-using SeriesEngine.App;
-using System;
-using SeriesEngine.App.CommandArgs;
-using SeriesEngine.App.EventData;
+using SeriesEngine.ExcelAddIn.Views;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
@@ -17,6 +15,11 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             View.FragmentChanged += (s, e) =>
             {
                 dataBlockProvider.AddDataBlock(View.DataBlock);
+                Controller.Execute(new ShowCustomPaneCommandArgs
+                {
+                    IsVisible = true,
+                    ViewNameToOpen = ViewNames.DataBlocksViewName
+                });
                 Controller.Execute(new SelectDataBlockCommandArgs
                 {
                     SelectedDataBlock = View.DataBlock

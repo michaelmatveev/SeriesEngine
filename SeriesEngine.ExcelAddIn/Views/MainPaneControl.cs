@@ -12,16 +12,20 @@ namespace SeriesEngine.ExcelAddIn.Views
             InitializeComponent();
         }
 
-        public MainPaneControl(PanesManager embedder) : base(embedder, "Ряды данных")
+        public MainPaneControl(PanesManager embedder) : base(embedder, ViewNames.MainPaneViewName)
         {
             InitializeComponent();
         }
 
         public event EventHandler<SwitchToViewEventArgs> SwitchToTheView;
+        private bool FireSwitchToTheView = false;
 
-        public void SetViews(ICollection<string> viewNames)
+        public void SetViews(ICollection<string> viewNames, string viewToOpen)
         {
+            FireSwitchToTheView = false;
             comboBoxGoTo.DataSource = viewNames;
+            FireSwitchToTheView = true;
+            comboBoxGoTo.SelectedItem = viewToOpen;
         }
 
         public void InflateControl(Control control)
@@ -35,10 +39,13 @@ namespace SeriesEngine.ExcelAddIn.Views
 
         private void comboBoxGoTo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SwitchToTheView?.Invoke(this, new SwitchToViewEventArgs
+            if (FireSwitchToTheView)
             {
-                ViewName = comboBoxGoTo.Text
-            });
+                SwitchToTheView?.Invoke(this, new SwitchToViewEventArgs
+                {
+                    ViewName = comboBoxGoTo.Text
+                });
+            }
         }
     }
 }

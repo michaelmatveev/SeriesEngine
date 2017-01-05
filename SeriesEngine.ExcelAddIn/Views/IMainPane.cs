@@ -14,8 +14,9 @@ namespace SeriesEngine.ExcelAddIn.Views
 
     public interface IMainPane : IPanes
     {
-        void SetViews(ICollection<string> viewNames);
+        void SetViews(ICollection<string> viewNames, string viewToOpen);
         void InflateControl(Control control);
+
         event EventHandler<SwitchToViewEventArgs> SwitchToTheView;
     }
 }

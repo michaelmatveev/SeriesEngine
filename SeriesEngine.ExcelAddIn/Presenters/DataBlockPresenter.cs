@@ -61,13 +61,8 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
         void ICommand<SelectDataBlockCommandArgs>.Execute(SelectDataBlockCommandArgs commandData)
         {
-            View.RefreshDataBlockView(_dataBlockProvider.GetDataBlocks());
+            View.RefreshDataBlockView(_dataBlockProvider.GetDataBlocks());            
             View.SelectedBlock = (BaseDataBlock)commandData.SelectedDataBlock;
-            //Controller.Raise(new SwitchToViewEventData
-            //{
-            //    InflatedControl = (Control)View
-            //});
-            View.ShowIt();
         }
 
         void ICommand<SwitchToDataBlocksCommandArgs>.Execute(SwitchToDataBlocksCommandArgs commandData)
@@ -78,23 +73,6 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                 InflatedControl = (Control)View
             });
         }
-
-        //void ICommand<InsertDataBlockCommandArgs>.Execute(InsertDataBlockCommandArgs commandData)
-        //{
-        //    _fragmentsProvider.AddDataBlock(new CollectionDataBlock
-        //    {
-        //        Name = commandData.Name,
-        //        Sheet = commandData.Sheet,
-        //        Cell = commandData.Cell
-        //    });
-
-        //    View.RefreshDataBlockView(_fragmentsProvider.GetDataBlocks(string.Empty));
-        //    Controller.Raise(new SwitchToViewEventData
-        //    {
-        //        InflatedControl = (Control)View
-        //    });
-        //    View.ShowIt();
-        //}
 
     }
 }
