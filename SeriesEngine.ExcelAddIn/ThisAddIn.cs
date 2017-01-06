@@ -24,7 +24,14 @@ namespace SeriesEngine.ExcelAddIn
             ((Excel.AppEvents_Event)Application).NewWorkbook += (w) => CreateWorkbookController(w);
             Application.WorkbookBeforeClose += (Excel.Workbook wb, ref bool c) => ApplicationControllers.Remove(wb);
             Application.WorkbookActivate += (wb) => ApplicationControllers[wb].Activate();
-            Application.WorkbookDeactivate += (wb) => ApplicationControllers[wb].Deactivate();
+            Application.WorkbookDeactivate += (wb) =>
+            {
+                ExcelApplicationController controller;
+                if (ApplicationControllers.TryGetValue(wb, out controller))
+                {
+                    controller.Deactivate();
+                }
+            };
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)

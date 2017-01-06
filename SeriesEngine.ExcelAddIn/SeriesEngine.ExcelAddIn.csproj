@@ -219,6 +219,7 @@
     <Compile Include="Models\TimeInterval.cs" />
     <Compile Include="Models\WorkbookDataBlockProvider.cs" />
     <Compile Include="Models\DataBlockConverter.cs" />
+    <Compile Include="Presenters\CollectionPropertiesPresenter.cs" />
     <Compile Include="Presenters\FilterPresenter.cs" />
     <Compile Include="Presenters\DataBlockPropertiesPresenter.cs" />
     <Compile Include="Presenters\MainPanePresenter.cs" />
@@ -238,6 +239,7 @@
     <Compile Include="Views\Filter.Designer.cs">
       <DependentUpon>Filter.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\ICollectionPropertiesView.cs" />
     <Compile Include="Views\IFilterView.cs" />
     <Compile Include="Views\IDataBlockPropertiesView.cs" />
     <Compile Include="Views\IMainPane.cs" />

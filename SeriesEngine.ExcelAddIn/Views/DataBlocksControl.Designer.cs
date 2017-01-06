@@ -85,6 +85,7 @@
             this.linkLabelAddDataBlock.TabIndex = 7;
             this.linkLabelAddDataBlock.TabStop = true;
             this.linkLabelAddDataBlock.Text = "Добавить блок данных";
+            this.linkLabelAddDataBlock.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelAddDataBlock_LinkClicked);
             // 
             // linkLabelCopyDataBlockCollection
             // 

@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace SeriesEngine.App.CommandArgs
 {
-    public class InsertDataBlockCommandArgs
+    public class EditCollectionBlockCommandArgs
     {
-        public string Sheet { get; set; }
-        public string Cell { get; set; }
-        public string Name { get; set; }
+        public Object CollectionDataBlockToEdit { get; set; }
     }
 }

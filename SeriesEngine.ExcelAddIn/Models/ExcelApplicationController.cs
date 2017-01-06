@@ -9,6 +9,7 @@ using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
 using StructureMap.Building.Interception;
 using SeriesEngine.App.EventData;
+using System;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -29,7 +30,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Configure
                     .Singleton()
                     .Ctor<CustomTaskPaneCollection>()
-                    .Is(PaneCollection);                 
+                    .Is(PaneCollection);
 
                 _.For<IMainMenuView>()
                     .Use(MainRibbon);
@@ -49,7 +50,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _.ForConcreteType<DataBlockPresenter>()
                     .Configure
                     .Singleton();
-                    //.InterceptWith(new FuncInterceptor<DataBlockPresenter>(m => RegisterHandlers(m)));
+                //.InterceptWith(new FuncInterceptor<DataBlockPresenter>(m => RegisterHandlers(m)));
 
                 _.For<IPeriodView>()
                     .Singleton()
@@ -103,6 +104,12 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _.For<ICommand<SaveAllCommandArgs>>()
                     .Use(c => c.GetInstance<DataExporter>());
 
+                _.ForConcreteType<CollectionPropertiesPresenter>();
+                _.For<ICollectionPropertiesView>()
+                    .Use<CollectionProperties>()
+                    .Ctor<Func<IList<string>>>()
+                    .Is(GetWorksheetsName);
+
                 _.ForConcreteType<DataBlockPropertiesPresenter>();
 
                 _.For<IModelProvider>()
@@ -112,11 +119,22 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _.For<IDataBlockPropertiesView>()
                     .Use<DataBlockProperties>()
                     .Ctor<IList<string>>()
-                    .Is(CurrentDocument.Worksheets.OfType<Microsoft.Office.Interop.Excel.Worksheet>().Select(ws => ws.Name).ToList());
+                    .Is(GetWorksheetsName());
 
             });
 
             Container.GetInstance<MainMenuPresenter>();            
+        }
+
+        private IList<string> GetWorksheetsName()
+        {
+            var result = CurrentDocument
+                .Worksheets
+                .OfType<Microsoft.Office.Interop.Excel.Worksheet>()
+                .Select(ws => ws.Name)
+                .ToList();
+
+            return result;
         }
 
         private T RegisterHandlers<T>(T eventHandler)

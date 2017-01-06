@@ -26,6 +26,17 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                 _dataBlockProvider.DeleteDataBlock(e.SourceCollection);
                 View.RefreshDataBlockView(_dataBlockProvider.GetDataBlocks());
             };
+            View.CollectionDataBlockSelected += (s, e) =>
+            {
+                Controller.Execute(new EditCollectionBlockCommandArgs
+                {
+                    CollectionDataBlockToEdit = e.SourceCollection
+                });
+            };
+            View.NewDataBlockRequested += (s, e) =>
+            {
+                
+            };
             //View.PaneClosed += (s, e) => Controller.GetInstance<MainMenuPresenter>().SetFragmentsButton(false);
             //View.FragmentSelected += (s, e) =>
             //{

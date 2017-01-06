@@ -6,15 +6,15 @@ using SeriesEngine.ExcelAddIn.Views;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
-    public class DataBlockPropertiesPresenter : Presenter<IDataBlockPropertiesView>,
-        ICommand<InsertDataBlockCommandArgs>
+    public class DataBlockPropertiesPresenter : Presenter<IDataBlockPropertiesView>//,
+//        ICommand<InsertDataBlockCommandArgs>
     {
         public DataBlockPropertiesPresenter(IDataBlockPropertiesView view, IApplicationController controller, IDataBlockProvider dataBlockProvider) 
             : base(view, controller)
         {
-            View.FragmentChanged += (s, e) =>
+            View.VariableBlockChanged += (s, e) =>
             {
-                dataBlockProvider.AddDataBlock(View.DataBlock);
+                //dataBlockProvider.AddDataBlock(View.DataBlock);
                 Controller.Execute(new ShowCustomPaneCommandArgs
                 {
                     IsVisible = true,
@@ -27,22 +27,22 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             };
         }
 
-        public void EditFragment(CollectionDataBlock fragment)
-        {
-            View.DataBlock = fragment;
-            View.ShowIt();
-        }
+        //public void EditFragment(CollectionDataBlock fragment)
+        //{
+        //    View.DataBlock = fragment;
+        //    View.ShowIt();
+        //}
 
-        void ICommand<InsertDataBlockCommandArgs>.Execute(InsertDataBlockCommandArgs commandData)
-        {
-            var newBlock = new CollectionDataBlock
-            {
-                Name = commandData.Name,
-                Sheet = commandData.Sheet,
-                Cell = commandData.Cell
-            };
+        //void ICommand<InsertDataBlockCommandArgs>.Execute(InsertDataBlockCommandArgs commandData)
+        //{
+        //    var newBlock = new CollectionDataBlock
+        //    {
+        //        Name = commandData.Name,
+        //        Sheet = commandData.Sheet,
+        //        Cell = commandData.Cell
+        //    };
 
-            EditFragment(newBlock);
-        }
+        //    EditFragment(newBlock);
+        //}
     }
 }

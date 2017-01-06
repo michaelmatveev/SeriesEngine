@@ -15,6 +15,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         BaseDataBlock SelectedBlock { get; set; }
         void RefreshDataBlockView(IEnumerable<BaseDataBlock> blocks);
 
+        event EventHandler<SelectEntityEventArgs> CollectionDataBlockSelected;
         event EventHandler<SelectEntityEventArgs> DataBlockSelected;
         event EventHandler<SelectEntityEventArgs> NewDataBlockRequested;
         event EventHandler<SelectEntityEventArgs> DataBlockDeleted;

@@ -58,9 +58,12 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        public void AddDataBlock(CollectionDataBlock fragment)
+        public void AddDataBlock(CollectionDataBlock collectionDataBlock)
         {
-            _dataBlocks.Add(fragment);
+            if (!_dataBlocks.Contains(collectionDataBlock))
+            {
+                _dataBlocks.Add(collectionDataBlock);
+            }
         }
 
         public DataBlock CopyDataBlock(DataBlock sourceFragment, CollectionDataBlock sourceCollection)

@@ -9,6 +9,7 @@ namespace SeriesEngine.ExcelAddIn.Views
 {
     public partial class DataBlocksControl : PaneControl, IDataBlockView
     {
+        public event EventHandler<SelectEntityEventArgs> CollectionDataBlockSelected;
         public event EventHandler<SelectEntityEventArgs> DataBlockSelected;
         public event EventHandler<SelectEntityEventArgs> NewDataBlockRequested;
         public event EventHandler<SelectEntityEventArgs> DataBlockDeleted;
@@ -135,6 +136,13 @@ namespace SeriesEngine.ExcelAddIn.Views
                     Block = (DataBlock)node.Tag
                 });
             }
+            else if(node.Tag is CollectionDataBlock)
+            {
+                CollectionDataBlockSelected?.Invoke(this, new SelectEntityEventArgs
+                {
+                    SourceCollection = (CollectionDataBlock)node.Tag
+                });
+            }
         }
 
         private void treeViewFragments_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -152,5 +160,17 @@ namespace SeriesEngine.ExcelAddIn.Views
                 });
             }
         }
+
+        private void linkLabelAddDataBlock_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if(treeViewSheetsAndBlocks.SelectedNode?.Tag is CollectionDataBlock)
+            {
+                NewDataBlockRequested?.Invoke(this, new SelectEntityEventArgs
+                {
+                    SourceCollection = (CollectionDataBlock)treeViewSheetsAndBlocks.SelectedNode.Tag
+                });
+            }
+        }
+
     }
 }
