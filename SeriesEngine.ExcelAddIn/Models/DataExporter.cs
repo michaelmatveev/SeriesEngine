@@ -1,5 +1,4 @@
 ﻿using Microsoft.Office.Tools.Excel;
-using Microsoft.XmlDiffPatch;
 using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
 using SeriesEngine.ExcelAddIn.Helpers;
@@ -8,30 +7,29 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Xml;
 using System.Xml.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
     public class DataExporter : BaseDataExporter,
-        ICommand<SaveAllCommandArgs>
+        ICommand<SaveAllCommandArgs>,
+        ICommand<PreserveDataBlocks>
     {
         private Workbook _workbook;
-        private readonly IDataBlockProvider _fragmentsProvider;
+        private readonly IDataBlockProvider _blockProvider;
         private readonly INetworksProvider _networksProvider;
 
-        public DataExporter(Workbook workbook, IDataBlockProvider fragmentsProvider, INetworksProvider networksProvider)
+        public DataExporter(Workbook workbook, IDataBlockProvider blockProvider, INetworksProvider networksProvider)
         {
             _workbook = workbook;
-            _fragmentsProvider = fragmentsProvider;
+            _blockProvider = blockProvider;
             _networksProvider = networksProvider;
         }
 
         public void Execute(SaveAllCommandArgs commandData)
         {
-            var fragmentsToExport = _fragmentsProvider.GetDataBlocks().OfType<SheetDataBlock>();
+            var fragmentsToExport = _blockProvider.GetDataBlocks().OfType<SheetDataBlock>();
             ExportFromFragments(fragmentsToExport);
         }
 
@@ -119,6 +117,11 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
 
             }
+        }
+
+        void ICommand<PreserveDataBlocks>.Execute(PreserveDataBlocks commandData)
+        {
+            _blockProvider.Save();
         }
 
         //private void RemoveRowInDataSet(int row, DataSet dataSet, Excel.ListObject listObject, int rootId, IEnumerable<TreeItem<IGrouping<ObjectIdentity, ColumnIdentity>>> currentItems)

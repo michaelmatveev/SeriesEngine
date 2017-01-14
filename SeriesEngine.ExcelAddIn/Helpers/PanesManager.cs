@@ -50,7 +50,11 @@ namespace SeriesEngine.ExcelAddIn.Helpers
         public void Release<T>(T viewToRelease)
         {
             var panel = _panesCollection.SingleOrDefault(p => p.Control == viewToRelease as UserControl);
-            panel.Visible = false;
+            if (panel != null)
+            {
+                panel.Visible = false;
+            }
         }
     }
+
 }

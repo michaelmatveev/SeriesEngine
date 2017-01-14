@@ -50,7 +50,11 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _.ForConcreteType<DataBlockPresenter>()
                     .Configure
                     .Singleton();
-                //.InterceptWith(new FuncInterceptor<DataBlockPresenter>(m => RegisterHandlers(m)));
+
+                _.For<ICommand<SwitchToDataBlocksCommandArgs>>()
+                    .Use(c => c.GetInstance<DataBlockPresenter>());
+                _.For<ICommand<SelectDataBlockCommandArgs>>()
+                    .Use(c => c.GetInstance<DataBlockPresenter>());
 
                 _.For<IPeriodView>()
                     .Singleton()
@@ -59,6 +63,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _.ForConcreteType<PeriodSelectorPresenter>()
                     .Configure
                     .Singleton();
+                _.For<ICommand<SwitchToPeriodCommandArgs>>()
+                    .Use(c => c.GetInstance<PeriodSelectorPresenter>());
 
                 _.For<IMainPane>()
                     .Singleton()
@@ -152,6 +158,19 @@ namespace SeriesEngine.ExcelAddIn.Models
         public void Deactivate()
         {
             ((RibbonWrapper)MainRibbon).IsActive = false;
+        }
+
+        public void PreserveDataBlocks()
+        {
+            Execute(new PreserveDataBlocks());
+        }
+
+        public void ClosePane()
+        {
+            Execute(new ShowCustomPaneCommandArgs
+            {
+                IsVisible = false
+            });
         }
     }
 }

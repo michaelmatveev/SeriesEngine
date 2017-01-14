@@ -49,6 +49,7 @@
     <Compile Include="CommandArgs\EditCollectionBlockCommandArgs.cs" />
     <Compile Include="CommandArgs\InitalizeCommandArgs.cs" />
     <Compile Include="CommandArgs\InsertCollectionBlockCommandArgs.cs" />
+    <Compile Include="CommandArgs\PreserveDataBlocks.cs" />
     <Compile Include="CommandArgs\ReloadAllCommandArgs.cs" />
     <Compile Include="CommandArgs\SaveAllCommandArgs.cs" />
     <Compile Include="CommandArgs\ShowPeriodCommandArgs.cs" />

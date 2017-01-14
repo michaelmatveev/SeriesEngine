@@ -22,8 +22,31 @@ namespace SeriesEngine.ExcelAddIn
         {
             Application.WorkbookOpen += (w) => CreateWorkbookController(w);            
             ((Excel.AppEvents_Event)Application).NewWorkbook += (w) => CreateWorkbookController(w);
-            Application.WorkbookBeforeClose += (Excel.Workbook wb, ref bool c) => ApplicationControllers.Remove(wb);
-            Application.WorkbookActivate += (wb) => ApplicationControllers[wb].Activate();
+            Application.WorkbookBeforeClose += (Excel.Workbook wb, ref bool c) =>
+            {
+                ExcelApplicationController controller;
+                if (ApplicationControllers.TryGetValue(wb, out controller))
+                {
+                    controller.ClosePane();
+                    ApplicationControllers.Remove(wb);
+                }
+            };
+            Application.WorkbookBeforeSave += (Excel.Workbook wb, bool saveAsUI, ref bool cancel) =>
+            {
+                ApplicationControllers[wb].PreserveDataBlocks();
+            };
+            Application.WorkbookActivate += (wb) =>
+            {
+                ExcelApplicationController controller;
+                if (ApplicationControllers.TryGetValue(wb, out controller))
+                {
+                    controller.Activate();
+                }
+                else
+                {
+                    CreateWorkbookController(wb);
+                }
+            };
             Application.WorkbookDeactivate += (wb) =>
             {
                 ExcelApplicationController controller;
@@ -49,8 +72,7 @@ namespace SeriesEngine.ExcelAddIn
             controller.Configure();
             ApplicationControllers.Add(wb, controller);
             controller.Raise(new InitializeEventData());
-
-            AddTestGrid(wb);//TODO remove this code
+            //AddTestGrid(wb);//TODO remove this code
         }
 
         private void AddTestGrid(Excel.Workbook wb)

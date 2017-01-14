@@ -14,14 +14,14 @@ namespace SeriesEngine.ExcelAddIn.Models
         ICommand<ReloadAllCommandArgs>
     {
         private readonly Workbook _workbook;
-        private readonly IDataBlockProvider _fragmentsProvider;
+        private readonly IDataBlockProvider _blockProvider;
         private readonly INetworksProvider _networksProvider;
         private Random _random = new Random();
 
-        public DataImporter(Workbook workbook, IDataBlockProvider fragmentsProvider, INetworksProvider networksProvider)
+        public DataImporter(Workbook workbook, IDataBlockProvider blockProvider, INetworksProvider networksProvider)
         {
             _workbook = workbook;
-            _fragmentsProvider = fragmentsProvider;
+            _blockProvider = blockProvider;
             _networksProvider = networksProvider;
         }
 
@@ -31,8 +31,8 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 // it will call ImportFragment
                 ImportDataForFragments(
-                    _fragmentsProvider.GetDataBlocks().OfType<SheetDataBlock>(),
-                    _fragmentsProvider.GetDefaultPeriod());
+                    _blockProvider.GetDataBlocks().OfType<SheetDataBlock>(),
+                    _blockProvider.GetDefaultPeriod());
             }
         }
 
