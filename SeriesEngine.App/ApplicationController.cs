@@ -13,7 +13,7 @@ namespace SeriesEngine.App
             EventPublisher = new EventPublisher();
         }
         
-        public void Execute<T>(T commandData)
+        public virtual void Execute<T>(T commandData)
         {
             ICommand<T> command = Container.TryGetInstance<ICommand<T>>();
             if (command != null)
@@ -22,7 +22,7 @@ namespace SeriesEngine.App
             }
         }
         
-        public void Raise<T>(T eventData)
+        public virtual void Raise<T>(T eventData)
         {
             EventPublisher.Publish(eventData);
         }

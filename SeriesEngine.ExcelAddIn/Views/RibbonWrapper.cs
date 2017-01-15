@@ -10,8 +10,8 @@ namespace SeriesEngine.ExcelAddIn.Views
         public event EventHandler RefreshAll;
         public event EventHandler SaveAll;
 
-
         public bool IsActive { get; set; }
+        
         private readonly IMainMenuView _realView;
         public RibbonWrapper(IMainMenuView realView)
         {
@@ -49,9 +49,14 @@ namespace SeriesEngine.ExcelAddIn.Views
             };
         }
 
-        public void SetPaneVisibleState(bool isVisible)
+        public void SetTabVisibleState(bool isEnabled)
         {
-            _realView.SetPaneVisibleState(isVisible);
+            _realView.SetTabVisibleState(isEnabled);
+        }
+
+        public void SetButtonToggleState(bool isVisible)
+        {
+            _realView.SetButtonToggleState(isVisible);
         }
     }
 }

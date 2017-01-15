@@ -60,12 +60,12 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
         void IEventHandler<MainPaneClosed>.Handle(MainPaneClosed eventData)
         {
-            View.SetPaneVisibleState(_isPaneVisible = false);
+            View.SetButtonToggleState(_isPaneVisible = false);
         }
                 
         void IEventHandler<RestoreMenuStateEventData>.Handle(RestoreMenuStateEventData eventData)
         {
-            View.SetPaneVisibleState(_isPaneVisible);
+            View.SetButtonToggleState(_isPaneVisible);
         }
 
     }

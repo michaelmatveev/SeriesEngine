@@ -15,7 +15,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public class ExcelApplicationController : ApplicationController
     {        
-        public IMainMenuView MainRibbon { get; set; }
+        public RibbonWrapper MainRibbon { get; set; }
         public CustomTaskPaneCollection PaneCollection { get; set; }
         public Workbook CurrentDocument { get; set; }
 
@@ -63,6 +63,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _.ForConcreteType<PeriodSelectorPresenter>()
                     .Configure
                     .Singleton();
+
                 _.For<ICommand<SwitchToPeriodCommandArgs>>()
                     .Use(c => c.GetInstance<PeriodSelectorPresenter>());
 
@@ -111,6 +112,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Use(c => c.GetInstance<DataExporter>());
 
                 _.ForConcreteType<CollectionPropertiesPresenter>();
+                
                 _.For<ICollectionPropertiesView>()
                     .Use<CollectionProperties>()
                     .Ctor<Func<IList<string>>>()
@@ -129,7 +131,8 @@ namespace SeriesEngine.ExcelAddIn.Models
 
             });
 
-            Container.GetInstance<MainMenuPresenter>();            
+            Container.GetInstance<MainMenuPresenter>();
+            Raise(new InitializeEventData());
         }
 
         private IList<string> GetWorksheetsName()
@@ -151,13 +154,24 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void Activate()
         {
-            ((RibbonWrapper)MainRibbon).IsActive = true;
+            MainRibbon.SetTabVisibleState(true);
+            MainRibbon.IsActive = true;
             Raise(new RestoreMenuStateEventData());
         }
 
         public void Deactivate()
         {
-            ((RibbonWrapper)MainRibbon).IsActive = false;
+            MainRibbon.SetTabVisibleState(false);
+            MainRibbon.IsActive = false;
+            Execute(new ShowCustomPaneCommandArgs
+            {
+                IsVisible = false
+            });
+        }
+
+        public void StopGettingEventsFromRibbon()
+        {
+            MainRibbon.IsActive = false;
         }
 
         public void PreserveDataBlocks()
@@ -165,12 +179,5 @@ namespace SeriesEngine.ExcelAddIn.Models
             Execute(new PreserveDataBlocks());
         }
 
-        public void ClosePane()
-        {
-            Execute(new ShowCustomPaneCommandArgs
-            {
-                IsVisible = false
-            });
-        }
     }
 }

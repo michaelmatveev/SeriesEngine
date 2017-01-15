@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.Office.Tools.Ribbon;
 using SeriesEngine.ExcelAddIn.Views;
-using SeriesEngine.ExcelAddIn.Models;
-using SeriesEngine.Msk1;
 using Microsoft.Office.Interop.Excel;
 
 namespace SeriesEngine.ExcelAddIn
 {
     public partial class Ribbon : IMainMenuView
     {
-        //public event EventHandler<PaneArgs> ShowFragmentsPane;
         public event EventHandler<PaneArgs> ShowCustomPane;
         public event EventHandler RefreshAll;
         public event EventHandler SaveAll;
@@ -27,6 +23,8 @@ namespace SeriesEngine.ExcelAddIn
 
         private void toggleButtonShowPane_Click(object sender, RibbonControlEventArgs e)
         {
+            //var clicks = Observable.FromEventPattern<PaneArgs>(this, "ShowCustomPane");
+            //clicks.Where(c => c)
             ShowCustomPane?.Invoke(this, CreatePaneArgs(sender));
         }
 
@@ -53,11 +51,15 @@ namespace SeriesEngine.ExcelAddIn
             });
         }
 
-        public void SetPaneVisibleState(bool isChecked)
+        public void SetButtonToggleState(bool isChecked)
         {
             toggleButtonShowPane.Checked = isChecked;
         }
 
+        public void SetTabVisibleState(bool isVisible)
+        {
+            tabCustom.Visible = isVisible;
+        }
 
         //public void InitializeFilters(IEnumerable<Network> networks)
         //{

@@ -35,16 +35,16 @@
         private void InitializeComponent()
         {
             this.tab1 = this.Factory.CreateRibbonTab();
-            this.tab2 = this.Factory.CreateRibbonTab();
+            this.tabCustom = this.Factory.CreateRibbonTab();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.buttonRefresh = this.Factory.CreateRibbonButton();
             this.buttonSave = this.Factory.CreateRibbonButton();
             this.group1 = this.Factory.CreateRibbonGroup();
+            this.buttonAddDataBlock = this.Factory.CreateRibbonButton();
             this.toggleButtonShowPane = this.Factory.CreateRibbonToggleButton();
             this.menuFilter = this.Factory.CreateRibbonMenu();
-            this.buttonAddDataBlock = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
-            this.tab2.SuspendLayout();
+            this.tabCustom.SuspendLayout();
             this.group2.SuspendLayout();
             this.group1.SuspendLayout();
             this.SuspendLayout();
@@ -55,12 +55,12 @@
             this.tab1.Label = "TabAddIns";
             this.tab1.Name = "tab1";
             // 
-            // tab2
+            // tabCustom
             // 
-            this.tab2.Groups.Add(this.group2);
-            this.tab2.Groups.Add(this.group1);
-            this.tab2.Label = "Загрузка данных";
-            this.tab2.Name = "tab2";
+            this.tabCustom.Groups.Add(this.group2);
+            this.tabCustom.Groups.Add(this.group1);
+            this.tabCustom.Label = "Загрузка данных";
+            this.tabCustom.Name = "tabCustom";
             // 
             // group2
             // 
@@ -93,6 +93,14 @@
             this.group1.Label = "Блок данных";
             this.group1.Name = "group1";
             // 
+            // buttonAddDataBlock
+            // 
+            this.buttonAddDataBlock.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonAddDataBlock.Label = "Вставить новый";
+            this.buttonAddDataBlock.Name = "buttonAddDataBlock";
+            this.buttonAddDataBlock.ShowImage = true;
+            this.buttonAddDataBlock.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonAddDataBlock_Click);
+            // 
             // toggleButtonShowPane
             // 
             this.toggleButtonShowPane.Label = "Параметры";
@@ -105,24 +113,16 @@
             this.menuFilter.Label = "Фильтр";
             this.menuFilter.Name = "menuFilter";
             // 
-            // buttonAddDataBlock
-            // 
-            this.buttonAddDataBlock.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.buttonAddDataBlock.Label = "Вставить новый";
-            this.buttonAddDataBlock.Name = "buttonAddDataBlock";
-            this.buttonAddDataBlock.ShowImage = true;
-            this.buttonAddDataBlock.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonAddDataBlock_Click);
-            // 
             // Ribbon
             // 
             this.Name = "Ribbon";
             this.RibbonType = "Microsoft.Excel.Workbook";
             this.Tabs.Add(this.tab1);
-            this.Tabs.Add(this.tab2);
+            this.Tabs.Add(this.tabCustom);
             this.tab1.ResumeLayout(false);
             this.tab1.PerformLayout();
-            this.tab2.ResumeLayout(false);
-            this.tab2.PerformLayout();
+            this.tabCustom.ResumeLayout(false);
+            this.tabCustom.PerformLayout();
             this.group2.ResumeLayout(false);
             this.group2.PerformLayout();
             this.group1.ResumeLayout(false);
@@ -134,7 +134,7 @@
         #endregion
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
-        private Microsoft.Office.Tools.Ribbon.RibbonTab tab2;
+        private Microsoft.Office.Tools.Ribbon.RibbonTab tabCustom;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonShowPane;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;

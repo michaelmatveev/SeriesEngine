@@ -34,7 +34,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         event EventHandler<CurrentSelectionArgs> InsertNewDataBlock;
 
         //void InitializeFilters(IEnumerable<Network> networks);
-        //void SetFragmentsButtonState(bool isChecked);
-        void SetPaneVisibleState(bool isVisible);
+        void SetButtonToggleState(bool isVisible);
+        void SetTabVisibleState(bool isVisible);
     }
 }
