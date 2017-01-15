@@ -6,7 +6,7 @@ namespace SeriesEngine.ExcelAddIn.Views
     public interface IDataBlockPropertiesView : IView
     {
         event EventHandler VariableBlockChanged;
-        VariableDataBlock DataBlock { get; set; }
+        DataBlock DataBlock { get; set; }
         //IEnumerable<Network> Networks { get; set; }
         void ShowIt();
     }

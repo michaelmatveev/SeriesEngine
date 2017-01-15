@@ -9,11 +9,11 @@ using SeriesEngine.Msk1;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
-    public partial class DataBlockProperties : Form, IDataBlockPropertiesView
+    public partial class NodeBlockProperties : Form, IDataBlockPropertiesView
     {
         private IModelProvider _modelProvider; 
 
-        public DataBlockProperties(IModelProvider modelProvider)
+        public NodeBlockProperties(IModelProvider modelProvider)
         {
             _modelProvider = modelProvider;
             InitializeComponent();

@@ -35,7 +35,28 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             };
             View.NewDataBlockRequested += (s, e) =>
             {
-                
+                Controller.Execute(new InsertNodeDataBlockCommandArgs
+                {
+                    Parent = e.SourceCollection
+                });  
+            };
+            View.DataBlockSelected += (s, e) =>
+            {
+                if(e.Block is CollectionDataBlock)
+                {
+                    Controller.Execute(new EditCollectionBlockCommandArgs
+                    {
+                        CollectionDataBlockToEdit = e.Block
+                    });
+                }
+
+                if (e.Block is NodeDataBlock)
+                {
+                    Controller.Execute(new EditNodeDataBlockCommandArgs
+                    {
+                        NodeDataBlockToEdit = e.Block
+                    });
+                }
             };
             //View.PaneClosed += (s, e) => Controller.GetInstance<MainMenuPresenter>().SetFragmentsButton(false);
             //View.FragmentSelected += (s, e) =>

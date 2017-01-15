@@ -14,7 +14,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public class DataExporter : BaseDataExporter,
         ICommand<SaveAllCommandArgs>,
-        ICommand<PreserveDataBlocks>
+        ICommand<PreserveDataBlocksCommandArgs>
     {
         private Workbook _workbook;
         private readonly IDataBlockProvider _blockProvider;
@@ -119,7 +119,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        void ICommand<PreserveDataBlocks>.Execute(PreserveDataBlocks commandData)
+        void ICommand<PreserveDataBlocksCommandArgs>.Execute(PreserveDataBlocksCommandArgs commandData)
         {
             _blockProvider.Save();
         }

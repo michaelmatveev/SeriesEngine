@@ -33,6 +33,7 @@ namespace SeriesEngine.ExcelAddIn.Views
             panelToPlace.Controls.Clear();
             if (control != null)
             {
+                control.Dock = DockStyle.Fill;
                 panelToPlace.Controls.Add(control);
             }
         }

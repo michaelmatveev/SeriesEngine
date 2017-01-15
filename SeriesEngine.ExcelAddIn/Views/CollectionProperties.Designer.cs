@@ -59,7 +59,7 @@
             this.buttonCancel.Location = new System.Drawing.Point(281, 3);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
-            this.buttonCancel.TabIndex = 0;
+            this.buttonCancel.TabIndex = 4;
             this.buttonCancel.Text = "Отмена";
             this.buttonCancel.UseVisualStyleBackColor = true;
             // 
@@ -69,7 +69,7 @@
             this.buttonOk.Location = new System.Drawing.Point(200, 3);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
-            this.buttonOk.TabIndex = 1;
+            this.buttonOk.TabIndex = 3;
             this.buttonOk.Text = "OK";
             this.buttonOk.UseVisualStyleBackColor = true;
             // 
@@ -138,7 +138,7 @@
             this.comboBoxSheet.Location = new System.Drawing.Point(148, 29);
             this.comboBoxSheet.Name = "comboBoxSheet";
             this.comboBoxSheet.Size = new System.Drawing.Size(208, 21);
-            this.comboBoxSheet.TabIndex = 5;
+            this.comboBoxSheet.TabIndex = 1;
             // 
             // textBoxName
             // 
@@ -146,7 +146,7 @@
             this.textBoxName.Location = new System.Drawing.Point(148, 3);
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(208, 20);
-            this.textBoxName.TabIndex = 6;
+            this.textBoxName.TabIndex = 0;
             // 
             // textBoxCell
             // 
@@ -154,15 +154,18 @@
             this.textBoxCell.Location = new System.Drawing.Point(148, 56);
             this.textBoxCell.Name = "textBoxCell";
             this.textBoxCell.Size = new System.Drawing.Size(208, 20);
-            this.textBoxCell.TabIndex = 7;
+            this.textBoxCell.TabIndex = 2;
             // 
             // CollectionProperties
             // 
+            this.AcceptButton = this.buttonOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(359, 439);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.flowLayoutPanel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "CollectionProperties";

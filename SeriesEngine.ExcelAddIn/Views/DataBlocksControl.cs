@@ -129,20 +129,25 @@ namespace SeriesEngine.ExcelAddIn.Views
 
         private void EditNode(TreeNode node)
         {
-            if (node.Tag is DataBlock)
+            DataBlockSelected?.Invoke(this, new SelectEntityEventArgs
             {
-                DataBlockSelected?.Invoke(this, new SelectEntityEventArgs
-                {
-                    Block = (DataBlock)node.Tag
-                });
-            }
-            else if(node.Tag is CollectionDataBlock)
-            {
-                CollectionDataBlockSelected?.Invoke(this, new SelectEntityEventArgs
-                {
-                    SourceCollection = (CollectionDataBlock)node.Tag
-                });
-            }
+                Block = (BaseDataBlock)node.Tag
+            });
+
+            //if (node.Tag is DataBlock)
+            //{
+            //    DataBlockSelected?.Invoke(this, new SelectEntityEventArgs
+            //    {
+            //        Block = (DataBlock)node.Tag
+            //    });
+            //}
+            //else if(node.Tag is CollectionDataBlock)
+            //{
+            //    CollectionDataBlockSelected?.Invoke(this, new SelectEntityEventArgs
+            //    {
+            //        SourceCollection = (CollectionDataBlock)node.Tag
+            //    });
+            //}
         }
 
         private void treeViewFragments_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)

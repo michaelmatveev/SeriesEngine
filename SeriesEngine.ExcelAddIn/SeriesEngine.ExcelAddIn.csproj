@@ -223,7 +223,7 @@
     <Compile Include="Models\DataBlockConverter.cs" />
     <Compile Include="Presenters\CollectionPropertiesPresenter.cs" />
     <Compile Include="Presenters\FilterPresenter.cs" />
-    <Compile Include="Presenters\DataBlockPropertiesPresenter.cs" />
+    <Compile Include="Presenters\NodeBlockPropertiesPresenter.cs" />
     <Compile Include="Presenters\MainPanePresenter.cs" />
     <Compile Include="Presenters\PeriodSelectorPresenter.cs" />
     <Compile Include="Views\BreadCrumbs.cs">
@@ -234,6 +234,12 @@
     </Compile>
     <Compile Include="Views\CollectionProperties.Designer.cs">
       <DependentUpon>CollectionProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NodeBlockProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\NodeBlockProperties.Designer.cs">
+      <DependentUpon>NodeBlockProperties.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Filter.cs">
       <SubType>UserControl</SubType>
@@ -267,6 +273,9 @@
     </Compile>
     <EmbeddedResource Include="Views\CollectionProperties.resx">
       <DependentUpon>CollectionProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\NodeBlockProperties.resx">
+      <DependentUpon>NodeBlockProperties.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Filter.resx">
       <DependentUpon>Filter.cs</DependentUpon>

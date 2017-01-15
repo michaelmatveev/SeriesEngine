@@ -118,14 +118,14 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Ctor<Func<IList<string>>>()
                     .Is(GetWorksheetsName);
 
-                _.ForConcreteType<DataBlockPropertiesPresenter>();
+                _.ForConcreteType<NodeBlockPropertiesPresenter>();
 
                 _.For<IModelProvider>()
                     .Singleton()
                     .Use<MockModelProvider>();
 
                 _.For<IDataBlockPropertiesView>()
-                    .Use<DataBlockProperties>()
+                    .Use<NodeBlockProperties>()
                     .Ctor<IList<string>>()
                     .Is(GetWorksheetsName());
 
@@ -176,7 +176,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void PreserveDataBlocks()
         {
-            Execute(new PreserveDataBlocks());
+            Execute(new PreserveDataBlocksCommandArgs());
         }
 
     }

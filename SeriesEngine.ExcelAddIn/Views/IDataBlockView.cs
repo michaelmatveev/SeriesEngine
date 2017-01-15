@@ -6,7 +6,7 @@ namespace SeriesEngine.ExcelAddIn.Views
 {
     public class SelectEntityEventArgs : EventArgs
     {
-        public DataBlock Block { get; set; }
+        public BaseDataBlock Block { get; set; }
         public CollectionDataBlock SourceCollection { get; set; }
     } 
 
