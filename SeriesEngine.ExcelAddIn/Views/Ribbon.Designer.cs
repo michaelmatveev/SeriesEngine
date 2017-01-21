@@ -42,7 +42,8 @@
             this.group1 = this.Factory.CreateRibbonGroup();
             this.buttonAddDataBlock = this.Factory.CreateRibbonButton();
             this.toggleButtonShowPane = this.Factory.CreateRibbonToggleButton();
-            this.menuFilter = this.Factory.CreateRibbonMenu();
+            this.buttonSampleMainObject = this.Factory.CreateRibbonButton();
+            this.splitButtonSamples = this.Factory.CreateRibbonSplitButton();
             this.tab1.SuspendLayout();
             this.tabCustom.SuspendLayout();
             this.group2.SuspendLayout();
@@ -89,7 +90,7 @@
             // 
             this.group1.Items.Add(this.buttonAddDataBlock);
             this.group1.Items.Add(this.toggleButtonShowPane);
-            this.group1.Items.Add(this.menuFilter);
+            this.group1.Items.Add(this.splitButtonSamples);
             this.group1.Label = "Блок данных";
             this.group1.Name = "group1";
             // 
@@ -107,11 +108,18 @@
             this.toggleButtonShowPane.Name = "toggleButtonShowPane";
             this.toggleButtonShowPane.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButtonShowPane_Click);
             // 
-            // menuFilter
+            // buttonSampleMainObject
             // 
-            this.menuFilter.Dynamic = true;
-            this.menuFilter.Label = "Фильтр";
-            this.menuFilter.Name = "menuFilter";
+            this.buttonSampleMainObject.Label = "Основные объекты";
+            this.buttonSampleMainObject.Name = "buttonSampleMainObject";
+            this.buttonSampleMainObject.ShowImage = true;
+            this.buttonSampleMainObject.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonSample_Click);
+            // 
+            // splitButtonSamples
+            // 
+            this.splitButtonSamples.Items.Add(this.buttonSampleMainObject);
+            this.splitButtonSamples.Label = "Вставить пример";
+            this.splitButtonSamples.Name = "splitButtonSamples";
             // 
             // Ribbon
             // 
@@ -139,9 +147,10 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonShowPane;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonRefresh;
-        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFilter;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonSave;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonAddDataBlock;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonSampleMainObject;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton splitButtonSamples;
     }
 
     partial class ThisRibbonCollection

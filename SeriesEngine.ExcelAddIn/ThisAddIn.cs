@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Excel = Microsoft.Office.Interop.Excel;
 using SeriesEngine.ExcelAddIn.Models;
-using SeriesEngine.App.EventData;
 using SeriesEngine.ExcelAddIn.Views;
 
 namespace SeriesEngine.ExcelAddIn
@@ -63,8 +62,9 @@ namespace SeriesEngine.ExcelAddIn
                 MainRibbon = new RibbonWrapper(Globals.Ribbons.Ribbon),
                 CurrentDocument = Globals.Factory.GetVstoObject(wb)
             };
-            controller.Configure();
             ApplicationControllers.Add(wb, controller);
+            controller.Configure();
+
             //controller.Raise(new InitializeEventData());
             //AddTestGrid(wb);//TODO remove this code
         }

@@ -12,6 +12,7 @@ namespace SeriesEngine.ExcelAddIn
         public event EventHandler SaveAll;
         public event EventHandler<FilterArgs> FilterSelected;
         public event EventHandler<CurrentSelectionArgs> InsertNewDataBlock;
+        public event EventHandler<CurrentSelectionArgs> InsertSampleBlock;
 
         private PaneArgs CreatePaneArgs(object toggleButton)
         {
@@ -40,15 +41,25 @@ namespace SeriesEngine.ExcelAddIn
         
         private void buttonAddDataBlock_Click(object sender, RibbonControlEventArgs e)
         {
+            InsertNewDataBlock?.Invoke(this, GetCurrentSelection()); 
+        }
+
+        private void buttonSample_Click(object sender, RibbonControlEventArgs e)
+        {
+            InsertSampleBlock?.Invoke(this, GetCurrentSelection());
+        }
+
+        private CurrentSelectionArgs GetCurrentSelection()
+        {
             var range = (Range)Globals.ThisAddIn.Application.Selection;
             var sheet = range.Parent.Name;
             var cell = range.AddressLocal.Replace("$", string.Empty);
-            InsertNewDataBlock?.Invoke(this, new CurrentSelectionArgs
+            return new CurrentSelectionArgs
             {
                 Sheet = sheet,
-                Cell = cell, 
+                Cell = cell,
                 Name = cell
-            });
+            };
         }
 
         public void SetButtonToggleState(bool isChecked)

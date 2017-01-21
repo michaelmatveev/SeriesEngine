@@ -45,6 +45,13 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                 Cell = e.Cell,
                 Sheet = e.Sheet
             });
+
+            View.InsertSampleBlock += (s, e) => Controller.Execute(new InsertSampleCollectionBlockCommandArgs
+            {
+                Name = e.Name,
+                Cell = e.Cell,
+                Sheet = e.Sheet
+            });
         }
 
 

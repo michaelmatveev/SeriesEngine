@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
+using System;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {

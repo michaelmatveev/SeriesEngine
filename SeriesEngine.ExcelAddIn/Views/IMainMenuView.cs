@@ -32,6 +32,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         event EventHandler SaveAll;
         event EventHandler<FilterArgs> FilterSelected;
         event EventHandler<CurrentSelectionArgs> InsertNewDataBlock;
+        event EventHandler<CurrentSelectionArgs> InsertSampleBlock;
 
         //void InitializeFilters(IEnumerable<Network> networks);
         void SetButtonToggleState(bool isVisible);

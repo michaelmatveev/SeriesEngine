@@ -6,6 +6,7 @@ namespace SeriesEngine.ExcelAddIn.Views
     {
         public event EventHandler<FilterArgs> FilterSelected;
         public event EventHandler<CurrentSelectionArgs> InsertNewDataBlock;
+        public event EventHandler<CurrentSelectionArgs> InsertSampleBlock;
         public event EventHandler<PaneArgs> ShowCustomPane;
         public event EventHandler RefreshAll;
         public event EventHandler SaveAll;
@@ -21,6 +22,14 @@ namespace SeriesEngine.ExcelAddIn.Views
                 if(IsActive && InsertNewDataBlock != null)
                 {
                     InsertNewDataBlock(s, e);
+                }
+            };
+
+            realView.InsertSampleBlock += (s, e) =>
+            {
+                if (IsActive && InsertSampleBlock != null)
+                {
+                    InsertSampleBlock(s, e);
                 }
             };
 
