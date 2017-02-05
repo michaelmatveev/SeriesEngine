@@ -70,7 +70,7 @@
             this.buttonOk.Location = new System.Drawing.Point(3, 3);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
-            this.buttonOk.TabIndex = 0;
+            this.buttonOk.TabIndex = 2;
             this.buttonOk.Text = "ОК";
             this.buttonOk.UseVisualStyleBackColor = true;
             // 
@@ -80,7 +80,7 @@
             this.buttonCancel.Location = new System.Drawing.Point(84, 3);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
-            this.buttonCancel.TabIndex = 1;
+            this.buttonCancel.TabIndex = 3;
             this.buttonCancel.Text = "Отмена";
             this.buttonCancel.UseVisualStyleBackColor = true;
             // 
@@ -101,10 +101,12 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "Решение";
+            this.columnHeader1.Width = 200;
             // 
             // columnHeader2
             // 
             this.columnHeader2.Text = "Описание";
+            this.columnHeader2.Width = 200;
             // 
             // SolutionSelector
             // 
@@ -114,8 +116,12 @@
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(415, 283);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "SolutionSelector";
+            this.ShowInTaskbar = false;
             this.Text = "Подключится";
+            this.TopMost = true;
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
