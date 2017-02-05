@@ -1,6 +1,6 @@
 ﻿namespace SeriesEngine.App.CommandArgs
 {
-    public class InitalizeCommandArgs
+    public class InitalizeCommandArgs : BaseCommandArg
     {
     }
 }

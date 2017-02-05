@@ -22,6 +22,7 @@ namespace SeriesEngine.Tests.Database
 
                 var region = new Region()
                 {
+                    Solution = solution,
                     Name = "Пензенская область"
                 };
 
@@ -29,27 +30,32 @@ namespace SeriesEngine.Tests.Database
 
                 var consumer = new Consumer()
                 {
+                    Solution = solution,
                     Name = "OOO \"МагнитЭнерго\""
                 };
 
                 var contract = new Contract()
                 {
+                    Solution = solution,
                     Name = "1001014 - ЭН",
                     ContractType = "КП"
                 };
 
                 var consumerObject1 = new ConsumerObject()
                 {
+                    Solution = solution,
                     Name = "ММ \"Влад\"; г.Пенза пр-т.Строителей, 24а",
                 };
 
                 var consumerObject2 = new ConsumerObject()
                 {
+                    Solution = solution,
                     Name = "ММ \"Арбеково\" г.Пенза пр.Строителей, 63"
                 };
 
                 var point1 = new Point()
                 {
+                    Solution = solution,
                     Name = "ТП - 530",
                     VoltageLevel = "СН - 2",
                     MaxPower = "10"
@@ -57,6 +63,7 @@ namespace SeriesEngine.Tests.Database
 
                 var point2 = new Point()
                 {
+                    Solution = solution,
                     Name = "ТП-531",
                     VoltageLevel = "СН - 2",
                     MaxPower = "20"
@@ -64,6 +71,7 @@ namespace SeriesEngine.Tests.Database
 
                 var point3 = new Point()
                 {
+                    Solution = solution,
                     Name = "ТП - 530",
                     VoltageLevel = "ТП-796",
                     MaxPower = "30"

@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
-using System;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -17,7 +16,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         ICommand<SaveAllCommandArgs>,
         ICommand<PreserveDataBlocksCommandArgs>
     {
-        private Workbook _workbook;
+        private readonly Workbook _workbook;
         private readonly IDataBlockProvider _blockProvider;
         private readonly INetworksProvider _networksProvider;
 
@@ -30,13 +29,13 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void Execute(SaveAllCommandArgs commandData)
         {
-            var fragmentsToExport = _blockProvider.GetDataBlocks().OfType<SheetDataBlock>();
-            ExportFromDataBlocks(fragmentsToExport);
+            var sheetDataBlocks = _blockProvider.GetDataBlocks().OfType<SheetDataBlock>();
+            ExportFromDataBlocks(commandData.SolutionId, sheetDataBlocks);
         }
 
-        public override void ExportDataBlock(CollectionDataBlock collection)
+        public override void ExportDataBlock(int solutionId, CollectionDataBlock collection)
         {
-            var network = _networksProvider.GetNetworks(string.Empty).Last() as NetworkTree;
+            var network = _networksProvider.GetNetworks(solutionId).Last() as NetworkTree;
             Excel.Worksheet sheet = _workbook.Sheets[collection.Sheet];
             var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == collection.Name);
             // another way http://stackoverflow.com/questions/12572439/why-does-readxmlschema-create-extra-id-column

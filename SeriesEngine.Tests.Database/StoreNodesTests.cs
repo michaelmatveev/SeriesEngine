@@ -6,12 +6,14 @@ using System.Linq;
 using System.Collections.Generic;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace SeriesEngine.Tests.Database
 {
     [TestClass]
     public class StoreNodesTests
     {
+        public TestContext TestContext { get; set; }
         Solution _currentSolution;
 
         [TestInitialize]
@@ -21,7 +23,7 @@ namespace SeriesEngine.Tests.Database
             {
                 var solution = new Solution
                 {
-                    Name = "My test solution",
+                    Name = TestContext.Properties["SolutionName"] as string,
                     Description = "Test description"
                 };
 
@@ -87,18 +89,20 @@ namespace SeriesEngine.Tests.Database
         {
             using (var context = new Model1())
             {
-               var solution = context.Solutions.Attach(_currentSolution);
+                //var solution = context.Entry(_currentSolution);
+                //solution.State = System.Data.Entity.EntityState.Deleted;
+                //var solution = context.Solutions.Attach(_currentSolution);
+                //context.Solutions.Remove(solution);
+
+                var solution = context.Solutions.First(s => s.Id == _currentSolution.Id);
                 context.Solutions.Remove(solution);
 
                 context.SaveChanges();
             }
         }
 
-        [TestMethod]
-        public void GetAllNodes()
+        private static CollectionDataBlock GetCollectionDataBlock()
         {
-            var provider = new DataBaseNetworkProvider();
-            var network = provider.GetNetworks(string.Empty).Single(n => n.Name == "Main network 1");
             var collectionDataBlock = new CollectionDataBlock();
             collectionDataBlock.DataBlocks.Add(new NodeDataBlock(collectionDataBlock)
             {
@@ -121,19 +125,51 @@ namespace SeriesEngine.Tests.Database
                 RefObject = "Contract",
                 Level = 3
             });
-            Console.WriteLine(collectionDataBlock.GetXml(network));
+            return collectionDataBlock;
+        } 
+
+        private static void AssertData(XDocument data, string path)
+        {
+            var element = data.XPathSelectElement(path);
+            Assert.IsNotNull(element);
+        } 
+
+        [TestMethod]
+        [TestProperty("SolutionName", "Solution 1")]
+
+        public void GetAllNodes()
+        {
+            var provider = new DataBaseNetworkProvider();
+            var network = provider.GetNetworks(_currentSolution.Id)
+                .Where(n => n.SolutionName == _currentSolution.Name)
+                .First(n => n.Name == "Main network 1");
+
+            var collectionDataBlock = GetCollectionDataBlock();
+            var dataXml = XDocument.Parse(collectionDataBlock.GetXml(network));
+
+            Console.WriteLine(dataXml);
+            AssertData(dataXml, "DataImportExport/Region[@UniqueName='Region 1']");
         }
 
         [TestMethod]
+        [TestProperty("SolutionName", "Solution 2")]
+
         public void AddNodesAndSave()
         {
             var provider = new DataBaseNetworkProvider();
-            var network = provider.GetNetworks(string.Empty).First(n => n.Name == "Main network 1");
+            var network = provider.GetNetworks(_currentSolution.Id)
+                .Where(n => n.SolutionName == _currentSolution.Name)
+                .First(n => n.Name == "Main network 1");
  
             var doc = new XDocument(
                 new XElement("DataImportExport", 
                     new XElement("Region", new XAttribute("UniqueName", "Region 2"))));
             network.LoadFromXml(doc);
+            var collectionDataBlock = GetCollectionDataBlock();
+            var dataXml = XDocument.Parse(collectionDataBlock.GetXml(network));
+
+            Console.WriteLine(dataXml);
+            AssertData(dataXml, "DataImportExport/Region[@UniqueName='Region 2']");
         }
     }
 }

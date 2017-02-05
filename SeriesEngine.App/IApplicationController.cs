@@ -1,10 +1,11 @@
-﻿namespace SeriesEngine.App
+﻿using SeriesEngine.App.CommandArgs;
+
+namespace SeriesEngine.App
 {
     public interface IApplicationController
     {
-        void Execute<T>(T commandData);
+        int CurrentSolutionId { get; set; }
+        void Execute<T>(T commandData) where T : BaseCommandArg;
         void Raise<T>(T eventData);
-        //void Subscribe<T>(IEventHandler<T> handler);
-        //void Unsubscribe<T>(IEventHandler<T> handler);
     }
 }

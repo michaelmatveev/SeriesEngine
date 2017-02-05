@@ -122,14 +122,14 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
 
         public IList<DataBlock> DataBlocks = new List<DataBlock>();
 
-        public override void Export(BaseDataExporter exproter)
+        public override void Export(int solutionId, BaseDataExporter exproter)
         {
-            exproter.ExportDataBlock(this);
+            exproter.ExportDataBlock(solutionId, this);
         }
 
-        public override void Import(BaseDataImporter importer)
+        public override void Import(int solutionId, BaseDataImporter importer)
         {
-            importer.ImportDataBlock(this);
+            importer.ImportDataBlock(solutionId, this);
         }
     }
 }

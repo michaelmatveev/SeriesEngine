@@ -1,6 +1,6 @@
 ﻿namespace SeriesEngine.App.CommandArgs
 {
-    public class SwitchToFiltersCommandArgs
+    public class SwitchToFiltersCommandArgs : BaseCommandArg
     {
     }
 }

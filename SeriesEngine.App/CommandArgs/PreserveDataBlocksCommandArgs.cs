@@ -1,6 +1,6 @@
 ﻿namespace SeriesEngine.App.CommandArgs
 {
-    public class PreserveDataBlocksCommandArgs
+    public class PreserveDataBlocksCommandArgs : BaseCommandArg
     {
     }
 }

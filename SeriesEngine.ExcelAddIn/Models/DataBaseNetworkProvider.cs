@@ -9,7 +9,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public class DataBaseNetworkProvider : INetworksProvider
     {
-        public ICollection<NetworkTree> GetNetworks(string filter)
+        public ICollection<NetworkTree> GetNetworks(int solutionId)
         {
             using (var context = new Model1())
             {
@@ -22,6 +22,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Include("Nodes.Contract")
                     .Include("Nodes.ConsumerObject")
                     .Include("Nodes.Point")
+                    .Where(n => n.SolutionId == solutionId)
                     .ToList();
                 return nets
                     .Select(n => new NetworkTree(n))

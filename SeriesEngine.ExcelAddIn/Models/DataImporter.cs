@@ -31,12 +31,13 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 // it will call ImportFragment
                 ImportDataForFragments(
+                    commandData.SolutionId,
                     _blockProvider.GetDataBlocks().OfType<SheetDataBlock>(),
                     _blockProvider.GetDefaultPeriod());
             }
         }
 
-        public override void ImportDataBlock(CollectionDataBlock fragment)
+        public override void ImportDataBlock(int solutionId, CollectionDataBlock fragment)
         {
             Excel.Worksheet sheet = _workbook.Sheets[fragment.Sheet];
             sheet.Activate();
@@ -76,7 +77,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
 
             listObject.ShowHeaders = fragment.ShowHeader;
-            var network = _networksProvider.GetNetworks(string.Empty).Last();
+            var network = _networksProvider.GetNetworks(solutionId).Last();
             var results = xmlMap.ImportXml(fragment.GetXml(network), true);
         }
 

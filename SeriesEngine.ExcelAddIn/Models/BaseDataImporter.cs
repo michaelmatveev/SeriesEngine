@@ -5,14 +5,14 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public abstract class BaseDataImporter
     {
-        protected void ImportDataForFragments(IEnumerable<SheetDataBlock> fragments, Period period)
+        protected void ImportDataForFragments(int solutionId, IEnumerable<SheetDataBlock> fragments, Period period)
         {
             foreach (var f in fragments)
             {
-                f.Import(this);  
+                f.Import(solutionId, this);  
             }            
         }
 
-        public abstract void ImportDataBlock(CollectionDataBlock fragment);
+        public abstract void ImportDataBlock(int solutionId, CollectionDataBlock fragment);
     }
 }

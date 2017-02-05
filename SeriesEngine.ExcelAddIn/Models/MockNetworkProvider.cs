@@ -107,7 +107,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             mainTree.Nodes.Add(point3);
         }
 
-        public ICollection<NetworkTree> GetNetworks(string filter)
+        public ICollection<NetworkTree> GetNetworks(int solutionId)
         {
             //var result = new NetworkTree
             //{

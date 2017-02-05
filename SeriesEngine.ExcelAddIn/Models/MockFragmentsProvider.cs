@@ -257,7 +257,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             MockNetworkProvider networkProvider = new MockNetworkProvider();
             CollectionDataBlock source = null;
-            foreach(var network in networkProvider.GetNetworks(string.Empty))
+            foreach(var network in networkProvider.GetNetworks(0))
             {
                 source = new CollectionDataBlock
                 {

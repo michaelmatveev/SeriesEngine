@@ -9,15 +9,15 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public abstract class BaseDataExporter
     {
-        protected void ExportFromDataBlocks(IEnumerable<SheetDataBlock> dataBlocks)
+        protected void ExportFromDataBlocks(int solutionId, IEnumerable<SheetDataBlock> dataBlocks)
         {
             foreach (var db in dataBlocks)
             {
-                db.Export(this);
+                db.Export(solutionId, this);
             }
         }
 
-        public abstract void ExportDataBlock(CollectionDataBlock fragment);
+        public abstract void ExportDataBlock(int solutionId, CollectionDataBlock fragment);
 
         //protected virtual void ExportGridFragment(ObjectGridFragment fragment)
         //{

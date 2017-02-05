@@ -99,6 +99,8 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 _.ForConcreteType<DataImporter>()
                     .Configure
+                    //.Ctor<int>("solutionId")
+                    //.Is(CurrentSolutionId)
                     .Singleton();
 
                 _.For<ICommand<ReloadAllCommandArgs>>()
@@ -106,6 +108,8 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 _.ForConcreteType<DataExporter>()
                     .Configure
+                    //.Ctor<int>("solutionId")
+                    //.Is(CurrentSolutionId)            
                     .Singleton();
 
                 _.For<ICommand<SaveAllCommandArgs>>()

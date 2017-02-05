@@ -5,6 +5,7 @@ using SeriesEngine.Msk1;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -25,6 +26,14 @@ namespace SeriesEngine.ExcelAddIn.Models
             get
             {
                 return _network.Name;
+            }
+        }
+
+        public string SolutionName
+        {
+            get
+            {
+                return _network.Solution.Name;
             }
         }
 
@@ -52,27 +61,16 @@ namespace SeriesEngine.ExcelAddIn.Models
 
             using (var context = new Model1())
             {
-                var allNodes = new List<NetworkTreeNode>(_network.Nodes); //new List<NetworkTreeNode>();
-                // Consider all nodes to delete first
-                //DeleteNodes(currentTreeState, context, allNodes);
-                // Leave in nodesToDelete only nodes to remove 
+                var allNodes = new List<NetworkTreeNode>(_network.Nodes);
+                context.Solutions.Attach(_network.Solution);
                 RestoreNodes(target.Root.Elements(), null, allNodes, context);
-                foreach(var n in allNodes)
-                {
-                    context.Entry(n).State = EntityState.Deleted;
-                }        
+
+                var networkId = new SqlParameter("@networkId", _network.Id);
+                context.Database.ExecuteSqlCommand("CleanNetwork @networkId", networkId);
+                       
                 context.SaveChanges();
             }
         }
-
-        //private void DeleteNodes(IEnumerable<TreeItem<NetworkTreeNode>> treeItems, Model1 context, List<NetworkTreeNode> nodesToDelete)
-        //{
-        //    foreach(var c in treeItems)
-        //    {
-        //        nodesToDelete.Add(c.Item);
-        //        DeleteNodes(c.Children, context, nodesToDelete);
-        //    }
-        //}
 
         private void RestoreNodes(IEnumerable<XElement> elements, MainHierarchyNode parent, List<NetworkTreeNode> allNodes, Model1 context)
         {
@@ -92,10 +90,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
                 else
                 {
-                    var node = _network.Nodes.FirstOrDefault(n => n.NodeName == nameAttr.Value && n.Parent == parent);
-                    if (node == null)
-                    {
-                        node = new MainHierarchyNode
+                    //var node = _network.Nodes.FirstOrDefault(n => n.NodeName == nameAttr.Value && n.Parent == parent);
+                    //if (node == null)
+                    //{
+                        var node = new MainHierarchyNode
                         {
                             Network = _network,
                             Parent = parent,
@@ -105,11 +103,11 @@ namespace SeriesEngine.ExcelAddIn.Models
                         // create a new object and node
                         node.SetLinkedObject(CreateObject(element));
                         context.MainHierarchyNodes.Add(node);
-                    }
-                    else
-                    {
-                        allNodes.Remove(node);
-                    }
+                    //}
+                    //else
+                    //{
+                    //    allNodes.Remove(node);
+                    //}
                     RestoreNodes(element.Elements(), node, allNodes, context);
                 }
             }

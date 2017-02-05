@@ -1,6 +1,6 @@
 ﻿namespace SeriesEngine.App.CommandArgs
 {
-    public class SaveAllCommandArgs
+    public class SaveAllCommandArgs : BaseCommandArg
     {
     }
 }

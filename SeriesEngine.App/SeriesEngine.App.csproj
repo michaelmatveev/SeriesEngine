@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationController.cs" />
+    <Compile Include="CommandArgs\BaseCommandArg.cs" />
     <Compile Include="CommandArgs\EditCollectionBlockCommandArgs.cs" />
     <Compile Include="CommandArgs\EditNodeDataBlockCommandArgs.cs" />
     <Compile Include="CommandArgs\InitalizeCommandArgs.cs" />

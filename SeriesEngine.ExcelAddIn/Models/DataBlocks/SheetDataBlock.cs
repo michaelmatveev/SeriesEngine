@@ -16,7 +16,7 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
             CustomPeriod = defaultPeriod;
         }
 
-        public abstract void Import(BaseDataImporter importer);
-        public abstract void Export(BaseDataExporter exproter);
+        public abstract void Import(int solutionId, BaseDataImporter importer);
+        public abstract void Export(int solutionId, BaseDataExporter exproter);
     }
 }

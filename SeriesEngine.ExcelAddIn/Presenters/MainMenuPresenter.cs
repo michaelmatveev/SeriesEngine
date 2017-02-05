@@ -62,6 +62,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
         void IEventHandler<InitializeEventData>.Handle(InitializeEventData eventData)
         {
+            Controller.CurrentSolutionId = 59;
            // View.InitializeFilters(_networkProvider.GetNetworks(string.Empty));
         }
 
