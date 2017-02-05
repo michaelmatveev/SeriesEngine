@@ -31,10 +31,10 @@ namespace SeriesEngine.ExcelAddIn.Models
         public void Execute(SaveAllCommandArgs commandData)
         {
             var fragmentsToExport = _blockProvider.GetDataBlocks().OfType<SheetDataBlock>();
-            ExportFromFragments(fragmentsToExport);
+            ExportFromDataBlocks(fragmentsToExport);
         }
 
-        public override void ExportFragment(CollectionDataBlock collection)
+        public override void ExportDataBlock(CollectionDataBlock collection)
         {
             var network = _networksProvider.GetNetworks(string.Empty).Last() as NetworkTree;
             Excel.Worksheet sheet = _workbook.Sheets[collection.Sheet];
@@ -58,7 +58,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
 
             var doc = XDocument.Parse(dsChanged.GetXml());
-            network.LoadFromXml(collection.DataBlocks, doc);           
+            network.LoadFromXml(doc);           
         }
 
         private void CreateOrUpdateRowInDataSet(int row, DataSet dataSet, Excel.ListObject listObject, int rootId, IEnumerable<TreeItem<IGrouping<ObjectIdentity, ColumnIdentity>>> currentItems)

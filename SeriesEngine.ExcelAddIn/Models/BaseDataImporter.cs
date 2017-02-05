@@ -13,6 +13,6 @@ namespace SeriesEngine.ExcelAddIn.Models
             }            
         }
 
-        public abstract void ImportFragment(CollectionDataBlock fragment);
+        public abstract void ImportDataBlock(CollectionDataBlock fragment);
     }
 }

@@ -35,6 +35,9 @@ namespace SeriesEngine.Msk1
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MainHierarchyNode> MainHierarchyNodes { get; set; }
 
+        public int SolutionId { get; set; }
+        public virtual Solution Solution { get; set; }
+
         public override string GetName()
         {
             return this.Name;

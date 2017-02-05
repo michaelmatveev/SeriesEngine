@@ -70,12 +70,13 @@ CREATE TABLE [dbo].[Networks] (
 );
 GO
 
-ALTER TABLE[dbo].[Users]  WITH CHECK ADD  CONSTRAINT [FK_Users_Solutions] FOREIGN KEY([SolutionId])
+ALTER TABLE [dbo].[Users] WITH CHECK ADD CONSTRAINT [FK_Users_Solutions] FOREIGN KEY([SolutionId])
 REFERENCES [dbo].[Solutions] ([Id]);
 GO
 
-ALTER TABLE[dbo].[Networks]  WITH CHECK ADD  CONSTRAINT [FK_Networks_Solutions] FOREIGN KEY([SolutionId])
-REFERENCES [dbo].[Solutions] ([Id]);
+ALTER TABLE [dbo].[Networks] WITH CHECK ADD CONSTRAINT [FK_Networks_Solutions] FOREIGN KEY([SolutionId])
+REFERENCES [dbo].[Solutions] ([Id])
+ON DELETE CASCADE;
 GO
 
 <#+

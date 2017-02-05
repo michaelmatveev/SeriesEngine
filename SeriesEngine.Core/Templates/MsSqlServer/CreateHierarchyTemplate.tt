@@ -45,8 +45,10 @@ CREATE TABLE [<#= Schema #>].[<#= hName #>] (
 );
 GO
 
-ALTER TABLE[<#= Schema #>].[<#= hName #>] WITH CHECK ADD  CONSTRAINT [FK_<#= hName #>_Networks] FOREIGN KEY([NetId])
+ALTER TABLE[<#= Schema #>].[<#= hName #>] WITH CHECK ADD  CONSTRAINT [FK_<#= hName #>_Networks] FOREIGN KEY([NetId]) 
 REFERENCES [dbo].[Networks] ([Id])
+ON DELETE CASCADE
+
 GO
 
 ALTER TABLE[<#= Schema #>].[<#= hName #>] WITH CHECK ADD  CONSTRAINT [FK_<#= hName #>_<#= hName #>] FOREIGN KEY([ParentId])

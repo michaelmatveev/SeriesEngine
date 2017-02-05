@@ -1,0 +1,139 @@
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SeriesEngine.Msk1;
+using SeriesEngine.ExcelAddIn.Models;
+using System.Linq;
+using System.Collections.Generic;
+using SeriesEngine.ExcelAddIn.Models.DataBlocks;
+using System.Xml.Linq;
+
+namespace SeriesEngine.Tests.Database
+{
+    [TestClass]
+    public class StoreNodesTests
+    {
+        Solution _currentSolution;
+
+        [TestInitialize]
+        public void Init()
+        {
+            using (var context = new Model1())
+            {
+                var solution = new Solution
+                {
+                    Name = "My test solution",
+                    Description = "Test description"
+                };
+
+                var region = new Region()
+                {
+                    Solution = solution,
+                    Name = "Region 1"
+                };
+
+                var consumer = new Consumer()
+                {
+                    Solution = solution,
+                    Name = "Client 1"
+                };
+
+                var contract = new Contract()
+                {
+                    Solution = solution,
+                    Name = "Contract 1",
+                    ContractType = "Contract Type 1"
+                };
+
+                var network = new Network()
+                {
+                    Name = "Main network 1",
+                    Solution = solution
+                };
+
+                var node1 = new MainHierarchyNode()
+                {
+                    Region = region,
+                    Parent = null,
+                    Network = network
+                };
+
+                var node2 = new MainHierarchyNode()
+                {
+                    Consumer = consumer,
+                    Parent = node1,
+                    Network = network
+                };
+
+                var node3 = new MainHierarchyNode()
+                {
+                    Contract = contract,
+                    Parent = node2,
+                    Network = network
+                };
+
+                network.Nodes.Add(node1);
+                network.Nodes.Add(node2);
+                network.Nodes.Add(node3);
+                context.Networks.Add(network);
+
+                context.SaveChanges();
+
+                _currentSolution = solution;
+            }
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            using (var context = new Model1())
+            {
+               var solution = context.Solutions.Attach(_currentSolution);
+                context.Solutions.Remove(solution);
+
+                context.SaveChanges();
+            }
+        }
+
+        [TestMethod]
+        public void GetAllNodes()
+        {
+            var provider = new DataBaseNetworkProvider();
+            var network = provider.GetNetworks(string.Empty).Single(n => n.Name == "Main network 1");
+            var collectionDataBlock = new CollectionDataBlock();
+            collectionDataBlock.DataBlocks.Add(new NodeDataBlock(collectionDataBlock)
+            {
+                Parent = collectionDataBlock,
+                NodeType = NodeType.UniqueName,
+                RefObject = "Region",
+                Level = 1
+            });
+            collectionDataBlock.DataBlocks.Add(new NodeDataBlock(collectionDataBlock)
+            {
+                Parent = collectionDataBlock,
+                NodeType = NodeType.UniqueName,
+                RefObject = "Consumer",
+                Level = 2
+            });
+            collectionDataBlock.DataBlocks.Add(new NodeDataBlock(collectionDataBlock)
+            {
+                Parent = collectionDataBlock,
+                NodeType = NodeType.UniqueName,
+                RefObject = "Contract",
+                Level = 3
+            });
+            Console.WriteLine(collectionDataBlock.GetXml(network));
+        }
+
+        [TestMethod]
+        public void AddNodesAndSave()
+        {
+            var provider = new DataBaseNetworkProvider();
+            var network = provider.GetNetworks(string.Empty).First(n => n.Name == "Main network 1");
+ 
+            var doc = new XDocument(
+                new XElement("DataImportExport", 
+                    new XElement("Region", new XAttribute("UniqueName", "Region 2"))));
+            network.LoadFromXml(doc);
+        }
+    }
+}

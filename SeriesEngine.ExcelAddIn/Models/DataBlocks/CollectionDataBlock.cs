@@ -114,9 +114,8 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
                 new XAttribute("form", "unqualified"));
         }
 
-        public string GetXml(ICollection<NetworkTree> networks)
+        public string GetXml(NetworkTree network)
         {
-            var network = networks.OfType<NetworkTree>().Last();
             var xml = network.ConvertToXml(DataBlocks);
             return xml.ToString();
         }
@@ -125,12 +124,12 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
 
         public override void Export(BaseDataExporter exproter)
         {
-            exproter.ExportFragment(this);
+            exproter.ExportDataBlock(this);
         }
 
         public override void Import(BaseDataImporter importer)
         {
-            importer.ImportFragment(this);
+            importer.ImportDataBlock(this);
         }
     }
 }

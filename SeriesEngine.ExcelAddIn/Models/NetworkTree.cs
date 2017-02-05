@@ -43,7 +43,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             return data;
         }
 
-        public void LoadFromXml(IEnumerable<DataBlock> queryParamers, XDocument target)
+        public void LoadFromXml(XDocument target)
         {
             var currentTreeState = _network
                 .Nodes
@@ -83,7 +83,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var sinceAttr = element.Attribute("Since");
                 var tillAttr = element.Attribute("Till");
 
-                if(nameAttr == null)
+                var validFrom = sinceAttr == null ? (DateTime?)null : DateTime.Parse(sinceAttr.Value);
+                var validTill = sinceAttr == null ? (DateTime?)null : DateTime.Parse(tillAttr.Value);
+
+                if (nameAttr == null)
                 {
                     parent.LinkedObject.SetVariableValue(element.Name.LocalName, element.Value);
                 }
@@ -95,7 +98,9 @@ namespace SeriesEngine.ExcelAddIn.Models
                         node = new MainHierarchyNode
                         {
                             Network = _network,
-                            Parent = parent
+                            Parent = parent,
+                            ValidFrom = validFrom,
+                            ValidTill = validTill
                         };
                         // create a new object and node
                         node.SetLinkedObject(CreateObject(element));
@@ -119,30 +124,35 @@ namespace SeriesEngine.ExcelAddIn.Models
                     return new Region
                     {
                         ObjectModel = MainHierarchyNode.RegionModel,
+                        Solution = _network.Solution,
                         Name = objName
                     };
                 case "Consumer":
                     return new Consumer
                     {
                         ObjectModel = MainHierarchyNode.ConsumerModel,
+                        Solution = _network.Solution,
                         Name = objName
                     };
                 case "Contract":
                     return new Contract
                     {
                         ObjectModel = MainHierarchyNode.ContractModel,
+                        Solution = _network.Solution,
                         Name = objName
                     };
                 case "ConsumerObject":
                     return new ConsumerObject
                     {
                         ObjectModel = MainHierarchyNode.ConsumerObjectModel,
+                        Solution = _network.Solution,
                         Name = objName
                     };
                 case "Point":
                     return new Point
                     {
                         ObjectModel = MainHierarchyNode.PointModel,
+                        Solution = _network.Solution,
                         Name = objName
                     };
 

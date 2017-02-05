@@ -15,12 +15,14 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 var nets = context
                     .Networks
+                    .Include("Solution")
                     .Include("Nodes")
                     .Include("Nodes.Region")
                     .Include("Nodes.Consumer")
                     .Include("Nodes.Contract")
                     .Include("Nodes.ConsumerObject")
-                    .Include("Nodes.Point").ToList();
+                    .Include("Nodes.Point")
+                    .ToList();
                 return nets
                     .Select(n => new NetworkTree(n))
                     .ToList();

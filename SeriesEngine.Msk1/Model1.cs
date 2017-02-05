@@ -32,8 +32,8 @@ namespace SeriesEngine.Msk1
                 .HasMany(e => e.Nodes)
                 .WithRequired(e => e.Network)
                 .HasForeignKey(e => e.NetId)
-                .WillCascadeOnDelete(false);
-
+                .WillCascadeOnDelete(true);//?
+            
             modelBuilder.Entity<MainHierarchyNode>()
                 .HasMany(e => e.Children)
                 .WithOptional(e => e.Parent)
@@ -42,7 +42,7 @@ namespace SeriesEngine.Msk1
             modelBuilder.Entity<Solution>()
                 .HasMany(e => e.Networks)
                 .WithRequired(e => e.Solution)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.ConsumerObjects)
@@ -70,6 +70,12 @@ namespace SeriesEngine.Msk1
                 .HasForeignKey(e => e.AuthorId);
 
             modelBuilder.Entity<ConsumerObject>()
+                .HasRequired(e => e.Solution)
+                .WithMany()
+                .HasForeignKey(e => e.SolutionId)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<ConsumerObject>()
                 .Property(e => e.ConcurrencyStamp)
                 .IsFixedLength();
 
@@ -77,6 +83,12 @@ namespace SeriesEngine.Msk1
                 .HasMany(e => e.MainHierarchyNodes)
                 .WithOptional(e => e.ConsumerObject)
                 .HasForeignKey(e => e.ConsumerObject_Id);
+
+            modelBuilder.Entity<Consumer>()
+                .HasRequired(e => e.Solution)
+                .WithMany()
+                .HasForeignKey(e => e.SolutionId)
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Consumer>()
                 .Property(e => e.ConcurrencyStamp)
@@ -88,6 +100,12 @@ namespace SeriesEngine.Msk1
                 .HasForeignKey(e => e.Consumer_Id);
 
             modelBuilder.Entity<Contract>()
+                .HasRequired(e => e.Solution)
+                .WithMany()
+                .HasForeignKey(e => e.SolutionId)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Contract>()
                 .Property(e => e.ConcurrencyStamp)
                 .IsFixedLength();
 
@@ -97,6 +115,12 @@ namespace SeriesEngine.Msk1
                 .HasForeignKey(e => e.Contract_Id);
 
             modelBuilder.Entity<Point>()
+                .HasRequired(e => e.Solution)
+                .WithMany()
+                .HasForeignKey(e => e.SolutionId)
+                .WillCascadeOnDelete(true);
+            
+            modelBuilder.Entity<Point>()
                 .Property(e => e.ConcurrencyStamp)
                 .IsFixedLength();
 
@@ -104,6 +128,12 @@ namespace SeriesEngine.Msk1
                 .HasMany(e => e.MainHierarchyNodes)
                 .WithOptional(e => e.Point)
                 .HasForeignKey(e => e.Point_Id);
+
+            modelBuilder.Entity<Region>()
+                .HasRequired(e => e.Solution)
+                .WithMany()
+                .HasForeignKey(e => e.SolutionId)
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Region>()
                 .Property(e => e.ConcurrencyStamp)

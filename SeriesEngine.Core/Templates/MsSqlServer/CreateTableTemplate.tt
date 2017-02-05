@@ -82,6 +82,7 @@ GO
 
 CREATE TABLE [<#= Schema #>].[<#= Table #>s] (
     "Id" INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
+	"SolutionId" INT NOT NULL,
     "ObjectCreationTime" DATETIME NOT NULL DEFAULT (getdate()),
     "UpdateTime" DATETIME NOT NULL DEFAULT (getdate()),
     "AuthorId" INT,
@@ -95,6 +96,11 @@ CREATE TABLE [<#= Schema #>].[<#= Table #>s] (
     "Tag" INT
 );
 GO
+
+ALTER TABLE [<#=Schema #>].[<#= Table #>s] WITH CHECK 
+ADD  CONSTRAINT [FK_<#= Schema #>_<#= Table #>s_Solutions] FOREIGN KEY([SolutionId])
+REFERENCES [dbo].[Solutions] ([Id])
+ON DELETE CASCADE;
 
 ALTER TABLE [<#= Schema #>].[<#= Table #>s] WITH NOCHECK 
 ADD CONSTRAINT [FK_<#= Schema #>_<#= Table #>s_Users] FOREIGN KEY("AuthorId")
