@@ -278,6 +278,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Views\RibbonWrapper.cs" />
+    <Compile Include="Views\SolutionSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\SolutionSelector.Designer.cs">
+      <DependentUpon>SolutionSelector.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\ViewNames.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -312,6 +318,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Ribbon.resx">
       <DependentUpon>Ribbon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\SolutionSelector.resx">
+      <DependentUpon>SolutionSelector.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config" />
     <None Include="packages.config" />
@@ -409,7 +418,7 @@
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
         <ProjectProperties HostName="Excel" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="Excel" Language="cs" TemplatesPath="" DebugInfoExeName="#Software\Microsoft\Office\16.0\Excel\InstallRoot\Path#excel.exe" DebugInfoCommandLine="/x" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
         <Host Name="Excel" GeneratedCodeNamespace="SeriesEngine.ExcelAddIn" PublishedHash="69C324AB27932AA2FBF2B7EA72250886FF164DE6" IconIndex="0">
-          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" PublishedHash="28BE8566D197F565718BE1717B3A92AAA5A4859D" />
+          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" PublishedHash="28BE8566D197F565718BE1717B3A92AAA5A4859D" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
         </Host>
       </FlavorProperties>
     </VisualStudio>
