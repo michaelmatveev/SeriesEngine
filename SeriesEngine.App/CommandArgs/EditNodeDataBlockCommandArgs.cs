@@ -1,6 +1,6 @@
 ﻿namespace SeriesEngine.App.CommandArgs
 {
-    public class EditNodeDataBlockCommandArgs : BaseCommandArg
+    public class EditNodeDataBlockCommandArgs : BaseCommandArgs
     {
         public object NodeDataBlockToEdit { get; set; }
     }

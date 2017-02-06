@@ -67,6 +67,7 @@
             // 
             // buttonOk
             // 
+            this.buttonOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.buttonOk.Location = new System.Drawing.Point(3, 3);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
@@ -90,6 +91,7 @@
             this.columnHeader1,
             this.columnHeader2});
             this.listViewSolutions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewSolutions.HideSelection = false;
             this.listViewSolutions.Location = new System.Drawing.Point(10, 10);
             this.listViewSolutions.Margin = new System.Windows.Forms.Padding(10);
             this.listViewSolutions.Name = "listViewSolutions";
@@ -120,6 +122,7 @@
             this.MinimizeBox = false;
             this.Name = "SolutionSelector";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Подключится";
             this.TopMost = true;
             this.tableLayoutPanel1.ResumeLayout(false);

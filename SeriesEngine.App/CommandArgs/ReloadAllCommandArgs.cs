@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SeriesEngine.App.CommandArgs
 {
-    public class ReloadAllCommandArgs : BaseCommandArg
+    public class ReloadAllCommandArgs : BaseCommandArgs
     {
     }
 }

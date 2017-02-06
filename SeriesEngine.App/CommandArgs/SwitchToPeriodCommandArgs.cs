@@ -1,6 +1,6 @@
 ﻿namespace SeriesEngine.App.CommandArgs
 {
-    public class SwitchToPeriodCommandArgs : BaseCommandArg
+    public class SwitchToPeriodCommandArgs : BaseCommandArgs
     {
     }
 }

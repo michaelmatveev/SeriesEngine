@@ -133,10 +133,18 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Ctor<IList<string>>()
                     .Is(GetWorksheetsName());
 
+                _.For<ISolutionProvider>()
+                    .Singleton()
+                    .Use<SolutionProvider>();
+
+                _.For<ISolutionSelector>()
+                    .Use<SolutionSelector>();
+                _.ForConcreteType<SolutionSelectorPresenter>();
             });
 
             Container.GetInstance<MainMenuPresenter>();
             Raise(new InitializeEventData());
+            Execute(new SelectSolutionCommandArgs());
         }
 
         private IList<string> GetWorksheetsName()

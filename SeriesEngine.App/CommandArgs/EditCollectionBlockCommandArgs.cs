@@ -2,7 +2,7 @@
 
 namespace SeriesEngine.App.CommandArgs
 {
-    public class EditCollectionBlockCommandArgs : BaseCommandArg
+    public class EditCollectionBlockCommandArgs : BaseCommandArgs
     {
         public Object CollectionDataBlockToEdit { get; set; }
     }

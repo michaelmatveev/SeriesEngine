@@ -1,6 +1,6 @@
 ﻿namespace SeriesEngine.App.CommandArgs
 {
-    public class InsertCollectionBlockCommandArgs : BaseCommandArg
+    public class InsertCollectionBlockCommandArgs : BaseCommandArgs
     {
         public string Sheet { get; set; }
         public string Cell { get; set; }

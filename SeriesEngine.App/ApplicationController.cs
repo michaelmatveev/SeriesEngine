@@ -16,7 +16,7 @@ namespace SeriesEngine.App
             EventPublisher = new EventPublisher();
         }
         
-        public virtual void Execute<T>(T commandData) where T : BaseCommandArg
+        public virtual void Execute<T>(T commandData) where T : BaseCommandArgs
         {
             ICommand<T> command = Container.TryGetInstance<ICommand<T>>();
             if (command != null)
