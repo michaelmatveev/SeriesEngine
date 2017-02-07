@@ -37,13 +37,15 @@
             this.tab1 = this.Factory.CreateRibbonTab();
             this.tabCustom = this.Factory.CreateRibbonTab();
             this.group2 = this.Factory.CreateRibbonGroup();
+            this.group1 = this.Factory.CreateRibbonGroup();
+            this.separator1 = this.Factory.CreateRibbonSeparator();
+            this.buttonSolution = this.Factory.CreateRibbonButton();
             this.buttonRefresh = this.Factory.CreateRibbonButton();
             this.buttonSave = this.Factory.CreateRibbonButton();
-            this.group1 = this.Factory.CreateRibbonGroup();
             this.buttonAddDataBlock = this.Factory.CreateRibbonButton();
             this.toggleButtonShowPane = this.Factory.CreateRibbonToggleButton();
-            this.buttonSampleMainObject = this.Factory.CreateRibbonButton();
             this.splitButtonSamples = this.Factory.CreateRibbonSplitButton();
+            this.buttonSampleMainObject = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.tabCustom.SuspendLayout();
             this.group2.SuspendLayout();
@@ -65,10 +67,32 @@
             // 
             // group2
             // 
+            this.group2.Items.Add(this.buttonSolution);
+            this.group2.Items.Add(this.separator1);
             this.group2.Items.Add(this.buttonRefresh);
             this.group2.Items.Add(this.buttonSave);
             this.group2.Label = "Данные";
             this.group2.Name = "group2";
+            // 
+            // group1
+            // 
+            this.group1.Items.Add(this.buttonAddDataBlock);
+            this.group1.Items.Add(this.toggleButtonShowPane);
+            this.group1.Items.Add(this.splitButtonSamples);
+            this.group1.Label = "Блок данных";
+            this.group1.Name = "group1";
+            // 
+            // separator1
+            // 
+            this.separator1.Name = "separator1";
+            // 
+            // buttonSolution
+            // 
+            this.buttonSolution.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonSolution.Label = "Подключиться";
+            this.buttonSolution.Name = "buttonSolution";
+            this.buttonSolution.ShowImage = true;
+            this.buttonSolution.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonSolution_Click);
             // 
             // buttonRefresh
             // 
@@ -86,14 +110,6 @@
             this.buttonSave.ShowImage = true;
             this.buttonSave.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonSave_Click);
             // 
-            // group1
-            // 
-            this.group1.Items.Add(this.buttonAddDataBlock);
-            this.group1.Items.Add(this.toggleButtonShowPane);
-            this.group1.Items.Add(this.splitButtonSamples);
-            this.group1.Label = "Блок данных";
-            this.group1.Name = "group1";
-            // 
             // buttonAddDataBlock
             // 
             this.buttonAddDataBlock.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -108,18 +124,18 @@
             this.toggleButtonShowPane.Name = "toggleButtonShowPane";
             this.toggleButtonShowPane.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButtonShowPane_Click);
             // 
+            // splitButtonSamples
+            // 
+            this.splitButtonSamples.Items.Add(this.buttonSampleMainObject);
+            this.splitButtonSamples.Label = "Вставить пример";
+            this.splitButtonSamples.Name = "splitButtonSamples";
+            // 
             // buttonSampleMainObject
             // 
             this.buttonSampleMainObject.Label = "Основные объекты";
             this.buttonSampleMainObject.Name = "buttonSampleMainObject";
             this.buttonSampleMainObject.ShowImage = true;
             this.buttonSampleMainObject.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonSample_Click);
-            // 
-            // splitButtonSamples
-            // 
-            this.splitButtonSamples.Items.Add(this.buttonSampleMainObject);
-            this.splitButtonSamples.Label = "Вставить пример";
-            this.splitButtonSamples.Name = "splitButtonSamples";
             // 
             // Ribbon
             // 
@@ -151,6 +167,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonAddDataBlock;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonSampleMainObject;
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton splitButtonSamples;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonSolution;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator1;
     }
 
     partial class ThisRibbonCollection

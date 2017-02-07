@@ -142,9 +142,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _.ForConcreteType<SolutionSelectorPresenter>();
             });
 
+            var provider = Container.GetInstance<IDataBlockProvider>();
+            this.CurrentSolutionId = provider.GetLastSolutionId();
             Container.GetInstance<MainMenuPresenter>();
-            Raise(new InitializeEventData());
-            Execute(new SelectSolutionCommandArgs());
+            //Raise(new InitializeEventData());
         }
 
         private IList<string> GetWorksheetsName()
@@ -188,6 +189,8 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void PreserveDataBlocks()
         {
+            var provider = Container.GetInstance<IDataBlockProvider>();
+            provider.SetLastSolutionId(CurrentSolutionId);
             Execute(new PreserveDataBlocksCommandArgs());
         }
 

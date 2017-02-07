@@ -13,6 +13,7 @@ namespace SeriesEngine.ExcelAddIn
         public event EventHandler<FilterArgs> FilterSelected;
         public event EventHandler<CurrentSelectionArgs> InsertNewDataBlock;
         public event EventHandler<CurrentSelectionArgs> InsertSampleBlock;
+        public event EventHandler Connect;
 
         private PaneArgs CreatePaneArgs(object toggleButton)
         {
@@ -70,6 +71,11 @@ namespace SeriesEngine.ExcelAddIn
         public void SetTabVisibleState(bool isVisible)
         {
             tabCustom.Visible = isVisible;
+        }
+
+        private void buttonSolution_Click(object sender, RibbonControlEventArgs e)
+        {
+            Connect?.Invoke(this, EventArgs.Empty);
         }
 
         //public void InitializeFilters(IEnumerable<Network> networks)

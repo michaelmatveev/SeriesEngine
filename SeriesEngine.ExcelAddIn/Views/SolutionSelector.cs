@@ -14,11 +14,12 @@ namespace SeriesEngine.ExcelAddIn.Views
             InitializeComponent();
         }
 
-        public void ShowIt(IEnumerable<Solution> solutions)
+        public void ShowIt(IEnumerable<Solution> solutions, int selectedSolution)
         {
             var items = solutions.Select(s => new ListViewItem(new[] { s.Name, s.Description })
             {
-                Tag = s
+                Tag = s,
+                Selected = s.Id == selectedSolution
             }).ToArray();
 
             listViewSolutions.Items.AddRange(items);
@@ -42,15 +43,6 @@ namespace SeriesEngine.ExcelAddIn.Views
                 return ((Solution)item.Tag).Id;
             }
 
-            set
-            {
-                listViewSolutions.SelectedItems.Clear();
-                var item = listViewSolutions.SelectedItems.Cast<ListViewItem>().FirstOrDefault(i => ((Solution)i.Tag).Id == value);
-                if (item != null)
-                {
-                    item.Selected = true;
-                }
-            }
         }
 
         public event EventHandler SolutionChanged;

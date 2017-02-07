@@ -52,6 +52,8 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                 Cell = e.Cell,
                 Sheet = e.Sheet
             });
+
+            View.Connect += (s, e) => Controller.Execute(new SelectSolutionCommandArgs());
         }
 
 
@@ -62,6 +64,10 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
         void IEventHandler<InitializeEventData>.Handle(InitializeEventData eventData)
         {
+            if(Controller.CurrentSolutionId == 0)
+            {
+
+            }
             //Controller.CurrentSolutionId = 59;
            // View.InitializeFilters(_networkProvider.GetNetworks(string.Empty));
         }

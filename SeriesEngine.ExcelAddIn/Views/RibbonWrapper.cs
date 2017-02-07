@@ -10,6 +10,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         public event EventHandler<PaneArgs> ShowCustomPane;
         public event EventHandler RefreshAll;
         public event EventHandler SaveAll;
+        public event EventHandler Connect;
 
         public bool IsActive { get; set; }
         
@@ -56,6 +57,14 @@ namespace SeriesEngine.ExcelAddIn.Views
                     SaveAll(s, e);
                 }
             };
+
+            realView.Connect += (s, e) =>
+            {
+                if (IsActive)
+                {
+                    Connect?.Invoke(s, e);
+                }
+            };           
         }
 
         public void SetTabVisibleState(bool isEnabled)

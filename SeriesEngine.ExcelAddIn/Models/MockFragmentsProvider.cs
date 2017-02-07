@@ -362,5 +362,15 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             _defaultPeriod = p;
         }
+
+        public int GetLastSolutionId()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetLastSolutionId(int solutionId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

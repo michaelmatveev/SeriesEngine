@@ -64,15 +64,7 @@ namespace SeriesEngine.ExcelAddIn
             };
             ApplicationControllers.Add(wb, controller);
             controller.Configure();
-
-            //controller.Raise(new InitializeEventData());
-            //AddTestGrid(wb);//TODO remove this code
         }
-
-        //private void AddTestGrid(Excel.Workbook wb)
-        //{
-        //    var part = wb.CustomXMLParts.Add(Resources.TestGrid);
-        //}
 
     }
 }

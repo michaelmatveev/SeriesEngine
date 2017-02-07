@@ -12,7 +12,9 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public class WorkbookDataBlockProvider : IDataBlockProvider
     {
-        private const string XmlNamespace = "http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments";
+        private const string XmlNamespaceDataBlocks = "http://www.seriesengine.com/SeriesEngine.ExcelAddIn/DataBlocks";
+        private const string XmlNamespaceInfo = "http://www.seriesengine.com/SeriesEngine.ExcelAddIn/CommonInfo";
+
         private readonly Workbook _workbook;
         private readonly List<BaseDataBlock> _dataBlocks;
 
@@ -23,7 +25,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
             var gridParts = _workbook.CustomXMLParts
                 .Cast<CustomXMLPart>()
-                .Where(p => !p.BuiltIn && p.NamespaceURI == XmlNamespace);
+                .Where(p => !p.BuiltIn && p.NamespaceURI == XmlNamespaceDataBlocks);
             var defaultPeriod = GetDefaultPeriod();
             foreach (var part in gridParts)
             {
@@ -41,7 +43,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             var gridParts = _workbook.CustomXMLParts
                 .Cast<CustomXMLPart>()
-                .Where(p => !p.BuiltIn && p.NamespaceURI == XmlNamespace)
+                .Where(p => !p.BuiltIn && p.NamespaceURI == XmlNamespaceDataBlocks)
                 .ToList();
 
             foreach(var part in gridParts)
@@ -81,6 +83,8 @@ namespace SeriesEngine.ExcelAddIn.Models
         private const string CustomPropertyPeriodId = "sePeriodId";
         private static XmlSerializer PeriodSerializer = new XmlSerializer(typeof(Period));
 
+        private const string CustomSolutionId = "seSolutionId";
+
         public Period GetDefaultPeriod()
         {
             var properties = (DocumentProperties)_workbook.CustomDocumentProperties;
@@ -119,6 +123,28 @@ namespace SeriesEngine.ExcelAddIn.Models
                 partId = _workbook.CustomXMLParts.Add(writer.ToString()).Id;
                 properties.CreateOrUpdateStringProperty(CustomPropertyPeriodId, partId);
             }
+        }
+
+        public int GetLastSolutionId()
+        {
+            var properties = (DocumentProperties)_workbook.CustomDocumentProperties;
+            var property = properties.FindPropertyByName(CustomSolutionId);
+
+            if (property == null)
+            {
+                SetLastSolutionId(0);
+                return 0;
+            }
+            else
+            {
+                return Int32.Parse(property.Value);
+            }
+        }
+
+        public void SetLastSolutionId(int solutionId)
+        {
+            var properties = (DocumentProperties)_workbook.CustomDocumentProperties; 
+            properties.CreateOrUpdateStringProperty(CustomSolutionId, solutionId.ToString());
         }
 
     }

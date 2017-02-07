@@ -6,8 +6,8 @@ namespace SeriesEngine.ExcelAddIn.Views
 {
     public interface ISolutionSelector : IView
     {
-        void ShowIt(IEnumerable<Solution> solutions);
+        void ShowIt(IEnumerable<Solution> solutions, int selectedSolution);
         event EventHandler SolutionChanged;
-        int SelectedSolutionId { get; set; }
+        int SelectedSolutionId { get; }
     }
 }

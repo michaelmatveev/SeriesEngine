@@ -14,5 +14,8 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         Period GetDefaultPeriod();
         void SetDefaultPeriod(Period p);
+
+        int GetLastSolutionId();
+        void SetLastSolutionId(int solutionId);
     }   
 }

@@ -18,8 +18,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
         void ICommand<SelectSolutionCommandArgs>.Execute(SelectSolutionCommandArgs commandData)
         {
-            View.ShowIt(_solutionProvider.GetAllSolutions());
-            View.SelectedSolutionId = commandData.SolutionId;
+            View.ShowIt(_solutionProvider.GetAllSolutions(), commandData.SolutionId);
         }
     }
 }
