@@ -87,13 +87,16 @@
             // 
             // listViewSolutions
             // 
+            this.listViewSolutions.Activation = System.Windows.Forms.ItemActivation.OneClick;
             this.listViewSolutions.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
             this.listViewSolutions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewSolutions.FullRowSelect = true;
             this.listViewSolutions.HideSelection = false;
             this.listViewSolutions.Location = new System.Drawing.Point(10, 10);
             this.listViewSolutions.Margin = new System.Windows.Forms.Padding(10);
+            this.listViewSolutions.MultiSelect = false;
             this.listViewSolutions.Name = "listViewSolutions";
             this.listViewSolutions.Size = new System.Drawing.Size(395, 228);
             this.listViewSolutions.TabIndex = 1;
@@ -103,7 +106,7 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "Решение";
-            this.columnHeader1.Width = 200;
+            this.columnHeader1.Width = 191;
             // 
             // columnHeader2
             // 
@@ -123,8 +126,7 @@
             this.Name = "SolutionSelector";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Подключится";
-            this.TopMost = true;
+            this.Text = "Подключение к данным";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);

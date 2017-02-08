@@ -78,6 +78,16 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SeriesEngine.Core\SeriesEngine.Core.csproj">
+      <Project>{87D29B27-20D3-4CC8-AA8C-6A85987DB69C}</Project>
+      <Name>SeriesEngine.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SeriesEngine.Msk1\SeriesEngine.Msk1.csproj">
+      <Project>{039797C1-A3F3-47C7-B887-75073B9B8E5E}</Project>
+      <Name>SeriesEngine.Msk1</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

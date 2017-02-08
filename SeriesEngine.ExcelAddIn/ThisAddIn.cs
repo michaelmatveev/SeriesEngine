@@ -2,6 +2,7 @@
 using Excel = Microsoft.Office.Interop.Excel;
 using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.ExcelAddIn.Views;
+using SeriesEngine.Core.DataAccess;
 
 namespace SeriesEngine.ExcelAddIn
 {
@@ -33,7 +34,9 @@ namespace SeriesEngine.ExcelAddIn
                         c.StopGettingEventsFromRibbon();
                     }
                 }
-                ApplicationControllers[wb].Activate();
+                var controller = ApplicationControllers[wb];
+                controller.Activate();
+                SetCaption(wb, controller.CurrentSolution);
             };
             Application.WorkbookDeactivate += (wb) =>
             {
@@ -63,7 +66,13 @@ namespace SeriesEngine.ExcelAddIn
                 CurrentDocument = Globals.Factory.GetVstoObject(wb)
             };
             ApplicationControllers.Add(wb, controller);
+            controller.PropertyChanged += (s, e) => SetCaption(wb, controller.CurrentSolution); 
             controller.Configure();
+        }
+
+        private void SetCaption(Excel.Workbook wb, Solution s)
+        {
+            Application.ActiveWindow.Caption = s == null ? $"{wb.Name}" : $"{wb.Name} ({s.Name})";
         }
 
     }

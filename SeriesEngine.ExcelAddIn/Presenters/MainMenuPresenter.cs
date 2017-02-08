@@ -54,22 +54,16 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             });
 
             View.Connect += (s, e) => Controller.Execute(new SelectSolutionCommandArgs());
+            View.Disconnect += (s, e) => Controller.CurrentSolution = null;
         }
 
 
         void ICommand<InitalizeCommandArgs>.Execute(InitalizeCommandArgs commandData)
         {
-           // View.InitializeFilters(_networkProvider.GetNetworks(string.Empty));
         }
 
         void IEventHandler<InitializeEventData>.Handle(InitializeEventData eventData)
         {
-            if(Controller.CurrentSolutionId == 0)
-            {
-
-            }
-            //Controller.CurrentSolutionId = 59;
-           // View.InitializeFilters(_networkProvider.GetNetworks(string.Empty));
         }
 
         void IEventHandler<MainPaneClosed>.Handle(MainPaneClosed eventData)

@@ -1,4 +1,4 @@
-﻿using SeriesEngine.Msk1;
+﻿using SeriesEngine.Core.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,12 +14,12 @@ namespace SeriesEngine.ExcelAddIn.Views
             InitializeComponent();
         }
 
-        public void ShowIt(IEnumerable<Solution> solutions, int selectedSolution)
+        public void ShowIt(IEnumerable<Solution> solutions, Solution selectedSolution)
         {
             var items = solutions.Select(s => new ListViewItem(new[] { s.Name, s.Description })
             {
                 Tag = s,
-                Selected = s.Id == selectedSolution
+                Selected = selectedSolution != null ? s.Id == selectedSolution.Id : false
             }).ToArray();
 
             listViewSolutions.Items.AddRange(items);
@@ -30,17 +30,12 @@ namespace SeriesEngine.ExcelAddIn.Views
             }
         }
 
-        public int SelectedSolutionId
+        public Solution SelectedSolution
         {
             get
             {
                 var item = listViewSolutions.SelectedItems.Cast<ListViewItem>().FirstOrDefault();
-                if(item == null)
-                {
-                    return 0;
-                }
-
-                return ((Solution)item.Tag).Id;
+                return (Solution)item?.Tag;
             }
 
         }

@@ -13,12 +13,12 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             : base(view, controller)
         {
             _solutionProvider = solutionProvider;
-            View.SolutionChanged += (s, e) => controller.CurrentSolutionId = View.SelectedSolutionId;
+            View.SolutionChanged += (s, e) => controller.CurrentSolution = View.SelectedSolution;
         }
 
         void ICommand<SelectSolutionCommandArgs>.Execute(SelectSolutionCommandArgs commandData)
         {
-            View.ShowIt(_solutionProvider.GetAllSolutions(), commandData.SolutionId);
+            View.ShowIt(_solutionProvider.GetAllSolutions(), commandData.Solution);
         }
     }
 }

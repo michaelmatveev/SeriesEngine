@@ -30,7 +30,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         public void Execute(SaveAllCommandArgs commandData)
         {
             var sheetDataBlocks = _blockProvider.GetDataBlocks().OfType<SheetDataBlock>();
-            ExportFromDataBlocks(commandData.SolutionId, sheetDataBlocks);
+            ExportFromDataBlocks(commandData.Solution.Id, sheetDataBlocks);
         }
 
         public override void ExportDataBlock(int solutionId, CollectionDataBlock collection)
@@ -121,6 +121,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         void ICommand<PreserveDataBlocksCommandArgs>.Execute(PreserveDataBlocksCommandArgs commandData)
         {
+            _blockProvider.SetLastSolutionId(commandData.Solution.Id);
             _blockProvider.Save();
         }
 

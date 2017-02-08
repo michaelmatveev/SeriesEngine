@@ -1,7 +1,9 @@
-﻿namespace SeriesEngine.App.CommandArgs
+﻿using SeriesEngine.Core.DataAccess;
+
+namespace SeriesEngine.App.CommandArgs
 {
     public class BaseCommandArgs
     {
-        public int SolutionId { get; set; }
+        public Solution Solution { get; set; }
     }
 }

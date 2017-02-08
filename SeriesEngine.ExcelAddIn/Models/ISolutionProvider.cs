@@ -1,14 +1,11 @@
-﻿using SeriesEngine.Msk1;
-using System;
+﻿using SeriesEngine.Core.DataAccess;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
     public interface ISolutionProvider
     {
         IEnumerable<Solution> GetAllSolutions();
+        Solution GetSolutionById(int solutionId);
     }
 }

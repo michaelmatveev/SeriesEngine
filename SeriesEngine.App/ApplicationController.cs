@@ -1,11 +1,32 @@
 ﻿using SeriesEngine.App.CommandArgs;
-using StructureMap;
+using SeriesEngine.Core.DataAccess;
+using System.ComponentModel;
+using Container = StructureMap.Container;
 
 namespace SeriesEngine.App
 {
-    public class ApplicationController : IApplicationController
+    public class ApplicationController : IApplicationController,
+        INotifyPropertyChanged
     {
-        public int CurrentSolutionId { get; set; }
+        private Solution _currentSolution;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public Solution CurrentSolution
+        {
+            get
+            {
+                return _currentSolution;
+            }
+            set
+            {
+                if(value == null || (_currentSolution == null && value != null) || (_currentSolution.Id != value.Id))
+                {
+                    _currentSolution = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentSolution)));
+                }
+            }
+        }
 
         protected Container Container { get; set; }
         protected IEventPublisher EventPublisher { get; set; }
@@ -21,7 +42,7 @@ namespace SeriesEngine.App
             ICommand<T> command = Container.TryGetInstance<ICommand<T>>();
             if (command != null)
             {
-                commandData.SolutionId = CurrentSolutionId;
+                commandData.Solution = CurrentSolution;
                 command.Execute(commandData);
             }
         }

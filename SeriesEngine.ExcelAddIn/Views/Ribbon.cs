@@ -14,6 +14,7 @@ namespace SeriesEngine.ExcelAddIn
         public event EventHandler<CurrentSelectionArgs> InsertNewDataBlock;
         public event EventHandler<CurrentSelectionArgs> InsertSampleBlock;
         public event EventHandler Connect;
+        public event EventHandler Disconnect;
 
         private PaneArgs CreatePaneArgs(object toggleButton)
         {
@@ -76,6 +77,11 @@ namespace SeriesEngine.ExcelAddIn
         private void buttonSolution_Click(object sender, RibbonControlEventArgs e)
         {
             Connect?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void buttonDisconnect_Click(object sender, RibbonControlEventArgs e)
+        {
+            Disconnect?.Invoke(this, EventArgs.Empty);
         }
 
         //public void InitializeFilters(IEnumerable<Network> networks)

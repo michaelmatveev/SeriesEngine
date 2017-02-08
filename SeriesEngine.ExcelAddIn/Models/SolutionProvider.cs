@@ -1,6 +1,8 @@
-﻿using System;
+﻿using SeriesEngine.Msk1;
+using System.Linq;
 using System.Collections.Generic;
-using SeriesEngine.Msk1;
+using Solution = SeriesEngine.Core.DataAccess.Solution;
+
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -10,8 +12,33 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             using (var context = new Model1())
             {
-                return new List<Solution>(context.Solutions);
+                return context.Solutions.ToList().Select(s => new Solution
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Description = s.Description
+                });
             }
         }
+
+        public Solution GetSolutionById(int solutionId)
+        {
+            using (var context = new Model1())
+            {
+                var s = context.Solutions.Find(solutionId);
+                if (s != null)
+                {
+                    return new Solution
+                    {
+                        Id = s.Id,
+                        Name = s.Name,
+                        Description = s.Description
+                    };
+                }
+
+                return null;
+            }
+        }
+
     }
 }

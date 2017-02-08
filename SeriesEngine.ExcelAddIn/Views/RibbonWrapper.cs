@@ -11,6 +11,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         public event EventHandler RefreshAll;
         public event EventHandler SaveAll;
         public event EventHandler Connect;
+        public event EventHandler Disconnect;
 
         public bool IsActive { get; set; }
         
@@ -64,7 +65,15 @@ namespace SeriesEngine.ExcelAddIn.Views
                 {
                     Connect?.Invoke(s, e);
                 }
-            };           
+            };
+
+            realView.Disconnect += (s, e) =>
+            {
+                if (IsActive)
+                {
+                    Disconnect?.Invoke(s, e);
+                }
+            };
         }
 
         public void SetTabVisibleState(bool isEnabled)

@@ -143,7 +143,12 @@ namespace SeriesEngine.ExcelAddIn.Models
             });
 
             var provider = Container.GetInstance<IDataBlockProvider>();
-            this.CurrentSolutionId = provider.GetLastSolutionId();
+            var solutionProver = Container.GetInstance<ISolutionProvider>();
+            var id = provider.GetLastSolutionId();
+            if (id != 0)
+            {
+                CurrentSolution = solutionProver.GetSolutionById(id);
+            }
             Container.GetInstance<MainMenuPresenter>();
             //Raise(new InitializeEventData());
         }
@@ -189,8 +194,6 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void PreserveDataBlocks()
         {
-            var provider = Container.GetInstance<IDataBlockProvider>();
-            provider.SetLastSolutionId(CurrentSolutionId);
             Execute(new PreserveDataBlocksCommandArgs());
         }
 

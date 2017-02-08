@@ -1,4 +1,4 @@
-﻿using SeriesEngine.Msk1;
+﻿using SeriesEngine.Core.DataAccess;
 using System;
 using System.Collections.Generic;
 
@@ -6,8 +6,8 @@ namespace SeriesEngine.ExcelAddIn.Views
 {
     public interface ISolutionSelector : IView
     {
-        void ShowIt(IEnumerable<Solution> solutions, int selectedSolution);
+        void ShowIt(IEnumerable<Solution> solutions, Solution selectedSolution);
         event EventHandler SolutionChanged;
-        int SelectedSolutionId { get; }
+        Solution SelectedSolution { get; }
     }
 }
