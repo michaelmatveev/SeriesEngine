@@ -37,19 +37,30 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        public XDocument ConvertToXml(IEnumerable<DataBlock> queryParamers)
+        public XDocument ConvertToXml(IEnumerable<DataBlock> queryParamers, Period defaultPeriod)
         {
             var data = new XDocument();
             var rootElement = new XElement(RootName);
             var tree = _network
                 .Nodes
                 .Cast<NetworkTreeNode>()
+                .ToList()
+                .Where(n => IsNodeInPeriod(n, defaultPeriod))
                 .GenerateTree(n => n.NodeName, n => n.Parent?.NodeName);
 
             rootElement.Add(GetSubElements(tree, queryParamers));
             data.Add(rootElement);
 
             return data;
+        }
+
+        private static bool IsNodeInPeriod(NetworkTreeNode node, Period period)
+        {
+            if(!(node.ValidFrom.HasValue || node.ValidTill.HasValue))
+            {
+                return true;
+            }
+            return (node.ValidFrom ?? DateTime.MaxValue) >= period.From && (node.ValidTill ?? DateTime.MinValue) < period.Till;
         }
 
         public void LoadFromXml(XDocument target)

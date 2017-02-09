@@ -115,9 +115,9 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
                 new XAttribute("form", "unqualified"));
         }
 
-        public string GetXml(NetworkTree network)
+        public string GetXml(NetworkTree network, Period defaultPeriod)
         {
-            var xml = network.ConvertToXml(DataBlocks);
+            var xml = network.ConvertToXml(DataBlocks, CustomPeriod ?? defaultPeriod);
             return xml.ToString();
         }
 

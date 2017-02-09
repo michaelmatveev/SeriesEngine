@@ -29,8 +29,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             using (new ActiveRangeKeeper(_workbook))
             {
-                // it will call ImportFragment
-                ImportDataForFragments(
+                ImportDataForDataBlocks(
                     commandData.Solution.Id,
                     _blockProvider.GetDataBlocks().OfType<SheetDataBlock>(),
                     _blockProvider.GetDefaultPeriod());
@@ -43,15 +42,26 @@ namespace SeriesEngine.ExcelAddIn.Models
             sheet.Activate();
             sheet.get_Range(collectionDatablock.Cell).Select();
 
-            var xmlMap = _workbook.XmlMaps.Cast<Excel.XmlMap>().SingleOrDefault(m => m.Name == collectionDatablock.Name);
+            var xmlMap = _workbook
+                .XmlMaps
+                .Cast<Excel.XmlMap>()
+                .SingleOrDefault(m => m.Name == collectionDatablock.Name);
+
             if (xmlMap != null)
             {
                 xmlMap.Delete();
             }
-            xmlMap = _workbook.XmlMaps.Add(collectionDatablock.GetSchema(), NetworkTree.RootName);
+
+            xmlMap = _workbook
+                .XmlMaps
+                .Add(collectionDatablock.GetSchema(), NetworkTree.RootName);
             xmlMap.Name = collectionDatablock.Name;
 
-            var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == collectionDatablock.Name);
+            var listObject = sheet
+                .ListObjects
+                .Cast<Excel.ListObject>()
+                .SingleOrDefault(l => l.Name == collectionDatablock.Name);
+
             if (listObject != null)
             {
                 listObject.Delete();
@@ -81,7 +91,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                 .GetNetworks(solutionId)
                 .SingleOrDefault(n => n.Name == collectionDatablock.NetworkName);
 
-            var results = xmlMap.ImportXml(collectionDatablock.GetXml(network), true);
+            var xml = collectionDatablock.GetXml(network, _blockProvider.GetDefaultPeriod());
+            var results = xmlMap.ImportXml(xml, true);
         }
 
         //private void ImportNodeFragment(NodeFragment fragment)
