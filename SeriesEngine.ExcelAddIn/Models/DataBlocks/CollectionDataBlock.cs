@@ -9,6 +9,7 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
     [Serializable]
     public class CollectionDataBlock : SheetDataBlock
     {
+        public string NetworkName { get; set; }
         public IEnumerable<ObjectMetamodel> SupportedModels { get; set; }
         public int[] ObjectIds { get; set; }
 
@@ -16,7 +17,7 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
         public object Tag { get; set; }
 
         public CollectionDataBlock() : base(null, new Period())
-        {
+        {            
         }
 
         public CollectionDataBlock(SheetDataBlock parent, Period defaultPeriod) : base(parent, defaultPeriod)

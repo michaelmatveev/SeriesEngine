@@ -35,7 +35,10 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public override void ExportDataBlock(int solutionId, CollectionDataBlock collection)
         {
-            var network = _networksProvider.GetNetworks(solutionId).Last() as NetworkTree;
+            var network = _networksProvider
+                .GetNetworks(solutionId)
+                .SingleOrDefault(n => n.Name == collection.NetworkName);
+
             Excel.Worksheet sheet = _workbook.Sheets[collection.Sheet];
             var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == collection.Name);
             // another way http://stackoverflow.com/questions/12572439/why-does-readxmlschema-create-extra-id-column

@@ -37,37 +37,37 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        public override void ImportDataBlock(int solutionId, CollectionDataBlock fragment)
+        public override void ImportDataBlock(int solutionId, CollectionDataBlock collectionDatablock)
         {
-            Excel.Worksheet sheet = _workbook.Sheets[fragment.Sheet];
+            Excel.Worksheet sheet = _workbook.Sheets[collectionDatablock.Sheet];
             sheet.Activate();
-            sheet.get_Range(fragment.Cell).Select();
+            sheet.get_Range(collectionDatablock.Cell).Select();
 
-            var xmlMap = _workbook.XmlMaps.Cast<Excel.XmlMap>().SingleOrDefault(m => m.Name == fragment.Name);
+            var xmlMap = _workbook.XmlMaps.Cast<Excel.XmlMap>().SingleOrDefault(m => m.Name == collectionDatablock.Name);
             if (xmlMap != null)
             {
                 xmlMap.Delete();
             }
-            xmlMap = _workbook.XmlMaps.Add(fragment.GetSchema(), NetworkTree.RootName);
-            xmlMap.Name = fragment.Name;
+            xmlMap = _workbook.XmlMaps.Add(collectionDatablock.GetSchema(), NetworkTree.RootName);
+            xmlMap.Name = collectionDatablock.Name;
 
-            var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == fragment.Name);
+            var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == collectionDatablock.Name);
             if (listObject != null)
             {
                 listObject.Delete();
             }
             listObject = sheet.ListObjects.Add();
-            listObject.Name = fragment.Name;
+            listObject.Name = collectionDatablock.Name;
 
             var column = listObject.ListColumns
                 .Cast<Excel.ListColumn>()
                 .First();
 
-            var subFragment = fragment.DataBlocks.First();
+            var subFragment = collectionDatablock.DataBlocks.First();
             column.XPath.SetValue(xmlMap, subFragment.XmlPath);
             column.Name = subFragment.Caption;
 
-            foreach (var f in fragment.DataBlocks.Skip(1))
+            foreach (var f in collectionDatablock.DataBlocks.Skip(1))
             {
                 var newColumn = listObject.ListColumns.Add();
 
@@ -76,9 +76,12 @@ namespace SeriesEngine.ExcelAddIn.Models
                 //newColumn.Range.NumberFormat = "@";
             }
 
-            listObject.ShowHeaders = fragment.ShowHeader;
-            var network = _networksProvider.GetNetworks(solutionId).Last();
-            var results = xmlMap.ImportXml(fragment.GetXml(network), true);
+            listObject.ShowHeaders = collectionDatablock.ShowHeader;
+            var network = _networksProvider
+                .GetNetworks(solutionId)
+                .SingleOrDefault(n => n.Name == collectionDatablock.NetworkName);
+
+            var results = xmlMap.ImportXml(collectionDatablock.GetXml(network), true);
         }
 
         //private void ImportNodeFragment(NodeFragment fragment)

@@ -7,14 +7,17 @@ namespace SeriesEngine.ExcelAddIn.Models
     public static class DataBlockConverter
     {
         private const string XmlNamespace = "http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments";
-        
+
         public static BaseDataBlock GetDataBlock(XDocument source, Period defaultPeriod)
         {
-            var result = new CollectionDataBlock();
-            result.CustomPeriod = defaultPeriod;
-            result.Name = source.Root.Attribute("Name").Value;
-            result.Sheet = source.Root.Attribute("Sheet").Value;
-            result.Cell = source.Root.Attribute("Cell").Value;
+            var result = new CollectionDataBlock
+            {
+                CustomPeriod = defaultPeriod,
+                NetworkName = source.Root.Attribute("NetworkName").Value,
+                Name = source.Root.Attribute("Name").Value,
+                Sheet = source.Root.Attribute("Sheet").Value,
+                Cell = source.Root.Attribute("Cell").Value,
+            };
 
             foreach (var f in source.Root.Descendants())
             {
