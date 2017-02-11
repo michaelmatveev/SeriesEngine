@@ -89,11 +89,6 @@ namespace SeriesEngine.Tests.Database
         {
             using (var context = new Model1())
             {
-                //var solution = context.Entry(_currentSolution);
-                //solution.State = System.Data.Entity.EntityState.Deleted;
-                //var solution = context.Solutions.Attach(_currentSolution);
-                //context.Solutions.Remove(solution);
-
                 var solution = context.Solutions.First(s => s.Id == _currentSolution.Id);
                 context.Solutions.Remove(solution);
 
@@ -145,7 +140,7 @@ namespace SeriesEngine.Tests.Database
                 .First(n => n.Name == "Main network 1");
 
             var collectionDataBlock = GetCollectionDataBlock();
-            var dataXml = XDocument.Parse(collectionDataBlock.GetXml(network));
+            var dataXml = XDocument.Parse(collectionDataBlock.GetXml(network, Period.Default));
 
             Console.WriteLine(dataXml);
             AssertData(dataXml, "DataImportExport/Region[@UniqueName='Region 1']");
@@ -166,7 +161,7 @@ namespace SeriesEngine.Tests.Database
                     new XElement("Region", new XAttribute("UniqueName", "Region 2"))));
             network.LoadFromXml(doc);
             var collectionDataBlock = GetCollectionDataBlock();
-            var dataXml = XDocument.Parse(collectionDataBlock.GetXml(network));
+            var dataXml = XDocument.Parse(collectionDataBlock.GetXml(network, Period.Default));
 
             Console.WriteLine(dataXml);
             AssertData(dataXml, "DataImportExport/Region[@UniqueName='Region 2']");

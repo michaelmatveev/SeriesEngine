@@ -65,62 +65,77 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void LoadFromXml(XDocument target)
         {
-            var currentTreeState = _network
-                .Nodes
-                .Cast<NetworkTreeNode>()
-                .GenerateTree(n => n.NodeName, n => n.Parent?.NodeName);
+            //var currentTreeState = _network
+            //    .Nodes
+            //    .Cast<NetworkTreeNode>()
+            //    .GenerateTree(n => n.NodeName, n => n.Parent?.NodeName);
 
             using (var context = new Model1())
             {
                 var allNodes = new List<NetworkTreeNode>(_network.Nodes);
                 context.Solutions.Attach(_network.Solution);
-                RestoreNodes(target.Root.Elements(), null, allNodes, context);
 
-                var networkId = new SqlParameter("@networkId", _network.Id);
-                context.Database.ExecuteSqlCommand("CleanNetwork @networkId", networkId);
+                var newNodes = RestoreNodes(target.Root.Elements(), null, allNodes);
+                context.MainHierarchyNodes.AddRange(newNodes.Cast<MainHierarchyNode>());
+                context.MainHierarchyNodes.RemoveRange(allNodes.Where(n => !n.IsMarkedFlag).Cast<MainHierarchyNode>());
+
+                //var networkId = new SqlParameter("@networkId", _network.Id);
+                //context.Database.ExecuteSqlCommand("CleanNetwork @networkId", networkId);
                        
                 context.SaveChanges();
             }
         }
 
-        private void RestoreNodes(IEnumerable<XElement> elements, MainHierarchyNode parent, List<NetworkTreeNode> allNodes, Model1 context)
+        private IEnumerable<NetworkTreeNode> RestoreNodes(IEnumerable<XElement> elements, NetworkTreeNode parent, List<NetworkTreeNode> allNodes)
         {
-            foreach(var element in elements)
+            var result = new List<NetworkTreeNode>();
+            // elements at one hierarchy level
+            foreach (var element in elements)
             {
                 // try to find object for node
                 var nameAttr = element.Attribute("UniqueName");
-                var sinceAttr = element.Attribute("Since");
-                var tillAttr = element.Attribute("Till");
-
-                var validFrom = sinceAttr == null ? (DateTime?)null : DateTime.Parse(sinceAttr.Value);
-                var validTill = sinceAttr == null ? (DateTime?)null : DateTime.Parse(tillAttr.Value);
-
                 if (nameAttr == null)
                 {
                     parent.LinkedObject.SetVariableValue(element.Name.LocalName, element.Value);
+                    yield break;
                 }
                 else
                 {
-                    //var node = _network.Nodes.FirstOrDefault(n => n.NodeName == nameAttr.Value && n.Parent == parent);
-                    //if (node == null)
-                    //{
-                        var node = new MainHierarchyNode
+                    var sinceAttr = element.Attribute("Since");
+                    var tillAttr = element.Attribute("Till");
+
+                    var validFrom = sinceAttr == null ? (DateTime?)null : DateTime.Parse(sinceAttr.Value);
+                    var validTill = sinceAttr == null ? (DateTime?)null : DateTime.Parse(tillAttr.Value);
+
+                    var node = allNodes.FirstOrDefault(n => n.NodeName == nameAttr.Value && n.Parent == parent);
+                    if (node == null) // it is a new node
+                    {
+                        node = new MainHierarchyNode
                         {
+                            IsMarkedFlag = true,
                             Network = _network,
-                            Parent = parent,
+                            Parent = (MainHierarchyNode)parent,
                             ValidFrom = validFrom,
                             ValidTill = validTill
                         };
                         // create a new object and node
                         node.SetLinkedObject(CreateObject(element));
-                        context.MainHierarchyNodes.Add(node);
-                    //}
-                    //else
-                    //{
-                    //    allNodes.Remove(node);
-                    //}
-                    RestoreNodes(element.Elements(), node, allNodes, context);
+                        //context.MainHierarchyNodes.Add(node);
+                        result.Add(node);
+                    }
+                    else
+                    {
+                        node.IsMarkedFlag = true;
+                    }
+                    if (element.Elements().Any())
+                    {
+                        result.AddRange(RestoreNodes(element.Elements(), node, allNodes));
+                    }
                 }
+            }
+            foreach(var r in result)
+            {
+                yield return r;
             }
         }
 

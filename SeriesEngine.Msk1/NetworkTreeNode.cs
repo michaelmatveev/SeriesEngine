@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SeriesEngine.Msk1
 {
@@ -25,5 +26,8 @@ namespace SeriesEngine.Msk1
 
         public DateTime? ValidFrom { get; set; }
         public DateTime? ValidTill { get; set; }
+
+        [NotMapped]
+        public bool IsMarkedFlag { get; set; }
     }
 }
