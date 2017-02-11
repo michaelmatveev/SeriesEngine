@@ -255,10 +255,16 @@ namespace SeriesEngine.ExcelAddIn.Models
                         newElement.Add(new XAttribute("UniqueName", node.NodeName));
                         break;
                     case NodeType.Since:
-                        newElement.Add(new XAttribute("Since", node.ValidFrom ?? default(DateTime)));
+                        if (node.ValidFrom.HasValue)
+                        {
+                            newElement.Add(new XAttribute("Since", node.ValidFrom));
+                        }
                         break;
                     case NodeType.Till:
-                        newElement.Add(new XAttribute("Till", node.ValidTill ?? default(DateTime)));
+                        if (node.ValidTill.HasValue)
+                        {
+                            newElement.Add(new XAttribute("Till", node.ValidTill));
+                        }
                         break;
                     default:
                         throw new NotSupportedException("this operation is not supported");

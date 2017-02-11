@@ -12,9 +12,6 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public class WorkbookDataBlockProvider : IDataBlockProvider
     {
-        private const string XmlNamespaceDataBlocks = "http://www.seriesengine.com/SeriesEngine.ExcelAddIn/DataBlocks";
-        private const string XmlNamespaceInfo = "http://www.seriesengine.com/SeriesEngine.ExcelAddIn/CommonInfo";
-
         private readonly Workbook _workbook;
         private readonly List<BaseDataBlock> _dataBlocks;
 
@@ -25,7 +22,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
             var gridParts = _workbook.CustomXMLParts
                 .Cast<CustomXMLPart>()
-                .Where(p => !p.BuiltIn && p.NamespaceURI == XmlNamespaceDataBlocks);
+                .Where(p => !p.BuiltIn && p.NamespaceURI == Constants.XmlNamespaceDataBlocks);
 
             var defaultPeriod = GetDefaultPeriod();
             foreach (var part in gridParts)
@@ -44,7 +41,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             var gridParts = _workbook.CustomXMLParts
                 .Cast<CustomXMLPart>()
-                .Where(p => !p.BuiltIn && p.NamespaceURI == XmlNamespaceDataBlocks)
+                .Where(p => !p.BuiltIn && p.NamespaceURI == Constants.XmlNamespaceDataBlocks)
                 .ToList();
 
             foreach(var part in gridParts)

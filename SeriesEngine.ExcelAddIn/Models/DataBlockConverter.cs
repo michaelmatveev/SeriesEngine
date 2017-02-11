@@ -6,7 +6,8 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public static class DataBlockConverter
     {
-        private const string XmlNamespace = "http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments";
+        private const string NodeElementName = "CFragment";
+        private const string VariableElementName = "VFragment";
 
         public static BaseDataBlock GetDataBlock(XDocument source, Period defaultPeriod)
         {
@@ -22,7 +23,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             foreach (var f in source.Root.Descendants())
             {
                 DataBlock newFragment;
-                if(f.Name.LocalName == "CFragment")
+                if(f.Name.LocalName == NodeElementName)
                 {
                     newFragment = new NodeDataBlock(result)
                     {
@@ -53,14 +54,38 @@ namespace SeriesEngine.ExcelAddIn.Models
             if (datablock is CollectionDataBlock)
             {
                 var coll = (CollectionDataBlock)datablock;    
-                var ns = XNamespace.Get(XmlNamespace);
-                var doc = new XDocument(
-                    new XElement(ns + "ObjectGrid",
+                var ns = XNamespace.Get(Constants.XmlNamespaceDataBlocks);
+                var root = new XElement(ns + "ObjectGrid",
                         new XAttribute("Version", "1"),
+                        new XAttribute("NetworkName", coll.NetworkName),
                         new XAttribute("Name", coll.Name),
                         new XAttribute("Sheet", coll.Sheet),
-                        new XAttribute("Cell", coll.Cell)));
+                        new XAttribute("Cell", coll.Cell));
+                var doc = new XDocument(root);
 
+                foreach(var n in coll.DataBlocks)
+                {
+                    XElement newElement;
+                    if(n is NodeDataBlock)
+                    {
+                        var ndb = n as NodeDataBlock;
+                        newElement = new XElement(NodeElementName,
+                            new XAttribute("Type", ndb.NodeType));
+                    }
+                    else
+                    {
+                        var vdb = n as VariableDataBlock;
+                        newElement = new XElement(VariableElementName,
+                            new XAttribute("Variable", vdb.VariableName),
+                            new XAttribute("Kind", vdb.Kind));
+                    }
+                    newElement.Add(new XAttribute("Caption", n.Caption));
+                    newElement.Add(new XAttribute("Level", n.Level));
+                    newElement.Add(new XAttribute("CollectionName", n.CollectionName));
+                    newElement.Add(new XAttribute("RefObject", n.RefObject));
+
+                    root.Add(newElement);
+                }
                 return doc;
             }
 

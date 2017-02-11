@@ -14,7 +14,11 @@ namespace SeriesEngine.ExcelAddIn.Presenters
         public PeriodSelectorPresenter(IPeriodView view, IApplicationController controller, IDataBlockProvider fragmentsProvider) : base(view, controller)
         {
             _dataBlockProvider = fragmentsProvider;
-            View.PeriodChanged += (s, e) => _dataBlockProvider.SetDefaultPeriod(View.SelectedPeriod);
+            View.PeriodChanged += (s, e) =>
+            {
+                _dataBlockProvider.SetDefaultPeriod(View.SelectedPeriod);
+                Controller.Execute(new ReloadAllCommandArgs());
+            };
         }
 
         public void Execute(SwitchToPeriodCommandArgs commandData)
