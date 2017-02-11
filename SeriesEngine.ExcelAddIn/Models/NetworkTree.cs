@@ -4,8 +4,6 @@ using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using SeriesEngine.Msk1;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -60,16 +58,12 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 return true;
             }
-            return (node.ValidFrom ?? DateTime.MaxValue) >= period.From && (node.ValidTill ?? DateTime.MinValue) < period.Till;
+            return (node.ValidTill ?? DateTime.MinValue) >= period.From && (node.ValidFrom ?? DateTime.MaxValue) < period.Till;
+            //return (node.ValidFrom ?? DateTime.MaxValue) >= period.From && (node.ValidTill ?? DateTime.MinValue) < period.Till;
         }
 
         public void LoadFromXml(XDocument target)
         {
-            //var currentTreeState = _network
-            //    .Nodes
-            //    .Cast<NetworkTreeNode>()
-            //    .GenerateTree(n => n.NodeName, n => n.Parent?.NodeName);
-
             using (var context = new Model1())
             {
                 var allNodes = new List<NetworkTreeNode>(_network.Nodes);
@@ -78,10 +72,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var newNodes = RestoreNodes(target.Root.Elements(), null, allNodes);
                 context.MainHierarchyNodes.AddRange(newNodes.Cast<MainHierarchyNode>());
                 context.MainHierarchyNodes.RemoveRange(allNodes.Where(n => !n.IsMarkedFlag).Cast<MainHierarchyNode>());
-
-                //var networkId = new SqlParameter("@networkId", _network.Id);
-                //context.Database.ExecuteSqlCommand("CleanNetwork @networkId", networkId);
-                       
+                      
                 context.SaveChanges();
             }
         }
@@ -97,7 +88,6 @@ namespace SeriesEngine.ExcelAddIn.Models
                 if (nameAttr == null)
                 {
                     parent.LinkedObject.SetVariableValue(element.Name.LocalName, element.Value);
-                    yield break;
                 }
                 else
                 {
@@ -120,12 +110,13 @@ namespace SeriesEngine.ExcelAddIn.Models
                         };
                         // create a new object and node
                         node.SetLinkedObject(CreateObject(element));
-                        //context.MainHierarchyNodes.Add(node);
                         result.Add(node);
                     }
                     else
                     {
                         node.IsMarkedFlag = true;
+                        node.ValidFrom = validFrom;
+                        node.ValidTill = validTill;
                     }
                     if (element.Elements().Any())
                     {
@@ -133,10 +124,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     }
                 }
             }
-            foreach(var r in result)
-            {
-                yield return r;
-            }
+            return result;
         }
 
         public NamedObject CreateObject(XElement element)

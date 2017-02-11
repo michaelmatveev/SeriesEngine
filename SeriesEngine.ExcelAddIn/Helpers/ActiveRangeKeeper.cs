@@ -17,9 +17,18 @@ namespace SeriesEngine.ExcelAddIn.Helpers
 
         public void Dispose()
         {
-            _activeSheet.Activate();
-            _activeRange.Select();
-            _activeSheet.Application.ScreenUpdating = true;
+            try
+            {
+                _activeSheet.Activate();
+                _activeRange.Select();
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                _activeSheet.Application.ScreenUpdating = true;
+            }
         }
     }
 }

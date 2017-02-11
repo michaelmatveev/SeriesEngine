@@ -117,7 +117,7 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
 
         public string GetXml(NetworkTree network, Period defaultPeriod)
         {
-            var xml = network.ConvertToXml(DataBlocks, CustomPeriod ?? defaultPeriod);
+            var xml = network.ConvertToXml(DataBlocks, defaultPeriod);
             return xml.ToString();
         }
 
