@@ -36,8 +36,8 @@ CREATE TABLE [<#= Schema #>].[<#= hName #>] (
 		if(withHistory)
 		{
 #>
-	ValidFrom datetime NULL,
-	ValidTill datetime NULL,
+	ValidFrom DATETIME2 (7) NULL,
+	ValidTill DATETIME2 (7) NULL,
 <#+
 		}
 #>

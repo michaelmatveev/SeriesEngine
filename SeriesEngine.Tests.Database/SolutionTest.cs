@@ -15,18 +15,15 @@ namespace SeriesEngine.Tests.Database
             {
                 var solution = new Solution
                 {
-                    Name = "solution1",
-                    Description = "test description"
+                    Name = "Тест 1",
+                    Description = "Тестовое решение"
                 };
-                //context.Solutions.Add(solution);
 
                 var region = new Region()
                 {
                     Solution = solution,
                     Name = "Пензенская область"
                 };
-
-                //context.Regions.Add(region);
 
                 var consumer = new Consumer()
                 {
@@ -149,6 +146,19 @@ namespace SeriesEngine.Tests.Database
                 network.Nodes.Add(node8);
 
                 context.Networks.Add(network);
+
+                var solution1 = new Solution
+                {
+                    Name = "Реальные данные 1",
+                    Description = "Пример реальных данных"
+                };
+                var network1 = new Network()
+                {
+                    Name = "Основная коллекция объектов",
+                    Solution = solution1
+                };
+                context.Networks.Add(network1);
+
                 try
                 {
                     context.SaveChanges();

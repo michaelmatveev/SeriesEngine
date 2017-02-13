@@ -34,7 +34,7 @@
     <PublishUrl>publish\</PublishUrl>
     <InstallUrl>https://dataseries.blob.core.windows.net/clickonce/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.0</ApplicationVersion>
+    <ApplicationVersion>1.1.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -204,6 +204,7 @@
   -->
   <ItemGroup>
     <Compile Include="Helpers\ActiveRangeKeeper.cs" />
+    <Compile Include="Helpers\DateTimeParser.cs" />
     <Compile Include="Helpers\PanesManager.cs" />
     <Compile Include="Helpers\TreeHelpers.cs" />
     <Compile Include="Helpers\TreeViewExtensions.cs" />

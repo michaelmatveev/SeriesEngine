@@ -91,11 +91,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
                 else
                 {
-                    var sinceAttr = element.Attribute("Since");
-                    var tillAttr = element.Attribute("Till");
-
-                    var validFrom = sinceAttr == null ? (DateTime?)null : DateTime.Parse(sinceAttr.Value);
-                    var validTill = sinceAttr == null ? (DateTime?)null : DateTime.Parse(tillAttr.Value);
+                    var validFrom = DateTimeParser.Parse(element.Attribute("Since")?.Value);
+                    var validTill = DateTimeParser.Parse(element.Attribute("Till")?.Value);
 
                     var node = allNodes.FirstOrDefault(n => n.NodeName == nameAttr.Value && n.Parent == parent);
                     if (node == null) // it is a new node
