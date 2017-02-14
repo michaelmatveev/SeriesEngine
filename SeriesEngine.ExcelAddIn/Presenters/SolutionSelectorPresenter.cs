@@ -5,11 +5,11 @@ using SeriesEngine.ExcelAddIn.Models;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
-    public class SolutionSelectorPresenter : Presenter<ISolutionSelector>,
+    public class SolutionSelectorPresenter : Presenter<ISolutionSelectorView>,
         ICommand<SelectSolutionCommandArgs>
     {
         private readonly ISolutionProvider _solutionProvider;
-        public SolutionSelectorPresenter(ISolutionProvider solutionProvider, ISolutionSelector view, IApplicationController controller) 
+        public SolutionSelectorPresenter(ISolutionProvider solutionProvider, ISolutionSelectorView view, IApplicationController controller) 
             : base(view, controller)
         {
             _solutionProvider = solutionProvider;

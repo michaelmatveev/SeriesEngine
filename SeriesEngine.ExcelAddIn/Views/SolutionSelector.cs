@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
-    public partial class SolutionSelector : Form, ISolutionSelector
+    public partial class SolutionSelector : Form, ISolutionSelectorView
     {
         public SolutionSelector()
         {

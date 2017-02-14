@@ -53,6 +53,8 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                 Sheet = e.Sheet
             });
 
+            View.RenameObject += (s, e) => Controller.Execute(new GetObjectCommandArgs());
+
             View.Connect += (s, e) => Controller.Execute(new SelectSolutionCommandArgs());
             View.Disconnect += (s, e) => Controller.CurrentSolution = null;
         }

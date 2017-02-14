@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
-    public interface ISolutionSelector : IView
+    public interface ISolutionSelectorView : IView
     {
         void ShowIt(IEnumerable<Solution> solutions, Solution selectedSolution);
         event EventHandler SolutionChanged;

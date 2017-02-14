@@ -16,6 +16,7 @@ namespace SeriesEngine.Msk1
         public DateTime UpdateTime { get; set; }
 
         public abstract string GetName();
+
         [NotMapped]
         public ObjectMetamodel ObjectModel { get; set; }
         public object GetVariableValue(string variableName)

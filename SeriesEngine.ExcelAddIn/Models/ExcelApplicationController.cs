@@ -137,9 +137,19 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Singleton()
                     .Use<SolutionProvider>();
 
-                _.For<ISolutionSelector>()
+                _.For<ISolutionSelectorView>()
                     .Use<SolutionSelector>();
+
                 _.ForConcreteType<SolutionSelectorPresenter>();
+
+                _.For<IObjectProvider>()
+                    .Singleton()
+                    .Use<ObjectProvider>();
+
+                _.For<IObjectPropertiesView>()
+                    .Use<ObjectProperties>();
+
+                _.ForConcreteType<ObjectPropertiesPresenter>();
             });
 
             var provider = Container.GetInstance<IDataBlockProvider>();

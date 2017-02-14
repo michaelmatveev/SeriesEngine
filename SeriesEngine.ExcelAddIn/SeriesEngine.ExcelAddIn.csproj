@@ -213,8 +213,10 @@
     <Compile Include="Models\BaseDataImporter.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\DataBaseNetworkProvider.cs" />
+    <Compile Include="Models\IObjectProvider.cs" />
     <Compile Include="Models\ISolutionProvider.cs" />
     <Compile Include="Models\NetworkTree.cs" />
+    <Compile Include="Models\ObjectProvider.cs" />
     <Compile Include="Models\SubFragment.cs" />
     <Compile Include="Models\CustomInterceptorPolicy.cs" />
     <Compile Include="Models\Extensions.cs" />
@@ -246,6 +248,7 @@
     <Compile Include="Presenters\FilterPresenter.cs" />
     <Compile Include="Presenters\NodeBlockPropertiesPresenter.cs" />
     <Compile Include="Presenters\MainPanePresenter.cs" />
+    <Compile Include="Presenters\ObjectPropertiesPresenter.cs" />
     <Compile Include="Presenters\PeriodSelectorPresenter.cs" />
     <Compile Include="Presenters\SolutionSelectorPresenter.cs" />
     <Compile Include="Models\SolutionProvider.cs" />
@@ -258,7 +261,8 @@
     <Compile Include="Views\CollectionProperties.Designer.cs">
       <DependentUpon>CollectionProperties.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ISolutionSelector.cs" />
+    <Compile Include="Views\IObjectPropertiesView.cs" />
+    <Compile Include="Views\ISolutionSelectorView.cs" />
     <Compile Include="Views\NodeBlockProperties.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -282,6 +286,12 @@
     <Compile Include="Presenters\Presenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\ObjectProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ObjectProperties.Designer.cs">
+      <DependentUpon>ObjectProperties.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\RibbonWrapper.cs" />
     <Compile Include="Views\SolutionSelector.cs">
@@ -318,6 +328,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\MainPaneControl.resx">
       <DependentUpon>MainPaneControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ObjectProperties.resx">
+      <DependentUpon>ObjectProperties.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\PeriodSelector.resx">
       <DependentUpon>PeriodSelector.cs</DependentUpon>

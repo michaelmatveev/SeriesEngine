@@ -35,6 +35,9 @@ namespace SeriesEngine.ExcelAddIn.Views
         event EventHandler<CurrentSelectionArgs> InsertSampleBlock;
         event EventHandler Connect;
         event EventHandler Disconnect;
+        event EventHandler RenameObject;
+        event EventHandler DeleteObject;
+
         //void InitializeFilters(IEnumerable<Network> networks);
         void SetButtonToggleState(bool isVisible);
         void SetTabVisibleState(bool isVisible);

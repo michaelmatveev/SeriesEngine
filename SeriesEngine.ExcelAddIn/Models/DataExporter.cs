@@ -124,7 +124,10 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         void ICommand<PreserveDataBlocksCommandArgs>.Execute(PreserveDataBlocksCommandArgs commandData)
         {
-            _blockProvider.SetLastSolutionId(commandData.Solution.Id);
+            if (commandData.Solution != null)
+            {
+                _blockProvider.SetLastSolutionId(commandData.Solution.Id);
+            }
             _blockProvider.Save();
         }
 

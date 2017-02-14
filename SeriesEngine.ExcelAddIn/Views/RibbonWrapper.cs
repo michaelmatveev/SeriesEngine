@@ -12,7 +12,9 @@ namespace SeriesEngine.ExcelAddIn.Views
         public event EventHandler SaveAll;
         public event EventHandler Connect;
         public event EventHandler Disconnect;
-
+        public event EventHandler RenameObject;
+        public event EventHandler DeleteObject;
+        
         public bool IsActive { get; set; }
         
         private readonly IMainMenuView _realView;
@@ -72,6 +74,22 @@ namespace SeriesEngine.ExcelAddIn.Views
                 if (IsActive)
                 {
                     Disconnect?.Invoke(s, e);
+                }
+            };
+
+            realView.DeleteObject += (s, e) =>
+            {
+                if (IsActive)
+                {
+                    DeleteObject?.Invoke(s, e);
+                }
+            };
+
+            realView.RenameObject += (s, e) =>
+            {
+                if (IsActive)
+                {
+                    RenameObject?.Invoke(s, e);
                 }
             };
         }

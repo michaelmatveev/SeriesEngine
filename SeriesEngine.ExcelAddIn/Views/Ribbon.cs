@@ -13,6 +13,8 @@ namespace SeriesEngine.ExcelAddIn
         public event EventHandler<FilterArgs> FilterSelected;
         public event EventHandler<CurrentSelectionArgs> InsertNewDataBlock;
         public event EventHandler<CurrentSelectionArgs> InsertSampleBlock;
+        public event EventHandler RenameObject;
+        public event EventHandler DeleteObject;
         public event EventHandler Connect;
         public event EventHandler Disconnect;
 
@@ -82,6 +84,11 @@ namespace SeriesEngine.ExcelAddIn
         private void buttonDisconnect_Click(object sender, RibbonControlEventArgs e)
         {
             Disconnect?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void buttonRenameObject_Click(object sender, RibbonControlEventArgs e)
+        {
+            RenameObject?.Invoke(this, EventArgs.Empty);
         }
 
         //public void InitializeFilters(IEnumerable<Network> networks)
