@@ -18,6 +18,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
         public MainMenuPresenter(IMainMenuView view, 
             IApplicationController controller,
+            ISelectionProvider selectionProvider,
             INetworksProvider networkProvider) : base(view, controller)
         {
             _networkProvider = networkProvider;
@@ -41,19 +42,18 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
             View.InsertNewDataBlock += (s, e) => Controller.Execute(new InsertCollectionBlockCommandArgs
             {
-                Name = e.Name,
-                Cell = e.Cell,
-                Sheet = e.Sheet
+                CurrentSelection = selectionProvider.GetSelection()
             });
 
             View.InsertSampleBlock += (s, e) => Controller.Execute(new InsertSampleCollectionBlockCommandArgs
             {
-                Name = e.Name,
-                Cell = e.Cell,
-                Sheet = e.Sheet
+                CurrentSelection = selectionProvider.GetSelection()
             });
 
-            View.RenameObject += (s, e) => Controller.Execute(new GetObjectCommandArgs());
+            View.RenameObject += (s, e) => Controller.Execute(new RenameObjectCommandArgs
+            {
+                CurrentSelection = selectionProvider.GetSelection()
+            });
 
             View.Connect += (s, e) => Controller.Execute(new SelectSolutionCommandArgs());
             View.Disconnect += (s, e) => Controller.CurrentSolution = null;

@@ -2,9 +2,7 @@
 {
     public class InsertCollectionBlockCommandArgs : BaseCommandArgs
     {
-        public string Sheet { get; set; }
-        public string Cell { get; set; }
-        public string Name { get; set; }
+        public CurrentSelection CurrentSelection { get; set; }
     }
 
     public class InsertSampleCollectionBlockCommandArgs : InsertCollectionBlockCommandArgs

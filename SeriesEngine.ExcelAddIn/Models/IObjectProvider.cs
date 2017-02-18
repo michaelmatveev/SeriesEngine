@@ -1,15 +1,11 @@
-﻿using SeriesEngine.Core.DataAccess;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SeriesEngine.App;
+using SeriesEngine.Core.DataAccess;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
     public interface IObjectProvider
     {
-        MyObject GetSelectedObject();
+        MyObject GetSelectedObject(CurrentSelection selection);
         void UpdateObject(MyObject objectToUpdate);
     }
 }

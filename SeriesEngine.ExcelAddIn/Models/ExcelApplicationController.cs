@@ -26,6 +26,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _.For<IApplicationController>()
                     .Use(this);
 
+                _.For<ISelectionProvider>()
+                    .Singleton()
+                    .Use<SelectionProvider>();
+
                 _.ForConcreteType<PanesManager>()
                     .Configure
                     .Singleton()

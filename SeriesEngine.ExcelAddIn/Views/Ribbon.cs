@@ -11,8 +11,8 @@ namespace SeriesEngine.ExcelAddIn
         public event EventHandler RefreshAll;
         public event EventHandler SaveAll;
         public event EventHandler<FilterArgs> FilterSelected;
-        public event EventHandler<CurrentSelectionArgs> InsertNewDataBlock;
-        public event EventHandler<CurrentSelectionArgs> InsertSampleBlock;
+        public event EventHandler InsertNewDataBlock;
+        public event EventHandler InsertSampleBlock;
         public event EventHandler RenameObject;
         public event EventHandler DeleteObject;
         public event EventHandler Connect;
@@ -45,25 +45,12 @@ namespace SeriesEngine.ExcelAddIn
         
         private void buttonAddDataBlock_Click(object sender, RibbonControlEventArgs e)
         {
-            InsertNewDataBlock?.Invoke(this, GetCurrentSelection()); 
+            InsertNewDataBlock?.Invoke(this, EventArgs.Empty); 
         }
 
         private void buttonSample_Click(object sender, RibbonControlEventArgs e)
         {
-            InsertSampleBlock?.Invoke(this, GetCurrentSelection());
-        }
-
-        private CurrentSelectionArgs GetCurrentSelection()
-        {
-            var range = (Range)Globals.ThisAddIn.Application.Selection;
-            var sheet = range.Parent.Name;
-            var cell = range.AddressLocal.Replace("$", string.Empty);
-            return new CurrentSelectionArgs
-            {
-                Sheet = sheet,
-                Cell = cell,
-                Name = cell
-            };
+            InsertSampleBlock?.Invoke(this, EventArgs.Empty);
         }
 
         public void SetButtonToggleState(bool isChecked)

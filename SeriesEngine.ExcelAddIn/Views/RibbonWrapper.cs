@@ -5,8 +5,8 @@ namespace SeriesEngine.ExcelAddIn.Views
     public class RibbonWrapper : IMainMenuView
     {
         public event EventHandler<FilterArgs> FilterSelected;
-        public event EventHandler<CurrentSelectionArgs> InsertNewDataBlock;
-        public event EventHandler<CurrentSelectionArgs> InsertSampleBlock;
+        public event EventHandler InsertNewDataBlock;
+        public event EventHandler InsertSampleBlock;
         public event EventHandler<PaneArgs> ShowCustomPane;
         public event EventHandler RefreshAll;
         public event EventHandler SaveAll;

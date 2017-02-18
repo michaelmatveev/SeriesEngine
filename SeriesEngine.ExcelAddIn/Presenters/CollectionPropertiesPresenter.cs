@@ -44,9 +44,9 @@ namespace SeriesEngine.ExcelAddIn.Presenters
         {
             var doc = XDocument.Parse(Resources.TestGrid);
             var newBlock = (CollectionDataBlock)DataBlockConverter.GetDataBlock(doc, Period.Default);
-            newBlock.Name = commandData.Name;
-            newBlock.Sheet = commandData.Sheet;
-            newBlock.Cell = commandData.Cell;
+            newBlock.Name = commandData.CurrentSelection.Name;
+            newBlock.Sheet = commandData.CurrentSelection.Sheet;
+            newBlock.Cell = commandData.CurrentSelection.Cell;
 
             _dataBlockProvider.AddDataBlock(newBlock);
         }
@@ -55,9 +55,9 @@ namespace SeriesEngine.ExcelAddIn.Presenters
         {
             var newBlock = new CollectionDataBlock
             {
-                Name = commandData.Name,
-                Sheet = commandData.Sheet,
-                Cell = commandData.Cell
+                Name = commandData.CurrentSelection.Name,
+                Sheet = commandData.CurrentSelection.Sheet,
+                Cell = commandData.CurrentSelection.Cell
             };
 
             View.CollectionDataBlock = newBlock;

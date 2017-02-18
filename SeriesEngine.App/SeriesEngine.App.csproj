@@ -46,10 +46,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationController.cs" />
+    <Compile Include="CurrentSelection.cs" />
     <Compile Include="CommandArgs\BaseCommandArgs.cs" />
     <Compile Include="CommandArgs\EditCollectionBlockCommandArgs.cs" />
     <Compile Include="CommandArgs\EditNodeDataBlockCommandArgs.cs" />
-    <Compile Include="CommandArgs\GetObjectCommandArgs.cs" />
+    <Compile Include="CommandArgs\RenameObjectCommandArgs.cs" />
     <Compile Include="CommandArgs\InitalizeCommandArgs.cs" />
     <Compile Include="CommandArgs\InsertCollectionBlockCommandArgs.cs" />
     <Compile Include="CommandArgs\InsertNodeDataBlockCommandArgs.cs" />

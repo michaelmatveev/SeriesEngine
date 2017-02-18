@@ -5,7 +5,7 @@ using SeriesEngine.App.CommandArgs;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
-    public class ObjectPropertiesPresenter : Presenter<IObjectPropertiesView>, ICommand<GetObjectCommandArgs>
+    public class ObjectPropertiesPresenter : Presenter<IObjectPropertiesView>, ICommand<RenameObjectCommandArgs>
     {
         private readonly IObjectProvider _objectProvider;
         public ObjectPropertiesPresenter(IObjectProvider objectProvider, IObjectPropertiesView view, IApplicationController controller) : base(view, controller)
@@ -14,9 +14,9 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             View.ObjectRenamed += (s, e) => objectProvider.UpdateObject(View.SelectedObject);
         }
 
-        void ICommand<GetObjectCommandArgs>.Execute(GetObjectCommandArgs commandData)
+        void ICommand<RenameObjectCommandArgs>.Execute(RenameObjectCommandArgs commandData)
         {
-            View.ShowIt(_objectProvider.GetSelectedObject());
+            View.ShowIt(_objectProvider.GetSelectedObject(commandData.CurrentSelection));
         }
     }
 }

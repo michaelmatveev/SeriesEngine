@@ -214,9 +214,11 @@
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\DataBaseNetworkProvider.cs" />
     <Compile Include="Models\IObjectProvider.cs" />
+    <Compile Include="Models\ISelectionProvider.cs" />
     <Compile Include="Models\ISolutionProvider.cs" />
     <Compile Include="Models\NetworkTree.cs" />
     <Compile Include="Models\ObjectProvider.cs" />
+    <Compile Include="Models\SelectionProvider.cs" />
     <Compile Include="Models\SubFragment.cs" />
     <Compile Include="Models\CustomInterceptorPolicy.cs" />
     <Compile Include="Models\Extensions.cs" />
