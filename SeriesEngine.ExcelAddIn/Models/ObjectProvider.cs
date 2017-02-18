@@ -51,22 +51,16 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var id = ((IEnumerable<object>)XDocument.Parse(xml).Root.XPathEvaluate(xpath))
                     .OfType<XAttribute>()
                     .FirstOrDefault();
-                
-                if (id != null)
+
+                return new MyObject
                 {
-                    return new MyObject
-                    {
-                        Name = selection.Value,
-                        NetworkId = network.Id,
-                        NodeId = int.Parse(id.Value) 
-                    };
-                }
+                    Name = selection.Value,
+                    NetworkId = network.Id,
+                    NodeId = id == null ? -1 : int.Parse(id.Value)
+                };
             }
 
-            return new MyObject
-            {
-                Name = "Test"
-            };   
+            return null;  
         }
 
         public void UpdateObject(MyObject objectToUpdate)

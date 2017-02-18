@@ -11,12 +11,17 @@ namespace SeriesEngine.ExcelAddIn.Presenters
         public ObjectPropertiesPresenter(IObjectProvider objectProvider, IObjectPropertiesView view, IApplicationController controller) : base(view, controller)
         {
             _objectProvider = objectProvider;
-            View.ObjectRenamed += (s, e) => objectProvider.UpdateObject(View.SelectedObject);
+            View.ObjectRenamed += (s, e) =>
+            {
+                objectProvider.UpdateObject(View.SelectedObject);
+                Controller.Execute(new ReloadAllCommandArgs());
+            };
         }
 
         void ICommand<RenameObjectCommandArgs>.Execute(RenameObjectCommandArgs commandData)
         {
-            View.ShowIt(_objectProvider.GetSelectedObject(commandData.CurrentSelection, commandData.Solution));
+            var selectedObject = _objectProvider.GetSelectedObject(commandData.CurrentSelection, commandData.Solution);
+            View.ShowIt(selectedObject);
         }
     }
 }
