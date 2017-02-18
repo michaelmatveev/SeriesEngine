@@ -55,6 +55,11 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                 CurrentSelection = selectionProvider.GetSelection()
             });
 
+            View.DeleteObject += (s, e) => Controller.Execute(new DeleteObjectCommandArgs
+            {
+                CurrentSelection = selectionProvider.GetSelection()
+            });
+
             View.Connect += (s, e) => Controller.Execute(new SelectSolutionCommandArgs());
             View.Disconnect += (s, e) => Controller.CurrentSolution = null;
         }

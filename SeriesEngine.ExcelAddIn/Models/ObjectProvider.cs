@@ -66,7 +66,14 @@ namespace SeriesEngine.ExcelAddIn.Models
         public void UpdateObject(MyObject objectToUpdate)
         {
             var network = _networksProvider.GetNetworkById(objectToUpdate.NetworkId);
-            network.RenameObject(objectToUpdate.NodeId, objectToUpdate.Name);
+            network.RenameLinkedObject(objectToUpdate.NodeId, objectToUpdate.Name);
+        }
+
+        public void DeleteObject(CurrentSelection selection, Solution solution)
+        {
+            var objectToDelete = GetSelectedObject(selection, solution);
+            var network = _networksProvider.GetNetworkById(objectToDelete.NetworkId);
+            network.DeleteLinkedObject(objectToDelete.NodeId);
         }
 
         private static bool SelectionInRange(Excel.Range range, int row, int column)

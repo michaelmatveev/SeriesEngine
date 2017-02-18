@@ -178,6 +178,7 @@
             // 
             this.buttonDeleteObject.Label = "Удалить";
             this.buttonDeleteObject.Name = "buttonDeleteObject";
+            this.buttonDeleteObject.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonDeleteObject_Click);
             // 
             // Ribbon
             // 

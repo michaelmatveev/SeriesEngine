@@ -129,6 +129,11 @@ namespace SeriesEngine.Msk1
                 .WithOptional(e => e.Point)
                 .HasForeignKey(e => e.Point_Id);
 
+            modelBuilder.Entity<Point>()
+                .MapToStoredProcedures(s => 
+                    s.Delete(d => d.HasName("pwk1.Point_Delete")
+                        .Parameter(o => o.Id, "Id")));
+
             modelBuilder.Entity<Region>()
                 .HasRequired(e => e.Solution)
                 .WithMany()

@@ -78,6 +78,11 @@ namespace SeriesEngine.ExcelAddIn
             RenameObject?.Invoke(this, EventArgs.Empty);
         }
 
+        private void buttonDeleteObject_Click(object sender, RibbonControlEventArgs e)
+        {
+            DeleteObject?.Invoke(this, EventArgs.Empty);
+        }
+
         //public void InitializeFilters(IEnumerable<Network> networks)
         //{
         //    foreach (var network in networks)
