@@ -4,6 +4,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public interface INetworksProvider
     {
-        ICollection<NetworkTree> GetNetworks(int solutionId); 
+        ICollection<NetworkTree> GetNetworks(int solutionId);
+        NetworkTree GetNetworkById(int networkId);
     }
 }

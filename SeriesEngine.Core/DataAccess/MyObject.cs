@@ -24,5 +24,8 @@ namespace SeriesEngine.Core.DataAccess
                 OnPropertyChanged(nameof(Name));
             }
         }
+
+        public int NetworkId { get; set; }
+        public int NodeId { get; set; }        
     }
 }

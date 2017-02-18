@@ -29,5 +29,25 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .ToList();
             }
         }
+
+        public NetworkTree GetNetworkById(int networkId)
+        {
+            using (var context = new Model1())
+            {
+                var net = context
+                    .Networks
+                    .Include("Solution")
+                    .Include("Nodes")
+                    .Include("Nodes.Region")
+                    .Include("Nodes.Consumer")
+                    .Include("Nodes.Contract")
+                    .Include("Nodes.ConsumerObject")
+                    .Include("Nodes.Point")
+                    .Single(n => n.Id == networkId);
+
+                return new NetworkTree(net);
+            }
+        }
+
     }
 }

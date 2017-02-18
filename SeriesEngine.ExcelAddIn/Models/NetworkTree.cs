@@ -27,6 +27,14 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
+        public int Id
+        {
+            get
+            {
+                return _network.Id;
+            }
+        }
+
         public string SolutionName
         {
             get
@@ -169,6 +177,16 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
+        public void RenameObject(int objectId, string newName)
+        {
+            using (var context = new Model1())
+            {
+                var node = context.MainHierarchyNodes.Find(objectId);
+                node.LinkedObject.SetName(newName);
+                context.SaveChanges();
+            }
+        }
+
         //public void LoadFromXml(IEnumerable<SubFragment> queryParamers, XDocument target)
         //{
         //    // TODO find diffrence
@@ -190,35 +208,35 @@ namespace SeriesEngine.ExcelAddIn.Models
         //            }
         //        }
 
-        //        foreach(var x in target.Root.Descendants())
-        //        {
+            //        foreach(var x in target.Root.Descendants())
+            //        {
 
-        //        }
+            //        }
 
-        //        //context.SaveChanges();
-        //    }
+            //        //context.SaveChanges();
+            //    }
 
-        //    //using (var context = new Model1())
-        //    //{
-        //    //    foreach (var re in target.Root.Elements("Region"))
-        //    //    {
-        //    //        var newNode = new MainHierarchyNode()
-        //    //        {
-        //    //            Region = new Region()
-        //    //            {
-        //    //                Name = re.Attribute("UniqueName").Value
-        //    //            }
-        //    //        };
+            //    //using (var context = new Model1())
+            //    //{
+            //    //    foreach (var re in target.Root.Elements("Region"))
+            //    //    {
+            //    //        var newNode = new MainHierarchyNode()
+            //    //        {
+            //    //            Region = new Region()
+            //    //            {
+            //    //                Name = re.Attribute("UniqueName").Value
+            //    //            }
+            //    //        };
 
-        //    //        _network.Nodes.Add(newNode);
-        //    //    }
-
-
-        //    //    context.SaveChanges();
-        //    //}
+            //    //        _network.Nodes.Add(newNode);
+            //    //    }
 
 
-        //}
+            //    //    context.SaveChanges();
+            //    //}
+
+
+            //}
 
         private IEnumerable<XElement> GetSubElements(
             IEnumerable<TreeItem<NetworkTreeNode>> currentItems,
@@ -249,7 +267,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 switch (nsf.NodeType)
                 {
                     case NodeType.UniqueName:
-                        newElement.Add(new XAttribute("UniqueName", node.NodeName));
+                        newElement.Add(new XAttribute("UniqueName", node.NodeName), new XAttribute("NodeId", node.Id));
                         break;
                     case NodeType.Since:
                         if (node.ValidFrom.HasValue)

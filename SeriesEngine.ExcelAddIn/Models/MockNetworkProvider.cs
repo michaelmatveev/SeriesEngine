@@ -123,5 +123,10 @@ namespace SeriesEngine.ExcelAddIn.Models
 
             return new[] { new NetworkTree(mainTree) };
         }
+
+        public NetworkTree GetNetworkById(int networkId)
+        {
+            return new NetworkTree(mainTree);
+        }
     }
 }

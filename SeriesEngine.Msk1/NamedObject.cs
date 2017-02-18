@@ -16,6 +16,7 @@ namespace SeriesEngine.Msk1
         public DateTime UpdateTime { get; set; }
 
         public abstract string GetName();
+        public abstract void SetName(string newName);
 
         [NotMapped]
         public ObjectMetamodel ObjectModel { get; set; }

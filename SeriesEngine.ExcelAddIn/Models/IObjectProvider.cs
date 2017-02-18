@@ -5,7 +5,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public interface IObjectProvider
     {
-        MyObject GetSelectedObject(CurrentSelection selection);
+        MyObject GetSelectedObject(CurrentSelection selection, Solution solution);
         void UpdateObject(MyObject objectToUpdate);
     }
 }

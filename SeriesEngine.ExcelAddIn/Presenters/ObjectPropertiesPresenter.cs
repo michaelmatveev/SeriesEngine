@@ -16,7 +16,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
         void ICommand<RenameObjectCommandArgs>.Execute(RenameObjectCommandArgs commandData)
         {
-            View.ShowIt(_objectProvider.GetSelectedObject(commandData.CurrentSelection));
+            View.ShowIt(_objectProvider.GetSelectedObject(commandData.CurrentSelection, commandData.Solution));
         }
     }
 }

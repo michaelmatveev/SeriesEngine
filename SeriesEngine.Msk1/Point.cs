@@ -49,5 +49,11 @@ namespace SeriesEngine.Msk1
         {
             return this.Name;
         }
+
+        public override void SetName(string newName)
+        {
+            this.Name = newName;
+        }
+
     }
 }

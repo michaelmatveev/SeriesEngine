@@ -14,7 +14,10 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 Sheet = sheet,
                 Cell = cell,
-                Name = cell
+                Name = cell,
+                Row = range.Row,
+                Column = range.Column,
+                Value = range.Value2
             };
         }
     }
