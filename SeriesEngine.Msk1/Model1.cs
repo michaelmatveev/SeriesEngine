@@ -129,10 +129,13 @@ namespace SeriesEngine.Msk1
                 .WithOptional(e => e.Point)
                 .HasForeignKey(e => e.Point_Id);
 
-            modelBuilder.Entity<Point>()
-                .MapToStoredProcedures(s => 
-                    s.Delete(d => d.HasName("pwk1.Point_Delete")
-                        .Parameter(o => o.Id, "Id")));
+            // TODO generate all stored procedures
+            // Imposible to mark only one storepd proc
+            // http://stackoverflow.com/questions/27395338/entity-framework-6-map-only-one-statement-to-stored-procedure
+            //modelBuilder.Entity<Point>()
+            //    .MapToStoredProcedures(s =>
+            //        s.Delete(d => d.HasName("pwk1.Point_Delete")
+            //            .Parameter(o => o.Id, "Id")));
 
             modelBuilder.Entity<Region>()
                 .HasRequired(e => e.Solution)

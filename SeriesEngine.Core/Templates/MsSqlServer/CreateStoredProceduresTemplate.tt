@@ -1,0 +1,71 @@
+﻿<#@ import namespace="System" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#+
+// <copyright file="CreateStoredProceduresTemplate.tt" company="Michael Matveev">
+//  Copyright © Michael Matveev. All Rights Reserved.
+// </copyright>
+
+	public class CreateStoredProceduresTemplate : CSharpTemplate
+	{
+		public String Schema;
+		public IEnumerable<XElement> LinkedHierarchies;
+		public XElement Stereotype;
+
+		public override string TransformText()
+		{
+			var objectName = Stereotype.Attribute("Name").Value;
+#>
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('[<#= Schema #>].[<#= objectName #>_Delete]') AND type = 'P')
+	DROP PROCEDURE [<#= Schema #>].[<#= objectName #>_Delete];
+GO
+
+CREATE PROCEDURE [<#= Schema #>].[<#= objectName #>_Delete]
+	@Id int,
+	@ConcurrencyStamp_Original rowversion
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	DECLARE @Delete TABLE (
+		Id int
+	);
+
+<#+
+			foreach(var hrh in LinkedHierarchies.Select(h => h.Attribute("Name").Value))
+			{
+#>
+	WITH IdsToDelete (Id)
+	AS (
+		SELECT [Id]
+		FROM [<#= Schema #>].[<#= hrh #>Nodes]
+		WHERE [<#= objectName #>_Id] = @Id
+		UNION ALL
+		SELECT H.[Id]
+		FROM [<#= Schema #>].[<#= hrh #>Nodes] AS H
+		INNER JOIN IdsToDelete AS I 
+		ON H.[ParentId] = I.[Id]
+	)
+	
+	INSERT INTO @Delete (Id)
+	SELECT [Id]
+	FROM IdsToDelete;
+
+	DELETE FROM [<#= Schema #>].[<#= hrh #>Nodes]
+	WHERE [Id] IN (SELECT Id FROM @Delete);
+
+	DELETE FROM @Delete;
+<#+
+			}
+#>
+
+	DELETE FROM [<#= Schema #>].[<#= objectName #>s]
+	WHERE [Id] = @Id;
+END
+GO
+
+<#+
+			return this.GenerationEnvironment.ToString();
+		}
+	}
+#>

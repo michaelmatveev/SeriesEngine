@@ -4,6 +4,7 @@ using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using SeriesEngine.Msk1;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
@@ -194,8 +195,13 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 context.Database.Log = (s) => Debug.WriteLine(s);
                 var node = context.MainHierarchyNodes.Find(objectId);
-                context.Entry(node.LinkedObject).State = System.Data.Entity.EntityState.Deleted;
-                context.SaveChanges();
+                dynamic lo = node.LinkedObject;
+                var paramId = new SqlParameter("@Id", lo.Id);
+                var paramTs = new SqlParameter("@ConcurrencyStamp_Original", lo.ConcurrencyStamp);
+                var spName = $"pwk1.{node.LinkedObject.ObjectModel.Name}_Delete";
+                context.Database.ExecuteSqlCommand($"exec {spName} @Id, @ConcurrencyStamp_Original", paramId, paramTs);
+                //context.Entry(node.LinkedObject).State = System.Data.Entity.EntityState.Deleted;
+                //context.SaveChanges();
             }
         }
 

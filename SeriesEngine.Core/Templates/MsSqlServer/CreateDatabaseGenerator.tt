@@ -1,6 +1,8 @@
 ﻿<#@ include file="CreateSchemaTemplate.tt" #>
 <#@ include file="CreateTableTemplate.tt" #>
 <#@ include file="CreateHierarchyTemplate.tt" #>
+<#@ include file="CreateStoredProceduresTemplate.tt" #>
+
 <#+
 // <copyright file="CreateDataBaseGenerator.tt" company="">
 //  Copyright © Michael Matveev. All Rights Reserved.
@@ -47,6 +49,22 @@ public class CreateDataBaseGenerator : Generator
 			createHierarchyTempalte.Hierarchy = hierarchyElement;
 			createHierarchyTempalte.RenderToFile(Output);
 		}
+
+		CreateStoredProceduresTemplate createStoredProceduresTemplate = new CreateStoredProceduresTemplate
+		{
+			Schema = prefix
+		};
+		
+		foreach(XElement stereotypeElement in ComponentsDoc.Descendants("Stereotype")) 
+		{
+			var name = stereotypeElement.Attribute("Name").Value;
+			createStoredProceduresTemplate.Stereotype = stereotypeElement;
+			createStoredProceduresTemplate.LinkedHierarchies = HierarchiesDoc
+				.Descendants("Hierarchy")
+				.Where(d => d.Descendants("UsedStereotype").Any(e => e.Attribute("Name").Value == name));
+			createStoredProceduresTemplate.RenderToFile(Output);
+		}
+ 
 	}
 }
 #>

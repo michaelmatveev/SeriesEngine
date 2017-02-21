@@ -1,6 +1,8 @@
 ﻿
 
 
+
+
 This scripts creates an SQL script to create database schema from scratch 
 The 'msk1' model has been created successfully.
 The 'test1' model has been created successfully.
