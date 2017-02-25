@@ -2,7 +2,6 @@
 using SeriesEngine.App;
 using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.App.CommandArgs;
-using System;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
@@ -14,23 +13,28 @@ namespace SeriesEngine.ExcelAddIn.Presenters
         public ObjectPropertiesPresenter(IObjectProvider objectProvider, IObjectPropertiesView view, IApplicationController controller) : base(view, controller)
         {
             _objectProvider = objectProvider;
-            View.ObjectRenamed += (s, e) =>
+            View.RenameConfirmed += (s, e) =>
             {
                 objectProvider.UpdateObject(View.SelectedObject);
+                Controller.Execute(new ReloadAllCommandArgs());
+            };
+            View.DeleteConfirmed += (s, e) =>
+            {
+                objectProvider.DeleteObject(View.SelectedObject);
                 Controller.Execute(new ReloadAllCommandArgs());
             };
         }
 
         void ICommand<DeleteObjectCommandArgs>.Execute(DeleteObjectCommandArgs commandData)
         {
-            _objectProvider.DeleteObject(commandData.CurrentSelection, commandData.Solution);
-            Controller.Execute(new ReloadAllCommandArgs());
+            var selectedObject = _objectProvider.GetSelectedObject(commandData.CurrentSelection, commandData.Solution);
+            View.ShowIt(selectedObject, ObjectPropertiesViewMode.Delete);
         }
 
         void ICommand<RenameObjectCommandArgs>.Execute(RenameObjectCommandArgs commandData)
         {
             var selectedObject = _objectProvider.GetSelectedObject(commandData.CurrentSelection, commandData.Solution);
-            View.ShowIt(selectedObject);
+            View.ShowIt(selectedObject, ObjectPropertiesViewMode.Rename);
         }
     }
 }

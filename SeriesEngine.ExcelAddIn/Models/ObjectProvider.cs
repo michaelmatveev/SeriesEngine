@@ -34,7 +34,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 .SingleOrDefault();
 
             var listObject = column.Parent as Excel.ListObject;
-            if(column!= null)
+            if(column!= null && column.XPath.Value.EndsWith("@UniqueName"))
             {
                 var collectionDatablock = _blockProvider
                     .GetDataBlocks()
@@ -68,9 +68,8 @@ namespace SeriesEngine.ExcelAddIn.Models
             network.RenameObjectLinkedWithNode(objectToUpdate.NodeId, objectToUpdate.Name);
         }
 
-        public void DeleteObject(CurrentSelection selection, Solution solution)
+        public void DeleteObject(MyObject objectToDelete)
         {
-            var objectToDelete = GetSelectedObject(selection, solution);
             var network = _networksProvider.GetNetworkById(objectToDelete.NetworkId);
             network.DeleteObjectLinkedWithNode(objectToDelete.NodeId);
         }

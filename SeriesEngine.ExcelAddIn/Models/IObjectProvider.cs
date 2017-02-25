@@ -7,6 +7,6 @@ namespace SeriesEngine.ExcelAddIn.Models
     {
         MyObject GetSelectedObject(CurrentSelection selection, Solution solution);
         void UpdateObject(MyObject objectToUpdate);
-        void DeleteObject(CurrentSelection selection, Solution solution);
+        void DeleteObject(MyObject objectToDelete);
     }
 }

@@ -14,33 +14,59 @@ namespace SeriesEngine.ExcelAddIn.Views
         private MyObject _selectedObject;
         public MyObject SelectedObject => _selectedObject;
  
-        public event EventHandler ObjectRenamed;
+        public event EventHandler RenameConfirmed;
 
-        protected void OnObjectRenamed()
+        protected void OnRenameConfirmed()
         {
-            ObjectRenamed?.Invoke(this, EventArgs.Empty);
+            RenameConfirmed?.Invoke(this, EventArgs.Empty);
         }
 
-        public void ShowIt(MyObject selectedObject)
+        public event EventHandler DeleteConfirmed;
+
+        protected void OnDeleteConfirmed()
+        {
+            DeleteConfirmed?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void ShowIt(MyObject selectedObject, ObjectPropertiesViewMode viewMode)
         {
             if(selectedObject == null)
             {
-                MessageBox.Show("Данный объект нельзя переименовать.");
+                var message = "Объект не выбран. Выберите ячейку, содержащую имя объекта";
+                MessageBox.Show(message);
                 return;
             }
 
             if(selectedObject.NodeId == -1)
             {
-                MessageBox.Show($"Объект {selectedObject.Name} возможно уже был переименован. Попробуйте обновить данные.");
+                var message = viewMode == ObjectPropertiesViewMode.Delete ?
+                    $"Объект '{selectedObject.Name}' уже был переименован." :
+                    $"Объект '{selectedObject.Name}' уже удален.";
+
+                MessageBox.Show($"{message}{Environment.NewLine}Попробуйте обновить данные.");
                 return;
             }
 
             _selectedObject = selectedObject;
-            textBoxObjectName.DataBindings.Add("Text", _selectedObject, "Name");
-
-            if (ShowDialog() == DialogResult.OK)
+            if (viewMode == ObjectPropertiesViewMode.Delete)
             {
-                OnObjectRenamed();
+                var message = $"Вы действительно хотите удалить объект '{selectedObject.Name}'?{Environment.NewLine}" +
+                    $"ВНИМАНИЕ: Это приведет к удалению всех связанных с ним данных и удалению объекта из всех блоков данных.{Environment.NewLine}" +
+                    $"Для удаления объекта только из блока данных удалите все строки из таблицы, содержащие его имя.";
+                
+                if(MessageBox.Show(message, ViewNames.ApplicationCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+                {
+                    OnDeleteConfirmed();
+                }
+            }
+            else
+            {
+                textBoxObjectName.DataBindings.Add("Text", _selectedObject, "Name");
+
+                if (ShowDialog() == DialogResult.OK)
+                {
+                    OnRenameConfirmed();
+                }
             }
         }
 
