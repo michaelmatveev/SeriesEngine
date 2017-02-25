@@ -114,6 +114,12 @@ namespace SeriesEngine.Msk1
                 .WithOptional(e => e.Contract)
                 .HasForeignKey(e => e.Contract_Id);
 
+            //modelBuilder.Entity<Contract>()
+            //    .MapToStoredProcedures(s => s
+            //        .Delete(d => d.HasName("pwk1.Contract_Delete"))
+            //        .Insert(i => i.HasName("pwk1.Contract_Insert"))
+            //        .Update(u => u.HasName("pwk1.Contract_Update")));
+
             modelBuilder.Entity<Point>()
                 .HasRequired(e => e.Solution)
                 .WithMany()

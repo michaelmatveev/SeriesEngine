@@ -69,17 +69,17 @@ namespace SeriesEngine.ExcelAddIn.Models
                 return true;
             }
             return (node.ValidTill ?? DateTime.MinValue) >= period.From && (node.ValidFrom ?? DateTime.MaxValue) < period.Till;
-            //return (node.ValidFrom ?? DateTime.MaxValue) >= period.From && (node.ValidTill ?? DateTime.MinValue) < period.Till;
         }
 
         public void LoadFromXml(XDocument target)
         {
             using (var context = new Model1())
             {
+                context.Database.Log = (s) => Debug.WriteLine(s);
                 var allNodes = new List<NetworkTreeNode>(_network.Nodes);
                 context.Solutions.Attach(_network.Solution);
 
-                var newNodes = RestoreNodes(target.Root.Elements(), null, allNodes);
+                var newNodes = RestoreNodes(context, target.Root.Elements(), null, allNodes);
                 context.MainHierarchyNodes.AddRange(newNodes.Cast<MainHierarchyNode>());
                 context.MainHierarchyNodes.RemoveRange(allNodes.Where(n => !n.IsMarkedFlag).Cast<MainHierarchyNode>());
                       
@@ -87,7 +87,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        private IEnumerable<NetworkTreeNode> RestoreNodes(IEnumerable<XElement> elements, NetworkTreeNode parent, List<NetworkTreeNode> allNodes)
+        private IEnumerable<NetworkTreeNode> RestoreNodes(Model1 context, IEnumerable<XElement> elements, NetworkTreeNode parent, List<NetworkTreeNode> allNodes)
         {
             var result = new List<NetworkTreeNode>();
             // elements at one hierarchy level
@@ -116,7 +116,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                             ValidTill = validTill
                         };
                         // create a new object and node
-                        node.SetLinkedObject(CreateObject(element));
+                        node.SetLinkedObject(FindNamedObject(context, element) ?? CreateObject(element));
                         result.Add(node);
                     }
                     else
@@ -127,14 +127,14 @@ namespace SeriesEngine.ExcelAddIn.Models
                     }
                     if (element.Elements().Any())
                     {
-                        result.AddRange(RestoreNodes(element.Elements(), node, allNodes));
+                        result.AddRange(RestoreNodes(context, element.Elements(), node, allNodes));
                     }
                 }
             }
             return result;
         }
 
-        public NamedObject CreateObject(XElement element)
+        private NamedObject CreateObject(XElement element)
         {
             var objName = element.Attribute("UniqueName").Value;
             switch (element.Name.LocalName)
@@ -179,22 +179,42 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        public void RenameLinkedObject(int objectId, string newName)
+        private NamedObject FindNamedObject(Model1 context, XElement element)
+        {
+            var objectType = $"{element.Name.LocalName}s";
+            var objectName = element.Attribute("UniqueName").Value;
+
+            var property = context.GetType().GetProperty(objectType);
+            dynamic dbSet = property.GetValue(context);
+
+            var prmSolutionId = new SqlParameter("@SolutionId", _network.SolutionId);
+            var prmObjectName = new SqlParameter("@ObjectName", objectName);
+
+            var entries = dbSet.SqlQuery($"SELECT * FROM pwk1.[{objectType}] where SolutionId=@SolutionId and Name=@ObjectName", prmSolutionId, prmObjectName);
+            foreach(NamedObject d in entries)
+            {
+                d.ObjectModel = MainHierarchyNode.GetObjectModelByName(element.Name.LocalName);
+                return d;
+            }
+            return null;
+        }
+
+        public void RenameObjectLinkedWithNode(int nodeId, string newName)
         {
             using (var context = new Model1())
             {
-                var node = context.MainHierarchyNodes.Find(objectId);
+                var node = context.MainHierarchyNodes.Find(nodeId);
                 node.LinkedObject.SetName(newName);
                 context.SaveChanges();
             }
         }
 
-        public void DeleteLinkedObject(int objectId)
+        public void DeleteObjectLinkedWithNode(int nodeId)
         {
             using (var context = new Model1())
             {
                 context.Database.Log = (s) => Debug.WriteLine(s);
-                var node = context.MainHierarchyNodes.Find(objectId);
+                var node = context.MainHierarchyNodes.Find(nodeId);
                 dynamic lo = node.LinkedObject;
                 var paramId = new SqlParameter("@Id", lo.Id);
                 var paramTs = new SqlParameter("@ConcurrencyStamp_Original", lo.ConcurrencyStamp);

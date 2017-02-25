@@ -123,15 +123,20 @@ namespace SeriesEngine.Tests.Database
             return collectionDataBlock;
         } 
 
-        private static void AssertData(XDocument data, string path)
+        private static void AssertElementExists(XDocument data, string path)
         {
             var element = data.XPathSelectElement(path);
             Assert.IsNotNull(element);
-        } 
+        }
+
+        private static void AssertElementDoesNotExist(XDocument data, string path)
+        {
+            var element = data.XPathSelectElement(path);
+            Assert.IsNull(element);
+        }
 
         [TestMethod]
         [TestProperty("SolutionName", "Solution 1")]
-
         public void GetAllNodes()
         {
             var provider = new DataBaseNetworkProvider();
@@ -143,12 +148,11 @@ namespace SeriesEngine.Tests.Database
             var dataXml = XDocument.Parse(collectionDataBlock.GetXml(network, Period.Default));
 
             Console.WriteLine(dataXml);
-            AssertData(dataXml, "DataImportExport/Region[@UniqueName='Region 1']");
+            AssertElementExists(dataXml, "DataImportExport/Region[@UniqueName='Region 1']");
         }
 
         [TestMethod]
         [TestProperty("SolutionName", "Solution 2")]
-
         public void AddNodesAndSave()
         {
             var provider = new DataBaseNetworkProvider();
@@ -164,7 +168,59 @@ namespace SeriesEngine.Tests.Database
             var dataXml = XDocument.Parse(collectionDataBlock.GetXml(network, Period.Default));
 
             Console.WriteLine(dataXml);
-            AssertData(dataXml, "DataImportExport/Region[@UniqueName='Region 2']");
+            AssertElementExists(dataXml, "DataImportExport/Region[@UniqueName='Region 2']");
         }
+
+        [TestMethod]
+        [TestProperty("SolutionName", "Solution 3")]
+        public void DeleteUpperLevelNodeAndSave()
+        {
+            var provider = new DataBaseNetworkProvider();
+            var network = provider.GetNetworks(_currentSolution.Id)
+                .Where(n => n.SolutionName == _currentSolution.Name)
+                .First(n => n.Name == "Main network 1");
+
+            var collectionDataBlock = GetCollectionDataBlock();
+            var dataXml = XDocument.Parse(collectionDataBlock.GetXml(network, Period.Default));
+            var pathToDelete = "DataImportExport/Region[@UniqueName='Region 1']";
+            var nodeId = int.Parse(dataXml.XPathSelectElement(pathToDelete).Attribute("NodeId").Value);
+            network.DeleteObjectLinkedWithNode(nodeId);
+
+            network = provider.GetNetworks(_currentSolution.Id)
+                .Where(n => n.SolutionName == _currentSolution.Name)
+                .First(n => n.Name == "Main network 1");
+
+            dataXml = XDocument.Parse(collectionDataBlock.GetXml(network, Period.Default));
+            Console.WriteLine(dataXml);
+
+            AssertElementDoesNotExist(dataXml, pathToDelete);
+        }
+
+        [TestMethod]
+        [TestProperty("SolutionName", "Solution 4")]
+        public void DeleteLowLevelNodeAndSave()
+        {
+            var provider = new DataBaseNetworkProvider();
+            var network = provider.GetNetworks(_currentSolution.Id)
+                .Where(n => n.SolutionName == _currentSolution.Name)
+                .First(n => n.Name == "Main network 1");
+
+            var collectionDataBlock = GetCollectionDataBlock();
+            var dataXml = XDocument.Parse(collectionDataBlock.GetXml(network, Period.Default));
+            var xPathToDelete = "DataImportExport/Region/Consumer/Contract[@UniqueName='Contract 1']";
+            var nodeId = int.Parse(dataXml.XPathSelectElement(xPathToDelete).Attribute("NodeId").Value);
+            network.DeleteObjectLinkedWithNode(nodeId);
+
+            network = provider.GetNetworks(_currentSolution.Id)
+                .Where(n => n.SolutionName == _currentSolution.Name)
+                .First(n => n.Name == "Main network 1");
+
+            dataXml = XDocument.Parse(collectionDataBlock.GetXml(network, Period.Default));
+            Console.WriteLine(dataXml);
+
+            AssertElementDoesNotExist(dataXml, xPathToDelete);
+            AssertElementExists(dataXml, "DataImportExport/Region/Consumer[@UniqueName='Client 1']");
+        }
+
     }
 }

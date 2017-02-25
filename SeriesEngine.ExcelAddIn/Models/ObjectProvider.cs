@@ -34,7 +34,6 @@ namespace SeriesEngine.ExcelAddIn.Models
                 .SingleOrDefault();
 
             var listObject = column.Parent as Excel.ListObject;
-
             if(column!= null)
             {
                 var collectionDatablock = _blockProvider
@@ -66,14 +65,14 @@ namespace SeriesEngine.ExcelAddIn.Models
         public void UpdateObject(MyObject objectToUpdate)
         {
             var network = _networksProvider.GetNetworkById(objectToUpdate.NetworkId);
-            network.RenameLinkedObject(objectToUpdate.NodeId, objectToUpdate.Name);
+            network.RenameObjectLinkedWithNode(objectToUpdate.NodeId, objectToUpdate.Name);
         }
 
         public void DeleteObject(CurrentSelection selection, Solution solution)
         {
             var objectToDelete = GetSelectedObject(selection, solution);
             var network = _networksProvider.GetNetworkById(objectToDelete.NetworkId);
-            network.DeleteLinkedObject(objectToDelete.NodeId);
+            network.DeleteObjectLinkedWithNode(objectToDelete.NodeId);
         }
 
         private static bool SelectionInRange(Excel.Range range, int row, int column)

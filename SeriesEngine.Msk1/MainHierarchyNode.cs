@@ -140,5 +140,22 @@ namespace SeriesEngine.Msk1
             }
         };
 
+        public static ObjectMetamodel GetObjectModelByName(string modelName)
+        {
+            switch (modelName)
+            {
+                case "Region":
+                case "Regions": return MainHierarchyNode.RegionModel;
+                case "Consumer":
+                case "Consumers": return MainHierarchyNode.ConsumerModel;
+                case "Contract":
+                case "Contracts": return MainHierarchyNode.ContractModel;
+                case "ConsumerObject":
+                case "ConsumerObjects": return MainHierarchyNode.ConsumerModel;
+                case "Point":
+                case "Points": return MainHierarchyNode.PointModel;
+                default: throw new NotSupportedException();
+            }
+        }
     }
 }
