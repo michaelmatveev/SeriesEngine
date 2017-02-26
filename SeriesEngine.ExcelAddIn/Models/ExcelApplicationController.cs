@@ -10,6 +10,7 @@ using SeriesEngine.App.CommandArgs;
 using StructureMap.Building.Interception;
 using SeriesEngine.App.EventData;
 using System;
+using System.Windows.Forms;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -112,9 +113,8 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 _.ForConcreteType<DataExporter>()
                     .Configure
-                    //.Ctor<int>("solutionId")
-                    //.Is(CurrentSolutionId)            
-                    .Singleton();
+                    .Singleton()
+                    .InterceptWith(new FuncInterceptor<DataExporter>(m => RegisterErrorHandler(m)));
 
                 _.For<ICommand<SaveAllCommandArgs>>()
                     .Use(c => c.GetInstance<DataExporter>());
@@ -182,6 +182,17 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             EventPublisher.RegisterHandlers(eventHandler);
             return eventHandler;
+        }
+
+        private T RegisterErrorHandler<T>(T err)
+        {
+            (err as IErrorAware).ErrorOccured += (e, args) =>
+            {
+                var message = $"{args.Message}{Environment.NewLine}Завершить текущую операцию?";
+                var result = MessageBox.Show(message, ViewNames.ApplicationCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
+                args.Cancel = result == DialogResult.Yes;
+            };
+            return err;
         }
 
         public void Activate()

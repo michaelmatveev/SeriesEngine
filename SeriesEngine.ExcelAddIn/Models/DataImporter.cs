@@ -29,10 +29,10 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             using (new ActiveRangeKeeper(_workbook))
             {
-                ImportDataForDataBlocks(
-                    commandData.Solution.Id,
-                    _blockProvider.GetDataBlocks().OfType<SheetDataBlock>(),
-                    _blockProvider.GetDefaultPeriod());
+                var sheetDataBlocks = _blockProvider.GetDataBlocks().OfType<SheetDataBlock>();
+                var period = _blockProvider.GetDefaultPeriod();
+                ImportDataForDataBlocks(commandData.Solution.Id, sheetDataBlocks, period);
+                _blockProvider.Save(); // save NetworkRevision
             }
         }
 
@@ -91,8 +91,11 @@ namespace SeriesEngine.ExcelAddIn.Models
                 .GetNetworks(solutionId)
                 .SingleOrDefault(n => n.Name == collectionDatablock.NetworkName);
 
-            var xml = collectionDatablock.GetXml(network, _blockProvider.GetDefaultPeriod());
-            var results = xmlMap.ImportXml(xml, true);
+            using (network.GetImportLock(collectionDatablock))
+            {
+                var xml = collectionDatablock.GetXml(network, _blockProvider.GetDefaultPeriod());
+                var results = xmlMap.ImportXml(xml, true);
+            }
         }
 
         //private void ImportNodeFragment(NodeFragment fragment)

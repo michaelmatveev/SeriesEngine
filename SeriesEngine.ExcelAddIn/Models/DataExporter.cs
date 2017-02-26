@@ -3,6 +3,7 @@ using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
 using SeriesEngine.ExcelAddIn.Helpers;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -29,8 +30,12 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void Execute(SaveAllCommandArgs commandData)
         {
-            var sheetDataBlocks = _blockProvider.GetDataBlocks().OfType<SheetDataBlock>();
-            ExportFromDataBlocks(commandData.Solution.Id, sheetDataBlocks);
+            using (new ActiveRangeKeeper(_workbook))
+            {
+                var sheetDataBlocks = _blockProvider.GetDataBlocks().OfType<SheetDataBlock>();
+                ExportFromDataBlocks(commandData.Solution.Id, sheetDataBlocks);
+                _blockProvider.Save(); // save NetworkRevision
+            }
         }
 
         public override void ExportDataBlock(int solutionId, CollectionDataBlock collection)
@@ -39,28 +44,31 @@ namespace SeriesEngine.ExcelAddIn.Models
                 .GetNetworks(solutionId)
                 .SingleOrDefault(n => n.Name == collection.NetworkName);
 
-            Excel.Worksheet sheet = _workbook.Sheets[collection.Sheet];
-            var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == collection.Name);
-            // another way http://stackoverflow.com/questions/12572439/why-does-readxmlschema-create-extra-id-column
-            var schema = collection.GetSchema();
-            var sr = new StringReader(schema);
-                     
-            var dsChanged = new DataSet();
-            dsChanged.ReadXmlSchema(sr);
-
-            var tree = collection
-                .DataBlocks
-                .Select((f, i) => new ColumnIdentity(f, i))
-                .GroupBy(ci => new ObjectIdentity(ci.RefObject, ci.Parent))
-                .GenerateTree(n => n.Key.RefObject, p => p.Key.Parent, NetworkTree.RootName);
-
-            for (int row = 1; row <= listObject.DataBodyRange.Rows.Count; row++)
+            using (network.GetExportLock(collection))
             {
-                CreateOrUpdateRowInDataSet(row, dsChanged, listObject, 0, tree);
-            }
+                Excel.Worksheet sheet = _workbook.Sheets[collection.Sheet];
+                var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == collection.Name);
+                // another way http://stackoverflow.com/questions/12572439/why-does-readxmlschema-create-extra-id-column
+                var schema = collection.GetSchema();
+                var sr = new StringReader(schema);
 
-            var doc = XDocument.Parse(dsChanged.GetXml());
-            network.LoadFromXml(doc);           
+                var dsChanged = new DataSet();
+                dsChanged.ReadXmlSchema(sr);
+
+                var tree = collection
+                    .DataBlocks
+                    .Select((f, i) => new ColumnIdentity(f, i))
+                    .GroupBy(ci => new ObjectIdentity(ci.RefObject, ci.Parent))
+                    .GenerateTree(n => n.Key.RefObject, p => p.Key.Parent, NetworkTree.RootName);
+
+                for (int row = 1; row <= listObject.DataBodyRange.Rows.Count; row++)
+                {
+                    CreateOrUpdateRowInDataSet(row, dsChanged, listObject, 0, tree);
+                }
+
+                var doc = XDocument.Parse(dsChanged.GetXml());
+                network.LoadFromXml(doc);
+            }
         }
 
         private void CreateOrUpdateRowInDataSet(int row, DataSet dataSet, Excel.ListObject listObject, int rootId, IEnumerable<TreeItem<IGrouping<ObjectIdentity, ColumnIdentity>>> currentItems)

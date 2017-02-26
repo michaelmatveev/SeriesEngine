@@ -40,8 +40,8 @@ namespace SeriesEngine.ExcelAddIn.Views
             if(selectedObject.NodeId == -1)
             {
                 var message = viewMode == ObjectPropertiesViewMode.Delete ?
-                    $"Объект '{selectedObject.Name}' уже был переименован." :
-                    $"Объект '{selectedObject.Name}' уже удален.";
+                    $"Объект '{selectedObject.Name}' уже удален или не был сохранен." :
+                    $"Объект '{selectedObject.Name}' уже переименован или не был сохранен.";
 
                 MessageBox.Show($"{message}{Environment.NewLine}Попробуйте обновить данные.");
                 return;

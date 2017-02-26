@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using SeriesEngine.ExcelAddIn.Helpers;
+﻿using SeriesEngine.ExcelAddIn.Helpers;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using SeriesEngine.Msk1;
 using System;
@@ -53,7 +52,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 .Nodes
                 .Cast<NetworkTreeNode>()
                 .ToList()
-                .Where(n => IsNodeInPeriod(n, defaultPeriod))
+                .Where(n => IsNodeInPeriod(n, defaultPeriod, false))
                 .GenerateTree(n => n.NodeName, n => n.Parent?.NodeName);
 
             rootElement.Add(GetSubElements(tree, queryParamers));
@@ -62,13 +61,29 @@ namespace SeriesEngine.ExcelAddIn.Models
             return data;
         }
 
-        private static bool IsNodeInPeriod(NetworkTreeNode node, Period period)
+        private static bool IsNodeInPeriod(NetworkTreeNode node, Period period, bool whenNodePeriodIsIncorrectResult)
         {
-            if(!(node.ValidFrom.HasValue || node.ValidTill.HasValue))
+            if (!(node.ValidFrom.HasValue || node.ValidTill.HasValue))
             {
                 return true;
             }
-            return (node.ValidTill ?? DateTime.MinValue) >= period.From && (node.ValidFrom ?? DateTime.MaxValue) < period.Till;
+
+            if (node.ValidFrom.HasValue && !node.ValidTill.HasValue)
+            {
+                return period.Till >= node.ValidFrom.Value;
+            }
+
+            if(node.ValidTill.HasValue && !node.ValidFrom.HasValue)
+            {
+                return period.From < node.ValidTill.Value;
+            }
+
+            if(node.ValidFrom.HasValue && node.ValidTill.HasValue)
+            {
+                return period.From < node.ValidTill.Value && period.Till >= node.ValidFrom.Value;
+            }
+
+            return whenNodePeriodIsIncorrectResult;
         }
 
         public void LoadFromXml(XDocument target)
@@ -329,36 +344,78 @@ namespace SeriesEngine.ExcelAddIn.Models
                 newElement.Add(new XElement(vsf.VariableName, node.LinkedObject.GetVariableValue(vsf.VariableName)));
             }
         }
+
+        public IDisposable GetExportLock(CollectionDataBlock cb)
+        {
+            //TODO think about locking
+            //if(_network.Revision > cb.NetworkRevision)
+            //{
+            //    throw new Exception($"Данные в коллекции '{cb.Name}' отличаются от представленных на листе.");
+            //}
+
+            return new Disposable(() =>
+            {
+                using (var context = new Model1())
+                {
+                    context.Networks.Attach(_network);
+                    _network.Revision += 1;
+                    context.SaveChanges();
+                    cb.NetworkRevision = _network.Revision;
+                }
+            });
+        }
+
+        public IDisposable GetImportLock(CollectionDataBlock cb)
+        {
+            return new Disposable(() =>
+            {
+                cb.NetworkRevision = _network.Revision;
+            });
+        }
+
+        private class Disposable : IDisposable
+        {
+            private readonly Action _onDispose;
+            public Disposable(Action onDispose)
+            {
+                _onDispose = onDispose;
+            }
+            public void Dispose()
+            {
+                _onDispose();
+            }
+        }
+
     }
 
-    public class XElementResolver<D, T> : IValueResolver<XElement, D, T>
-    {
-        public T Resolve(XElement source, D destination, T destMember, ResolutionContext context)
-        {
-            if (source == null || string.IsNullOrEmpty(source.Value))
-                return default(T);
-            return (T)Convert.ChangeType(source.Value, typeof(T));
-        }
-    }
+    //public class XElementResolver<D, T> : IValueResolver<XElement, D, T>
+    //{
+    //    public T Resolve(XElement source, D destination, T destMember, ResolutionContext context)
+    //    {
+    //        if (source == null || string.IsNullOrEmpty(source.Value))
+    //            return default(T);
+    //        return (T)Convert.ChangeType(source.Value, typeof(T));
+    //    }
+    //}
 
-    public class XAttributeResolver<D, T> : IValueResolver<XElement, D, T>
-    {
-        public XAttributeResolver(string attributeName)
-        {
-            Name = attributeName;
-        }
+    //public class XAttributeResolver<D, T> : IValueResolver<XElement, D, T>
+    //{
+    //    public XAttributeResolver(string attributeName)
+    //    {
+    //        Name = attributeName;
+    //    }
 
-        public string Name { get; set; }
+    //    public string Name { get; set; }
 
-        public T Resolve(XElement source, D destination, T destMember, ResolutionContext context)
-        {
-            if (source == null)
-                return default(T);
-            var attribute = source.Attribute(Name);
-            if (attribute == null || String.IsNullOrEmpty(attribute.Value))
-                return default(T);
+    //    public T Resolve(XElement source, D destination, T destMember, ResolutionContext context)
+    //    {
+    //        if (source == null)
+    //            return default(T);
+    //        var attribute = source.Attribute(Name);
+    //        if (attribute == null || String.IsNullOrEmpty(attribute.Value))
+    //            return default(T);
 
-            return (T)Convert.ChangeType(attribute.Value, typeof(T));
-        }
-    }
+    //        return (T)Convert.ChangeType(attribute.Value, typeof(T));
+    //    }
+    //}
 }

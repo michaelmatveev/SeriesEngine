@@ -10,6 +10,8 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
     public class CollectionDataBlock : SheetDataBlock
     {
         public string NetworkName { get; set; }
+
+        public int NetworkRevision { get; set; }
         public IEnumerable<ObjectMetamodel> SupportedModels { get; set; }
         public int[] ObjectIds { get; set; }
 
@@ -133,10 +135,5 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
             importer.ImportDataBlock(solutionId, this);
         }
 
-        public string GetXPathForNode(int columnIndex, string name)
-        {
-            var selectedNode = DataBlocks[columnIndex];
-            return string.Empty;
-        }
     }
 }

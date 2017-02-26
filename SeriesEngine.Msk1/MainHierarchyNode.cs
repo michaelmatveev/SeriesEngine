@@ -151,7 +151,7 @@ namespace SeriesEngine.Msk1
                 case "Contract":
                 case "Contracts": return MainHierarchyNode.ContractModel;
                 case "ConsumerObject":
-                case "ConsumerObjects": return MainHierarchyNode.ConsumerModel;
+                case "ConsumerObjects": return MainHierarchyNode.ConsumerObjectModel;
                 case "Point":
                 case "Points": return MainHierarchyNode.PointModel;
                 default: throw new NotSupportedException();

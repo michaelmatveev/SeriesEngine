@@ -29,6 +29,13 @@ namespace SeriesEngine.Msk1
 
         public int SolutionId { get; set; }
 
+        public int Revision { get; set; }
+
+        [Column(TypeName = "timestamp")]
+        [MaxLength(8)]
+        [Timestamp]
+        public byte[] ConcurrencyStamp { get; set; }
+
         public int? Tag { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

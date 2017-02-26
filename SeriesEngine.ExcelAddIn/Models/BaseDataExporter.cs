@@ -1,16 +1,38 @@
 ﻿using SeriesEngine.ExcelAddIn.Models.DataBlocks;
+using System;
 using System.Collections.Generic;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
-    public abstract class BaseDataExporter
+    public abstract class BaseDataExporter : IErrorAware
     {
         protected void ExportFromDataBlocks(int solutionId, IEnumerable<SheetDataBlock> dataBlocks)
         {
             foreach (var db in dataBlocks)
             {
-                db.Export(solutionId, this);
+                try
+                {
+                    db.Export(solutionId, this);
+                }
+                catch(Exception ex)
+                {
+                    if (OnErrorOccured(ex.Message))
+                    {
+                        break;
+                    }
+                }
             }
+        }
+
+        public event EventHandler<ErrorOccuredEventArgs> ErrorOccured;
+        protected bool OnErrorOccured(string message)
+        {
+            var args = new ErrorOccuredEventArgs
+            {
+                Message = message
+            };
+            ErrorOccured?.Invoke(this, args);
+            return args.Cancel;
         }
 
         public abstract void ExportDataBlock(int solutionId, CollectionDataBlock fragment);

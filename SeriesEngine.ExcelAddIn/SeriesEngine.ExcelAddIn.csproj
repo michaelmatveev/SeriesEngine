@@ -213,6 +213,8 @@
     <Compile Include="Models\BaseDataImporter.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\DataBaseNetworkProvider.cs" />
+    <Compile Include="Models\ErrorOccuredEventArgs.cs" />
+    <Compile Include="Models\IErrorAware.cs" />
     <Compile Include="Models\IObjectProvider.cs" />
     <Compile Include="Models\ISelectionProvider.cs" />
     <Compile Include="Models\ISolutionProvider.cs" />

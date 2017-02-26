@@ -15,6 +15,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 CustomPeriod = defaultPeriod,
                 NetworkName = source.Root.Attribute("NetworkName").Value,
+                NetworkRevision = int.Parse(source.Root.Attribute("NetworkRevision")?.Value ?? "0"),
                 Name = source.Root.Attribute("Name").Value,
                 Sheet = source.Root.Attribute("Sheet").Value,
                 Cell = source.Root.Attribute("Cell").Value,
@@ -58,6 +59,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var root = new XElement(ns + "ObjectGrid",
                         new XAttribute("Version", "1"),
                         new XAttribute("NetworkName", coll.NetworkName),
+                        new XAttribute("NetworkRevision", coll.NetworkRevision),
                         new XAttribute("Name", coll.Name),
                         new XAttribute("Sheet", coll.Sheet),
                         new XAttribute("Cell", coll.Cell));
