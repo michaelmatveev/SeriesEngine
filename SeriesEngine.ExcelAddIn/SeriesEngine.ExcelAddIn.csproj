@@ -34,7 +34,7 @@
     <PublishUrl>publish\</PublishUrl>
     <InstallUrl>https://dataseries.blob.core.windows.net/clickonce/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.1.0.0</ApplicationVersion>
+    <ApplicationVersion>1.2.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -406,6 +406,16 @@
   <ItemGroup>
     <Content Include="Models\DataForObjectGrid1.xml" />
     <Content Include="Models\DataBlocks\ObjectGrid1.xml" />
+    <None Include="Resources\delete.png" />
+    <None Include="Resources\textfield_rename.png" />
+    <None Include="Resources\table_gear.png" />
+    <None Include="Resources\gear_in1.png" />
+    <None Include="Resources\gear_in.png" />
+    <None Include="Resources\table_add.png" />
+    <None Include="Resources\table_import.png" />
+    <None Include="Resources\table_export.png" />
+    <None Include="Resources\disconnect.png" />
+    <None Include="Resources\connect.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SeriesEngine.App\SeriesEngine.App.csproj">
