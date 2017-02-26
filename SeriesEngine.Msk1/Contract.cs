@@ -24,7 +24,8 @@ namespace SeriesEngine.Msk1
         public string Name { get; set; }
 
         [Required]
-        [StringLength(200)]
+        [StringLength(int.MaxValue)]
+        [MaxLength]
         public string ContractType { get; set; }
 
         [Column(TypeName = "timestamp")]

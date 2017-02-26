@@ -2,21 +2,21 @@
 <Model Name="PowerCompany1" Prefix="pwk1" TargetDatabase="MsSqlServer">
 
   <Stereotype Name="Region">
-    <Variable Name="Name" DataType="String200">
+    <Variable Name="Name" DataType="StringMax">
       <Family Rank="10">Основные свойства</Family>
       <Help Context="Регион">Название региона</Help>
     </Variable>
   </Stereotype>
 
   <Stereotype Name="Consumer">
-    <Variable Name="Name" DataType="String200">
+    <Variable Name="Name" DataType="StringMax">
       <Family Rank="10">Основные свойства</Family>
       <Help Context="Потребитель">Наименование потребителя</Help>
     </Variable>
   </Stereotype>
 
   <Stereotype Name="Contract">
-    <Variable Name="Name" DataType="String200">
+    <Variable Name="Name" DataType="StringMax">
       <Family Rank="10">Основные свойства</Family>
       <Help Context="Договор">Номер договора</Help>
     </Variable>
@@ -27,14 +27,14 @@
   </Stereotype>
 
   <Stereotype Name="ConsumerObject">
-    <Variable Name="Name" DataType="String200">
+    <Variable Name="Name" DataType="StringMax">
       <Family Rank="10">Основные свойства</Family>
       <Help Context="Объект">Объект потребления</Help>
     </Variable>
   </Stereotype>
 
   <Stereotype Name="Point">
-    <Variable Name="Name" DataType="String200">
+    <Variable Name="Name" DataType="StringMax">
       <Family Rank="10">Основные свойства</Family>
       <Help Context="Точка">Точка</Help>
     </Variable>

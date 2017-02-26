@@ -20,7 +20,8 @@ namespace SeriesEngine.Msk1
         public int? AuthorId { get; set; }
 
         [Required]
-        [StringLength(200)]
+        [StringLength(int.MaxValue)]
+        [MaxLength]
         public string Name { get; set; }
 
         [Column(TypeName = "timestamp")]
