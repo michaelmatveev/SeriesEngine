@@ -100,7 +100,7 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
         {
             return new XElement(ns + "attribute",
                 new XAttribute("name", sf.NodeType.ToString()),
-                new XAttribute("type", "xs:string"),
+                new XAttribute("type", sf.NodeType == NodeType.Since || sf.NodeType == NodeType.Till ? "xs:dateTime" : "xs:string"),
                 new XAttribute("use", sf.NodeType == NodeType.UniqueName ? "required" : "optional"),
                 new XAttribute("form", "unqualified"));//,
                 //new XAttribute(msdata + "PrimaryKey", sf.NodeType == NodeType.UniqueName ? "true" : "false"));

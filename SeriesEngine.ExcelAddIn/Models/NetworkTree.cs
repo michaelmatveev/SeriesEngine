@@ -20,29 +20,9 @@ namespace SeriesEngine.ExcelAddIn.Models
             _network = network;
         }
 
-        public string Name
-        {
-            get
-            {
-                return _network.Name;
-            }
-        }
-
-        public int Id
-        {
-            get
-            {
-                return _network.Id;
-            }
-        }
-
-        public string SolutionName
-        {
-            get
-            {
-                return _network.Solution.Name;
-            }
-        }
+        public string Name => _network.Name;
+        public int Id => _network.Id;
+        public string SolutionName => _network.Solution.Name;
 
         public XDocument ConvertToXml(IEnumerable<DataBlock> queryParamers, Period defaultPeriod)
         {
@@ -116,8 +96,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
                 else
                 {
-                    var validFrom = DateTimeParser.Parse(element.Attribute("Since")?.Value);
-                    var validTill = DateTimeParser.Parse(element.Attribute("Till")?.Value);
+                    var validFrom = ParseDateTimeString(element.Attribute("Since")?.Value);
+                    var validTill = ParseDateTimeString(element.Attribute("Till")?.Value);
 
                     var node = allNodes.FirstOrDefault(n => n.NodeName == nameAttr.Value && n.Parent == parent);
                     if (node == null) // it is a new node
@@ -147,6 +127,11 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
             }
             return result;
+        }
+
+        private DateTime? ParseDateTimeString(string value)
+        {
+            return string.IsNullOrEmpty(value) ? new DateTime?() : DateTime.Parse(value);
         }
 
         private NamedObject CreateObject(XElement element)
@@ -291,9 +276,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         //}
 
-        private IEnumerable<XElement> GetSubElements(
-            IEnumerable<TreeItem<NetworkTreeNode>> currentItems,
-            IEnumerable<DataBlock> queryParamers)
+        private IEnumerable<XElement> GetSubElements(IEnumerable<TreeItem<NetworkTreeNode>> currentItems, IEnumerable<DataBlock> queryParamers)
         {
             var result = new List<XElement>();
             foreach(var groupOfSameObjects in currentItems.GroupBy(c => c.Item.LinkedObject.ObjectModel.Name))

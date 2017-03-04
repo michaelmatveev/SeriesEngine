@@ -204,7 +204,6 @@
   -->
   <ItemGroup>
     <Compile Include="Helpers\ActiveRangeKeeper.cs" />
-    <Compile Include="Helpers\DateTimeParser.cs" />
     <Compile Include="Helpers\PanesManager.cs" />
     <Compile Include="Helpers\TreeHelpers.cs" />
     <Compile Include="Helpers\TreeViewExtensions.cs" />

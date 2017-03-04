@@ -98,7 +98,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     foreach (var column in node.Item)
                     {
                         var cellValue = (listObject.DataBodyRange[row, column.Index + 1] as Excel.Range).Value2;
-                        dataRow[column.FieldName] = cellValue;
+                        dataRow[column.FieldName] = column.TransformValue(cellValue) ?? DBNull.Value;
                     }
                     if (node.Item.Key.Parent != NetworkTree.RootName)
                     {
@@ -230,6 +230,8 @@ namespace SeriesEngine.ExcelAddIn.Models
             public string FieldName { get; private set; }
             public int Index { get; private set; }
 
+            private Func<dynamic, dynamic> _transform = (d) => d;
+
             public ColumnIdentity(DataBlock sf, int index) : base(sf)
             {
                 Index = index;
@@ -239,6 +241,11 @@ namespace SeriesEngine.ExcelAddIn.Models
                 if (nsf != null)
                 {
                     start = sf.XmlPath.LastIndexOf('@');
+
+                    if(nsf.NodeType == NodeType.Since || nsf.NodeType == NodeType.Till)
+                    {
+                        _transform = (d) => d == null ? null : DateTime.FromOADate(d);
+                    }
                 }
 
                 var vsf = sf as VariableDataBlock;
@@ -248,6 +255,11 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
 
                 FieldName = sf.XmlPath.Substring(start + 1, sf.XmlPath.Length - (start + 1));
+            }
+
+            public dynamic TransformValue(dynamic value)
+            {
+                return _transform?.Invoke(value);
             }
 
         }

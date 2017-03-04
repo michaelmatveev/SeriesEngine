@@ -47,10 +47,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 .Cast<Excel.XmlMap>()
                 .SingleOrDefault(m => m.Name == collectionDatablock.Name);
 
-            if (xmlMap != null)
-            {
-                xmlMap.Delete();
-            }
+            xmlMap?.Delete();
 
             xmlMap = _workbook
                 .XmlMaps
@@ -62,10 +59,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                 .Cast<Excel.ListObject>()
                 .SingleOrDefault(l => l.Name == collectionDatablock.Name);
 
-            if (listObject != null)
-            {
-                listObject.Delete();
-            }
+            listObject?.Delete();
+
             listObject = sheet.ListObjects.Add();
             listObject.Name = collectionDatablock.Name;
 
@@ -73,17 +68,13 @@ namespace SeriesEngine.ExcelAddIn.Models
                 .Cast<Excel.ListColumn>()
                 .First();
 
-            var subFragment = collectionDatablock.DataBlocks.First();
-            column.XPath.SetValue(xmlMap, subFragment.XmlPath);
-            column.Name = subFragment.Caption;
+            var block = collectionDatablock.DataBlocks.First();
+            SetColumn(column, xmlMap, block);
 
             foreach (var f in collectionDatablock.DataBlocks.Skip(1))
             {
                 var newColumn = listObject.ListColumns.Add();
-
-                newColumn.Name = f.Caption;
-                newColumn.XPath.SetValue(xmlMap, f.XmlPath);
-                //newColumn.Range.NumberFormat = "@";
+                SetColumn(newColumn, xmlMap, f);
             }
 
             listObject.ShowHeaders = collectionDatablock.ShowHeader;
@@ -96,6 +87,21 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var xml = collectionDatablock.GetXml(network, _blockProvider.GetDefaultPeriod());
                 var results = xmlMap.ImportXml(xml, true);
             }
+        }
+
+        private static void SetColumn(Excel.ListColumn column, Excel.XmlMap map, DataBlock block)
+        {
+            var nodeType = (block as NodeDataBlock)?.NodeType ?? NodeType.Path;
+            column.Name = nodeType == NodeType.UniqueName ? block.Caption + "(+)" : block.Caption;
+            if (nodeType == NodeType.Since || nodeType == NodeType.Till)
+            {
+                column.Range.NumberFormat = "dd.mm.yyyy";
+            }
+            else
+            {
+                column.Range.NumberFormat = "@";
+            }
+            column.XPath.SetValue(map, block.XmlPath);        
         }
 
         //private void ImportNodeFragment(NodeFragment fragment)
@@ -188,67 +194,67 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         //}
 
-        private DateTime GetStartDate(DateTime from, TimeInterval interval)
-        {
-            switch (interval)
-            {
-                case TimeInterval.Year:
-                    return from.FirstDayOfYear();
-                case TimeInterval.Month:
-                    return from.FirstDayOfMonth();
-                case TimeInterval.Week:
-                    return from.FirstDayOfWeek();
-                case TimeInterval.Day:
-                case TimeInterval.Hour:
-                case TimeInterval.Minutes30:
-                    return from;
-                default:
-                    return DateTime.MaxValue;
-            }
-        }
+        //private DateTime GetStartDate(DateTime from, TimeInterval interval)
+        //{
+        //    switch (interval)
+        //    {
+        //        case TimeInterval.Year:
+        //            return from.FirstDayOfYear();
+        //        case TimeInterval.Month:
+        //            return from.FirstDayOfMonth();
+        //        case TimeInterval.Week:
+        //            return from.FirstDayOfWeek();
+        //        case TimeInterval.Day:
+        //        case TimeInterval.Hour:
+        //        case TimeInterval.Minutes30:
+        //            return from;
+        //        default:
+        //            return DateTime.MaxValue;
+        //    }
+        //}
 
-        private DateTime GetNextDate(DateTime current, TimeInterval interval)
-        {
-            switch (interval)
-            {
-                case TimeInterval.Year:
-                    return current.AddYears(1);
-                case TimeInterval.Month:
-                    return current.AddMonths(1);
-                case TimeInterval.Week:
-                    return current.AddDays(7);
-                case TimeInterval.Day:
-                    return current.AddDays(1);
-                case TimeInterval.Hour:
-                    return current.AddHours(1);
-                case TimeInterval.Minutes30:
-                    return current.AddMinutes(30);
-                default:
-                    return DateTime.MaxValue;
-            }
-        }
+        //private DateTime GetNextDate(DateTime current, TimeInterval interval)
+        //{
+        //    switch (interval)
+        //    {
+        //        case TimeInterval.Year:
+        //            return current.AddYears(1);
+        //        case TimeInterval.Month:
+        //            return current.AddMonths(1);
+        //        case TimeInterval.Week:
+        //            return current.AddDays(7);
+        //        case TimeInterval.Day:
+        //            return current.AddDays(1);
+        //        case TimeInterval.Hour:
+        //            return current.AddHours(1);
+        //        case TimeInterval.Minutes30:
+        //            return current.AddMinutes(30);
+        //        default:
+        //            return DateTime.MaxValue;
+        //    }
+        //}
 
-        private string GetFormat(TimeInterval interval)
-        {
-            switch (interval)
-            {
-                case TimeInterval.Year:
-                    return "YYYY";
-                case TimeInterval.Month:
-                    return "MMMM YYYY";
-                case TimeInterval.Week:
-                    return "dd.MM.YYYY";
-                case TimeInterval.Day:
-                    return "dd.MM.YYYY";
-                case TimeInterval.Hour:
-                    return "dd.MM.YYYY hh:mm";
-                case TimeInterval.Minutes30:
-                    return "dd.MM.YYYY hh:mm";
-                default:
-                    return string.Empty;
-            }
+        //private string GetFormat(TimeInterval interval)
+        //{
+        //    switch (interval)
+        //    {
+        //        case TimeInterval.Year:
+        //            return "YYYY";
+        //        case TimeInterval.Month:
+        //            return "MMMM YYYY";
+        //        case TimeInterval.Week:
+        //            return "dd.MM.YYYY";
+        //        case TimeInterval.Day:
+        //            return "dd.MM.YYYY";
+        //        case TimeInterval.Hour:
+        //            return "dd.MM.YYYY hh:mm";
+        //        case TimeInterval.Minutes30:
+        //            return "dd.MM.YYYY hh:mm";
+        //        default:
+        //            return string.Empty;
+        //    }
 
-        }
+        //}
 
     }
 }
