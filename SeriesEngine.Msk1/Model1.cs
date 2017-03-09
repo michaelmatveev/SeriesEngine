@@ -21,6 +21,11 @@ namespace SeriesEngine.Msk1
         public virtual DbSet<MainHierarchyNode> MainHierarchyNodes { get; set; }
         public virtual DbSet<Point> Points { get; set; }
         public virtual DbSet<Region> Regions { get; set; }
+        public virtual DbSet<ElectricMeter> ElectricMeters { get; set; }
+        public virtual DbSet<Point_VoltageLevel> Point_VoltageLevels { get; set; }
+        public virtual DbSet<Point_MaxPower> Point_MaxPowers { get; set; }
+        public virtual DbSet<Point_PUPlace> Point_PUPlaces { get; set; }
+        public virtual DbSet<Point_TUCode> Point_TUCodes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -66,6 +71,16 @@ namespace SeriesEngine.Msk1
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Regions)
+                .WithOptional(e => e.User)
+                .HasForeignKey(e => e.AuthorId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.Point_MaxPowers)
+                .WithOptional(e => e.User)
+                .HasForeignKey(e => e.AuthorId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.Point_VoltageLevels)
                 .WithOptional(e => e.User)
                 .HasForeignKey(e => e.AuthorId);
 
@@ -120,6 +135,21 @@ namespace SeriesEngine.Msk1
             //        .Insert(i => i.HasName("pwk1.Contract_Insert"))
             //        .Update(u => u.HasName("pwk1.Contract_Update")));
 
+            modelBuilder.Entity<ElectricMeter>()
+                .HasRequired(e => e.Solution)
+                .WithMany()
+                .HasForeignKey(e => e.SolutionId)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<ElectricMeter>()
+                .Property(e => e.ConcurrencyStamp)
+                .IsFixedLength();
+
+            modelBuilder.Entity<ElectricMeter>()
+                .HasMany(e => e.MainHierarchyNodes)
+                .WithOptional(e => e.ElectricMeter)
+                .HasForeignKey(e => e.ElectricMeter_Id);
+
             modelBuilder.Entity<Point>()
                 .HasRequired(e => e.Solution)
                 .WithMany()
@@ -134,6 +164,30 @@ namespace SeriesEngine.Msk1
                 .HasMany(e => e.MainHierarchyNodes)
                 .WithOptional(e => e.Point)
                 .HasForeignKey(e => e.Point_Id);
+
+            modelBuilder.Entity<Point>()
+                .HasMany(e => e.Point_MaxPowers)
+                .WithRequired(e => e.Point)
+                .HasForeignKey(e => e.ObjectId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Point>()
+                .HasMany(e => e.Point_VoltageLevels)
+                .WithRequired(e => e.Point)
+                .HasForeignKey(e => e.ObjectId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Point>()
+                .HasMany(e => e.Point_PUPlaces)
+                .WithRequired(e => e.Point)
+                .HasForeignKey(e => e.ObjectId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Point>()
+                .HasMany(e => e.Point_TUCodes)
+                .WithRequired(e => e.Point)
+                .HasForeignKey(e => e.ObjectId)
+                .WillCascadeOnDelete(false);
 
             // TODO generate all stored procedures
             // Imposible to mark only one storepd proc

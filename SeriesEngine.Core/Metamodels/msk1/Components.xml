@@ -38,13 +38,32 @@
       <Family Rank="10">Основные свойства</Family>
       <Help Context="Точка">Точка</Help>
     </Variable>
-    <Variable Name="VoltageLevel" DataType="String200">
-      <Family Rank="10">Основные свойства</Family>
+    <Variable Name="VoltageLevel" DataType="String200" Versioned="True" Period="NonPeriodic">
+      <Family Rank="20">Основные свойства</Family>
       <Help Context="Уровень напряжения">Уровень напряжения</Help>
     </Variable>
-    <Variable Name="MaxPower" DataType="String200" Optional="True">
-      <Family Rank="10">Основные свойства</Family>
+    <Variable Name="MaxPower" DataType="String200" Versioned="True" Period="NonPeriodic">
+      <Family Rank="30">Основные свойства</Family>
       <Help Context="Максимальная мощность">Максимальная мощность</Help>
+    </Variable>
+    <Variable Name="TUCode" DataType="String200" Optional="True" Versioned="True" Period="NonPeriodic">
+      <Family Rank="40">Основные свойства</Family>
+      <Help Context="Код ТУ">Код ТУ</Help>
+    </Variable>
+    <Variable Name="PUPlace" DataType="String200" Optional="True" Versioned="True">
+      <Family Rank="50">Основные свойства</Family>
+      <Help Context="Место установки прибора учета">Место установки прибора учета</Help>
+    </Variable>
+  </Stereotype>
+  
+  <Stereotype Name="ElectricMeter">
+    <Variable Name="Name" DataType="String200">
+      <Family Rank="10">Основные свойства</Family>
+      <Help Context="Номер прибора учета">Номер прибора учета</Help>
+    </Variable> 
+    <Variable Name="PUType" DataType="String200">
+      <Family Rank="20">Основные свойства</Family>
+      <Help Context="Тип прибора учета">Тип прибора учета</Help>
     </Variable>
   </Stereotype>
 

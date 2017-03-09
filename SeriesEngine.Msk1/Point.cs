@@ -13,6 +13,10 @@ namespace SeriesEngine.Msk1
         public Point()
         {
             MainHierarchyNodes = new HashSet<MainHierarchyNode>();
+            Point_MaxPowers = new HashSet<Point_MaxPower>();
+            Point_VoltageLevels = new HashSet<Point_VoltageLevel>();
+            Point_PUPlaces = new HashSet<Point_PUPlace>();
+            Point_TUCodes = new HashSet<Point_TUCode>();
         }
 
         public int Id { get; set; }
@@ -23,13 +27,6 @@ namespace SeriesEngine.Msk1
         [StringLength(int.MaxValue)]
         [MaxLength]
         public string Name { get; set; }
-
-        [Required]
-        [StringLength(200)]
-        public string VoltageLevel { get; set; }
-
-        [StringLength(200)]
-        public string MaxPower { get; set; }
 
         [Column(TypeName = "timestamp")]
         [MaxLength(8)]
@@ -42,6 +39,18 @@ namespace SeriesEngine.Msk1
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MainHierarchyNode> MainHierarchyNodes { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Point_MaxPower> Point_MaxPowers { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Point_VoltageLevel> Point_VoltageLevels { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Point_PUPlace> Point_PUPlaces { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Point_TUCode> Point_TUCodes { get; set; }
 
         public int SolutionId { get; set; }
         public virtual Solution Solution { get; set; }

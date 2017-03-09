@@ -10,7 +10,10 @@
           <Level>
             <UsedStereotype Name="ConsumerObject"/>
             <Level>
-              <UsedStereotype Name="Point" />  
+              <UsedStereotype Name="Point" />
+              <Level>
+                <UsedStereotype Name="ElectricMeter" />
+              </Level>
             </Level>
           </Level>
         </Level>

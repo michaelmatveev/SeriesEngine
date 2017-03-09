@@ -34,7 +34,11 @@ namespace SeriesEngine.Msk1
 
         public int? Point_Id { get; set; }
 
+        public int? ElectricMeter_Id { get; set; }
+
         public int? Tag { get; set; }
+
+        public virtual ElectricMeter ElectricMeter { get; set; }
 
         public virtual ConsumerObject ConsumerObject { get; set; }
 

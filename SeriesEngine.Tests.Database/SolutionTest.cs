@@ -54,25 +54,56 @@ namespace SeriesEngine.Tests.Database
                 {
                     Solution = solution,
                     Name = "ТП - 530",
-                    VoltageLevel = "СН - 2",
-                    MaxPower = "10"
                 };
+
+                point1.Point_VoltageLevels.Add(new Point_VoltageLevel()
+                {
+                    Date = new DateTime(2014, 01, 01),
+                    //CreationTime = new DateTime(2014, 01, 01),
+                    VoltageLevel = "СН - 2"
+                });
+                point1.Point_MaxPowers.Add(new Point_MaxPower()
+                {
+                    Date = new DateTime(2014, 01, 01),
+                    //CreationTime = new DateTime(2014, 01, 01),
+                    MaxPower = "10"
+                });
 
                 var point2 = new Point()
                 {
                     Solution = solution,
-                    Name = "ТП-531",
-                    VoltageLevel = "СН - 2",
-                    MaxPower = "20"
+                    Name = "ТП-531"
                 };
+                point2.Point_VoltageLevels.Add(new Point_VoltageLevel()
+                {
+                    Date = new DateTime(2014, 01, 01),
+                    //CreationTime = new DateTime(2014, 01, 01),
+                    VoltageLevel = "СН - 2"
+                });
+                point2.Point_MaxPowers.Add(new Point_MaxPower()
+                {
+                    Date = new DateTime(2014, 01, 01),
+                    //CreationTime = new DateTime(2014, 01, 01),
+                    MaxPower = "20"
+                });
 
                 var point3 = new Point()
                 {
                     Solution = solution,
                     Name = "ТП - 530",
-                    VoltageLevel = "ТП-796",
-                    MaxPower = "30"
                 };
+                point3.Point_VoltageLevels.Add(new Point_VoltageLevel()
+                {
+                    Date = new DateTime(2014, 01, 01),
+                    //CreationTime = new DateTime(2014, 01, 01),
+                    VoltageLevel = "СН - 1"
+                });
+                point3.Point_MaxPowers.Add(new Point_MaxPower()
+                {
+                    Date = new DateTime(2014, 01, 01),
+                    //CreationTime = new DateTime(2014, 01, 01),
+                    MaxPower = "30"
+                });
 
                 var network = new Network()
                 {
@@ -159,14 +190,8 @@ namespace SeriesEngine.Tests.Database
                 };
                 context.Networks.Add(network1);
 
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
+                context.SaveChanges();
+
             }
         }
     }

@@ -58,7 +58,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     ObjectModel = MockModelProvider.Point
                 }
             };
-            point1.Point.VoltageLevel = "СН-2";
+            //point1.Point.VoltageLevel = "СН-2";
 
             var point2 = new MainHierarchyNode
             {
@@ -69,7 +69,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     ObjectModel = MockModelProvider.Point
                 }
             };
-            point2.Point.VoltageLevel = "СН-2";
+            //point2.Point.VoltageLevel = "СН-2";
 
             var consumerObject2 = new MainHierarchyNode
             {
@@ -90,7 +90,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     ObjectModel = MockModelProvider.Point
                 }
             };
-            point3.Point.VoltageLevel = "СН-2";
+            //point3.Point.VoltageLevel = "СН-2";
 
             mainTree = new Network()
             {
