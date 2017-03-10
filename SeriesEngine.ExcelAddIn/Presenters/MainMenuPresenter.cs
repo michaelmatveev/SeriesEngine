@@ -45,10 +45,18 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                 CurrentSelection = selectionProvider.GetSelection()
             });
 
-            View.InsertSampleBlock += (s, e) => Controller.Execute(new InsertSampleCollectionBlockCommandArgs
+            View.InsertSampleBlock += (s, e) => 
             {
-                CurrentSelection = selectionProvider.GetSelection()
-            });
+                var cmd = new InsertSampleCollectionBlockCommandArgs
+                {
+                    CurrentSelection = selectionProvider.GetSelection()
+                };
+                Controller.Execute(cmd);
+                Controller.Execute(new ReloadAllCommandArgs
+                {
+                    BlockName = cmd.InsertedBlockName
+                });
+            };
 
             View.RenameObject += (s, e) => Controller.Execute(new RenameObjectCommandArgs
             {

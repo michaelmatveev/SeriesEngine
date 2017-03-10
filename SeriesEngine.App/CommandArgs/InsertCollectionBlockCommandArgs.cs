@@ -3,6 +3,7 @@
     public class InsertCollectionBlockCommandArgs : BaseCommandArgs
     {
         public CurrentSelection CurrentSelection { get; set; }
+        public string InsertedBlockName { get; set; }
     }
 
     public class InsertSampleCollectionBlockCommandArgs : InsertCollectionBlockCommandArgs

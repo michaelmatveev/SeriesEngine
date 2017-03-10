@@ -1,9 +1,4 @@
 ﻿using SeriesEngine.ExcelAddIn.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
@@ -40,7 +35,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             };
         }
 
-        public void Execute(InsertSampleCollectionBlockCommandArgs commandData)
+        void ICommand<InsertSampleCollectionBlockCommandArgs>.Execute(InsertSampleCollectionBlockCommandArgs commandData)
         {
             var doc = XDocument.Parse(Resources.TestGrid);
             var newBlock = (CollectionDataBlock)DataBlockConverter.GetDataBlock(doc, Period.Default);
@@ -49,6 +44,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             newBlock.Cell = commandData.CurrentSelection.Cell;
 
             _dataBlockProvider.AddDataBlock(newBlock);
+            commandData.InsertedBlockName = newBlock.Name;
         }
 
         void ICommand<InsertCollectionBlockCommandArgs>.Execute(InsertCollectionBlockCommandArgs commandData)

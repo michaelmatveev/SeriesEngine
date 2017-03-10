@@ -29,9 +29,19 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             using (new ActiveRangeKeeper(_workbook))
             {
-                var sheetDataBlocks = _blockProvider.GetDataBlocks().OfType<SheetDataBlock>();
+                var sheetDataBlocks = _blockProvider
+                    .GetDataBlocks()
+                    .OfType<CollectionDataBlock>();
+                
                 var period = _blockProvider.GetDefaultPeriod();
-                ImportDataForDataBlocks(commandData.Solution.Id, sheetDataBlocks, period);
+                if (commandData.BlockName == null)
+                {
+                    ImportDataForDataBlocks(commandData.Solution.Id, sheetDataBlocks, period);
+                }
+                else
+                {
+                    ImportDataBlock(commandData.Solution.Id, sheetDataBlocks.Single(sb => sb.Name == commandData.BlockName));
+                }
                 _blockProvider.Save(); // save NetworkRevision
             }
         }
