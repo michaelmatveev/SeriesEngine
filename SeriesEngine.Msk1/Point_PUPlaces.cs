@@ -15,6 +15,7 @@ namespace SeriesEngine.Msk1
 
         public short? Kind { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreationTime { get; set; }
 
         public int? AuthorId { get; set; }

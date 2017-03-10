@@ -17,6 +17,7 @@ namespace SeriesEngine.Msk1
 
         public DateTime Date { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreationTime { get; set; }
 
         public int? AuthorId { get; set; }
