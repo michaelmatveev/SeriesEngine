@@ -114,7 +114,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _.ForConcreteType<DataExporter>()
                     .Configure
                     .Singleton()
-                    .InterceptWith(new FuncInterceptor<DataExporter>(m => RegisterErrorHandler(m)));
+                    .OnCreation(de => RegisterErrorHandler(de));
+                    //.InterceptWith(new FuncInterceptor<DataExporter>(m => RegisterErrorHandler(m)));
 
                 _.For<ICommand<SaveAllCommandArgs>>()
                     .Use(c => c.GetInstance<DataExporter>());
@@ -184,15 +185,14 @@ namespace SeriesEngine.ExcelAddIn.Models
             return eventHandler;
         }
 
-        private T RegisterErrorHandler<T>(T err)
+        private void RegisterErrorHandler(IErrorAware errorProvider)
         {
-            (err as IErrorAware).ErrorOccured += (e, args) =>
+            errorProvider.ErrorOccured += (e, args) =>
             {
                 var message = $"{args.Message}{Environment.NewLine}Завершить текущую операцию?";
                 var result = MessageBox.Show(message, ViewNames.ApplicationCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
                 args.Cancel = result == DialogResult.Yes;
             };
-            return err;
         }
 
         public void Activate()
@@ -206,10 +206,10 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             MainRibbon.SetTabVisibleState(false);
             MainRibbon.IsActive = false;
-            Execute(new ShowCustomPaneCommandArgs
-            {
-                IsVisible = false
-            });
+            //Execute(new ShowCustomPaneCommandArgs
+            //{
+            //    IsVisible = false
+            //});
         }
 
         public void StopGettingEventsFromRibbon()

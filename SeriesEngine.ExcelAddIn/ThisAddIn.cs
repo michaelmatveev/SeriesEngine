@@ -17,13 +17,16 @@ namespace SeriesEngine.ExcelAddIn
             Shutdown += (s, e) => ThisAddIn_Shutdown(s, e);
         }
 
-        private Excel.Workbook _workbookToClose; 
+        //private Excel.Workbook _workbookToClose; 
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             Application.WorkbookOpen += (w) => CreateWorkbookController(w);            
             ((Excel.AppEvents_Event)Application).NewWorkbook += (w) =>  CreateWorkbookController(w);
-            Application.WorkbookBeforeClose += (Excel.Workbook wb, ref bool c) => _workbookToClose = wb;
+            //Application.WorkbookBeforeClose += (Excel.Workbook wb, ref bool c) =>
+            //{
+            //    _workbookToClose = wb;
+            //};
             Application.WorkbookBeforeSave += (Excel.Workbook wb, bool save, ref bool cancel) => ApplicationControllers[wb].PreserveDataBlocks();
             Application.WorkbookActivate += (wb) =>
             {
@@ -40,12 +43,17 @@ namespace SeriesEngine.ExcelAddIn
             };
             Application.WorkbookDeactivate += (wb) =>
             {
-                if(_workbookToClose == wb)
-                {
-                    ApplicationControllers[wb].Deactivate();
-                    ApplicationControllers.Remove(wb);
-                }
+                ApplicationControllers[wb].Deactivate();
             };
+            //Application.WorkbookDeactivate += (wb) =>
+            //{
+            //    if(_workbookToClose == wb)
+            //    {
+            //        ApplicationControllers[wb].Deactivate();
+            //        ApplicationControllers.Remove(wb);
+            //    }
+            //};
+            
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
