@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Excel = Microsoft.Office.Interop.Excel;
 using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.ExcelAddIn.Views;
 using SeriesEngine.Core.DataAccess;
-using Microsoft.Office.Core;
+using System.Windows.Forms;
+using SeriesEngine.ExcelAddIn.Helpers;
 
 namespace SeriesEngine.ExcelAddIn
 {
@@ -26,34 +26,46 @@ namespace SeriesEngine.ExcelAddIn
 
             Application.WorkbookBeforeSave += (Excel.Workbook wb, bool save, ref bool cancel) =>
             {
-                var wbId = GetWorkbookId(wb);
-                ApplicationControllers[wbId].PreserveDataBlocks();
+                using (SafeCom.ReleaseAfterUsing(wb))
+                {
+                    var wbId = wb.GetId();
+                    ApplicationControllers[wbId].PreserveDataBlocks();
+                }
             };
 
             Application.WorkbookAfterSave += (wb, b) =>
             {
-                var wbId = GetWorkbookId(wb);
-                var currentSolution = ApplicationControllers[wbId].CurrentSolution;
-                SetCaption(wb, currentSolution);
+                using (SafeCom.ReleaseAfterUsing(wb))
+                {
+                    var wbId = wb.GetId();
+                    var currentSolution = ApplicationControllers[wbId].CurrentSolution;
+                    SetCaption(wb.Name, currentSolution);
+                }
             };
 
             Application.WorkbookActivate += (wb) =>
             {
-                foreach (var c in ApplicationControllers.Values)
+                using (SafeCom.ReleaseAfterUsing(wb))
                 {
-                    c.StopGettingEventsFromRibbon();
+                    foreach (var c in ApplicationControllers.Values)
+                    {
+                        c.StopGettingEventsFromRibbon();
+                    }
+                    var wbId = wb.GetId();
+                    var controller = ApplicationControllers[wbId];
+                    controller.Activate();
+                    SetCaption(wb.Name, controller.CurrentSolution);
                 }
-                var wbId = GetWorkbookId(wb);
-                var controller = ApplicationControllers[wbId];
-                controller.Activate();
-                SetCaption(wb, controller.CurrentSolution);
             };
 
             Application.WorkbookDeactivate += (wb) =>
             {
-                var wbId = GetWorkbookId(wb);
-                ApplicationControllers[wbId].Deactivate();
-            };          
+                using (SafeCom.ReleaseAfterUsing(wb))
+                {
+                    var wbId = wb.GetId();
+                    ApplicationControllers[wbId].Deactivate();
+                }
+            };
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
@@ -67,52 +79,36 @@ namespace SeriesEngine.ExcelAddIn
                 c.StopGettingEventsFromRibbon();
             }
 
-            var controller = new ExcelApplicationController
+            using (SafeCom.ReleaseAfterUsing(wb))
             {
-                PaneCollection = CustomTaskPanes,
-                MainRibbon = new RibbonWrapper(Globals.Ribbons.Ribbon),
-                CurrentDocument = Globals.Factory.GetVstoObject(wb)
-            };
+                var wbId = wb.GetId();
+                var controller = new ExcelApplicationController(
+                    () => Globals.Factory.GetVstoObject(FindWorkbookById(wbId)),
+                    new RibbonWrapper(Globals.Ribbons.Ribbon),
+                    CustomTaskPanes);
 
-            var wbId = GetWorkbookId(wb);
-            ApplicationControllers.Add(wbId, controller);
-            controller.PropertyChanged += (s, e) => SetCaption(wb, controller.CurrentSolution); 
-            controller.Configure();
+                ApplicationControllers.Add(wbId, controller);
+                var wbName = wb.Name;
+                controller.PropertyChanged += (s, e) => SetCaption(wbName, controller.CurrentSolution);
+                controller.Configure();
+            }
         }
 
-        private void SetCaption(Excel.Workbook wb, Solution s)
+        private void SetCaption(string workbookName, Solution s)
         {
-            Application.ActiveWindow.Caption = s == null ? $"{wb.Name}" : $"{wb.Name} ({s.Name})";
+            Application.ActiveWindow.Caption = s == null ? $"{workbookName}" : $"{workbookName} ({s.Name})";
         }
 
-        private const string IdPropertyName = "SeriesEngineId";
-        private static string GetWorkbookId(Excel.Workbook wb)
-        {            
-            var properties = (DocumentProperties)wb.CustomDocumentProperties;
-            foreach (DocumentProperty prop in properties)
+        private Excel.Workbook FindWorkbookById(string id)
+        {
+            foreach (Excel.Workbook wb in Application.Workbooks)
             {
-                if (prop.Name == IdPropertyName)
+                if (id == wb.GetId())
                 {
-                    return prop.Value.ToString();
+                    return wb;
                 }
             }
-
-            var id = Guid.NewGuid();
-            properties.Add(IdPropertyName, false, MsoDocProperties.msoPropertyTypeString, id.ToString());
-            return id.ToString();
-        }
-
-        private bool IsWorkbookOpen(Excel.Workbook wb)
-        {
-            try
-            {
-                Application.Workbooks.get_Item(wb);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            return null;
         }
 
     }

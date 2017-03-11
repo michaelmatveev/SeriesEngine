@@ -204,9 +204,12 @@
   -->
   <ItemGroup>
     <Compile Include="Helpers\ActiveRangeKeeper.cs" />
+    <Compile Include="Helpers\Disposable.cs" />
     <Compile Include="Helpers\PanesManager.cs" />
     <Compile Include="Helpers\TreeHelpers.cs" />
     <Compile Include="Helpers\TreeViewExtensions.cs" />
+    <Compile Include="Helpers\WithSafeReleaseCom.cs" />
+    <Compile Include="Helpers\WorkbookExtensions.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="Models\BaseDataExporter.cs" />
     <Compile Include="Models\BaseDataImporter.cs" />

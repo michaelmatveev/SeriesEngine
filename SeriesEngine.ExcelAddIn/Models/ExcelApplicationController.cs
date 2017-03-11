@@ -15,10 +15,22 @@ using System.Windows.Forms;
 namespace SeriesEngine.ExcelAddIn.Models
 {
     public class ExcelApplicationController : ApplicationController
-    {        
-        public RibbonWrapper MainRibbon { get; set; }
-        public CustomTaskPaneCollection PaneCollection { get; set; }
-        public Workbook CurrentDocument { get; set; }
+    {
+        private readonly Lazy<Workbook> _currentDocument;
+        private readonly RibbonWrapper _mainRibbon;
+        private readonly CustomTaskPaneCollection _paneCollection;
+
+        public ExcelApplicationController()
+        {
+
+        }
+
+        public ExcelApplicationController(Func<Workbook> workbookFactory, RibbonWrapper mainRibbon, CustomTaskPaneCollection paneCollection)
+        {
+            _currentDocument = new Lazy<Workbook>(workbookFactory);
+            _mainRibbon = mainRibbon;
+            _paneCollection = paneCollection;           
+        }
 
         public void Configure()
         {
@@ -35,10 +47,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Configure
                     .Singleton()
                     .Ctor<CustomTaskPaneCollection>()
-                    .Is(PaneCollection);
+                    .Is(_paneCollection);
 
                 _.For<IMainMenuView>()
-                    .Use(MainRibbon);
+                    .Use(_mainRibbon);
 
                 _.ForConcreteType<MainMenuPresenter>()
                     .Configure
@@ -100,7 +112,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Use<DataBaseNetworkProvider>();
 
                 _.For<Workbook>()
-                    .Use(CurrentDocument);
+                    .Use(_currentDocument.Value);
 
                 _.ForConcreteType<DataImporter>()
                     .Configure
@@ -170,7 +182,8 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         private IList<string> GetWorksheetsName()
         {
-            var result = CurrentDocument
+            var result = _currentDocument
+                .Value
                 .Worksheets
                 .OfType<Microsoft.Office.Interop.Excel.Worksheet>()
                 .Select(ws => ws.Name)
@@ -197,15 +210,15 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void Activate()
         {
-            MainRibbon.SetTabVisibleState(true);
-            MainRibbon.IsActive = true;
+            _mainRibbon.SetTabVisibleState(true);
+            _mainRibbon.IsActive = true;
             Raise(new RestoreMenuStateEventData());
         }
 
         public void Deactivate()
         {
-            MainRibbon.SetTabVisibleState(false);
-            MainRibbon.IsActive = false;
+            _mainRibbon.SetTabVisibleState(false);
+            _mainRibbon.IsActive = false;
             //Execute(new ShowCustomPaneCommandArgs
             //{
             //    IsVisible = false
@@ -214,7 +227,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void StopGettingEventsFromRibbon()
         {
-            MainRibbon.IsActive = false;
+            _mainRibbon.IsActive = false;
         }
 
         public void PreserveDataBlocks()
