@@ -39,7 +39,7 @@ namespace SeriesEngine.ExcelAddIn
                 {
                     var wbId = wb.GetId();
                     var currentSolution = ApplicationControllers[wbId].CurrentSolution;
-                    SetCaption(wb.Name, currentSolution);
+                    SetCaption(currentSolution);
                 }
             };
 
@@ -54,7 +54,7 @@ namespace SeriesEngine.ExcelAddIn
                     var wbId = wb.GetId();
                     var controller = ApplicationControllers[wbId];
                     controller.Activate();
-                    SetCaption(wb.Name, controller.CurrentSolution);
+                    SetCaption(controller.CurrentSolution);
                 }
             };
 
@@ -83,32 +83,24 @@ namespace SeriesEngine.ExcelAddIn
             {
                 var wbId = wb.GetId();
                 var controller = new ExcelApplicationController(
-                    () => Globals.Factory.GetVstoObject(FindWorkbookById(wbId)),
+                    Globals.Factory.GetVstoObject(wb),
                     new RibbonWrapper(Globals.Ribbons.Ribbon),
                     CustomTaskPanes);
 
                 ApplicationControllers.Add(wbId, controller);
-                var wbName = wb.Name;
-                controller.PropertyChanged += (s, e) => SetCaption(wbName, controller.CurrentSolution);
+                controller.PropertyChanged += (s, e) => SetCaption(controller.CurrentSolution);
                 controller.Configure();
             }
         }
 
-        private void SetCaption(string workbookName, Solution s)
+        private void SetCaption(Solution s)
         {
-            Application.ActiveWindow.Caption = s == null ? $"{workbookName}" : $"{workbookName} ({s.Name})";
-        }
-
-        private Excel.Workbook FindWorkbookById(string id)
-        {
-            foreach (Excel.Workbook wb in Application.Workbooks)
+            var newCaption = Application.ActiveWorkbook.Name;
+            if(!string.IsNullOrEmpty(s?.Name))
             {
-                if (id == wb.GetId())
-                {
-                    return wb;
-                }
+                newCaption += $" ({s.Name})";
             }
-            return null;
+            Application.ActiveWindow.Caption = newCaption;
         }
 
     }

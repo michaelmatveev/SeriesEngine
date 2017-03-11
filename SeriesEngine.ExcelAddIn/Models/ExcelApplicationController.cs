@@ -16,7 +16,8 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public class ExcelApplicationController : ApplicationController
     {
-        private readonly Lazy<Workbook> _currentDocument;
+        //private readonly Lazy<Workbook> _currentDocument;
+        private readonly Workbook _currentDocument;
         private readonly RibbonWrapper _mainRibbon;
         private readonly CustomTaskPaneCollection _paneCollection;
 
@@ -25,9 +26,9 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         }
 
-        public ExcelApplicationController(Func<Workbook> workbookFactory, RibbonWrapper mainRibbon, CustomTaskPaneCollection paneCollection)
+        public ExcelApplicationController(Workbook workbook, RibbonWrapper mainRibbon, CustomTaskPaneCollection paneCollection)
         {
-            _currentDocument = new Lazy<Workbook>(workbookFactory);
+            _currentDocument = workbook;
             _mainRibbon = mainRibbon;
             _paneCollection = paneCollection;           
         }
@@ -112,7 +113,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Use<DataBaseNetworkProvider>();
 
                 _.For<Workbook>()
-                    .Use(_currentDocument.Value);
+                    .Use(_currentDocument);
 
                 _.ForConcreteType<DataImporter>()
                     .Configure
@@ -183,7 +184,6 @@ namespace SeriesEngine.ExcelAddIn.Models
         private IList<string> GetWorksheetsName()
         {
             var result = _currentDocument
-                .Value
                 .Worksheets
                 .OfType<Microsoft.Office.Interop.Excel.Worksheet>()
                 .Select(ws => ws.Name)
