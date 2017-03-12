@@ -80,6 +80,12 @@ namespace SeriesEngine.Msk1
                     Point.ObjectModel = PointModel;
                     return Point;
                 }
+                if (ElectricMeter != null)
+                {
+                    ElectricMeter.ObjectModel = PointModel;
+                    return ElectricMeter;
+                }
+
                 return null;
             }
 
@@ -88,11 +94,13 @@ namespace SeriesEngine.Msk1
         public static ObjectMetamodel RegionModel = new ObjectMetamodel
         {
             Name = "Region",
+            Variables = new List<Variable>()
         };
 
         public static ObjectMetamodel ConsumerModel = new ObjectMetamodel
         {
             Name = "Consumer",
+            Variables = new List<Variable>()
         };
 
         public static ObjectMetamodel ContractModel = new ObjectMetamodel
@@ -102,15 +110,7 @@ namespace SeriesEngine.Msk1
             {
                 new Variable
                 {
-                    Name = "Номер договора"
-                },
-                new Variable
-                {
-                    Name = "Дата договора"
-                },
-                new Variable
-                {
-                    Name = "Ценовая категория"
+                    Name = "ContractType"
                 },
             }
         };
@@ -118,6 +118,7 @@ namespace SeriesEngine.Msk1
         public static ObjectMetamodel ConsumerObjectModel = new ObjectMetamodel
         {
             Name = "ConsumerObject",
+            Variables = new List<Variable>()
         };
 
         public static ObjectMetamodel PointModel = new ObjectMetamodel
@@ -127,19 +128,36 @@ namespace SeriesEngine.Msk1
             {
                 new Variable
                 {
-                    Name = "Наименование"
+                    Name = "VoltageLevel",
+                    IsPeriodic = true                    
                 },
                 new Variable
                 {
-                    Name = "Уровень напряжения"
+                    Name = "MaxPower",
+                    IsPeriodic = true
                 },
                 new Variable
                 {
-                    Name = "Максимальная мощность"
+                    Name = "TUCode",
+                    IsPeriodic = true
                 },
                 new Variable
                 {
-                    Name = "Ценовая категория"
+                    Name = "PUPlace",
+                    IsPeriodic = false,
+                    IsVersioned = true
+                }
+            }
+        };
+
+        public static ObjectMetamodel ElectricMeterModel = new ObjectMetamodel
+        {
+            Name = "ElectricMeter",
+            Variables = new List<Variable>
+            {
+                new Variable
+                {
+                    Name = "PUType"
                 }
             }
         };
@@ -158,6 +176,8 @@ namespace SeriesEngine.Msk1
                 case "ConsumerObjects": return MainHierarchyNode.ConsumerObjectModel;
                 case "Point":
                 case "Points": return MainHierarchyNode.PointModel;
+                case "ElectricMeter":
+                case "ElectricMeters": return MainHierarchyNode.ElectricMeterModel;
                 default: throw new NotSupportedException();
             }
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,18 +21,19 @@ namespace SeriesEngine.Msk1
 
         [NotMapped]
         public ObjectMetamodel ObjectModel { get; set; }
-        public object GetVariableValue(string variableName)
+        public object GetVariableValue(Variable variableModel)
         {
-            try
+            var thisType = GetType();
+            PropertyInfo property;
+            if (variableModel.IsPeriodic || variableModel.IsVersioned)
             {
-                var thisType = GetType();
-                var property = thisType.GetProperty(variableName);
-                return property.GetValue(this, null);
+                property = thisType.GetProperty($"{ObjectModel.Name}_{variableModel.Name}s");
+                var collection = property.GetValue(this, null) as ICollection<PeriodVariable>;
+                return collection.Last().Value;
             }
-            catch
-            {
-                return "Stub";
-            }
+
+            property = thisType.GetProperty(variableModel.Name);
+            return property.GetValue(this, null);
         }
 
         public void SetVariableValue(string variableName, object value)

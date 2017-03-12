@@ -61,6 +61,7 @@
     <Compile Include="Network.cs" />
     <Compile Include="NetworkTreeNode.cs" />
     <Compile Include="ObjectMetamodel.cs" />
+    <Compile Include="PeriodVariable.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Point_MaxPowers.cs" />
     <Compile Include="Point_PUPlaces.cs" />
@@ -75,7 +76,12 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\SeriesEngine.Core\SeriesEngine.Core.csproj">
+      <Project>{87D29B27-20D3-4CC8-AA8C-6A85987DB69C}</Project>
+      <Name>SeriesEngine.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

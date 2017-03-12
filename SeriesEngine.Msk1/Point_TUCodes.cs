@@ -7,28 +7,21 @@ namespace SeriesEngine.Msk1
     using System.Data.Entity.Spatial;
 
     [Table("pwk1.Point_TUCodes")]
-    public partial class Point_TUCode
+    public partial class Point_TUCode : PeriodVariable
     {
-        public int Id { get; set; }
-
-        public int ObjectId { get; set; }
-
-        public DateTime Date { get; set; }
-
-        public short? Kind { get; set; }
-
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime CreationTime { get; set; }
-
-        public int? AuthorId { get; set; }
+        public virtual User User { get; set; }
 
         [StringLength(200)]
         public string TUCode { get; set; }
 
-        public int? Tag { get; set; }
-
-        public virtual User User { get; set; }
-
         public virtual Point Point { get; set; }
+
+        public override object Value
+        {
+            get
+            {
+                return TUCode;
+            }
+        }
     }
 }

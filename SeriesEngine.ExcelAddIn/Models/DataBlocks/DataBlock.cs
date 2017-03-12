@@ -11,7 +11,6 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
         public string RefObject { get; set; }
 
         public ObjectMetamodel ObjectMetamodel { get; set; }
-        public Variable VariableMetamodel { get; set; }
         public Kind Kind { get; set; }
 
         public TimeInterval Interval { get; set; }
@@ -55,7 +54,8 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
     public class VariableDataBlock : DataBlock
     {
         public Kind Kind;
-        public string VariableName;
+        //public string VariableName;
+        public Variable VariableMetamodel { get; set; }
 
         public VariableDataBlock(BaseDataBlock parent) : base(parent)
         {

@@ -1,14 +1,14 @@
-﻿using System;
+﻿using SeriesEngine.Core;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SeriesEngine.Msk1
 {
     public class Variable
     {
-        public string Name;
+        public string Name { get; set; }
+        public bool IsPeriodic { get; set; }
+        public bool IsVersioned { get; set; }
+        public TimeInterval PeriodInterval { get; set; }
     }
 
     public class ObjectMetamodel

@@ -1,5 +1,7 @@
 ﻿using SeriesEngine.ExcelAddIn.Models.DataBlocks;
+using SeriesEngine.Msk1;
 using System;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace SeriesEngine.ExcelAddIn.Models
@@ -24,7 +26,8 @@ namespace SeriesEngine.ExcelAddIn.Models
             foreach (var f in source.Root.Descendants())
             {
                 DataBlock newFragment;
-                if(f.Name.LocalName == NodeElementName)
+                var objectType = f.Attribute("RefObject").Value;
+                if (f.Name.LocalName == NodeElementName)
                 {
                     newFragment = new NodeDataBlock(result)
                     {
@@ -33,17 +36,19 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
                 else
                 {
+                    var objectModel = MainHierarchyNode.GetObjectModelByName(objectType);
+                    var variableType = f.Attribute("Variable").Value;
                     newFragment = new VariableDataBlock(result)
                     {
                         Kind = (Kind)Enum.Parse(typeof(Kind), f.Attribute("Kind").Value),
-                        VariableName = f.Attribute("Variable").Value
+                        VariableMetamodel = objectModel.Variables.Single(v => v.Name == variableType)
                     };
                 }
 
                 newFragment.Caption = f.Attribute("Caption").Value;
                 newFragment.Level = Int32.Parse(f.Attribute("Level").Value);
                 newFragment.CollectionName = f.Attribute("CollectionName").Value;
-                newFragment.RefObject = f.Attribute("RefObject").Value;
+                newFragment.RefObject = objectType;
 
                 result.DataBlocks.Add(newFragment);
             }
@@ -78,7 +83,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     {
                         var vdb = n as VariableDataBlock;
                         newElement = new XElement(VariableElementName,
-                            new XAttribute("Variable", vdb.VariableName),
+                            new XAttribute("Variable", vdb.VariableMetamodel.Name),
                             new XAttribute("Kind", vdb.Kind));
                     }
                     newElement.Add(new XAttribute("Caption", n.Caption));

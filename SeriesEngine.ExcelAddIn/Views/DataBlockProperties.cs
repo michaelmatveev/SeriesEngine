@@ -30,7 +30,7 @@ namespace SeriesEngine.ExcelAddIn.Views
 
             labelCollectionName.Text = DataBlock.Parent.Name;
             comboBoxObjectTypes.DataBindings.Add(nameof(comboBoxObjectTypes.SelectedValue), DataBlock, nameof(DataBlock.ObjectMetamodel));//, false, DataSourceUpdateMode.OnPropertyChanged);
-            comboBoxVariables.DataBindings.Add(nameof(comboBoxVariables.SelectedValue), DataBlock, nameof(DataBlock.VariableMetamodel));
+//            comboBoxVariables.DataBindings.Add(nameof(comboBoxVariables.SelectedValue), DataBlock, nameof(DataBlock.VariableMetamodel));
             comboBoxKind.DataBindings.Add(nameof(comboBoxKind.SelectedItem), DataBlock, nameof(DataBlock.Kind));
 
             comboBoxObjectTypes.DisplayMember = "Name";

@@ -52,7 +52,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                     CurrentSelection = selectionProvider.GetSelection()
                 };
                 Controller.Execute(cmd);
-                Controller.Execute(new ReloadAllCommandArgs
+                Controller.Execute(new ReloadDataBlockCommandArgs
                 {
                     BlockName = cmd.InsertedBlockName
                 });

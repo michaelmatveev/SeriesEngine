@@ -310,7 +310,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             return new DataBlock(SourceCollection)
             {
                 ObjectMetamodel = mock.GetObjectMetamodels().First(),
-                VariableMetamodel = mock.GetObjectMetamodels().First().Variables.First()
+                //VariableMetamodel = mock.GetObjectMetamodels().First().Variables.First()
             };
         }
 
@@ -320,7 +320,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 Name = $"{sourceFragment.Name}_копия",
                 ObjectMetamodel = sourceFragment.ObjectMetamodel,
-                VariableMetamodel = sourceFragment.VariableMetamodel,
+                //VariableMetamodel = sourceFragment.VariableMetamodel,
                 Kind = sourceFragment.Kind,
                 Interval = sourceFragment.Interval,
                 IntervalsByRows = sourceFragment.IntervalsByRows,

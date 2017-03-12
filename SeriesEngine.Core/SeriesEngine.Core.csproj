@@ -55,6 +55,7 @@
     <Compile Include="DataAccess\MyObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reliability.cs" />
+    <Compile Include="TimeInterval.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="BuildMetamodels.tt">

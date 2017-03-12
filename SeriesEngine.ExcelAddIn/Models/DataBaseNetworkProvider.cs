@@ -20,6 +20,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Include("Nodes.Contract")
                     .Include("Nodes.ConsumerObject")
                     .Include("Nodes.Point")
+                    .Include("Nodes.ElectricMeter")
                     .Where(n => n.SolutionId == solutionId)
                     .ToList();
                 return nets
@@ -41,6 +42,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Include("Nodes.Contract")
                     .Include("Nodes.ConsumerObject")
                     .Include("Nodes.Point")
+                    .Include("Nodes.ElectricMeter")
                     .Single(n => n.Id == networkId);
 
                 return new NetworkTree(net);

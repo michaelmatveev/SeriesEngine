@@ -88,7 +88,7 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
                     if (vsf != null)
                     {
                         sequence.Add(GetShemaForVariable(vsf));
-                        sf.XmlPath = $"{currentPath}/{vsf.VariableName}";                        
+                        sf.XmlPath = $"{currentPath}/{vsf.VariableMetamodel.Name}";                        
                     }
                 }
                 lastElement = sequence;                
@@ -109,7 +109,7 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
         private static XElement GetShemaForVariable(VariableDataBlock sf)
         {
             return new XElement(ns + "element", 
-                new XAttribute("name", sf.VariableName), 
+                new XAttribute("name", sf.VariableMetamodel.Name), 
                 new XAttribute("type", "xs:string"), 
                 new XAttribute("minOccurs", "1"), 
                 new XAttribute("maxOccurs", "1"), 

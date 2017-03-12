@@ -324,7 +324,8 @@ namespace SeriesEngine.ExcelAddIn.Models
             else if (qp is VariableDataBlock) // переменные только для данного объекта
             {
                 var vsf = (VariableDataBlock)qp;
-                newElement.Add(new XElement(vsf.VariableName, node.LinkedObject.GetVariableValue(vsf.VariableName)));
+                var varModel = vsf.VariableMetamodel;
+                newElement.Add(new XElement(varModel.Name, node.LinkedObject.GetVariableValue(varModel)));
             }
         }
 

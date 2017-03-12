@@ -11,7 +11,8 @@ using SeriesEngine.ExcelAddIn.Helpers;
 namespace SeriesEngine.ExcelAddIn.Models
 {
     public class DataImporter : BaseDataImporter,
-        ICommand<ReloadAllCommandArgs>
+        ICommand<ReloadAllCommandArgs>,
+        ICommand<ReloadDataBlockCommandArgs>
     {
         private readonly Workbook _workbook;
         private readonly IDataBlockProvider _blockProvider;
@@ -25,7 +26,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             _networksProvider = networksProvider;
         }
 
-        public void Execute(ReloadAllCommandArgs commandData)
+        void ICommand<ReloadAllCommandArgs>.Execute(ReloadAllCommandArgs commandData)
         {
             using (new ActiveRangeKeeper(_workbook))
             {
@@ -34,14 +35,21 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .OfType<CollectionDataBlock>();
                 
                 var period = _blockProvider.GetDefaultPeriod();
-                if (commandData.BlockName == null)
-                {
-                    ImportDataForDataBlocks(commandData.Solution.Id, sheetDataBlocks, period);
-                }
-                else
-                {
-                    ImportDataBlock(commandData.Solution.Id, sheetDataBlocks.Single(sb => sb.Name == commandData.BlockName));
-                }
+                ImportDataForDataBlocks(commandData.Solution.Id, sheetDataBlocks, period);
+                _blockProvider.Save(); // save NetworkRevision
+            }
+        }
+
+        void ICommand<ReloadDataBlockCommandArgs>.Execute(ReloadDataBlockCommandArgs commandData)
+        {
+            using (new ActiveRangeKeeper(_workbook))
+            {
+                var sheetDataBlocks = _blockProvider
+                    .GetDataBlocks()
+                    .OfType<CollectionDataBlock>();
+
+                var period = _blockProvider.GetDefaultPeriod();
+                ImportDataBlock(commandData.Solution.Id, sheetDataBlocks.Single(sb => sb.Name == commandData.BlockName));
                 _blockProvider.Save(); // save NetworkRevision
             }
         }
