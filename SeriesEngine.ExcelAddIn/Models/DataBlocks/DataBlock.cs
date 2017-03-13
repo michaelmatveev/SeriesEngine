@@ -53,8 +53,6 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
 
     public class VariableDataBlock : DataBlock
     {
-        public Kind Kind;
-        //public string VariableName;
         public Variable VariableMetamodel { get; set; }
 
         public VariableDataBlock(BaseDataBlock parent) : base(parent)

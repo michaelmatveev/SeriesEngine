@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Collections.Generic;
 using System.Linq;
 using SeriesEngine.Msk1;
+using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -47,6 +49,35 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 return new NetworkTree(net);
             }
+        }
+
+        public NetworkTree GetNetwork(int solutionId, string name, IList<VariableDataBlock> variables)
+        {
+            using (var context = new Model1())
+            {
+                var query = context.Networks.AsQueryable();
+                foreach (var v in variables)
+                {
+                    var obj = v.RefObject;
+                    var vrb = v.VariableMetamodel.Name;
+                    query = query.Include($"Nodes.{obj}.{obj}_{vrb}s");
+                }
+
+                var net = query
+                    .Include("Solution")
+                    .Include("Nodes")
+                    .Include("Nodes.Region")
+                    .Include("Nodes.Consumer")
+                    .Include("Nodes.Contract")
+                    .Include("Nodes.ConsumerObject")
+                    .Include("Nodes.Point")
+                    .Include("Nodes.ElectricMeter")                    
+                    //.AsNoTracking()
+                    .Single(n => n.SolutionId == solutionId && n.Name == name);
+
+                return new NetworkTree(net);
+            }
+
         }
 
     }

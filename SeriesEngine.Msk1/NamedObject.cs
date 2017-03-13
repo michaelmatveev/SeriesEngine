@@ -28,7 +28,7 @@ namespace SeriesEngine.Msk1
             if (variableModel.IsPeriodic || variableModel.IsVersioned)
             {
                 property = thisType.GetProperty($"{ObjectModel.Name}_{variableModel.Name}s");
-                var collection = property.GetValue(this, null) as ICollection<PeriodVariable>;
+                var collection = property.GetValue(this, null) as IEnumerable<PeriodVariable>;
                 return collection.Last().Value;
             }
 

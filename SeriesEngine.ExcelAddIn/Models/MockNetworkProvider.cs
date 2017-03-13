@@ -1,4 +1,5 @@
-﻿using SeriesEngine.Msk1;
+﻿using SeriesEngine.ExcelAddIn.Models.DataBlocks;
+using SeriesEngine.Msk1;
 using System;
 using System.Collections.Generic;
 
@@ -123,6 +124,12 @@ namespace SeriesEngine.ExcelAddIn.Models
 
             return new[] { new NetworkTree(mainTree) };
         }
+
+        public NetworkTree GetNetwork(int solutionId, string name, IList<VariableDataBlock> variables)
+        {
+            return new NetworkTree(mainTree);
+        }
+
 
         public NetworkTree GetNetworkById(int networkId)
         {
