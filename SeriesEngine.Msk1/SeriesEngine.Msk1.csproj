@@ -54,7 +54,7 @@
     <Compile Include="Consumer.cs" />
     <Compile Include="ConsumerObject.cs" />
     <Compile Include="Contract.cs" />
-    <Compile Include="ElectricMeters.cs" />
+    <Compile Include="ElectricMeter.cs" />
     <Compile Include="MainHierarchyNode.cs" />
     <Compile Include="Model1.cs" />
     <Compile Include="NamedObject.cs" />

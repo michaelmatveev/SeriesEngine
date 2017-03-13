@@ -70,6 +70,11 @@ namespace SeriesEngine.Msk1
                 .HasForeignKey(e => e.AuthorId);
 
             modelBuilder.Entity<User>()
+                .HasMany(e => e.ElectricMeters)
+                .WithOptional(e => e.User)
+                .HasForeignKey(e => e.AuthorId);
+
+            modelBuilder.Entity<User>()
                 .HasMany(e => e.Regions)
                 .WithOptional(e => e.User)
                 .HasForeignKey(e => e.AuthorId);

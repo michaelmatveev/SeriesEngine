@@ -11,11 +11,12 @@ namespace SeriesEngine.Msk1
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
+            Regions = new HashSet<Region>();
             ConsumerObjects = new HashSet<ConsumerObject>();
             Consumers = new HashSet<Consumer>();
             Contracts = new HashSet<Contract>();
             Points = new HashSet<Point>();
-            Regions = new HashSet<Region>();
+            ElectricMeters = new HashSet<ElectricMeter>();
         }
 
         public int Id { get; set; }
@@ -37,6 +38,9 @@ namespace SeriesEngine.Msk1
         public bool? IsSystem { get; set; }
 
         public virtual Solution Solution { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ElectricMeter> ElectricMeters { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ConsumerObject> ConsumerObjects { get; set; }
