@@ -30,6 +30,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         event EventHandler Disconnect;
         event EventHandler RenameObject;
         event EventHandler DeleteObject;
+        event EventHandler EditVariable;
 
         //void InitializeFilters(IEnumerable<Network> networks);
         void SetButtonToggleState(bool isVisible);

@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.Office.Tools.Ribbon;
 using SeriesEngine.ExcelAddIn.Views;
-using Microsoft.Office.Interop.Excel;
 
 namespace SeriesEngine.ExcelAddIn
 {
@@ -15,6 +14,7 @@ namespace SeriesEngine.ExcelAddIn
         public event EventHandler InsertSampleBlock;
         public event EventHandler RenameObject;
         public event EventHandler DeleteObject;
+        public event EventHandler EditVariable;
         public event EventHandler Connect;
         public event EventHandler Disconnect;
 
@@ -81,6 +81,11 @@ namespace SeriesEngine.ExcelAddIn
         private void buttonDeleteObject_Click(object sender, RibbonControlEventArgs e)
         {
             DeleteObject?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void buttonEdit_Click(object sender, RibbonControlEventArgs e)
+        {
+            EditVariable?.Invoke(this, EventArgs.Empty);
         }
 
         //public void InitializeFilters(IEnumerable<Network> networks)

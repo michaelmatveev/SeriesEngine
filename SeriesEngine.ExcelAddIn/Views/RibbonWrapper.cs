@@ -14,6 +14,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         public event EventHandler Disconnect;
         public event EventHandler RenameObject;
         public event EventHandler DeleteObject;
+        public event EventHandler EditVariable;
         
         public bool IsActive { get; set; }
         
@@ -90,6 +91,14 @@ namespace SeriesEngine.ExcelAddIn.Views
                 if (IsActive)
                 {
                     RenameObject?.Invoke(s, e);
+                }
+            };
+
+            realView.EditVariable += (s, e) =>
+            {
+                if (IsActive)
+                {
+                    EditVariable?.Invoke(s, e);
                 }
             };
         }

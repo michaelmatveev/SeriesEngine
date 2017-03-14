@@ -256,6 +256,7 @@
     <Compile Include="Presenters\MainPanePresenter.cs" />
     <Compile Include="Presenters\ObjectPropertiesPresenter.cs" />
     <Compile Include="Presenters\PeriodSelectorPresenter.cs" />
+    <Compile Include="Presenters\PeriodVariableEditorPresenter.cs" />
     <Compile Include="Presenters\SolutionSelectorPresenter.cs" />
     <Compile Include="Models\SolutionProvider.cs" />
     <Compile Include="Views\BreadCrumbs.cs">
@@ -268,6 +269,7 @@
       <DependentUpon>CollectionProperties.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\IObjectPropertiesView.cs" />
+    <Compile Include="Views\IPeriodVariableView.cs" />
     <Compile Include="Views\ISolutionSelectorView.cs" />
     <Compile Include="Views\NodeBlockProperties.cs">
       <SubType>Form</SubType>
@@ -298,6 +300,12 @@
     </Compile>
     <Compile Include="Views\ObjectProperties.Designer.cs">
       <DependentUpon>ObjectProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PeriodVariableEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\PeriodVariableEditor.Designer.cs">
+      <DependentUpon>PeriodVariableEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\RibbonWrapper.cs" />
     <Compile Include="Views\SolutionSelector.cs">
@@ -340,6 +348,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\PeriodSelector.resx">
       <DependentUpon>PeriodSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\PeriodVariableEditor.resx">
+      <DependentUpon>PeriodVariableEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Ribbon.resx">
       <DependentUpon>Ribbon.cs</DependentUpon>

@@ -68,6 +68,11 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                 CurrentSelection = selectionProvider.GetSelection()
             });
 
+            View.EditVariable += (s, e) => Controller.Execute(new EditPeriodVariableCommandArg
+            {
+                CurrentSelection = selectionProvider.GetSelection()
+            });
+
             View.Connect += (s, e) => Controller.Execute(new SelectSolutionCommandArgs());
             View.Disconnect += (s, e) => Controller.CurrentSolution = null;
         }

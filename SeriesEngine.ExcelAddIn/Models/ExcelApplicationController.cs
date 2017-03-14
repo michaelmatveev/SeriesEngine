@@ -16,15 +16,9 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public class ExcelApplicationController : ApplicationController
     {
-        //private readonly Lazy<Workbook> _currentDocument;
         private readonly Workbook _currentDocument;
         private readonly RibbonWrapper _mainRibbon;
         private readonly CustomTaskPaneCollection _paneCollection;
-
-        public ExcelApplicationController()
-        {
-
-        }
 
         public ExcelApplicationController(Workbook workbook, RibbonWrapper mainRibbon, CustomTaskPaneCollection paneCollection)
         {
@@ -168,6 +162,11 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Use<ObjectProperties>();
 
                 _.ForConcreteType<ObjectPropertiesPresenter>();
+
+                _.For<IPeriodVariableView>()
+                    .Use<PeriodVariableEditor>();
+
+                _.ForConcreteType<PeriodVariableEditorPresenter>();
             });
 
             var provider = Container.GetInstance<IDataBlockProvider>();

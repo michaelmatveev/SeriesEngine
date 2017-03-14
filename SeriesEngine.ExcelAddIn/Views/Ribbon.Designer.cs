@@ -37,25 +37,28 @@
             this.tab1 = this.Factory.CreateRibbonTab();
             this.tabCustom = this.Factory.CreateRibbonTab();
             this.groupConnect = this.Factory.CreateRibbonGroup();
-            this.groupData = this.Factory.CreateRibbonGroup();
-            this.groupDataBlocks = this.Factory.CreateRibbonGroup();
-            this.groupObject = this.Factory.CreateRibbonGroup();
             this.buttonSolution = this.Factory.CreateRibbonButton();
             this.buttonDisconnect = this.Factory.CreateRibbonButton();
+            this.groupData = this.Factory.CreateRibbonGroup();
             this.buttonRefresh = this.Factory.CreateRibbonButton();
             this.buttonSave = this.Factory.CreateRibbonButton();
+            this.groupDataBlocks = this.Factory.CreateRibbonGroup();
             this.buttonAddDataBlock = this.Factory.CreateRibbonButton();
             this.toggleButtonShowPane = this.Factory.CreateRibbonToggleButton();
             this.splitButtonSamples = this.Factory.CreateRibbonSplitButton();
             this.buttonSampleMainObject = this.Factory.CreateRibbonButton();
+            this.groupObject = this.Factory.CreateRibbonGroup();
             this.buttonRenameObject = this.Factory.CreateRibbonButton();
             this.buttonDeleteObject = this.Factory.CreateRibbonButton();
+            this.groupVariable = this.Factory.CreateRibbonGroup();
+            this.buttonEdit = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.tabCustom.SuspendLayout();
             this.groupConnect.SuspendLayout();
             this.groupData.SuspendLayout();
             this.groupDataBlocks.SuspendLayout();
             this.groupObject.SuspendLayout();
+            this.groupVariable.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
@@ -70,6 +73,7 @@
             this.tabCustom.Groups.Add(this.groupData);
             this.tabCustom.Groups.Add(this.groupDataBlocks);
             this.tabCustom.Groups.Add(this.groupObject);
+            this.tabCustom.Groups.Add(this.groupVariable);
             this.tabCustom.Label = "Загрузка данных";
             this.tabCustom.Name = "tabCustom";
             // 
@@ -79,28 +83,6 @@
             this.groupConnect.Items.Add(this.buttonDisconnect);
             this.groupConnect.Label = "Подключение";
             this.groupConnect.Name = "groupConnect";
-            // 
-            // groupData
-            // 
-            this.groupData.Items.Add(this.buttonRefresh);
-            this.groupData.Items.Add(this.buttonSave);
-            this.groupData.Label = "Данные";
-            this.groupData.Name = "groupData";
-            // 
-            // groupDataBlocks
-            // 
-            this.groupDataBlocks.Items.Add(this.buttonAddDataBlock);
-            this.groupDataBlocks.Items.Add(this.toggleButtonShowPane);
-            this.groupDataBlocks.Items.Add(this.splitButtonSamples);
-            this.groupDataBlocks.Label = "Блок данных";
-            this.groupDataBlocks.Name = "groupDataBlocks";
-            // 
-            // groupObject
-            // 
-            this.groupObject.Items.Add(this.buttonRenameObject);
-            this.groupObject.Items.Add(this.buttonDeleteObject);
-            this.groupObject.Label = "Объект";
-            this.groupObject.Name = "groupObject";
             // 
             // buttonSolution
             // 
@@ -120,6 +102,13 @@
             this.buttonDisconnect.ShowImage = true;
             this.buttonDisconnect.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonDisconnect_Click);
             // 
+            // groupData
+            // 
+            this.groupData.Items.Add(this.buttonRefresh);
+            this.groupData.Items.Add(this.buttonSave);
+            this.groupData.Label = "Данные";
+            this.groupData.Name = "groupData";
+            // 
             // buttonRefresh
             // 
             this.buttonRefresh.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -137,6 +126,14 @@
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.ShowImage = true;
             this.buttonSave.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonSave_Click);
+            // 
+            // groupDataBlocks
+            // 
+            this.groupDataBlocks.Items.Add(this.buttonAddDataBlock);
+            this.groupDataBlocks.Items.Add(this.toggleButtonShowPane);
+            this.groupDataBlocks.Items.Add(this.splitButtonSamples);
+            this.groupDataBlocks.Label = "Блок данных";
+            this.groupDataBlocks.Name = "groupDataBlocks";
             // 
             // buttonAddDataBlock
             // 
@@ -168,6 +165,13 @@
             this.buttonSampleMainObject.ShowImage = true;
             this.buttonSampleMainObject.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonSample_Click);
             // 
+            // groupObject
+            // 
+            this.groupObject.Items.Add(this.buttonRenameObject);
+            this.groupObject.Items.Add(this.buttonDeleteObject);
+            this.groupObject.Label = "Объект";
+            this.groupObject.Name = "groupObject";
+            // 
             // buttonRenameObject
             // 
             this.buttonRenameObject.Image = global::SeriesEngine.ExcelAddIn.Properties.Resources.textfield_rename;
@@ -183,6 +187,18 @@
             this.buttonDeleteObject.Name = "buttonDeleteObject";
             this.buttonDeleteObject.ShowImage = true;
             this.buttonDeleteObject.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonDeleteObject_Click);
+            // 
+            // groupVariable
+            // 
+            this.groupVariable.Items.Add(this.buttonEdit);
+            this.groupVariable.Label = "Переменная";
+            this.groupVariable.Name = "groupVariable";
+            // 
+            // buttonEdit
+            // 
+            this.buttonEdit.Label = "Изменить";
+            this.buttonEdit.Name = "buttonEdit";
+            this.buttonEdit.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonEdit_Click);
             // 
             // Ribbon
             // 
@@ -202,6 +218,8 @@
             this.groupDataBlocks.PerformLayout();
             this.groupObject.ResumeLayout(false);
             this.groupObject.PerformLayout();
+            this.groupVariable.ResumeLayout(false);
+            this.groupVariable.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -224,6 +242,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupObject;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonRenameObject;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonDeleteObject;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup groupVariable;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonEdit;
     }
 
     partial class ThisRibbonCollection
