@@ -325,7 +325,20 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 var vsf = (VariableDataBlock)qp;
                 var varModel = vsf.VariableMetamodel;
-                newElement.Add(new XElement(varModel.Name, node.LinkedObject.GetVariableValue(varModel)));
+                if (varModel.IsPeriodic)
+                {
+                    var periodVariable = new XElement(varModel.Name);                    
+                    foreach(var v in node.LinkedObject.GetPeriodVariable(varModel))
+                    {
+                        periodVariable.Add(new XElement("Period",
+                                                new XAttribute("Period", v.Date), v.Value));
+                    }
+                    newElement.Add(periodVariable);
+                }
+                else
+                {
+                    newElement.Add(new XElement(varModel.Name, node.LinkedObject.GetVariableValue(varModel)));
+                }
             }
         }
 

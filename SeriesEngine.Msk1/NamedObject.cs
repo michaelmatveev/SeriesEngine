@@ -36,6 +36,19 @@ namespace SeriesEngine.Msk1
             return property.GetValue(this, null);
         }
 
+        public IEnumerable<PeriodVariable> GetPeriodVariable(Variable variableModel)
+        {
+            if(!variableModel.IsPeriodic)
+            {
+                throw new ArgumentException(nameof(variableModel));
+            }
+
+            var thisType = GetType();
+            var property = thisType.GetProperty($"{ObjectModel.Name}_{variableModel.Name}s");
+            var collection = property.GetValue(this, null) as IEnumerable<PeriodVariable>;
+            return collection.OrderBy(pv => pv.Date);
+        }
+
         public void SetVariableValue(string variableName, object value)
         {
             try
