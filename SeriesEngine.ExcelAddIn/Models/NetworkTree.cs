@@ -53,12 +53,12 @@ namespace SeriesEngine.ExcelAddIn.Models
                 return period.Till >= node.ValidFrom.Value;
             }
 
-            if(node.ValidTill.HasValue && !node.ValidFrom.HasValue)
+            if (node.ValidTill.HasValue && !node.ValidFrom.HasValue)
             {
                 return period.From < node.ValidTill.Value;
             }
 
-            if(node.ValidFrom.HasValue && node.ValidTill.HasValue)
+            if (node.ValidFrom.HasValue && node.ValidTill.HasValue)
             {
                 return period.From < node.ValidTill.Value && period.Till >= node.ValidFrom.Value;
             }
@@ -77,7 +77,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var newNodes = RestoreNodes(context, target.Root.Elements(), null, allNodes);
                 context.MainHierarchyNodes.AddRange(newNodes.Cast<MainHierarchyNode>());
                 context.MainHierarchyNodes.RemoveRange(allNodes.Where(n => !n.IsMarkedFlag).Cast<MainHierarchyNode>());
-                      
+
                 context.SaveChanges();
             }
         }
@@ -191,7 +191,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             var prmObjectName = new SqlParameter("@ObjectName", objectName);
 
             var entries = dbSet.SqlQuery($"SELECT * FROM pwk1.[{objectType}] where SolutionId=@SolutionId and Name=@ObjectName", prmSolutionId, prmObjectName);
-            foreach(NamedObject d in entries)
+            foreach (NamedObject d in entries)
             {
                 d.ObjectModel = MainHierarchyNode.GetObjectModelByName(element.Name.LocalName);
                 return d;
@@ -279,7 +279,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         private IEnumerable<XElement> GetSubElements(IEnumerable<TreeItem<NetworkTreeNode>> currentItems, IEnumerable<DataBlock> queryParamers)
         {
             var result = new List<XElement>();
-            foreach(var groupOfSameObjects in currentItems.GroupBy(c => c.Item.LinkedObject.ObjectModel.Name))
+            foreach (var groupOfSameObjects in currentItems.GroupBy(c => c.Item.LinkedObject.ObjectModel.Name))
             {
                 foreach (var node in groupOfSameObjects)
                 {
@@ -292,7 +292,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     result.Add(newElement);
                 }
             }
-            return result;           
+            return result;
         }
 
         private static void ProcessObjectElement(XElement newElement, NetworkTreeNode node, DataBlock qp)
@@ -325,20 +325,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 var vsf = (VariableDataBlock)qp;
                 var varModel = vsf.VariableMetamodel;
-                if (varModel.IsPeriodic)
-                {
-                    var periodVariable = new XElement(varModel.Name);                    
-                    foreach(var v in node.LinkedObject.GetPeriodVariable(varModel))
-                    {
-                        periodVariable.Add(new XElement("Period",
-                                                new XAttribute("Period", v.Date), v.Value));
-                    }
-                    newElement.Add(periodVariable);
-                }
-                else
-                {
-                    newElement.Add(new XElement(varModel.Name, node.LinkedObject.GetVariableValue(varModel)));
-                }
+                newElement.Add(new XElement(varModel.Name, node.LinkedObject.GetVariableValue(varModel)));
             }
         }
 
@@ -369,21 +356,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 cb.NetworkRevision = _network.Revision;
             });
         }
-
-        private class Disposable : IDisposable
-        {
-            private readonly Action _onDispose;
-            public Disposable(Action onDispose)
-            {
-                _onDispose = onDispose;
-            }
-            public void Dispose()
-            {
-                _onDispose();
-            }
-        }
-
-    }
+    }per
 
     //public class XElementResolver<D, T> : IValueResolver<XElement, D, T>
     //{
