@@ -82,6 +82,15 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
+        public NamedObject FindObject(string objectTypeName, string name)
+        {
+            return _network
+                .Nodes
+                .Where(n => n.LinkedObject.ObjectModel.Name == objectTypeName)
+                .SingleOrDefault(n => n.NodeName == name)
+                ?.LinkedObject;
+        }
+
         private IEnumerable<NetworkTreeNode> RestoreNodes(Model1 context, IEnumerable<XElement> elements, NetworkTreeNode parent, List<NetworkTreeNode> allNodes)
         {
             var result = new List<NetworkTreeNode>();

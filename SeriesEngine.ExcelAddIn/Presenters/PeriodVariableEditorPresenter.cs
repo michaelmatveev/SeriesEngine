@@ -22,7 +22,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
         void ICommand<EditPeriodVariableCommandArg>.Execute(EditPeriodVariableCommandArg commandData)
         {
-            var obj = _objectProvider.GetSelectedObject(commandData.CurrentSelection, commandData.Solution);
+            var obj = _objectProvider.GetSelectedPeriodVaraible(commandData.CurrentSelection, commandData.Solution);
             View.ShowIt();
         }
     }

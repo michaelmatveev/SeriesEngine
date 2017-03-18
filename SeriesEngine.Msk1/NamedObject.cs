@@ -29,7 +29,7 @@ namespace SeriesEngine.Msk1
             {
                 property = thisType.GetProperty($"{ObjectModel.Name}_{variableModel.Name}s");
                 var collection = property.GetValue(this, null) as IEnumerable<PeriodVariable>;
-                return collection.Last().Value;
+                return collection.LastOrDefault()?.Value;
             }
 
             property = thisType.GetProperty(variableModel.Name);

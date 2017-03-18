@@ -50,9 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccess\Context.cs" />
+    <Compile Include="DataAccess\EditorPeriodVariable.cs" />
     <Compile Include="DataAccess\Network.cs" />
     <Compile Include="DataAccess\Solution.cs" />
-    <Compile Include="DataAccess\MyObject.cs" />
+    <Compile Include="DataAccess\EditorObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reliability.cs" />
     <Compile Include="TimeInterval.cs" />

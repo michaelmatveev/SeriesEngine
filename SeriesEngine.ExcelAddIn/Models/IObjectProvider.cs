@@ -5,8 +5,9 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public interface IObjectProvider
     {
-        MyObject GetSelectedObject(CurrentSelection selection, Solution solution);
-        void UpdateObject(MyObject objectToUpdate);
-        void DeleteObject(MyObject objectToDelete);
+        EditorObject GetSelectedObject(CurrentSelection selection, Solution solution);
+        EditorPeriodVariable GetSelectedPeriodVaraible(CurrentSelection selection, Solution solution);       
+        void UpdateObject(EditorObject objectToUpdate);
+        void DeleteObject(EditorObject objectToDelete);
     }
 }

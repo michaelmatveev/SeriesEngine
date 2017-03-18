@@ -11,9 +11,9 @@ namespace SeriesEngine.ExcelAddIn.Views
 
     public interface IObjectPropertiesView : IView
     {
-        void ShowIt(MyObject selectedObject, ObjectPropertiesViewMode viewMode);
+        void ShowIt(EditorObject selectedObject, ObjectPropertiesViewMode viewMode);
         event EventHandler RenameConfirmed;
         event EventHandler DeleteConfirmed;
-        MyObject SelectedObject { get; }
+        EditorObject SelectedObject { get; }
     }
 }

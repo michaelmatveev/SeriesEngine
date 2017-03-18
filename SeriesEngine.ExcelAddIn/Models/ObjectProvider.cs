@@ -23,7 +23,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             _networksProvider = networksProvider;
         }
 
-        public MyObject GetSelectedObject(CurrentSelection selection, Solution solution)
+        public EditorObject GetSelectedObject(CurrentSelection selection, Solution solution)
         {
             var sheet = _workbook.ActiveSheet as Excel.Worksheet;
 
@@ -51,7 +51,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .OfType<XAttribute>()
                     .FirstOrDefault();
 
-                return new MyObject
+                return new EditorObject
                 {
                     Name = selection.Value,
                     NetworkId = network.Id,
@@ -62,13 +62,71 @@ namespace SeriesEngine.ExcelAddIn.Models
             return null;  
         }
 
-        public void UpdateObject(MyObject objectToUpdate)
+        public EditorPeriodVariable GetSelectedPeriodVaraible(CurrentSelection selection, Solution solution)
+        {
+            var sheet = _workbook.ActiveSheet as Excel.Worksheet;
+
+            var column = sheet
+                .ListObjects
+                .Cast<Excel.ListObject>()
+                .SelectMany(l => l.ListColumns.Cast<Excel.ListColumn>().Where(lc => SelectionInRange(lc.DataBodyRange, selection.Row, selection.Column)))
+                .SingleOrDefault();
+
+            var listObject = column.Parent as Excel.ListObject;
+            if (column != null)
+            {
+                var collectionDatablock = _blockProvider
+                    .GetDataBlocks()
+                    .OfType<CollectionDataBlock>()
+                    .SingleOrDefault(db => db.Name == listObject.Name);
+
+                var path = column.XPath.Value.Split(new[] { '/' });
+                var variableName = path.Last();
+                var objTypeName = path.ElementAt(path.Length - 2);
+
+                var variableBlock = collectionDatablock
+                    .DataBlocks
+                    .OfType<VariableDataBlock>()
+                    .Where(db => db.VariableMetamodel.Name == variableName)
+                    .ToList();
+
+                var network = _networksProvider
+                    .GetNetwork(solution.Id, collectionDatablock.NetworkName, variableBlock);
+
+                var parentPath = $"{string.Join("/", path.Take(path.Length - 1))}/@UniqueName";
+                var columnWithObjectName = listObject
+                    .ListColumns
+                    .OfType<Excel.ListColumn>()
+                    .Where(c => c.XPath.Value == parentPath)
+                    .SingleOrDefault();
+
+                var objName = sheet.Cells[selection.Row, listObject.DataBodyRange.Column + columnWithObjectName.Index - 1].Value;
+
+                var obj = network.FindObject(objTypeName, objName);
+                var variableValues = obj.GetPeriodVariable(variableBlock.Single().VariableMetamodel);
+                
+
+                //var xml = collectionDatablock.GetXml(network, _blockProvider.GetDefaultPeriod());
+                //var xpath = GetXPathToNodeId(column.XPath.Value, selection.Value);
+                //var id = ((IEnumerable<object>)XDocument.Parse(xml).Root.XPathEvaluate(xpath))
+                //    .OfType<XAttribute>()
+                //    .FirstOrDefault();
+                return new EditorPeriodVariable
+                {
+                };
+
+            }
+
+            return null;
+        }
+
+        public void UpdateObject(EditorObject objectToUpdate)
         {
             var network = _networksProvider.GetNetworkById(objectToUpdate.NetworkId);
             network.RenameObjectLinkedWithNode(objectToUpdate.NodeId, objectToUpdate.Name);
         }
 
-        public void DeleteObject(MyObject objectToDelete)
+        public void DeleteObject(EditorObject objectToDelete)
         {
             var network = _networksProvider.GetNetworkById(objectToDelete.NetworkId);
             network.DeleteObjectLinkedWithNode(objectToDelete.NodeId);

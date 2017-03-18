@@ -11,8 +11,8 @@ namespace SeriesEngine.ExcelAddIn.Views
             InitializeComponent();
         }
 
-        private MyObject _selectedObject;
-        public MyObject SelectedObject => _selectedObject;
+        private EditorObject _selectedObject;
+        public EditorObject SelectedObject => _selectedObject;
  
         public event EventHandler RenameConfirmed;
 
@@ -28,7 +28,7 @@ namespace SeriesEngine.ExcelAddIn.Views
             DeleteConfirmed?.Invoke(this, EventArgs.Empty);
         }
 
-        public void ShowIt(MyObject selectedObject, ObjectPropertiesViewMode viewMode)
+        public void ShowIt(EditorObject selectedObject, ObjectPropertiesViewMode viewMode)
         {
             if(selectedObject == null)
             {
