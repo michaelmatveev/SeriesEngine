@@ -356,7 +356,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 cb.NetworkRevision = _network.Revision;
             });
         }
-    }per
+    }
 
     //public class XElementResolver<D, T> : IValueResolver<XElement, D, T>
     //{
