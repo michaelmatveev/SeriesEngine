@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SeriesEngine.Core.DataAccess;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
     public interface IPeriodVariableView : IView
     {
-        void ShowIt();
+        void ShowIt(EditPeriodVariables valuesColection);
     }
 }

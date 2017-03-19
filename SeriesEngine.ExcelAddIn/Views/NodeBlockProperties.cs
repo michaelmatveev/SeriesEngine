@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using SeriesEngine.Msk1;
+using SeriesEngine.Core;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {

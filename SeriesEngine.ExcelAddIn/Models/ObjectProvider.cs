@@ -7,6 +7,7 @@ using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using System.Collections.Generic;
+//using SeriesEngine.Msk1;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -62,7 +63,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             return null;  
         }
 
-        public EditorPeriodVariable GetSelectedPeriodVaraible(CurrentSelection selection, Solution solution)
+        public EditPeriodVariables GetSelectedPeriodVaraible(CurrentSelection selection, Solution solution)
         {
             var sheet = _workbook.ActiveSheet as Excel.Worksheet;
 
@@ -88,10 +89,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .DataBlocks
                     .OfType<VariableDataBlock>()
                     .Where(db => db.VariableMetamodel.Name == variableName)
-                    .ToList();
+                    .Single();
 
                 var network = _networksProvider
-                    .GetNetwork(solution.Id, collectionDatablock.NetworkName, variableBlock);
+                    .GetNetwork(solution.Id, collectionDatablock.NetworkName, new[] { variableBlock });
 
                 var parentPath = $"{string.Join("/", path.Take(path.Length - 1))}/@UniqueName";
                 var columnWithObjectName = listObject
@@ -103,18 +104,19 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var objName = sheet.Cells[selection.Row, listObject.DataBodyRange.Column + columnWithObjectName.Index - 1].Value;
 
                 var obj = network.FindObject(objTypeName, objName);
-                var variableValues = obj.GetPeriodVariable(variableBlock.Single().VariableMetamodel);
-                
+                IEnumerable<Msk1.PeriodVariable> variableValues = obj.GetPeriodVariable(variableBlock.VariableMetamodel);
 
-                //var xml = collectionDatablock.GetXml(network, _blockProvider.GetDefaultPeriod());
-                //var xpath = GetXPathToNodeId(column.XPath.Value, selection.Value);
-                //var id = ((IEnumerable<object>)XDocument.Parse(xml).Root.XPathEvaluate(xpath))
-                //    .OfType<XAttribute>()
-                //    .FirstOrDefault();
-                return new EditorPeriodVariable
+                var result = new EditPeriodVariables
                 {
+                    ObjectName = objName,
+                    VariableMetamodel = variableBlock.VariableMetamodel
                 };
-
+                result.ValuesForPeriod.AddRange(variableValues.Select(v => new EditorPeriodVariable
+                {
+                    Period = v.Date,
+                    Value = v.Value
+                }));
+                return result;
             }
 
             return null;

@@ -1,4 +1,5 @@
-﻿using SeriesEngine.Msk1;
+﻿using SeriesEngine.Core;
+using SeriesEngine.Msk1;
 
 namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
 {

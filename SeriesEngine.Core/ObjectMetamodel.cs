@@ -1,7 +1,7 @@
 ﻿using SeriesEngine.Core;
 using System.Collections.Generic;
 
-namespace SeriesEngine.Msk1
+namespace SeriesEngine.Core
 {
     public class Variable
     {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SeriesEngine.Core.DataAccess;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,11 +19,20 @@ namespace SeriesEngine.ExcelAddIn.Views
             InitializeComponent();
         }
 
-        void IPeriodVariableView.ShowIt()
+        void IPeriodVariableView.ShowIt(EditPeriodVariables valuesCollection)
         {
+            Text = $"{valuesCollection.VariableMetamodel.Name} - {valuesCollection.ObjectName}";
+            var items = valuesCollection
+                .ValuesForPeriod
+                .Select(vp => new ListViewItem(new[] { vp.Period.ToString(), vp.Value.ToString() })
+                {
+                    Tag = vp
+                }).ToArray();
+
+            listViewVariable.Items.AddRange(items);
             if (ShowDialog() == DialogResult.OK)
             {
-               // OnSolutionChanged();
+             
             }
         }
 

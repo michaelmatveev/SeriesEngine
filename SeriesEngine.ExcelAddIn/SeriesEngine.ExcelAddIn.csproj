@@ -247,7 +247,6 @@
     <Compile Include="Models\DataBlocks\NodeFragment.cs" />
     <Compile Include="Models\Period.cs" />
     <Compile Include="Models\SubscribeInterceptor.cs" />
-    <Compile Include="Models\TimeInterval.cs" />
     <Compile Include="Models\WorkbookDataBlockProvider.cs" />
     <Compile Include="Models\DataBlockConverter.cs" />
     <Compile Include="Presenters\CollectionPropertiesPresenter.cs" />

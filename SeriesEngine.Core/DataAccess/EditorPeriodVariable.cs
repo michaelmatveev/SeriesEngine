@@ -8,5 +8,7 @@ namespace SeriesEngine.Core.DataAccess
 {
     public class EditorPeriodVariable
     {
+        public DateTime Period { get; set; }
+        public object Value { get; set; }
     }
 }

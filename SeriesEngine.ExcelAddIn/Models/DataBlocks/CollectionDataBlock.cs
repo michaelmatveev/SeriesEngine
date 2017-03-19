@@ -1,4 +1,5 @@
-﻿using SeriesEngine.Msk1;
+﻿using SeriesEngine.Core;
+using SeriesEngine.Msk1;
 using System;
 using System.Collections.Generic;
 using System.Linq;

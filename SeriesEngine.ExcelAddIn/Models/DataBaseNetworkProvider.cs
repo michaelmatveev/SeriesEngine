@@ -51,7 +51,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        public NetworkTree GetNetwork(int solutionId, string name, IList<VariableDataBlock> variables)
+        public NetworkTree GetNetwork(int solutionId, string name, IEnumerable<VariableDataBlock> variables)
         {
             using (var context = new Model1())
             {

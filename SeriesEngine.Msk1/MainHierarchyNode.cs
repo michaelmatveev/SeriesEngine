@@ -1,5 +1,6 @@
 namespace SeriesEngine.Msk1
 {
+    using Core;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;

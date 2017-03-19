@@ -60,7 +60,6 @@
     <Compile Include="NamedObject.cs" />
     <Compile Include="Network.cs" />
     <Compile Include="NetworkTreeNode.cs" />
-    <Compile Include="ObjectMetamodel.cs" />
     <Compile Include="PeriodVariable.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Point_MaxPowers.cs" />

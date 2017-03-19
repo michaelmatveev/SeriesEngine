@@ -22,8 +22,8 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
         void ICommand<EditPeriodVariableCommandArg>.Execute(EditPeriodVariableCommandArg commandData)
         {
-            var obj = _objectProvider.GetSelectedPeriodVaraible(commandData.CurrentSelection, commandData.Solution);
-            View.ShowIt();
+            var variablesValues = _objectProvider.GetSelectedPeriodVaraible(commandData.CurrentSelection, commandData.Solution);
+            View.ShowIt(variablesValues);
         }
     }
 }
