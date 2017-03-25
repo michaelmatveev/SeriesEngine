@@ -313,6 +313,12 @@
     <Compile Include="Views\SolutionSelector.Designer.cs">
       <DependentUpon>SolutionSelector.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\VariableEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\VariableEditor.Designer.cs">
+      <DependentUpon>VariableEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\ViewNames.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -356,6 +362,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\SolutionSelector.resx">
       <DependentUpon>SolutionSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\VariableEditor.resx">
+      <DependentUpon>VariableEditor.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config" />
     <None Include="packages.config" />

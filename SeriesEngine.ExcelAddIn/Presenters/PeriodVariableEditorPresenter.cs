@@ -18,12 +18,17 @@ namespace SeriesEngine.ExcelAddIn.Presenters
         public PeriodVariableEditorPresenter(IObjectProvider objectProvider, IPeriodVariableView view, IApplicationController controller) : base(view, controller)
         {
             _objectProvider = objectProvider;
+            View.EditVariableCompleted += (s, e) =>
+            {
+                //_objectProvider.DeleteObject
+            };
         }
 
         void ICommand<EditPeriodVariableCommandArg>.Execute(EditPeriodVariableCommandArg commandData)
         {
             var variablesValues = _objectProvider.GetSelectedPeriodVaraible(commandData.CurrentSelection, commandData.Solution);
-            View.ShowIt(variablesValues);
+            View.ValuesCollection = variablesValues;
+            View.ShowIt();
         }
     }
 }

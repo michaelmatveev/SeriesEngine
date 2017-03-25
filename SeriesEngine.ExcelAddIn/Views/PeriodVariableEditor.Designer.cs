@@ -97,6 +97,7 @@
             this.buttonAdd.TabIndex = 0;
             this.buttonAdd.Text = "Добавить...";
             this.buttonAdd.UseVisualStyleBackColor = true;
+            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
             // 
             // buttonModify
             // 
@@ -106,6 +107,7 @@
             this.buttonModify.TabIndex = 1;
             this.buttonModify.Text = "Изменить...";
             this.buttonModify.UseVisualStyleBackColor = true;
+            this.buttonModify.Click += new System.EventHandler(this.buttonModify_Click);
             // 
             // buttonDelete
             // 
@@ -115,6 +117,7 @@
             this.buttonDelete.TabIndex = 2;
             this.buttonDelete.Text = "Удалить";
             this.buttonDelete.UseVisualStyleBackColor = true;
+            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
             // 
             // flowLayoutPanel2
             // 

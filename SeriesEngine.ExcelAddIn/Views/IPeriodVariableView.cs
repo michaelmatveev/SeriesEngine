@@ -1,9 +1,12 @@
 ﻿using SeriesEngine.Core.DataAccess;
+using System;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
     public interface IPeriodVariableView : IView
     {
-        void ShowIt(EditPeriodVariables valuesColection);
+        EditPeriodVariables ValuesCollection { get; set; }
+        event EventHandler EditVariableCompleted;
+        void ShowIt();
     }
 }
