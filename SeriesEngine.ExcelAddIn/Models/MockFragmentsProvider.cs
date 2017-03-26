@@ -1,4 +1,4 @@
-﻿using FluentDateTime;
+﻿using SeriesEngine.Core.DataAccess;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System;
 using System.Collections.Generic;
@@ -8,11 +8,11 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public class MockFragmentsProvider : IDataBlockProvider
     {
-        private static Period DefaultPeriod = new Period
-        {
-            From = DateTime.Now.FirstDayOfMonth(),
-            Till = DateTime.Now.AddMonths(1).FirstDayOfMonth()
-        };
+        //private static Period DefaultPeriod = new Period
+        //{
+        //    From = DateTime.Now.FirstDayOfMonth(),
+        //    Till = DateTime.Now.AddMonths(1).FirstDayOfMonth()
+        //};
 
         private static CollectionDataBlock SourceCollection = new CollectionDataBlock
         {
@@ -263,7 +263,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     Name = network.Name
                 };
                 yield return source;
-                yield return new CollectionDataBlock(source, DefaultPeriod)
+                yield return new CollectionDataBlock(source, Period.Default)
                 {
                     Name = "СтруктураОбъектов",
                     Sheet = "Лист1",

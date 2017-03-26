@@ -7,6 +7,7 @@ using Microsoft.Office.Core;
 using System.IO;
 using System.Xml.Serialization;
 using System.Xml.Linq;
+using SeriesEngine.Core.DataAccess;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {

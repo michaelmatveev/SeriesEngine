@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SeriesEngine.Core.DataAccess;
+using System;
 
 namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
 {

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Period = SeriesEngine.Core.DataAccess.Period;
 
 namespace SeriesEngine.Tests.Database
 {

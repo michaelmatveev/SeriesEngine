@@ -89,31 +89,34 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .DataBlocks
                     .OfType<VariableDataBlock>()
                     .Where(db => db.VariableMetamodel.Name == variableName)
-                    .Single();
-
-                var network = _networksProvider
-                    .GetNetwork(solution.Id, collectionDatablock.NetworkName, new[] { variableBlock });
-
-                var parentPath = $"{string.Join("/", path.Take(path.Length - 1))}/@UniqueName";
-                var columnWithObjectName = listObject
-                    .ListColumns
-                    .OfType<Excel.ListColumn>()
-                    .Where(c => c.XPath.Value == parentPath)
                     .SingleOrDefault();
 
-                var objName = sheet.Cells[selection.Row, listObject.DataBodyRange.Column + columnWithObjectName.Index - 1].Value;
-
-                var obj = network.FindObject(objTypeName, objName);
-                IEnumerable<PeriodVariable> variableValues = obj.GetPeriodVariable(variableBlock.VariableMetamodel);
-
-                var result = new EditPeriodVariables
+                if (variableBlock != null)
                 {
-                    NetworkId = network.Id,
-                    Object = obj,
-                    VariableMetamodel = variableBlock.VariableMetamodel
-                };
-                result.ValuesForPeriod.AddRange(variableValues);
-                return result;
+                    var network = _networksProvider
+                        .GetNetwork(solution.Id, collectionDatablock.NetworkName, new[] { variableBlock });
+
+                    var parentPath = $"{string.Join("/", path.Take(path.Length - 1))}/@UniqueName";
+                    var columnWithObjectName = listObject
+                        .ListColumns
+                        .OfType<Excel.ListColumn>()
+                        .Where(c => c.XPath.Value == parentPath)
+                        .SingleOrDefault();
+
+                    var objName = sheet.Cells[selection.Row, listObject.DataBodyRange.Column + columnWithObjectName.Index - 1].Value;
+
+                    NamedObject obj = network.FindObject(objTypeName, objName);
+                    IEnumerable<PeriodVariable> variableValues = obj.GetPeriodVariable(variableBlock.VariableMetamodel, _blockProvider.GetDefaultPeriod());
+
+                    var result = new EditPeriodVariables
+                    {
+                        NetworkId = network.Id,
+                        Object = obj,
+                        VariableMetamodel = variableBlock.VariableMetamodel
+                    };
+                    result.ValuesForPeriod.AddRange(variableValues);
+                    return result;
+                }
             }
 
             return null;

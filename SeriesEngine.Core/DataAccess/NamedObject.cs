@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SeriesEngine.Core.DataAccess;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -36,7 +37,7 @@ namespace SeriesEngine.Core.DataAccess
             return property.GetValue(this, null);
         }
 
-        public IEnumerable<PeriodVariable> GetPeriodVariable(Variable variableModel)
+        public IEnumerable<PeriodVariable> GetPeriodVariable(Variable variableModel, Period selectedPeriod)
         {
             if(!variableModel.IsPeriodic)
             {
@@ -46,7 +47,9 @@ namespace SeriesEngine.Core.DataAccess
             var thisType = GetType();
             var property = thisType.GetProperty($"{ObjectModel.Name}_{variableModel.Name}s");
             var collection = property.GetValue(this, null) as IEnumerable<PeriodVariable>;
-            return collection.OrderBy(pv => pv.Date);
+            return collection
+                .Where(pv => selectedPeriod.Include(pv.Date))
+                .OrderBy(pv => pv.Date);
         }
 
         public void SetVariableValue(string variableName, object value)

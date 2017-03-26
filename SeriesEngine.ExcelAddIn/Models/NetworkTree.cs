@@ -61,7 +61,8 @@ namespace SeriesEngine.ExcelAddIn.Models
 
             if (node.ValidFrom.HasValue && node.ValidTill.HasValue)
             {
-                return period.From < node.ValidTill.Value && period.Till >= node.ValidFrom.Value;
+                //return period.From < node.ValidTill.Value && period.Till >= node.ValidFrom.Value;
+                return period.Intersect(node.ValidFrom.Value, node.ValidTill.Value);
             }
 
             return whenNodePeriodIsIncorrectResult;

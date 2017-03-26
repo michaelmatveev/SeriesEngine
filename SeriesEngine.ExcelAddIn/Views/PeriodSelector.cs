@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using SeriesEngine.ExcelAddIn.Models;
+using SeriesEngine.Core.DataAccess;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
@@ -52,5 +45,6 @@ namespace SeriesEngine.ExcelAddIn.Views
                 PeriodChanged?.Invoke(this, EventArgs.Empty);
             }
         }
+
     }
 }

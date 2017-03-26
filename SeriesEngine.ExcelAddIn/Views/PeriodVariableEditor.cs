@@ -102,8 +102,8 @@ namespace SeriesEngine.ExcelAddIn.Views
             {
                 selectedVariable.State = ObjectState.Deleted;
             }
+            FillValues();
         }
-
 
     }
 }

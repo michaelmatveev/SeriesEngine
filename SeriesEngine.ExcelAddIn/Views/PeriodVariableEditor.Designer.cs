@@ -157,8 +157,10 @@
             this.columnHeaderPeriod,
             this.columnHeaderValue});
             this.listViewVariable.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewVariable.FullRowSelect = true;
             this.listViewVariable.Location = new System.Drawing.Point(10, 10);
             this.listViewVariable.Margin = new System.Windows.Forms.Padding(10);
+            this.listViewVariable.MultiSelect = false;
             this.listViewVariable.Name = "listViewVariable";
             this.listViewVariable.Size = new System.Drawing.Size(561, 308);
             this.listViewVariable.TabIndex = 2;

@@ -1,4 +1,5 @@
-﻿using SeriesEngine.ExcelAddIn.Models.DataBlocks;
+﻿using SeriesEngine.Core.DataAccess;
+using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using SeriesEngine.Msk1;
 using System;
 using System.Linq;

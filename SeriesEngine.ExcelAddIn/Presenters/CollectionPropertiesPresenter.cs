@@ -5,6 +5,7 @@ using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using SeriesEngine.ExcelAddIn.Models;
 using System.Xml.Linq;
 using SeriesEngine.ExcelAddIn.Properties;
+using SeriesEngine.Core.DataAccess;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
