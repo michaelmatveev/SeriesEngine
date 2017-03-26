@@ -20,7 +20,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             _objectProvider = objectProvider;
             View.EditVariableCompleted += (s, e) =>
             {
-                //_objectProvider.DeleteObject
+                _objectProvider.UpdatePeriodVaraible(View.ValuesCollection);                
             };
         }
 

@@ -1,5 +1,6 @@
 namespace SeriesEngine.Msk1
 {
+    using Core.DataAccess;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -22,6 +23,10 @@ namespace SeriesEngine.Msk1
             get
             {
                 return VoltageLevel;
+            }
+            set
+            {
+                VoltageLevel = (string)value;
             }
         }
     }

@@ -1,6 +1,7 @@
 namespace SeriesEngine.Msk1
 {
     using Core;
+    using Core.DataAccess;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -130,21 +131,25 @@ namespace SeriesEngine.Msk1
                 new Variable
                 {
                     Name = "VoltageLevel",
+                    EntityType = typeof(Point_VoltageLevel),
                     IsPeriodic = true                    
                 },
                 new Variable
                 {
                     Name = "MaxPower",
+                    EntityType = typeof(Point_MaxPower),
                     IsPeriodic = true
                 },
                 new Variable
                 {
                     Name = "TUCode",
+                    EntityType = typeof(Point_TUCode),
                     IsPeriodic = true
                 },
                 new Variable
                 {
                     Name = "PUPlace",
+                    EntityType = typeof(Point_PUPlace),
                     IsPeriodic = false,
                     IsVersioned = true
                 }

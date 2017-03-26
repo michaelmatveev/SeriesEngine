@@ -15,7 +15,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             _objectProvider = objectProvider;
             View.RenameConfirmed += (s, e) =>
             {
-                objectProvider.UpdateObject(View.SelectedObject);
+                objectProvider.RenameObject(View.SelectedObject);
                 Controller.Execute(new ReloadAllCommandArgs());
             };
             View.DeleteConfirmed += (s, e) =>

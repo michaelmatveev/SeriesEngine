@@ -1,5 +1,6 @@
 namespace SeriesEngine.Msk1
 {
+    using Core.DataAccess;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -14,8 +15,6 @@ namespace SeriesEngine.Msk1
         {
             MainHierarchyNodes = new HashSet<MainHierarchyNode>();
         }
-
-        public int Id { get; set; }
 
         public int SolutionId { get; set; }
 

@@ -49,12 +49,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccess\Context.cs" />
-    <Compile Include="DataAccess\EditorPeriodVariable.cs" />
     <Compile Include="DataAccess\EditPeriodVariables.cs" />
+    <Compile Include="DataAccess\IStateObject.cs" />
+    <Compile Include="DataAccess\NamedObject.cs" />
     <Compile Include="DataAccess\Network.cs" />
+    <Compile Include="DataAccess\PeriodVariable.cs" />
     <Compile Include="DataAccess\Solution.cs" />
     <Compile Include="DataAccess\EditorObject.cs" />
+    <Compile Include="DataAccess\Utilities.cs" />
     <Compile Include="ObjectMetamodel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reliability.cs" />

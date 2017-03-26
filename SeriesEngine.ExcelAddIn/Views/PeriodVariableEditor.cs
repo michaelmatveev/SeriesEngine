@@ -29,13 +29,14 @@ namespace SeriesEngine.ExcelAddIn.Views
         
         private void FillValues()
         {
-            Text = $"{ValuesCollection.VariableMetamodel.Name} - {ValuesCollection.ObjectName}";
+            Text = $"{ValuesCollection.VariableMetamodel.Name} - {ValuesCollection.Object.GetName()}";
             listViewVariable.Items.Clear();
 
             var items = ValuesCollection
                 .ValuesForPeriod
-                .OrderBy(vp => vp.Period)
-                .Select(vp => new ListViewItem(new[] { vp.Period.ToString(), vp.Value.ToString() })
+                .OrderBy(vp => vp.Date)
+                .Where(vp => vp.State != ObjectState.Deleted)
+                .Select(vp => new ListViewItem(new[] { vp.Date.ToString(), vp.Value.ToString() })
                 {
                     Tag = vp
                 }).ToArray();
@@ -45,10 +46,9 @@ namespace SeriesEngine.ExcelAddIn.Views
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var newVariable = new EditorPeriodVariable
-            {
-                Period = DateTime.Now
-            };
+            var newVariable = Activator.CreateInstance(ValuesCollection.VariableMetamodel.EntityType) as PeriodVariable;
+            newVariable.Date = DateTime.Now;
+            newVariable.ObjectId = ValuesCollection.Object.Id;
 
             using (var varEditor = new VariableEditor(newVariable)
             {
@@ -57,6 +57,7 @@ namespace SeriesEngine.ExcelAddIn.Views
             {
                 if (varEditor.ShowDialog() == DialogResult.OK)
                 {
+                    varEditor.Variable.State = ObjectState.Added;
                     ValuesCollection.ValuesForPeriod.Add(varEditor.Variable);
                     FillValues();
                 }
@@ -69,7 +70,7 @@ namespace SeriesEngine.ExcelAddIn.Views
                 .SelectedItems
                 .Cast<ListViewItem>()
                 .Single()
-                .Tag as EditorPeriodVariable;
+                .Tag as PeriodVariable;
 
             using (var varEditor = new VariableEditor(selectedVariable)
             {
@@ -78,6 +79,7 @@ namespace SeriesEngine.ExcelAddIn.Views
             {
                 if (varEditor.ShowDialog() == DialogResult.OK)
                 {
+                    selectedVariable.State = ObjectState.Modified;
                     FillValues();
                 }
             }
@@ -85,7 +87,23 @@ namespace SeriesEngine.ExcelAddIn.Views
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
+            var selectedItem = listViewVariable
+                .SelectedItems
+                .Cast<ListViewItem>()
+                .Single();
 
+            var selectedVariable = selectedItem.Tag as PeriodVariable;
+
+            if(selectedVariable.State == ObjectState.Added)
+            {
+                listViewVariable.Items.Remove(selectedItem);
+            }
+            else
+            {
+                selectedVariable.State = ObjectState.Deleted;
+            }
         }
+
+
     }
 }

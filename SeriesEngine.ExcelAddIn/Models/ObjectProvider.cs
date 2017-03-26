@@ -104,34 +104,37 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var objName = sheet.Cells[selection.Row, listObject.DataBodyRange.Column + columnWithObjectName.Index - 1].Value;
 
                 var obj = network.FindObject(objTypeName, objName);
-                IEnumerable<Msk1.PeriodVariable> variableValues = obj.GetPeriodVariable(variableBlock.VariableMetamodel);
+                IEnumerable<PeriodVariable> variableValues = obj.GetPeriodVariable(variableBlock.VariableMetamodel);
 
                 var result = new EditPeriodVariables
                 {
-                    ObjectName = objName,
+                    NetworkId = network.Id,
+                    Object = obj,
                     VariableMetamodel = variableBlock.VariableMetamodel
                 };
-                result.ValuesForPeriod.AddRange(variableValues.Select(v => new EditorPeriodVariable
-                {
-                    Period = v.Date,
-                    Value = v.Value
-                }));
+                result.ValuesForPeriod.AddRange(variableValues);
                 return result;
             }
 
             return null;
         }
 
-        public void UpdateObject(EditorObject objectToUpdate)
+        public void RenameObject(EditorObject objectToRename)
         {
-            var network = _networksProvider.GetNetworkById(objectToUpdate.NetworkId);
-            network.RenameObjectLinkedWithNode(objectToUpdate.NodeId, objectToUpdate.Name);
+            var network = _networksProvider.GetNetworkById(objectToRename.NetworkId);
+            network.RenameObjectLinkedWithNode(objectToRename.NodeId, objectToRename.Name);
         }
 
         public void DeleteObject(EditorObject objectToDelete)
         {
             var network = _networksProvider.GetNetworkById(objectToDelete.NetworkId);
             network.DeleteObjectLinkedWithNode(objectToDelete.NodeId);
+        }
+
+        public void UpdatePeriodVaraible(EditPeriodVariables variables)
+        {
+            var network = _networksProvider.GetNetworkById(variables.NetworkId);
+            network.UpdateVariables(variables.ValuesForPeriod);
         }
 
         private static bool SelectionInRange(Excel.Range range, int row, int column)

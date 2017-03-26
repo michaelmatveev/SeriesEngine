@@ -1,5 +1,6 @@
 namespace SeriesEngine.Msk1
 {
+    using Core.DataAccess;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -19,9 +20,7 @@ namespace SeriesEngine.Msk1
             Point_TUCodes = new HashSet<Point_TUCode>();
         }
 
-        public int Id { get; set; }
-
-        public int? AuthorId { get; set; }
+         public int? AuthorId { get; set; }
 
         [Required]
         [StringLength(int.MaxValue)]

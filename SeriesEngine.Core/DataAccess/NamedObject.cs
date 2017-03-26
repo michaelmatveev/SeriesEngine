@@ -1,16 +1,15 @@
-﻿using SeriesEngine.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SeriesEngine.Msk1
+namespace SeriesEngine.Core.DataAccess
 {
     public abstract class NamedObject
     {
+        public int Id { get; set; }
+        
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime ObjectCreationTime { get; set; }
 

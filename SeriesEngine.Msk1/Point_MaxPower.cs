@@ -1,18 +1,20 @@
 namespace SeriesEngine.Msk1
 {
+    using Core.DataAccess;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("pwk1.Point_TUCodes")]
-    public partial class Point_TUCode : PeriodVariable
+    [Table("pwk1.Point_MaxPowers")]
+    public partial class Point_MaxPower : PeriodVariable
     {
         public virtual User User { get; set; }
 
+        [Required]
         [StringLength(200)]
-        public string TUCode { get; set; }
+        public string MaxPower { get; set; }
 
         public virtual Point Point { get; set; }
 
@@ -20,7 +22,11 @@ namespace SeriesEngine.Msk1
         {
             get
             {
-                return TUCode;
+                return MaxPower;
+            }
+            set
+            {
+                MaxPower = (string)value;
             }
         }
     }

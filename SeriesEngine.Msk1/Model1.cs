@@ -4,7 +4,7 @@ namespace SeriesEngine.Msk1
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
-
+    using Core.DataAccess;
     public partial class Model1 : DbContext
     {
         public Model1()
@@ -29,6 +29,9 @@ namespace SeriesEngine.Msk1
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            //modelBuilder.Entity<IStateObject>()
+            //    .Ignore(s => s.State);
+
             modelBuilder.Entity<Network>()
                 .Property(e => e.Description)
                 .IsUnicode(false);

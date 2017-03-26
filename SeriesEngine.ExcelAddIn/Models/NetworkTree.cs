@@ -1,4 +1,5 @@
-﻿using SeriesEngine.ExcelAddIn.Helpers;
+﻿using SeriesEngine.Core.DataAccess;
+using SeriesEngine.ExcelAddIn.Helpers;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using SeriesEngine.Msk1;
 using System;
@@ -185,6 +186,20 @@ namespace SeriesEngine.ExcelAddIn.Models
                     };
 
                 default: throw new NotSupportedException();
+            }
+        }
+
+        public void UpdateVariables(List<PeriodVariable> valuesForPeriod)
+        {
+            using (var context = new Model1())
+            {
+                context.Configuration.AutoDetectChangesEnabled = false;
+                foreach(var v in valuesForPeriod)
+                {
+                    context.Set(v.GetType()).Attach(v);
+                }
+                context.FixState();
+                context.SaveChanges();
             }
         }
 

@@ -1,15 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SeriesEngine.Msk1
+namespace SeriesEngine.Core.DataAccess
 {
-    public abstract class PeriodVariable
+    public abstract class PeriodVariable:
+        IStateObject
     {
+        public PeriodVariable()
+        {
+            State = ObjectState.Unchanged;
+        }
+
         public int Id { get; set; }
 
         public int ObjectId { get; set; }
@@ -27,6 +28,9 @@ namespace SeriesEngine.Msk1
 
         //public virtual User User { get; set; }
 
-        public abstract object Value { get; }
+        public abstract object Value { get; set; }
+
+        [NotMapped]
+        public ObjectState State { get; set; }
     }
 }

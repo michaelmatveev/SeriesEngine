@@ -1,4 +1,5 @@
 ﻿using SeriesEngine.Core;
+using System;
 using System.Collections.Generic;
 
 namespace SeriesEngine.Core
@@ -9,6 +10,7 @@ namespace SeriesEngine.Core
         public bool IsPeriodic { get; set; }
         public bool IsVersioned { get; set; }
         public TimeInterval PeriodInterval { get; set; }
+        public Type EntityType {get; set;}
     }
 
     public class ObjectMetamodel

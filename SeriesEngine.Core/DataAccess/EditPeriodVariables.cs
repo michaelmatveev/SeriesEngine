@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using SeriesEngine.Core.DataAccess;
+using System.Collections.Generic;
 
 namespace SeriesEngine.Core.DataAccess
 {
     public class EditPeriodVariables
     {
+        public int NetworkId { get; set; }
         public Variable VariableMetamodel { get; set; }
-        public string ObjectName { get; set; }
-        public List<EditorPeriodVariable> ValuesForPeriod { get; private set; } = new List<EditorPeriodVariable>();
+        public NamedObject Object { get; set; }
+        public List<PeriodVariable> ValuesForPeriod { get; private set; } = new List<PeriodVariable>();
 
         public EditPeriodVariables()
         {
