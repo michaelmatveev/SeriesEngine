@@ -29,5 +29,10 @@ namespace SeriesEngine.Core.DataAccess
         {
             return From < finish && Till >= start;
         }
+
+        public override string ToString()
+        {
+            return $"c {From.ToString("dd.MM.yyyy")} по {Till.ToString("dd.MM.yyyy")}";
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using SeriesEngine.App;
 using SeriesEngine.Core.DataAccess;
+using System.Collections.Generic;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -7,8 +8,11 @@ namespace SeriesEngine.ExcelAddIn.Models
     {
         EditorObject GetSelectedObject(CurrentSelection selection, Solution solution);
         EditPeriodVariables GetSelectedPeriodVaraible(CurrentSelection selection, Solution solution);
-        void UpdatePeriodVaraible(EditPeriodVariables variables);
         void RenameObject(EditorObject objectToUpdate);
         void DeleteObject(EditorObject objectToDelete);
+
+        //void UpdatePeriodVaraible(EditPeriodVariables variables);
+        void ChangeData(int networkId, IEnumerable<IStateObject> objectsToChange);
+
     }
 }

@@ -14,21 +14,31 @@ namespace SeriesEngine.ExcelAddIn.Presenters
         ICommand<EditPeriodVariableCommandArg>
     {
         private readonly IObjectProvider _objectProvider;
+        private readonly IDataBlockProvider _blockProvider;
+        private ExcelCurrentSelection _currentSelection;
 
-        public PeriodVariableEditorPresenter(IObjectProvider objectProvider, IPeriodVariableView view, IApplicationController controller) : base(view, controller)
+        public PeriodVariableEditorPresenter(IObjectProvider objectProvider, IDataBlockProvider blockProvider, IPeriodVariableView view, IApplicationController controller) : base(view, controller)
         {
             _objectProvider = objectProvider;
+            _blockProvider = blockProvider;
             View.EditVariableCompleted += (s, e) =>
             {
-                _objectProvider.UpdatePeriodVaraible(View.ValuesCollection);                
+                var values = View.ValuesCollection;
+                _objectProvider.ChangeData(values.NetworkId, values.ValuesForPeriod);
+                _currentSelection.Value = values
+                    .ValuesForPeriod
+                    .LastOrDefault(v => blockProvider.GetDefaultPeriod().Include(v.Date))
+                    ?.Value
+                    .ToString();
             };
         }
 
         void ICommand<EditPeriodVariableCommandArg>.Execute(EditPeriodVariableCommandArg commandData)
         {
-            var variablesValues = _objectProvider.GetSelectedPeriodVaraible(commandData.CurrentSelection, commandData.Solution);
+            _currentSelection = commandData.CurrentSelection as ExcelCurrentSelection;
+            var variablesValues = _objectProvider.GetSelectedPeriodVaraible(_currentSelection, commandData.Solution);
             View.ValuesCollection = variablesValues;
-            View.ShowIt();
+            View.ShowIt(_blockProvider.GetDefaultPeriod());
         }
     }
 }

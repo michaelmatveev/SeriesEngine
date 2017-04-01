@@ -8,17 +8,33 @@ namespace SeriesEngine.ExcelAddIn.Models
         public CurrentSelection GetSelection()
         {
             var range = (Range)Globals.ThisAddIn.Application.Selection;
-            var sheet = range.Parent.Name;
-            var cell = range.AddressLocal.Replace("$", string.Empty);
-            return new CurrentSelection
+            return new ExcelCurrentSelection(range);
+        }
+    }
+
+    public class ExcelCurrentSelection : CurrentSelection
+    {
+        private readonly Range _range;
+
+        public ExcelCurrentSelection(Range range)
+        {
+            _range = range;
+        }
+
+        public string Cell => _range.AddressLocal.Replace("$", string.Empty);
+        public string Name => _range.AddressLocal.Replace("$", string.Empty);        
+        public string Sheet => _range.Parent.Name;
+        public int Row => _range.Row;
+        public int Column => _range.Column;
+        public override string Value {
+            get
             {
-                Sheet = sheet,
-                Cell = cell,
-                Name = cell,
-                Row = range.Row,
-                Column = range.Column,
-                Value = range.Value2
-            };
+                return _range.Value2;
+            }
+            set
+            {
+                _range.Value2 = value;
+            }
         }
     }
 }

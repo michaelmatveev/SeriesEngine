@@ -4,8 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SeriesEngine.Msk1
 {
-    public abstract class NetworkTreeNode
+    public abstract class NetworkTreeNode:
+        IStateObject
     {
+        [NotMapped]
+        public ObjectState State { get; set; }
+        
         public int Id { get; set; }
 
         public string NodeName
@@ -30,5 +34,6 @@ namespace SeriesEngine.Msk1
 
         [NotMapped]
         public bool IsMarkedFlag { get; set; }
+
     }
 }

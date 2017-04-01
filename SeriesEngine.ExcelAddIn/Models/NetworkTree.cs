@@ -42,6 +42,23 @@ namespace SeriesEngine.ExcelAddIn.Models
             return data;
         }
 
+        public void LoadFromXml(XDocument target)
+        {
+            using (var context = new Model1())
+            {
+                context.Database.Log = (s) => Debug.WriteLine(s);
+                var allNodes = new List<NetworkTreeNode>(_network.Nodes);
+                context.Solutions.Attach(_network.Solution);
+
+                var newNodes = RestoreNodes(context, target.Root.Elements(), null, allNodes);
+                context.MainHierarchyNodes.AddRange(newNodes.Cast<MainHierarchyNode>());
+                context.MainHierarchyNodes.RemoveRange(allNodes.Where(n => !n.IsMarkedFlag).Cast<MainHierarchyNode>());
+
+                context.SaveChanges();
+            }
+        }
+
+        
         private static bool IsNodeInPeriod(NetworkTreeNode node, Period period, bool whenNodePeriodIsIncorrectResult)
         {
             if (!(node.ValidFrom.HasValue || node.ValidTill.HasValue))
@@ -66,22 +83,6 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
 
             return whenNodePeriodIsIncorrectResult;
-        }
-
-        public void LoadFromXml(XDocument target)
-        {
-            using (var context = new Model1())
-            {
-                context.Database.Log = (s) => Debug.WriteLine(s);
-                var allNodes = new List<NetworkTreeNode>(_network.Nodes);
-                context.Solutions.Attach(_network.Solution);
-
-                var newNodes = RestoreNodes(context, target.Root.Elements(), null, allNodes);
-                context.MainHierarchyNodes.AddRange(newNodes.Cast<MainHierarchyNode>());
-                context.MainHierarchyNodes.RemoveRange(allNodes.Where(n => !n.IsMarkedFlag).Cast<MainHierarchyNode>());
-
-                context.SaveChanges();
-            }
         }
 
         public NamedObject FindObject(string objectTypeName, string name)
@@ -190,7 +191,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        public void UpdateVariables(List<PeriodVariable> valuesForPeriod)
+        public void UpdateVariables(IEnumerable<IStateObject> valuesForPeriod)
         {
             using (var context = new Model1())
             {

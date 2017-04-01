@@ -7,6 +7,6 @@ namespace SeriesEngine.ExcelAddIn.Views
     {
         EditPeriodVariables ValuesCollection { get; set; }
         event EventHandler EditVariableCompleted;
-        void ShowIt();
+        void ShowIt(Period selectedPeriod);
     }
 }

@@ -7,7 +7,6 @@ using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using System.Collections.Generic;
-//using SeriesEngine.Msk1;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -24,14 +23,21 @@ namespace SeriesEngine.ExcelAddIn.Models
             _networksProvider = networksProvider;
         }
 
+        public void ChangeData(int networkId, IEnumerable<IStateObject> objectsToChange)
+        {
+            var network = _networksProvider.GetNetworkById(networkId);
+            network.UpdateVariables(objectsToChange);
+        }
+
         public EditorObject GetSelectedObject(CurrentSelection selection, Solution solution)
         {
             var sheet = _workbook.ActiveSheet as Excel.Worksheet;
+            var excelSelection = selection as ExcelCurrentSelection; 
 
             var column = sheet
                 .ListObjects
                 .Cast<Excel.ListObject>()
-                .SelectMany(l => l.ListColumns.Cast<Excel.ListColumn>().Where(lc => SelectionInRange(lc.DataBodyRange, selection.Row, selection.Column)))
+                .SelectMany(l => l.ListColumns.Cast<Excel.ListColumn>().Where(lc => SelectionInRange(lc.DataBodyRange, excelSelection.Row, excelSelection.Column)))
                 .SingleOrDefault();
 
             var listObject = column.Parent as Excel.ListObject;
@@ -66,11 +72,12 @@ namespace SeriesEngine.ExcelAddIn.Models
         public EditPeriodVariables GetSelectedPeriodVaraible(CurrentSelection selection, Solution solution)
         {
             var sheet = _workbook.ActiveSheet as Excel.Worksheet;
+            var excelSelection = selection as ExcelCurrentSelection;
 
             var column = sheet
                 .ListObjects
                 .Cast<Excel.ListObject>()
-                .SelectMany(l => l.ListColumns.Cast<Excel.ListColumn>().Where(lc => SelectionInRange(lc.DataBodyRange, selection.Row, selection.Column)))
+                .SelectMany(l => l.ListColumns.Cast<Excel.ListColumn>().Where(lc => SelectionInRange(lc.DataBodyRange, excelSelection.Row, excelSelection.Column)))
                 .SingleOrDefault();
 
             var listObject = column.Parent as Excel.ListObject;
@@ -103,7 +110,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                         .Where(c => c.XPath.Value == parentPath)
                         .SingleOrDefault();
 
-                    var objName = sheet.Cells[selection.Row, listObject.DataBodyRange.Column + columnWithObjectName.Index - 1].Value;
+                    var objName = sheet.Cells[excelSelection.Row, listObject.DataBodyRange.Column + columnWithObjectName.Index - 1].Value;
 
                     NamedObject obj = network.FindObject(objTypeName, objName);
                     IEnumerable<PeriodVariable> variableValues = obj.GetPeriodVariable(variableBlock.VariableMetamodel, _blockProvider.GetDefaultPeriod());
@@ -134,11 +141,11 @@ namespace SeriesEngine.ExcelAddIn.Models
             network.DeleteObjectLinkedWithNode(objectToDelete.NodeId);
         }
 
-        public void UpdatePeriodVaraible(EditPeriodVariables variables)
-        {
-            var network = _networksProvider.GetNetworkById(variables.NetworkId);
-            network.UpdateVariables(variables.ValuesForPeriod);
-        }
+        //public void UpdatePeriodVaraible(EditPeriodVariables variables)
+        //{
+        //    var network = _networksProvider.GetNetworkById(variables.NetworkId);
+        //    network.UpdateVariables(variables.ValuesForPeriod);
+        //}
 
         private static bool SelectionInRange(Excel.Range range, int row, int column)
         {

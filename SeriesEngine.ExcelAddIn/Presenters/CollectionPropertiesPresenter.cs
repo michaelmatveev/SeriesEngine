@@ -38,11 +38,12 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
         void ICommand<InsertSampleCollectionBlockCommandArgs>.Execute(InsertSampleCollectionBlockCommandArgs commandData)
         {
-            var doc = XDocument.Parse(Resources.TestGrid);
+            var doc = XDocument.Parse(Resources.TestGrid);            
+            var selection = commandData.CurrentSelection as ExcelCurrentSelection;
             var newBlock = (CollectionDataBlock)DataBlockConverter.GetDataBlock(doc, Period.Default);
-            newBlock.Name = commandData.CurrentSelection.Name;
-            newBlock.Sheet = commandData.CurrentSelection.Sheet;
-            newBlock.Cell = commandData.CurrentSelection.Cell;
+            newBlock.Name = selection.Name;
+            newBlock.Sheet = selection.Sheet;
+            newBlock.Cell = selection.Sheet;
 
             _dataBlockProvider.AddDataBlock(newBlock);
             commandData.InsertedBlockName = newBlock.Name;
@@ -50,11 +51,12 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
         void ICommand<InsertCollectionBlockCommandArgs>.Execute(InsertCollectionBlockCommandArgs commandData)
         {
+            var selection = commandData.CurrentSelection as ExcelCurrentSelection;
             var newBlock = new CollectionDataBlock
             {
-                Name = commandData.CurrentSelection.Name,
-                Sheet = commandData.CurrentSelection.Sheet,
-                Cell = commandData.CurrentSelection.Cell
+                Name = selection.Name,
+                Sheet = selection.Sheet,
+                Cell = selection.Cell
             };
 
             View.CollectionDataBlock = newBlock;

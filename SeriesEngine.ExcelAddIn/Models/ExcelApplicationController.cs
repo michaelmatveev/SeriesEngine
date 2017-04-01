@@ -218,10 +218,6 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             _mainRibbon.SetTabVisibleState(false);
             _mainRibbon.IsActive = false;
-            //Execute(new ShowCustomPaneCommandArgs
-            //{
-            //    IsVisible = false
-            //});
         }
 
         public void StopGettingEventsFromRibbon()

@@ -17,9 +17,12 @@ namespace SeriesEngine.ExcelAddIn.Views
         public EditPeriodVariables ValuesCollection { get; set; }
 
         public event EventHandler EditVariableCompleted;
+        private Period _selectedPeriod;
 
-        void IPeriodVariableView.ShowIt()
+        void IPeriodVariableView.ShowIt(Period selectedPeriod)
         {
+            _selectedPeriod = selectedPeriod;
+            labelPeriod.Text = $"Переменные отображаются за период {_selectedPeriod}";
             FillValues();
             if (ShowDialog() == DialogResult.OK)
             {
@@ -47,10 +50,11 @@ namespace SeriesEngine.ExcelAddIn.Views
         private void buttonAdd_Click(object sender, EventArgs e)
         {
             var newVariable = Activator.CreateInstance(ValuesCollection.VariableMetamodel.EntityType) as PeriodVariable;
-            newVariable.Date = DateTime.Now;
+            var nowDate = DateTime.Now.Date;
+            newVariable.Date =  _selectedPeriod.Till >  nowDate ? nowDate : _selectedPeriod.Till;
             newVariable.ObjectId = ValuesCollection.Object.Id;
 
-            using (var varEditor = new VariableEditor(newVariable)
+            using (var varEditor = new VariableEditor(newVariable, _selectedPeriod)
             {
                 Text = ValuesCollection.VariableMetamodel.Name
             })
@@ -72,7 +76,7 @@ namespace SeriesEngine.ExcelAddIn.Views
                 .Single()
                 .Tag as PeriodVariable;
 
-            using (var varEditor = new VariableEditor(selectedVariable)
+            using (var varEditor = new VariableEditor(selectedVariable, _selectedPeriod)
             {
                 Text = ValuesCollection.VariableMetamodel.Name
             })

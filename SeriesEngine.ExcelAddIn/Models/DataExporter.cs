@@ -68,6 +68,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 var doc = XDocument.Parse(dsChanged.GetXml());
                 network.LoadFromXml(doc);
+
             }
         }
 

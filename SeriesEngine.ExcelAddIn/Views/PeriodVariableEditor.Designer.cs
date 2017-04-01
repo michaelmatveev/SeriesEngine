@@ -40,22 +40,27 @@
             this.listViewVariable = new System.Windows.Forms.ListView();
             this.columnHeaderPeriod = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.labelPeriod = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 581F));
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.listViewVariable, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.listViewVariable, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.Size = new System.Drawing.Size(581, 369);
@@ -158,11 +163,11 @@
             this.columnHeaderValue});
             this.listViewVariable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewVariable.FullRowSelect = true;
-            this.listViewVariable.Location = new System.Drawing.Point(10, 10);
+            this.listViewVariable.Location = new System.Drawing.Point(10, 39);
             this.listViewVariable.Margin = new System.Windows.Forms.Padding(10);
             this.listViewVariable.MultiSelect = false;
             this.listViewVariable.Name = "listViewVariable";
-            this.listViewVariable.Size = new System.Drawing.Size(561, 308);
+            this.listViewVariable.Size = new System.Drawing.Size(561, 279);
             this.listViewVariable.TabIndex = 2;
             this.listViewVariable.UseCompatibleStateImageBehavior = false;
             this.listViewVariable.View = System.Windows.Forms.View.Details;
@@ -176,6 +181,30 @@
             // 
             this.columnHeaderValue.Text = "Значение";
             this.columnHeaderValue.Width = 157;
+            // 
+            // panel1
+            // 
+            this.panel1.AutoSize = true;
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.panel1.Controls.Add(this.labelPeriod);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(581, 29);
+            this.panel1.TabIndex = 3;
+            // 
+            // labelPeriod
+            // 
+            this.labelPeriod.AutoSize = true;
+            this.labelPeriod.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelPeriod.Location = new System.Drawing.Point(0, 0);
+            this.labelPeriod.Margin = new System.Windows.Forms.Padding(0);
+            this.labelPeriod.Name = "labelPeriod";
+            this.labelPeriod.Padding = new System.Windows.Forms.Padding(8);
+            this.labelPeriod.Size = new System.Drawing.Size(51, 29);
+            this.labelPeriod.TabIndex = 0;
+            this.labelPeriod.Text = "label1";
             // 
             // PeriodVariableEditor
             // 
@@ -195,6 +224,8 @@
             this.tableLayoutPanel2.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -213,5 +244,7 @@
         private System.Windows.Forms.ListView listViewVariable;
         private System.Windows.Forms.ColumnHeader columnHeaderPeriod;
         private System.Windows.Forms.ColumnHeader columnHeaderValue;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label labelPeriod;
     }
 }

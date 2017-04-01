@@ -33,8 +33,8 @@
             this.buttonOk = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
             this.textBoxValue = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
@@ -108,6 +108,15 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(383, 217);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
+            // textBoxValue
+            // 
+            this.textBoxValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxValue.Location = new System.Drawing.Point(71, 29);
+            this.textBoxValue.Multiline = true;
+            this.textBoxValue.Name = "textBoxValue";
+            this.textBoxValue.Size = new System.Drawing.Size(309, 185);
+            this.textBoxValue.TabIndex = 1;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -120,18 +129,9 @@
             this.label1.Text = "Период:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // textBoxValue
-            // 
-            this.textBoxValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxValue.Location = new System.Drawing.Point(71, 29);
-            this.textBoxValue.Multiline = true;
-            this.textBoxValue.Name = "textBoxValue";
-            this.textBoxValue.Size = new System.Drawing.Size(309, 185);
-            this.textBoxValue.TabIndex = 1;
-            // 
             // dateTimePicker
             // 
-            this.dateTimePicker.CustomFormat = "dd.MM.yyyy hh:mm";
+            this.dateTimePicker.CustomFormat = "dd.MM.yyyy      HH:mm";
             this.dateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePicker.Location = new System.Drawing.Point(71, 3);
             this.dateTimePicker.Name = "dateTimePicker";
