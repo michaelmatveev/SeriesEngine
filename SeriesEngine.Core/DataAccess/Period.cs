@@ -9,11 +9,23 @@ namespace SeriesEngine.Core.DataAccess
         public DateTime From { get; set; }
         public DateTime Till { get; set; }
 
-        public static Period Default = new Period
+        public DateTime FromDate => From.Date;
+
+        public DateTime TillDate => Till.Date;
+
+        public static Period Default
         {
-            From = DateTime.Now.FirstDayOfMonth(),
-            Till = DateTime.Now.AddMonths(1).FirstDayOfMonth()
-        };
+            get
+            {
+                var now = DateTime.Now;
+                return new Period()
+                {
+                    From = now.FirstDayOfMonth().BeginningOfDay(),
+                    Till = now.FirstDayOfMonth().BeginningOfDay().AddMonths(1)
+                };
+            }
+        }
+
 
         public bool Include(DateTime date)
         {
@@ -32,7 +44,7 @@ namespace SeriesEngine.Core.DataAccess
 
         public override string ToString()
         {
-            return $"c {From.ToString("dd.MM.yyyy")} по {Till.ToString("dd.MM.yyyy")}";
+            return $"c {From.ToString("dd.MM.yyyy")} до {Till.ToString("dd.MM.yyyy")}";
         }
     }
 }

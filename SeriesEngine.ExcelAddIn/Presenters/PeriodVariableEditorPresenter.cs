@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
 using SeriesEngine.ExcelAddIn.Models;
+using SeriesEngine.Core.DataAccess;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
@@ -25,8 +26,10 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             {
                 var values = View.ValuesCollection;
                 _objectProvider.ChangeData(values.NetworkId, values.ValuesForPeriod);
+
                 _currentSelection.Value = values
                     .ValuesForPeriod
+                    .Where(v => v.State != ObjectState.Deleted)
                     .LastOrDefault(v => blockProvider.GetDefaultPeriod().Include(v.Date))
                     ?.Value
                     .ToString();

@@ -9,8 +9,8 @@ namespace SeriesEngine.ExcelAddIn.Views
         {
             InitializeComponent();
             Variable = variable;
-            dateTimePicker.MinDate = allowedPeriod.From;
-            dateTimePicker.MaxDate = allowedPeriod.Till;
+            dateTimePicker.MinDate = allowedPeriod.FromDate;
+            dateTimePicker.MaxDate = allowedPeriod.TillDate.AddSeconds(-1);
             dateTimePicker.DataBindings.Add(nameof(dateTimePicker.Value), Variable, nameof(Variable.Date));
             textBoxValue.DataBindings.Add(nameof(textBoxValue.Text), Variable, nameof(Variable.Value), true);
         }

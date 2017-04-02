@@ -35,14 +35,28 @@ namespace SeriesEngine.ExcelAddIn.Views
             Text = $"{ValuesCollection.VariableMetamodel.Name} - {ValuesCollection.Object.GetName()}";
             listViewVariable.Items.Clear();
 
+            var sameDateGroups = ValuesCollection
+               .ValuesForPeriod
+               .OrderBy(vp => vp.Date)
+               .OrderBy(vp => vp.Id == 0 ? Int32.MaxValue : vp.Id)
+               .Where(vp => vp.State != ObjectState.Deleted)
+               .GroupBy(vp => vp.Date);
+
             var items = ValuesCollection
                 .ValuesForPeriod
                 .OrderBy(vp => vp.Date)
                 .Where(vp => vp.State != ObjectState.Deleted)
-                .Select(vp => new ListViewItem(new[] { vp.Date.ToString(), vp.Value.ToString() })
-                {
-                    Tag = vp
-                }).ToArray();
+                .Select(vp => 
+                    new ListViewItem(
+                        new[] 
+                        {
+                            (sameDateGroups.First(g => g.Key == vp.Date).ToList().IndexOf(vp) > 0 ? "   " : string.Empty) + vp.Date.ToString(),
+                            vp.Value.ToString()
+                        })
+                    {
+                        Tag = vp                    
+                    })
+                .ToArray();
 
             listViewVariable.Items.AddRange(items);
         }
@@ -51,7 +65,8 @@ namespace SeriesEngine.ExcelAddIn.Views
         {
             var newVariable = Activator.CreateInstance(ValuesCollection.VariableMetamodel.EntityType) as PeriodVariable;
             var nowDate = DateTime.Now.Date;
-            newVariable.Date =  _selectedPeriod.Till >  nowDate ? nowDate : _selectedPeriod.Till;
+
+            newVariable.Date = _selectedPeriod.Include(nowDate) ? nowDate : _selectedPeriod.From;
             newVariable.ObjectId = ValuesCollection.Object.Id;
 
             using (var varEditor = new VariableEditor(newVariable, _selectedPeriod)
@@ -109,5 +124,21 @@ namespace SeriesEngine.ExcelAddIn.Views
             FillValues();
         }
 
+        //private void listViewVariable_DrawItem(object sender, DrawListViewItemEventArgs e)
+        //{
+        //     var inSameGroup = ValuesCollection
+        //        .ValuesForPeriod
+        //        .OrderBy(vp => vp.Date)
+        //        .OrderBy(vp => vp.Id)
+        //        .Where(vp => vp.State != ObjectState.Deleted)
+        //        .GroupBy(vp => vp.Date)
+        //        .Where(vg => vg.Count() > 1)
+        //        .Any(vg => vg.Key.ToString() == e.Item.SubItems[0].ToString());
+        //    if (inSameGroup)
+        //    {
+        //        e.Item.Text = "    " + e.Item.Text;
+        //    }
+        //    e.DrawDefault = true;
+        //}
     }
 }

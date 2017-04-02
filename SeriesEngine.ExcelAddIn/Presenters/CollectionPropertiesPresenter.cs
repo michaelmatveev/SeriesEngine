@@ -43,7 +43,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             var newBlock = (CollectionDataBlock)DataBlockConverter.GetDataBlock(doc, Period.Default);
             newBlock.Name = selection.Name;
             newBlock.Sheet = selection.Sheet;
-            newBlock.Cell = selection.Sheet;
+            newBlock.Cell = selection.Cell;
 
             _dataBlockProvider.AddDataBlock(newBlock);
             commandData.InsertedBlockName = newBlock.Name;

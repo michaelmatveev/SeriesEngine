@@ -198,7 +198,14 @@ namespace SeriesEngine.ExcelAddIn.Models
                 context.Configuration.AutoDetectChangesEnabled = false;
                 foreach(var v in valuesForPeriod)
                 {
-                    context.Set(v.GetType()).Attach(v);
+                    if (v.State == ObjectState.Added)
+                    {
+                        context.Set(v.GetType()).Add(v);
+                    }
+                    else
+                    {
+                        context.Set(v.GetType()).Attach(v);
+                    }
                 }
                 context.FixState();
                 context.SaveChanges();

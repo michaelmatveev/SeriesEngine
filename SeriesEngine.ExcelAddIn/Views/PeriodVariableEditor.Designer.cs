@@ -202,9 +202,9 @@
             this.labelPeriod.Margin = new System.Windows.Forms.Padding(0);
             this.labelPeriod.Name = "labelPeriod";
             this.labelPeriod.Padding = new System.Windows.Forms.Padding(8);
-            this.labelPeriod.Size = new System.Drawing.Size(51, 29);
+            this.labelPeriod.Size = new System.Drawing.Size(121, 29);
             this.labelPeriod.TabIndex = 0;
-            this.labelPeriod.Text = "label1";
+            this.labelPeriod.Text = "Выбранный период";
             // 
             // PeriodVariableEditor
             // 
