@@ -1,4 +1,5 @@
-﻿using SeriesEngine.ExcelAddIn.Models.DataBlocks;
+﻿using SeriesEngine.Core.DataAccess;
+using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System.Collections.Generic;
 
 namespace SeriesEngine.ExcelAddIn.Models
@@ -7,6 +8,6 @@ namespace SeriesEngine.ExcelAddIn.Models
     {
         ICollection<NetworkTree> GetNetworks(int solutionId);
         NetworkTree GetNetworkById(int networkId);
-        NetworkTree GetNetwork(int solutionId, string name, IEnumerable<VariableDataBlock> variables);
+        NetworkTree GetNetwork(int solutionId, string name, IEnumerable<VariableDataBlock> variables, Period period);
     }
 }

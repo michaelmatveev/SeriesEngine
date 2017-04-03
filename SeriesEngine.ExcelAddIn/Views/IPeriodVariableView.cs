@@ -5,8 +5,8 @@ namespace SeriesEngine.ExcelAddIn.Views
 {
     public interface IPeriodVariableView : IView
     {
-        EditPeriodVariables ValuesCollection { get; set; }
+        EditPeriodVariables VariablesToShow { get; set; }
         event EventHandler EditVariableCompleted;
-        void ShowIt(Period selectedPeriod);
+        void ShowIt();
     }
 }

@@ -100,13 +100,15 @@ namespace SeriesEngine.ExcelAddIn.Models
                 .Where(b => b.VariableMetamodel.IsPeriodic)
                 .ToList();
 
+            var period = collectionDatablock.PeriodType == PeriodType.Common ? _blockProvider.GetDefaultPeriod() : collectionDatablock.CustomPeriod;
+
             listObject.ShowHeaders = collectionDatablock.ShowHeader;
             var network = _networksProvider
-                .GetNetwork(solutionId, collectionDatablock.NetworkName, blocks);
+                .GetNetwork(solutionId, collectionDatablock.NetworkName, blocks, period);
  
             using (network.GetImportLock(collectionDatablock))
             {
-                var xml = collectionDatablock.GetXml(network, _blockProvider.GetDefaultPeriod());
+                var xml = collectionDatablock.GetXml(network, period);
                 var results = xmlMap.ImportXml(xml, true);
             }
         }

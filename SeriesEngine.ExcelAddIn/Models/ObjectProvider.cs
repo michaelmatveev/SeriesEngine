@@ -88,6 +88,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .OfType<CollectionDataBlock>()
                     .SingleOrDefault(db => db.Name == listObject.Name);
 
+                var period = collectionDatablock.PeriodType == PeriodType.Common ? _blockProvider.GetDefaultPeriod() : collectionDatablock.CustomPeriod;
+
                 var path = column.XPath.Value.Split(new[] { '/' });
                 var variableName = path.Last();
                 var objTypeName = path.ElementAt(path.Length - 2);
@@ -101,7 +103,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 if (variableBlock != null)
                 {
                     var network = _networksProvider
-                        .GetNetwork(solution.Id, collectionDatablock.NetworkName, new[] { variableBlock });
+                        .GetNetwork(solution.Id, collectionDatablock.NetworkName, new[] { variableBlock }, period);
 
                     var parentPath = $"{string.Join("/", path.Take(path.Length - 1))}/@UniqueName";
                     var columnWithObjectName = listObject
@@ -112,14 +114,15 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                     var objName = sheet.Cells[excelSelection.Row, listObject.DataBodyRange.Column + columnWithObjectName.Index - 1].Value;
 
-                    NamedObject obj = network.FindObject(objTypeName, objName);
-                    IEnumerable<PeriodVariable> variableValues = obj.GetPeriodVariable(variableBlock.VariableMetamodel, _blockProvider.GetDefaultPeriod());
+                    NamedObject obj = network.FindObject(objTypeName, objName);                    
+                    IEnumerable<PeriodVariable> variableValues = obj.GetPeriodVariable(variableBlock.VariableMetamodel, period);
 
                     var result = new EditPeriodVariables
                     {
                         NetworkId = network.Id,
                         Object = obj,
-                        VariableMetamodel = variableBlock.VariableMetamodel
+                        VariableMetamodel = variableBlock.VariableMetamodel,
+                        SelectedPeriod = period
                     };
                     result.ValuesForPeriod.AddRange(variableValues);
                     return result;

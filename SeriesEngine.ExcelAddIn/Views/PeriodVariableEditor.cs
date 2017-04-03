@@ -14,15 +14,13 @@ namespace SeriesEngine.ExcelAddIn.Views
             InitializeComponent();
         }
 
-        public EditPeriodVariables ValuesCollection { get; set; }
+        public EditPeriodVariables VariablesToShow { get; set; }
 
         public event EventHandler EditVariableCompleted;
-        private Period _selectedPeriod;
-
-        void IPeriodVariableView.ShowIt(Period selectedPeriod)
+ 
+        void IPeriodVariableView.ShowIt()
         {
-            _selectedPeriod = selectedPeriod;
-            labelPeriod.Text = $"Переменные отображаются за период {_selectedPeriod}";
+            labelPeriod.Text = $"Переменные отображаются за период {VariablesToShow.SelectedPeriod}";
             FillValues();
             if (ShowDialog() == DialogResult.OK)
             {
@@ -32,17 +30,17 @@ namespace SeriesEngine.ExcelAddIn.Views
         
         private void FillValues()
         {
-            Text = $"{ValuesCollection.VariableMetamodel.Name} - {ValuesCollection.Object.GetName()}";
+            Text = $"{VariablesToShow.VariableMetamodel.Name} - {VariablesToShow.Object.GetName()}";
             listViewVariable.Items.Clear();
 
-            var sameDateGroups = ValuesCollection
+            var sameDateGroups = VariablesToShow
                .ValuesForPeriod
                .OrderBy(vp => vp.Date)
                .OrderBy(vp => vp.Id == 0 ? Int32.MaxValue : vp.Id)
                .Where(vp => vp.State != ObjectState.Deleted)
                .GroupBy(vp => vp.Date);
 
-            var items = ValuesCollection
+            var items = VariablesToShow
                 .ValuesForPeriod
                 .OrderBy(vp => vp.Date)
                 .Where(vp => vp.State != ObjectState.Deleted)
@@ -63,21 +61,21 @@ namespace SeriesEngine.ExcelAddIn.Views
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var newVariable = Activator.CreateInstance(ValuesCollection.VariableMetamodel.EntityType) as PeriodVariable;
+            var newVariable = Activator.CreateInstance(VariablesToShow.VariableMetamodel.EntityType) as PeriodVariable;
             var nowDate = DateTime.Now.Date;
 
-            newVariable.Date = _selectedPeriod.Include(nowDate) ? nowDate : _selectedPeriod.From;
-            newVariable.ObjectId = ValuesCollection.Object.Id;
+            newVariable.Date = VariablesToShow.SelectedPeriod.Include(nowDate) ? nowDate : VariablesToShow.SelectedPeriod.From;
+            newVariable.ObjectId = VariablesToShow.Object.Id;
 
-            using (var varEditor = new VariableEditor(newVariable, _selectedPeriod)
+            using (var varEditor = new VariableEditor(newVariable, VariablesToShow.SelectedPeriod)
             {
-                Text = ValuesCollection.VariableMetamodel.Name
+                Text = VariablesToShow.VariableMetamodel.Name
             })
             {
                 if (varEditor.ShowDialog() == DialogResult.OK)
                 {
                     varEditor.Variable.State = ObjectState.Added;
-                    ValuesCollection.ValuesForPeriod.Add(varEditor.Variable);
+                    VariablesToShow.ValuesForPeriod.Add(varEditor.Variable);
                     FillValues();
                 }
             }
@@ -91,9 +89,9 @@ namespace SeriesEngine.ExcelAddIn.Views
                 .Single()
                 .Tag as PeriodVariable;
 
-            using (var varEditor = new VariableEditor(selectedVariable, _selectedPeriod)
+            using (var varEditor = new VariableEditor(selectedVariable, VariablesToShow.SelectedPeriod)
             {
-                Text = ValuesCollection.VariableMetamodel.Name
+                Text = VariablesToShow.VariableMetamodel.Name
             })
             {
                 if (varEditor.ShowDialog() == DialogResult.OK)

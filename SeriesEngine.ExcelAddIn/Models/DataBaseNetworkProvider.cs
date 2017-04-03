@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SeriesEngine.Msk1;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
+using SeriesEngine.Core.DataAccess;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -51,7 +52,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        public NetworkTree GetNetwork(int solutionId, string name, IEnumerable<VariableDataBlock> variables)
+        public NetworkTree GetNetwork(int solutionId, string name, IEnumerable<VariableDataBlock> variables, Period period)
         {
             using (var context = new Model1())
             {

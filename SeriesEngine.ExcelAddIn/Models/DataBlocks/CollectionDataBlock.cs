@@ -1,6 +1,5 @@
 ﻿using SeriesEngine.Core;
 using SeriesEngine.Core.DataAccess;
-using SeriesEngine.Msk1;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,24 +7,31 @@ using System.Xml.Linq;
 
 namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
 {
+    public enum PeriodType
+    {
+        Common,
+        Custom,
+        //CommonWithShift,
+    }
+
     [Serializable]
     public class CollectionDataBlock : SheetDataBlock
     {
         public string NetworkName { get; set; }
-
         public int NetworkRevision { get; set; }
         public IEnumerable<ObjectMetamodel> SupportedModels { get; set; }
         public int[] ObjectIds { get; set; }
-
         public bool ShowHeader { get; set; } = true;
-        public object Tag { get; set; }
-
-        public CollectionDataBlock() : base(null, new Period())
+        public PeriodType PeriodType { get; set; } = PeriodType.Common;
+        public Period CustomPeriod { get; set; }
+        public CollectionDataBlock() : base(null)
         {
+            CustomPeriod = Period.Default;
         }
 
-        public CollectionDataBlock(SheetDataBlock parent, Period defaultPeriod) : base(parent, defaultPeriod)
+        public CollectionDataBlock(SheetDataBlock parent, Period defaultPeriod) : base(parent)
         {
+            CustomPeriod = defaultPeriod;
         }
 
         private static XNamespace ns = "http://www.w3.org/2001/XMLSchema";
