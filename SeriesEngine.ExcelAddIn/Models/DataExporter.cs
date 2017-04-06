@@ -38,39 +38,71 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        public override void ExportDataBlock(int solutionId, CollectionDataBlock collection)
+        public override void ExportDataBlock(int solutionId, CollectionDataBlock collectionDatablock)
         {
-            var network = _networksProvider
+            var networkTree = _networksProvider
                 .GetNetworks(solutionId)
-                .SingleOrDefault(n => n.Name == collection.NetworkName);
+                .SingleOrDefault(n => n.Name == collectionDatablock.NetworkName);
+            var period = collectionDatablock.PeriodType == PeriodType.Common ? _blockProvider.GetDefaultPeriod() : collectionDatablock.CustomPeriod;
+            //var sourceXml = collectionDatablock.Xml ?? networkTree.ConvertToXml(collectionDatablock.DataBlocks, period);
+            Excel.Worksheet sheet = _workbook.Sheets[collectionDatablock.Sheet];
+            var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == collectionDatablock.Name);
 
-            using (network.GetExportLock(collection))
+            var schema = collectionDatablock.GetSchema();
+            var sr = new StringReader(schema);
+
+            var dsChanged = new DataSet();
+            dsChanged.ReadXmlSchema(sr);
+
+            var tree = collectionDatablock
+                .DataBlocks
+                .Select((f, i) => new ColumnIdentity(f, i))
+                .GroupBy(ci => new ObjectIdentity(ci.RefObject, ci.Parent))
+                .GenerateTree(n => n.Key.RefObject, p => p.Key.Parent, NetworkTree.RootName);
+
+            for (int row = 1; row <= listObject.DataBodyRange.Rows.Count; row++)
             {
-                Excel.Worksheet sheet = _workbook.Sheets[collection.Sheet];
-                var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == collection.Name);
-                // another way http://stackoverflow.com/questions/12572439/why-does-readxmlschema-create-extra-id-column
-                var schema = collection.GetSchema();
-                var sr = new StringReader(schema);
-
-                var dsChanged = new DataSet();
-                dsChanged.ReadXmlSchema(sr);
-
-                var tree = collection
-                    .DataBlocks
-                    .Select((f, i) => new ColumnIdentity(f, i))
-                    .GroupBy(ci => new ObjectIdentity(ci.RefObject, ci.Parent))
-                    .GenerateTree(n => n.Key.RefObject, p => p.Key.Parent, NetworkTree.RootName);
-
-                for (int row = 1; row <= listObject.DataBodyRange.Rows.Count; row++)
-                {
-                    CreateOrUpdateRowInDataSet(row, dsChanged, listObject, 0, tree);
-                }
-
-                var doc = XDocument.Parse(dsChanged.GetXml());
-                network.LoadFromXml(doc);
-
+                CreateOrUpdateRowInDataSet(row, dsChanged, listObject, 0, tree);
             }
+
+            var doc = XDocument.Parse(dsChanged.GetXml());
+            networkTree.LoadFromXml(collectionDatablock.Xml, doc);
         }
+
+  
+        //public override void ExportDataBlock(int solutionId, CollectionDataBlock collection)
+        //{
+        //    var network = _networksProvider
+        //        .GetNetworks(solutionId)
+        //        .SingleOrDefault(n => n.Name == collection.NetworkName);
+
+        //    using (network.GetExportLock(collection))
+        //    {
+        //        Excel.Worksheet sheet = _workbook.Sheets[collection.Sheet];
+        //        var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == collection.Name);
+        //        // another way http://stackoverflow.com/questions/12572439/why-does-readxmlschema-create-extra-id-column
+        //        var schema = collection.GetSchema();
+        //        var sr = new StringReader(schema);
+
+        //        var dsChanged = new DataSet();
+        //        dsChanged.ReadXmlSchema(sr);
+
+        //        var tree = collection
+        //            .DataBlocks
+        //            .Select((f, i) => new ColumnIdentity(f, i))
+        //            .GroupBy(ci => new ObjectIdentity(ci.RefObject, ci.Parent))
+        //            .GenerateTree(n => n.Key.RefObject, p => p.Key.Parent, NetworkTree.RootName);
+
+        //        for (int row = 1; row <= listObject.DataBodyRange.Rows.Count; row++)
+        //        {
+        //            CreateOrUpdateRowInDataSet(row, dsChanged, listObject, 0, tree);
+        //        }
+
+        //        var doc = XDocument.Parse(dsChanged.GetXml());
+        //        network.LoadFromXml(doc);
+        //        //network.UpdateVariables();
+        //    }
+        //}
 
         private void CreateOrUpdateRowInDataSet(int row, DataSet dataSet, Excel.ListObject listObject, int rootId, IEnumerable<TreeItem<IGrouping<ObjectIdentity, ColumnIdentity>>> currentItems)
         {
@@ -107,17 +139,6 @@ namespace SeriesEngine.ExcelAddIn.Models
                     }
                     table.Rows.Add(dataRow);
                 }                                       
-
-                //else
-                //{
-                //    foreach(var column in node.Item)
-                //    {
-                //        if (!match[column.FieldName].Equals(dataRow[column.FieldName]))
-                //        {
-                //            match[column.FieldName] = dataRow[column.FieldName];
-                //        }
-                //    }
-                //}
 
                 if (node.Children.Any())
                 {

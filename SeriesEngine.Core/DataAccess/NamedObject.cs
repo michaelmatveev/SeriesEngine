@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace SeriesEngine.Core.DataAccess
 {
-    public abstract class NamedObject
+    public abstract class NamedObject : IStateObject
     {
         public int Id { get; set; }
         
@@ -22,6 +22,10 @@ namespace SeriesEngine.Core.DataAccess
 
         [NotMapped]
         public ObjectMetamodel ObjectModel { get; set; }
+
+        [NotMapped]
+        public ObjectState State { get; set; }
+
         public object GetVariableValue(Variable variableModel)
         {
             var thisType = GetType();
@@ -59,6 +63,7 @@ namespace SeriesEngine.Core.DataAccess
                 var thisType = GetType();
                 var property = thisType.GetProperty(variableName);
                 property.SetValue(this, value);
+                this.State = ObjectState.Modified;
             }
             catch
             {

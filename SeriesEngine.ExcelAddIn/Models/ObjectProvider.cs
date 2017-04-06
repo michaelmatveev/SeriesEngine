@@ -52,9 +52,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .GetNetworks(solution.Id)
                     .SingleOrDefault(n => n.Name == collectionDatablock.NetworkName);
 
-                var xml = collectionDatablock.GetXml(network, _blockProvider.GetDefaultPeriod());
                 var xpath = GetXPathToNodeId(column.XPath.Value, selection.Value);
-                var id = ((IEnumerable<object>)XDocument.Parse(xml).Root.XPathEvaluate(xpath))
+                var id = ((IEnumerable<object>)collectionDatablock.Xml.Root.XPathEvaluate(xpath))
                     .OfType<XAttribute>()
                     .FirstOrDefault();
 
@@ -143,12 +142,6 @@ namespace SeriesEngine.ExcelAddIn.Models
             var network = _networksProvider.GetNetworkById(objectToDelete.NetworkId);
             network.DeleteObjectLinkedWithNode(objectToDelete.NodeId);
         }
-
-        //public void UpdatePeriodVaraible(EditPeriodVariables variables)
-        //{
-        //    var network = _networksProvider.GetNetworkById(variables.NetworkId);
-        //    network.UpdateVariables(variables.ValuesForPeriod);
-        //}
 
         private static bool SelectionInRange(Excel.Range range, int row, int column)
         {

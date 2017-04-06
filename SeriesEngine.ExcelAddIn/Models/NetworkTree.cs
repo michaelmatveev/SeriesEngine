@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -42,23 +43,111 @@ namespace SeriesEngine.ExcelAddIn.Models
             return data;
         }
 
-        public void LoadFromXml(XDocument target)
+        public void LoadFromXml(XDocument source, XDocument target)
         {
-            using (var context = new Model1())
+            var nodes = new List<MainHierarchyNode>();
+            foreach(var e in target.Root.Elements())
             {
-                context.Database.Log = (s) => Debug.WriteLine(s);
-                var allNodes = new List<NetworkTreeNode>(_network.Nodes);
-                context.Solutions.Attach(_network.Solution);
+                var path = $"/{RootName}/{e.Name}[@UniqueName='{e.Attribute("UniqueName").Value}']";
+                var sourceElement = source.XPathSelectElement(path);
+                if(sourceElement == null)
+                {
+                    // this is new node
+                    nodes.Add(CreateNode(e, null));
+                }
+                else
+                {
+                    // this is already existed node
+                    var id = int.Parse(sourceElement.Attribute("NodeId").Value);
+                    var node = _network.Nodes.Single(n => n.Id == id);
+                    UpdateNode(node, e, null);
+                    nodes.Add(node);
+                    sourceElement.Attribute("NodeId").Value = "0"; // признак того что элемент обработан
+                }
+            }
 
-                var newNodes = RestoreNodes(context, target.Root.Elements(), null, allNodes);
-                context.MainHierarchyNodes.AddRange(newNodes.Cast<MainHierarchyNode>());
-                context.MainHierarchyNodes.RemoveRange(allNodes.Where(n => !n.IsMarkedFlag).Cast<MainHierarchyNode>());
+            foreach(var e in source.Root.Elements())
+            {
+                var attr = e.Attribute("NodeId");
+                if (attr != null)
+                {
+                    var id = int.Parse(attr.Value);
+                    if(id != 0)
+                    {
+                        var node = _network.Nodes.Single(n => n.Id == id);
+                        node.State = ObjectState.Deleted;
+                        nodes.Add(node);
+                    }
+                }
+            }
 
-                context.SaveChanges();
+            UpdateVariables(nodes);
+
+            //using (var context = new Model1())
+            //{
+            //    context.Solutions.Attach(_network.Solution);
+                
+            //}
+            //using (var context = new Model1())
+            //{
+            //    context.Database.Log = (s) => Debug.WriteLine(s);
+            //    var allNodes = new List<NetworkTreeNode>(_network.Nodes);
+            //    context.Solutions.Attach(_network.Solution);
+
+            //    var newNodes = RestoreNodes(context, target.Root.Elements(), null, allNodes);
+            //    context.MainHierarchyNodes.AddRange(newNodes.Cast<MainHierarchyNode>());
+            //    context.MainHierarchyNodes.RemoveRange(allNodes.Where(n => !n.IsMarkedFlag).Cast<MainHierarchyNode>());
+
+            //    context.SaveChanges();
+            //}
+        }
+        
+        private MainHierarchyNode CreateNode(XElement element, MainHierarchyNode parent)
+        {
+            var validFrom = ParseDateTimeString(element.Attribute("Since")?.Value);
+            var validTill = ParseDateTimeString(element.Attribute("Till")?.Value);
+
+            var node = new MainHierarchyNode
+            {
+                IsMarkedFlag = true,
+                Network = _network,
+                Parent = parent,
+                ValidFrom = validFrom,
+                ValidTill = validTill,
+                State = ObjectState.Added
+            };
+            node.SetLinkedObject(CreateObject(element));
+
+            foreach (var v in element.Elements())
+            {
+                if(v.Attribute("UniqueName") == null)
+                {
+                    node.LinkedObject.SetVariableValue(element.Name.LocalName, element.Value);
+                }
+            }
+            return node;
+        }
+
+        private void UpdateNode(MainHierarchyNode node, XElement element, MainHierarchyNode parent)
+        {
+            var validFrom = ParseDateTimeString(element.Attribute("Since")?.Value);
+            var validTill = ParseDateTimeString(element.Attribute("Till")?.Value);
+
+            node.Network = _network;
+            node.Parent = parent;
+            node.ValidFrom = validFrom;
+            node.ValidTill = validTill;
+            node.State = ObjectState.Modified;
+
+            foreach (var v in element.Elements())
+            {
+                if (v.Attribute("UniqueName") == null)
+                {
+                    node.LinkedObject.SetVariableValue(element.Name.LocalName, element.Value);
+                }
             }
         }
 
-        
         private static bool IsNodeInPeriod(NetworkTreeNode node, Period period, bool whenNodePeriodIsIncorrectResult)
         {
             if (!(node.ValidFrom.HasValue || node.ValidTill.HasValue))
@@ -92,6 +181,11 @@ namespace SeriesEngine.ExcelAddIn.Models
                 .Where(n => n.LinkedObject.ObjectModel.Name == objectTypeName)
                 .SingleOrDefault(n => n.NodeName == name)
                 ?.LinkedObject;
+        }
+
+        public IStateObject FindNode(int id)
+        {
+            return _network.Nodes.FirstOrDefault(n => n.Id == id);
         }
 
         private IEnumerable<NetworkTreeNode> RestoreNodes(Model1 context, IEnumerable<XElement> elements, NetworkTreeNode parent, List<NetworkTreeNode> allNodes)
@@ -156,35 +250,40 @@ namespace SeriesEngine.ExcelAddIn.Models
                     {
                         ObjectModel = MainHierarchyNode.RegionModel,
                         Solution = _network.Solution,
-                        Name = objName
+                        Name = objName,
+                        State = ObjectState.Added
                     };
                 case "Consumer":
                     return new Consumer
                     {
                         ObjectModel = MainHierarchyNode.ConsumerModel,
                         Solution = _network.Solution,
-                        Name = objName
+                        Name = objName,
+                        State = ObjectState.Added
                     };
                 case "Contract":
                     return new Contract
                     {
                         ObjectModel = MainHierarchyNode.ContractModel,
                         Solution = _network.Solution,
-                        Name = objName
+                        Name = objName,
+                        State = ObjectState.Added
                     };
                 case "ConsumerObject":
                     return new ConsumerObject
                     {
                         ObjectModel = MainHierarchyNode.ConsumerObjectModel,
                         Solution = _network.Solution,
-                        Name = objName
+                        Name = objName,
+                        State = ObjectState.Added
                     };
                 case "Point":
                     return new Point
                     {
                         ObjectModel = MainHierarchyNode.PointModel,
                         Solution = _network.Solution,
-                        Name = objName
+                        Name = objName,
+                        State = ObjectState.Added
                     };
 
                 default: throw new NotSupportedException();

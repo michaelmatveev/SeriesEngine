@@ -108,8 +108,9 @@ namespace SeriesEngine.ExcelAddIn.Models
  
             using (network.GetImportLock(collectionDatablock))
             {
-                var xml = collectionDatablock.GetXml(network, period);
-                var results = xmlMap.ImportXml(xml, true);
+                var xml = network.ConvertToXml(collectionDatablock.DataBlocks, period);
+                collectionDatablock.Xml = xml;
+                var results = xmlMap.ImportXml(xml.ToString(), true);
             }
         }
 

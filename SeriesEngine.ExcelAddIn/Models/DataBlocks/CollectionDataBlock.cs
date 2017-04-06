@@ -24,6 +24,7 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
         public bool ShowHeader { get; set; } = true;
         public PeriodType PeriodType { get; set; } = PeriodType.Common;
         public Period CustomPeriod { get; set; }
+        public XDocument Xml { get; set; }
         public CollectionDataBlock() : base(null)
         {
             CustomPeriod = Period.Default;
@@ -125,11 +126,11 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
                 new XAttribute("form", "unqualified"));
         }
 
-        public string GetXml(NetworkTree network, Period defaultPeriod)
-        {
-            var xml = network.ConvertToXml(DataBlocks, defaultPeriod);
-            return xml.ToString();
-        }
+        //public string GetXml(NetworkTree network, Period defaultPeriod)
+        //{
+        //    Xml = network.ConvertToXml(DataBlocks, defaultPeriod);
+        //    return Xml.ToString();
+        //}
 
         public IList<DataBlock> DataBlocks = new List<DataBlock>();
 
