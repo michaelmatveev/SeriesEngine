@@ -46,62 +46,69 @@ namespace SeriesEngine.ExcelAddIn.Models
         public void LoadFromXml(XDocument source, XDocument target)
         {
             var nodes = new List<MainHierarchyNode>();
-            foreach(var e in target.Root.Elements())
+            nodes.AddRange(ProcessNodesElements(source, null, target.Root.Elements()));
+            FindNodesToDelete(source.Root.Elements());
+            Update(nodes);
+        }
+        
+        private static string GetXPath(XElement element)
+        {
+            if(element == null)
             {
-                var path = $"/{RootName}/{e.Name}[@UniqueName='{e.Attribute("UniqueName").Value}']";
+                return string.Empty;
+            }
+            else
+            {
+                return $"{GetXPath(element.Parent)}/{element.Name}";
+            }
+        }
+
+        private IEnumerable<MainHierarchyNode> ProcessNodesElements(XDocument source, MainHierarchyNode parent, IEnumerable<XElement> elements)
+        {
+            var nodes = new List<MainHierarchyNode>();
+            foreach (var element in elements.Where(e => e.Attribute("UniqueName") != null))
+            {
+                MainHierarchyNode node;
+                var path = $"{GetXPath(element)}[@UniqueName='{element.Attribute("UniqueName").Value}']";
                 var sourceElement = source.XPathSelectElement(path);
-                if(sourceElement == null)
+                if (sourceElement == null)
                 {
                     // this is new node
-                    nodes.Add(CreateNode(e, null));
+                    node = CreateNode(element, parent);
+                    nodes.Add(node);
                 }
                 else
                 {
                     // this is already existed node
                     var id = int.Parse(sourceElement.Attribute("NodeId").Value);
-                    var node = _network.Nodes.Single(n => n.Id == id);
-                    UpdateNode(node, e, null);
+                    node = _network.Nodes.Single(n => n.Id == id);
+                    UpdateNode(node, element, parent);
                     nodes.Add(node);
                     sourceElement.Attribute("NodeId").Value = "0"; // признак того что элемент обработан
                 }
+                nodes.AddRange(ProcessNodesElements(source, node, element.Elements()));
             }
-
-            foreach(var e in source.Root.Elements())
-            {
-                var attr = e.Attribute("NodeId");
-                if (attr != null)
-                {
-                    var id = int.Parse(attr.Value);
-                    if(id != 0)
-                    {
-                        var node = _network.Nodes.Single(n => n.Id == id);
-                        node.State = ObjectState.Deleted;
-                        nodes.Add(node);
-                    }
-                }
-            }
-
-            UpdateVariables(nodes);
-
-            //using (var context = new Model1())
-            //{
-            //    context.Solutions.Attach(_network.Solution);
-                
-            //}
-            //using (var context = new Model1())
-            //{
-            //    context.Database.Log = (s) => Debug.WriteLine(s);
-            //    var allNodes = new List<NetworkTreeNode>(_network.Nodes);
-            //    context.Solutions.Attach(_network.Solution);
-
-            //    var newNodes = RestoreNodes(context, target.Root.Elements(), null, allNodes);
-            //    context.MainHierarchyNodes.AddRange(newNodes.Cast<MainHierarchyNode>());
-            //    context.MainHierarchyNodes.RemoveRange(allNodes.Where(n => !n.IsMarkedFlag).Cast<MainHierarchyNode>());
-
-            //    context.SaveChanges();
-            //}
+            return nodes;
         }
-        
+
+        private IEnumerable<MainHierarchyNode> FindNodesToDelete(IEnumerable<XElement> elements)
+        {
+            var nodes = new List<MainHierarchyNode>();
+            foreach (var element in elements.Where(e => e.Attribute("NodeId") != null))
+            {
+                var attr = element.Attribute("NodeId");
+                var id = int.Parse(attr.Value);
+                if (id != 0)
+                {
+                    var node = _network.Nodes.Single(n => n.Id == id);
+                    node.State = ObjectState.Deleted;
+                    nodes.Add(node);
+                }
+                FindNodesToDelete(element.Elements());
+            }
+            return nodes;
+        }
+
         private MainHierarchyNode CreateNode(XElement element, MainHierarchyNode parent)
         {
             var validFrom = ParseDateTimeString(element.Attribute("Since")?.Value);
@@ -117,12 +124,13 @@ namespace SeriesEngine.ExcelAddIn.Models
                 State = ObjectState.Added
             };
             node.SetLinkedObject(CreateObject(element));
-
+            node.LinkedObject.State = ObjectState.Added;
+                        
             foreach (var v in element.Elements())
             {
                 if(v.Attribute("UniqueName") == null)
                 {
-                    node.LinkedObject.SetVariableValue(element.Name.LocalName, element.Value);
+                    node.LinkedObject.SetVariableValue(v.Name.LocalName, v.Value);
                 }
             }
             return node;
@@ -139,12 +147,20 @@ namespace SeriesEngine.ExcelAddIn.Models
             node.ValidTill = validTill;
             node.State = ObjectState.Modified;
 
+            var linkedObjectUpdated = false; // checl that at least one field has been updated
             foreach (var v in element.Elements())
             {
                 if (v.Attribute("UniqueName") == null)
                 {
-                    node.LinkedObject.SetVariableValue(element.Name.LocalName, element.Value);
+                    linkedObjectUpdated = linkedObjectUpdated ? 
+                        linkedObjectUpdated :
+                        node.LinkedObject.SetVariableValue(v.Name.LocalName, v.Value);
                 }
+            }
+
+            if(linkedObjectUpdated)
+            {
+                node.LinkedObject.State = ObjectState.Modified;
             }
         }
 
@@ -167,7 +183,6 @@ namespace SeriesEngine.ExcelAddIn.Models
 
             if (node.ValidFrom.HasValue && node.ValidTill.HasValue)
             {
-                //return period.From < node.ValidTill.Value && period.Till >= node.ValidFrom.Value;
                 return period.Intersect(node.ValidFrom.Value, node.ValidTill.Value);
             }
 
@@ -181,58 +196,6 @@ namespace SeriesEngine.ExcelAddIn.Models
                 .Where(n => n.LinkedObject.ObjectModel.Name == objectTypeName)
                 .SingleOrDefault(n => n.NodeName == name)
                 ?.LinkedObject;
-        }
-
-        public IStateObject FindNode(int id)
-        {
-            return _network.Nodes.FirstOrDefault(n => n.Id == id);
-        }
-
-        private IEnumerable<NetworkTreeNode> RestoreNodes(Model1 context, IEnumerable<XElement> elements, NetworkTreeNode parent, List<NetworkTreeNode> allNodes)
-        {
-            var result = new List<NetworkTreeNode>();
-            // elements at one hierarchy level
-            foreach (var element in elements)
-            {
-                // try to find object for node
-                var nameAttr = element.Attribute("UniqueName");
-                if (nameAttr == null)
-                {
-                    parent.LinkedObject.SetVariableValue(element.Name.LocalName, element.Value);
-                }
-                else
-                {
-                    var validFrom = ParseDateTimeString(element.Attribute("Since")?.Value);
-                    var validTill = ParseDateTimeString(element.Attribute("Till")?.Value);
-
-                    var node = allNodes.FirstOrDefault(n => n.NodeName == nameAttr.Value && n.Parent == parent);
-                    if (node == null) // it is a new node
-                    {
-                        node = new MainHierarchyNode
-                        {
-                            IsMarkedFlag = true,
-                            Network = _network,
-                            Parent = (MainHierarchyNode)parent,
-                            ValidFrom = validFrom,
-                            ValidTill = validTill
-                        };
-                        // create a new object and node
-                        node.SetLinkedObject(FindNamedObject(context, element) ?? CreateObject(element));
-                        result.Add(node);
-                    }
-                    else
-                    {
-                        node.IsMarkedFlag = true;
-                        node.ValidFrom = validFrom;
-                        node.ValidTill = validTill;
-                    }
-                    if (element.Elements().Any())
-                    {
-                        result.AddRange(RestoreNodes(context, element.Elements(), node, allNodes));
-                    }
-                }
-            }
-            return result;
         }
 
         private DateTime? ParseDateTimeString(string value)
@@ -290,7 +253,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        public void UpdateVariables(IEnumerable<IStateObject> valuesForPeriod)
+        public void Update(IEnumerable<IStateObject> valuesForPeriod)
         {
             using (var context = new Model1())
             {

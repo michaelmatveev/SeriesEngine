@@ -26,7 +26,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         public void ChangeData(int networkId, IEnumerable<IStateObject> objectsToChange)
         {
             var network = _networksProvider.GetNetworkById(networkId);
-            network.UpdateVariables(objectsToChange);
+            network.Update(objectsToChange);
         }
 
         public EditorObject GetSelectedObject(CurrentSelection selection, Solution solution)

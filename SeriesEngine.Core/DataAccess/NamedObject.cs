@@ -56,18 +56,22 @@ namespace SeriesEngine.Core.DataAccess
                 .OrderBy(pv => pv.Date);
         }
 
-        public void SetVariableValue(string variableName, object value)
+        public bool SetVariableValue(string variableName, object value)
         {
             try
             {
                 var thisType = GetType();
                 var property = thisType.GetProperty(variableName);
+                if(property.GetValue(this) == value)
+                {
+                    return false;
+                }
                 property.SetValue(this, value);
-                this.State = ObjectState.Modified;
+                return true;
             }
             catch
             {
-
+                return false;
             }
         }
     }
