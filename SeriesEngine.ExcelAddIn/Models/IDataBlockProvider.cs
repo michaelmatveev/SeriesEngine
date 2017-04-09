@@ -13,7 +13,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         void AddDataBlock(CollectionDataBlock fragment);
         void DeleteDataBlock(BaseDataBlock fragment);
 
-        Period GetDefaultPeriod();
+        Period GetDefaultPeriod(CollectionDataBlock datablock = null);
         void SetDefaultPeriod(Period p);
 
         int GetLastSolutionId();

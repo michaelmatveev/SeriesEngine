@@ -100,7 +100,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 .Where(b => b.VariableMetamodel.IsPeriodic)
                 .ToList();
 
-            var period = collectionDatablock.PeriodType == PeriodType.Common ? _blockProvider.GetDefaultPeriod() : collectionDatablock.CustomPeriod;
+            var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
 
             listObject.ShowHeaders = collectionDatablock.ShowHeader;
             var network = _networksProvider
@@ -108,6 +108,10 @@ namespace SeriesEngine.ExcelAddIn.Models
  
             using (network.GetImportLock(collectionDatablock))
             {
+                foreach(var b in collectionDatablock.DataBlocks)
+                {
+                    b.VariablePeriod = period; // TODO вычислить период в зависимости от сдвига
+                }
                 var xml = network.ConvertToXml(collectionDatablock.DataBlocks, period);
                 collectionDatablock.Xml = xml;
                 var results = xmlMap.ImportXml(xml.ToString(), true);

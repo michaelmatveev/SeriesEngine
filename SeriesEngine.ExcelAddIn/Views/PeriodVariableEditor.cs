@@ -20,7 +20,6 @@ namespace SeriesEngine.ExcelAddIn.Views
  
         void IPeriodVariableView.ShowIt()
         {
-            labelPeriod.Text = $"Переменные отображаются за период {VariablesToShow.SelectedPeriod}";
             FillValues();
             if (ShowDialog() == DialogResult.OK)
             {
@@ -31,12 +30,22 @@ namespace SeriesEngine.ExcelAddIn.Views
         private void FillValues()
         {
             Text = $"{VariablesToShow.VariableMetamodel.Name} - {VariablesToShow.Object.GetName()}";
+            labelPeriod.Text = $"История изменения переменной отображаются за период {VariablesToShow.SelectedPeriod}";
+            if(VariablesToShow.InitialValue != null)
+            {
+                labelStartValue.Text = $"Значение на начало периода: {VariablesToShow.InitialValue.Value}";
+            }
+            else
+            {
+                labelStartValue.Text = "Значение на начало периода не определено";
+            }
+
             listViewVariable.Items.Clear();
 
             var sameDateGroups = VariablesToShow
                .ValuesForPeriod
                .OrderBy(vp => vp.Date)
-               .OrderBy(vp => vp.Id == 0 ? Int32.MaxValue : vp.Id)
+               .OrderBy(vp => vp.Id == 0 ? int.MaxValue : vp.Id)
                .Where(vp => vp.State != ObjectState.Deleted)
                .GroupBy(vp => vp.Date);
 
@@ -57,6 +66,16 @@ namespace SeriesEngine.ExcelAddIn.Views
                 .ToArray();
 
             listViewVariable.Items.AddRange(items);
+
+            var lastValue = (items.LastOrDefault()?.Tag as PeriodVariable) ?? VariablesToShow.InitialValue;
+            if (lastValue != null)
+            {
+                labelEndValue.Text = $"Значение на конец периода: {lastValue.Value}";
+            }
+            else
+            {
+                labelEndValue.Text = "Значение на конец периода не определено";
+            }
         }
 
         private void buttonAdd_Click(object sender, EventArgs e)

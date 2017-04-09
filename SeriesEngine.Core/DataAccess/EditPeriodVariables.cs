@@ -9,7 +9,7 @@ namespace SeriesEngine.Core.DataAccess
         public Variable VariableMetamodel { get; set; }
         public NamedObject Object { get; set; }
         public Period SelectedPeriod { get; set; }
-        public List<PeriodVariable> ValuesForPeriod { get; private set; } = new List<PeriodVariable>();
-
+        public List<PeriodVariable> ValuesForPeriod { get; private set; } = new List<PeriodVariable>();        
+        public PeriodVariable InitialValue { get; set; }
     }
 }

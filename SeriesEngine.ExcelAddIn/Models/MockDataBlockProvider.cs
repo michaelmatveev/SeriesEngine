@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
-    public class MockFragmentsProvider : IDataBlockProvider
+    public class MockDataBlockProvider : IDataBlockProvider
     {
         //private static Period DefaultPeriod = new Period
         //{
@@ -352,7 +352,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             Till = new DateTime(2016, 03, 01)
         };
 
-        public Period GetDefaultPeriod()
+        public Period GetDefaultPeriod(CollectionDataBlock datablock = null)
         {
             return _defaultPeriod; 
         }

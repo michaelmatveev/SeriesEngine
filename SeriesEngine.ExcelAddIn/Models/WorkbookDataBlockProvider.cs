@@ -84,24 +84,38 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         private const string CustomSolutionId = "seSolutionId";
 
-        public Period GetDefaultPeriod()
+        public Period GetDefaultPeriod(CollectionDataBlock datablock = null)
         {
             var properties = (DocumentProperties)_workbook.CustomDocumentProperties;
             var property = properties.FindPropertyByName(CustomPropertyPeriodId);
-
+            Period result;
             if (property == null)
             {
                 SetDefaultPeriod(Period.Default);
-                return Period.Default;
+                result = Period.Default;
             }
             else
             {
                 var part = _workbook.CustomXMLParts.SelectByID(property.Value);
                 using (var reader = new StringReader(part.DocumentElement.XML))
                 {
-                    return (Period)PeriodSerializer.Deserialize(reader);
+                    result = (Period)PeriodSerializer.Deserialize(reader);
                 }
             }
+
+            if (datablock == null || datablock.PeriodType == PeriodType.Common)
+            {
+                return result;
+            }
+            else
+            {
+                if (datablock.PeriodType == PeriodType.Custom)
+                {
+                    return datablock.CustomPeriod;
+                }
+            }
+
+            return null;
         }
 
         public void SetDefaultPeriod(Period period)

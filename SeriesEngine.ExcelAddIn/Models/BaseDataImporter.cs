@@ -6,11 +6,11 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public abstract class BaseDataImporter
     {
-        protected void ImportDataForDataBlocks(int solutionId, IEnumerable<SheetDataBlock> fragments, Period period)
+        protected void ImportDataForDataBlocks(int solutionId, IEnumerable<SheetDataBlock> dataBlocks, Period period)
         {
-            foreach (var f in fragments)
+            foreach (var dataBlock in dataBlocks)
             {
-                f.Import(solutionId, this);  
+                dataBlock.Import(solutionId, this);  
             }            
         }
 

@@ -42,6 +42,8 @@
             this.columnHeaderValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1 = new System.Windows.Forms.Panel();
             this.labelPeriod = new System.Windows.Forms.Label();
+            this.labelStartValue = new System.Windows.Forms.Label();
+            this.labelEndValue = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -53,15 +55,19 @@
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 581F));
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.listViewVariable, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.listViewVariable, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.labelStartValue, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.labelEndValue, 0, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowCount = 5;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.Size = new System.Drawing.Size(581, 369);
             this.tableLayoutPanel1.TabIndex = 0;
@@ -163,11 +169,11 @@
             this.columnHeaderValue});
             this.listViewVariable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewVariable.FullRowSelect = true;
-            this.listViewVariable.Location = new System.Drawing.Point(10, 39);
+            this.listViewVariable.Location = new System.Drawing.Point(10, 68);
             this.listViewVariable.Margin = new System.Windows.Forms.Padding(10);
             this.listViewVariable.MultiSelect = false;
             this.listViewVariable.Name = "listViewVariable";
-            this.listViewVariable.Size = new System.Drawing.Size(561, 279);
+            this.listViewVariable.Size = new System.Drawing.Size(561, 221);
             this.listViewVariable.TabIndex = 2;
             this.listViewVariable.UseCompatibleStateImageBehavior = false;
             this.listViewVariable.View = System.Windows.Forms.View.Details;
@@ -205,6 +211,28 @@
             this.labelPeriod.Size = new System.Drawing.Size(121, 29);
             this.labelPeriod.TabIndex = 0;
             this.labelPeriod.Text = "Выбранный период";
+            // 
+            // labelStartValue
+            // 
+            this.labelStartValue.AutoSize = true;
+            this.labelStartValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelStartValue.Location = new System.Drawing.Point(3, 29);
+            this.labelStartValue.Name = "labelStartValue";
+            this.labelStartValue.Padding = new System.Windows.Forms.Padding(8);
+            this.labelStartValue.Size = new System.Drawing.Size(146, 29);
+            this.labelStartValue.TabIndex = 4;
+            this.labelStartValue.Text = "Начальное значение";
+            // 
+            // labelEndValue
+            // 
+            this.labelEndValue.AutoSize = true;
+            this.labelEndValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelEndValue.Location = new System.Drawing.Point(3, 299);
+            this.labelEndValue.Name = "labelEndValue";
+            this.labelEndValue.Padding = new System.Windows.Forms.Padding(8);
+            this.labelEndValue.Size = new System.Drawing.Size(138, 29);
+            this.labelEndValue.TabIndex = 5;
+            this.labelEndValue.Text = "Конечное значение";
             // 
             // PeriodVariableEditor
             // 
@@ -246,5 +274,7 @@
         private System.Windows.Forms.ColumnHeader columnHeaderValue;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label labelPeriod;
+        private System.Windows.Forms.Label labelStartValue;
+        private System.Windows.Forms.Label labelEndValue;
     }
 }

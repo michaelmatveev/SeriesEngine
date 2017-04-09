@@ -26,7 +26,7 @@ namespace SeriesEngine.Core.DataAccess
         [NotMapped]
         public ObjectState State { get; set; }
 
-        public object GetVariableValue(Variable variableModel)
+        public object GetVariableValue(Variable variableModel, Period requestedPeriod)
         {
             var thisType = GetType();
             PropertyInfo property;
@@ -34,14 +34,17 @@ namespace SeriesEngine.Core.DataAccess
             {
                 property = thisType.GetProperty($"{ObjectModel.Name}_{variableModel.Name}s");
                 var collection = property.GetValue(this, null) as IEnumerable<PeriodVariable>;
-                return collection.LastOrDefault()?.Value;
+                return collection
+                    .OrderBy(v => v.Date)
+                    .LastOrDefault(v => v.Date < requestedPeriod.Till)
+                    ?.Value;
             }
 
             property = thisType.GetProperty(variableModel.Name);
             return property.GetValue(this, null);
         }
 
-        public IEnumerable<PeriodVariable> GetPeriodVariable(Variable variableModel, Period selectedPeriod)
+        public IEnumerable<PeriodVariable> GetPeriodVariable(Variable variableModel)
         {
             if(!variableModel.IsPeriodic)
             {
@@ -51,9 +54,7 @@ namespace SeriesEngine.Core.DataAccess
             var thisType = GetType();
             var property = thisType.GetProperty($"{ObjectModel.Name}_{variableModel.Name}s");
             var collection = property.GetValue(this, null) as IEnumerable<PeriodVariable>;
-            return collection
-                .Where(pv => selectedPeriod.Include(pv.Date))
-                .OrderBy(pv => pv.Date);
+            return collection.OrderBy(pv => pv.Date);
         }
 
         public bool SetVariableValue(string variableName, object value)

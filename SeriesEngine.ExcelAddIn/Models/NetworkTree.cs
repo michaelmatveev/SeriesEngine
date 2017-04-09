@@ -320,57 +320,6 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        //public void LoadFromXml(IEnumerable<SubFragment> queryParamers, XDocument target)
-        //{
-        //    // TODO find diffrence
-        //    XDocument source = ConvertToXml(queryParamers);
-        //    // get current state of network
-        //    var currentTreeState = _network.Nodes.GenerateTree(n => n.NodeName, n => n.Parent?.NodeName);
-        //    using (var context = new Model1())
-        //    {
-        //        context.Networks.Attach(_network);
-        //        foreach (var c in currentTreeState)
-        //        {
-        //            // try to find node that corresponds target
-        //            var currentObject = c.Item.LinkedObject;
-        //            var element = target.XPathSelectElement($"/{RootName}/Region[@UniqueName='{c.Item.NodeName}']");
-        //            if (element == null) // cannot find element in target, have to delete node
-        //            {
-        //                //context.MainHierarchyNodes.Attach(c.Item);
-        //                context.Entry(c.Item).State = System.Data.Entity.EntityState.Deleted;
-        //            }
-        //        }
-
-        //        foreach(var x in target.Root.Descendants())
-        //        {
-
-        //        }
-
-        //        //context.SaveChanges();
-        //    }
-
-        //    //using (var context = new Model1())
-        //    //{
-        //    //    foreach (var re in target.Root.Elements("Region"))
-        //    //    {
-        //    //        var newNode = new MainHierarchyNode()
-        //    //        {
-        //    //            Region = new Region()
-        //    //            {
-        //    //                Name = re.Attribute("UniqueName").Value
-        //    //            }
-        //    //        };
-
-        //    //        _network.Nodes.Add(newNode);
-        //    //    }
-
-
-        //    //    context.SaveChanges();
-        //    //}
-
-
-        //}
-
         private IEnumerable<XElement> GetSubElements(IEnumerable<TreeItem<NetworkTreeNode>> currentItems, IEnumerable<DataBlock> queryParamers)
         {
             var result = new List<XElement>();
@@ -420,7 +369,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 var vsf = (VariableDataBlock)qp;
                 var varModel = vsf.VariableMetamodel;
-                newElement.Add(new XElement(varModel.Name, node.LinkedObject.GetVariableValue(varModel)));
+                newElement.Add(new XElement(varModel.Name, node.LinkedObject.GetVariableValue(varModel, qp.VariablePeriod)));
             }
         }
 

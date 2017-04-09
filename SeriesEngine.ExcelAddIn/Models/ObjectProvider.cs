@@ -87,7 +87,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .OfType<CollectionDataBlock>()
                     .SingleOrDefault(db => db.Name == listObject.Name);
 
-                var period = collectionDatablock.PeriodType == PeriodType.Common ? _blockProvider.GetDefaultPeriod() : collectionDatablock.CustomPeriod;
+                var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
 
                 var path = column.XPath.Value.Split(new[] { '/' });
                 var variableName = path.Last();
@@ -101,7 +101,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 if (variableBlock != null)
                 {
-                    var network = _networksProvider
+                    var networkTree = _networksProvider
                         .GetNetwork(solution.Id, collectionDatablock.NetworkName, new[] { variableBlock }, period);
 
                     var parentPath = $"{string.Join("/", path.Take(path.Length - 1))}/@UniqueName";
@@ -113,17 +113,19 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                     var objName = sheet.Cells[excelSelection.Row, listObject.DataBodyRange.Column + columnWithObjectName.Index - 1].Value;
 
-                    NamedObject obj = network.FindObject(objTypeName, objName);                    
-                    IEnumerable<PeriodVariable> variableValues = obj.GetPeriodVariable(variableBlock.VariableMetamodel, period);
-
+                    var obj = networkTree.FindObject(objTypeName, objName);                    
+                    IEnumerable<PeriodVariable> variableValues = obj.GetPeriodVariable(variableBlock.VariableMetamodel);
+                    
                     var result = new EditPeriodVariables
                     {
-                        NetworkId = network.Id,
+                        NetworkId = networkTree.Id,
                         Object = obj,
                         VariableMetamodel = variableBlock.VariableMetamodel,
-                        SelectedPeriod = period
+                        SelectedPeriod = period,
+                        InitialValue = variableValues.Where(pv => pv.Date < period.From).LastOrDefault()
                     };
-                    result.ValuesForPeriod.AddRange(variableValues);
+                    
+                    result.ValuesForPeriod.AddRange(variableValues.Where(pv => period.Include(pv.Date)));
                     return result;
                 }
             }

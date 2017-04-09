@@ -1,5 +1,5 @@
 ﻿using SeriesEngine.Core;
-using SeriesEngine.Msk1;
+using SeriesEngine.Core.DataAccess;
 
 namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
 {
@@ -10,10 +10,8 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
         public int Level { get; set; }
         public string CollectionName { get; set; }
         public string RefObject { get; set; }
-
         public ObjectMetamodel ObjectMetamodel { get; set; }
         public Kind Kind { get; set; }
-
         public TimeInterval Interval { get; set; }
         public bool IntervalsByRows { get; set; }
         public bool IntervalsByColumns
@@ -28,11 +26,11 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
             }
         }
         public bool ShowIntervals { get; set; }
-
         public bool UseCommonPeriod { get; set; }
         public bool UseShift { get; set; }
         public int Shift { get; set; }
         public TimeInterval ShiftPeriod { get; set; }
+        public Period VariablePeriod { get; set; }
 
         public DataBlock(BaseDataBlock parent) : base(parent)
         {

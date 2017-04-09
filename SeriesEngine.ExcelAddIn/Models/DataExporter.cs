@@ -43,7 +43,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             var networkTree = _networksProvider
                 .GetNetworks(solutionId)
                 .SingleOrDefault(n => n.Name == collectionDatablock.NetworkName);
-            var period = collectionDatablock.PeriodType == PeriodType.Common ? _blockProvider.GetDefaultPeriod() : collectionDatablock.CustomPeriod;
+            var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
             //var sourceXml = collectionDatablock.Xml ?? networkTree.ConvertToXml(collectionDatablock.DataBlocks, period);
             Excel.Worksheet sheet = _workbook.Sheets[collectionDatablock.Sheet];
             var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == collectionDatablock.Name);
