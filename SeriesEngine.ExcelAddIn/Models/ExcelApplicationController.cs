@@ -158,6 +158,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Singleton()
                     .Use<ObjectProvider>();
 
+                _.For<IObjectCache>()
+                    .Singleton()
+                    .Use<ObjectCache>();
+
                 _.For<IObjectPropertiesView>()
                     .Use<ObjectProperties>();
 

@@ -113,7 +113,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                     var objName = sheet.Cells[excelSelection.Row, listObject.DataBodyRange.Column + columnWithObjectName.Index - 1].Value;
 
-                    var obj = networkTree.FindObject(objTypeName, objName);                    
+                    NamedObject obj = networkTree.FindObject(objTypeName, objName);                    
                     IEnumerable<PeriodVariable> variableValues = obj.GetPeriodVariable(variableBlock.VariableMetamodel);
                     
                     var result = new EditPeriodVariables

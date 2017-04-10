@@ -213,10 +213,12 @@
     <Compile Include="Models\DataBaseNetworkProvider.cs" />
     <Compile Include="Models\ErrorOccuredEventArgs.cs" />
     <Compile Include="Models\IErrorAware.cs" />
+    <Compile Include="Models\IObjectCache.cs" />
     <Compile Include="Models\IObjectProvider.cs" />
     <Compile Include="Models\ISelectionProvider.cs" />
     <Compile Include="Models\ISolutionProvider.cs" />
     <Compile Include="Models\NetworkTree.cs" />
+    <Compile Include="Models\ObjectCache.cs" />
     <Compile Include="Models\ObjectProvider.cs" />
     <Compile Include="Models\SelectionProvider.cs" />
     <Compile Include="Models\SubFragment.cs" />

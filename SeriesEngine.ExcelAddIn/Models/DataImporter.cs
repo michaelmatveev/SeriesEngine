@@ -1,6 +1,5 @@
 ﻿using Microsoft.Office.Tools.Excel;
 using Excel = Microsoft.Office.Interop.Excel;
-using System;
 using System.Linq;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using SeriesEngine.App;
@@ -16,13 +15,14 @@ namespace SeriesEngine.ExcelAddIn.Models
         private readonly Workbook _workbook;
         private readonly IDataBlockProvider _blockProvider;
         private readonly INetworksProvider _networksProvider;
-        private Random _random = new Random();
+        private readonly IObjectCache _objectCache;
 
-        public DataImporter(Workbook workbook, IDataBlockProvider blockProvider, INetworksProvider networksProvider)
+        public DataImporter(Workbook workbook, IDataBlockProvider blockProvider, INetworksProvider networksProvider, IObjectCache objectCache)
         {
             _workbook = workbook;
             _blockProvider = blockProvider;
             _networksProvider = networksProvider;
+            _objectCache = objectCache;
         }
 
         void ICommand<ReloadAllCommandArgs>.Execute(ReloadAllCommandArgs commandData)
@@ -55,82 +55,103 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public override void ImportDataBlock(int solutionId, CollectionDataBlock collectionDatablock)
         {
-            Excel.Worksheet sheet = _workbook.Sheets[collectionDatablock.Sheet];
-            sheet.Activate();
-            sheet.get_Range(collectionDatablock.Cell).Select();
-
-            var xmlMap = _workbook
-                .XmlMaps
-                .Cast<Excel.XmlMap>()
-                .SingleOrDefault(m => m.Name == collectionDatablock.Name);
-
-            xmlMap?.Delete();
-
-            xmlMap = _workbook
-                .XmlMaps
-                .Add(collectionDatablock.GetSchema(), NetworkTree.RootName);
-            xmlMap.Name = collectionDatablock.Name;
-
-            var listObject = sheet
-                .ListObjects
-                .Cast<Excel.ListObject>()
-                .SingleOrDefault(l => l.Name == collectionDatablock.Name);
-
-            listObject?.Delete();
-
-            listObject = sheet.ListObjects.Add();
-            listObject.Name = collectionDatablock.Name;
-
-            var column = listObject.ListColumns
-                .Cast<Excel.ListColumn>()
-                .First();
-
-            var block = collectionDatablock.DataBlocks.First();
-            SetColumn(column, xmlMap, block);
-
-            foreach (var f in collectionDatablock.DataBlocks.Skip(1))
+            try
             {
-                var newColumn = listObject.ListColumns.Add();
-                SetColumn(newColumn, xmlMap, f);
-            }
+                _workbook.Application.EnableEvents = false;
+                _workbook.Application.DisplayAlerts = false;
 
-            var blocks = collectionDatablock
-                .DataBlocks
-                .OfType<VariableDataBlock>()
-                .Where(b => b.VariableMetamodel.IsPeriodic)
-                .ToList();
+                Excel.Worksheet sheet = _workbook.Sheets[collectionDatablock.Sheet];
+                sheet.Activate();
+                sheet.get_Range(collectionDatablock.Cell).Select();
 
-            var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
+                var xmlMap = _workbook
+                    .XmlMaps
+                    .Cast<Excel.XmlMap>()
+                    .SingleOrDefault(m => m.Name == collectionDatablock.Name);
 
-            listObject.ShowHeaders = collectionDatablock.ShowHeader;
-            var network = _networksProvider
-                .GetNetwork(solutionId, collectionDatablock.NetworkName, blocks, period);
- 
-            using (network.GetImportLock(collectionDatablock))
-            {
-                foreach(var b in collectionDatablock.DataBlocks)
+                xmlMap?.Delete();
+
+                xmlMap = _workbook
+                    .XmlMaps
+                    .Add(collectionDatablock.GetSchema(), NetworkTree.RootName);
+                xmlMap.Name = collectionDatablock.Name;
+
+                var listObject = sheet
+                    .ListObjects
+                    .Cast<Excel.ListObject>()
+                    .SingleOrDefault(l => l.Name == collectionDatablock.Name);
+
+                listObject?.Delete();
+
+                listObject = sheet.ListObjects.Add();
+                listObject.Name = collectionDatablock.Name;
+
+                var column = listObject.ListColumns
+                    .Cast<Excel.ListColumn>()
+                    .First();
+
+                var block = collectionDatablock.DataBlocks.First();
+                SetColumn(column, xmlMap, block, solutionId);
+
+                foreach (var f in collectionDatablock.DataBlocks.Skip(1))
                 {
-                    b.VariablePeriod = period; // TODO вычислить период в зависимости от сдвига
+                    var newColumn = listObject.ListColumns.Add();
+                    SetColumn(newColumn, xmlMap, f, solutionId);
                 }
-                var xml = network.ConvertToXml(collectionDatablock.DataBlocks, period);
-                collectionDatablock.Xml = xml;
-                var results = xmlMap.ImportXml(xml.ToString(), true);
+
+                var blocks = collectionDatablock
+                    .DataBlocks
+                    .OfType<VariableDataBlock>()
+                    .Where(b => b.VariableMetamodel.IsPeriodic)
+                    .ToList();
+
+                var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
+
+                listObject.ShowHeaders = collectionDatablock.ShowHeader;
+                var network = _networksProvider
+                    .GetNetwork(solutionId, collectionDatablock.NetworkName, blocks, period);
+
+                using (network.GetImportLock(collectionDatablock))
+                {
+                    foreach (var b in collectionDatablock.DataBlocks)
+                    {
+                        b.VariablePeriod = period; // TODO вычислить период в зависимости от сдвига
+                    }
+                    var xml = network.ConvertToXml(collectionDatablock.DataBlocks, period);
+                    collectionDatablock.Xml = xml;
+
+                    var result = xmlMap.ImportXml(xml.ToString(), true);
+                }
+            }
+            finally
+            {
+                _workbook.Application.EnableEvents = true;
+                _workbook.Application.DisplayAlerts = true;
             }
         }
 
-        private static void SetColumn(Excel.ListColumn column, Excel.XmlMap map, DataBlock block)
+        private void SetColumn(Excel.ListColumn column, Excel.XmlMap map, DataBlock block, int solutionId)
         {
             var nodeType = (block as NodeDataBlock)?.NodeType ?? NodeType.Path;
             column.Name = nodeType == NodeType.UniqueName ? block.Caption + "(+)" : block.Caption;
+            column.Range.Validation.Delete();
             if (nodeType == NodeType.Since || nodeType == NodeType.Till)
             {
                 column.Range.NumberFormat = "dd.mm.yyyy";
+            }
+            else if(nodeType == NodeType.UniqueName)
+            {
+                var flatList = string.Join(";", _objectCache.GetObjectsOfType(solutionId, block.RefObject).ToArray());                
+                column.Range.Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertInformation, Excel.XlFormatConditionOperator.xlBetween, flatList);
+                column.Range.Validation.ShowError = false;
+                column.Range.Validation.ShowInput = false;
+                column.Range.Validation.IgnoreBlank = true;
             }
             else
             {
                 column.Range.NumberFormat = "@";
             }
-            column.XPath.SetValue(map, block.XmlPath);        
+            column.XPath.SetValue(map, block.XmlPath);
         }
 
         //private void ImportNodeFragment(NodeFragment fragment)

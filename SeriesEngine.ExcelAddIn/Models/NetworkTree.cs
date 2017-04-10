@@ -147,14 +147,12 @@ namespace SeriesEngine.ExcelAddIn.Models
             node.ValidTill = validTill;
             node.State = ObjectState.Modified;
 
-            var linkedObjectUpdated = false; // checl that at least one field has been updated
-            foreach (var v in element.Elements())
+            var linkedObjectUpdated = false; // check that at least one field has been updated
+            foreach (var v in element.Elements().Where(v => v.Attribute("UniqueName") == null))
             {
-                if (v.Attribute("UniqueName") == null)
+                if(node.LinkedObject.SetVariableValue(v.Name.LocalName, v.Value) && !linkedObjectUpdated)
                 {
-                    linkedObjectUpdated = linkedObjectUpdated ? 
-                        linkedObjectUpdated :
-                        node.LinkedObject.SetVariableValue(v.Name.LocalName, v.Value);
+                    linkedObjectUpdated = true;
                 }
             }
 
@@ -274,25 +272,25 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        private NamedObject FindNamedObject(Model1 context, XElement element)
-        {
-            var objectType = $"{element.Name.LocalName}s";
-            var objectName = element.Attribute("UniqueName").Value;
+        //private NamedObject FindNamedObject(Model1 context, XElement element)
+        //{
+        //    var objectType = $"{element.Name.LocalName}s";
+        //    var objectName = element.Attribute("UniqueName").Value;
 
-            var property = context.GetType().GetProperty(objectType);
-            dynamic dbSet = property.GetValue(context);
+        //    var property = context.GetType().GetProperty(objectType);
+        //    dynamic dbSet = property.GetValue(context);
 
-            var prmSolutionId = new SqlParameter("@SolutionId", _network.SolutionId);
-            var prmObjectName = new SqlParameter("@ObjectName", objectName);
+        //    var prmSolutionId = new SqlParameter("@SolutionId", _network.SolutionId);
+        //    var prmObjectName = new SqlParameter("@ObjectName", objectName);
 
-            var entries = dbSet.SqlQuery($"SELECT * FROM pwk1.[{objectType}] where SolutionId=@SolutionId and Name=@ObjectName", prmSolutionId, prmObjectName);
-            foreach (NamedObject d in entries)
-            {
-                d.ObjectModel = MainHierarchyNode.GetObjectModelByName(element.Name.LocalName);
-                return d;
-            }
-            return null;
-        }
+        //    var entries = dbSet.SqlQuery($"SELECT * FROM pwk1.[{objectType}] where SolutionId=@SolutionId and Name=@ObjectName", prmSolutionId, prmObjectName);
+        //    foreach (NamedObject d in entries)
+        //    {
+        //        d.ObjectModel = MainHierarchyNode.GetObjectModelByName(element.Name.LocalName);
+        //        return d;
+        //    }
+        //    return null;
+        //}
 
         public void RenameObjectLinkedWithNode(int nodeId, string newName)
         {
@@ -400,36 +398,6 @@ namespace SeriesEngine.ExcelAddIn.Models
                 cb.NetworkRevision = _network.Revision;
             });
         }
+
     }
-
-    //public class XElementResolver<D, T> : IValueResolver<XElement, D, T>
-    //{
-    //    public T Resolve(XElement source, D destination, T destMember, ResolutionContext context)
-    //    {
-    //        if (source == null || string.IsNullOrEmpty(source.Value))
-    //            return default(T);
-    //        return (T)Convert.ChangeType(source.Value, typeof(T));
-    //    }
-    //}
-
-    //public class XAttributeResolver<D, T> : IValueResolver<XElement, D, T>
-    //{
-    //    public XAttributeResolver(string attributeName)
-    //    {
-    //        Name = attributeName;
-    //    }
-
-    //    public string Name { get; set; }
-
-    //    public T Resolve(XElement source, D destination, T destMember, ResolutionContext context)
-    //    {
-    //        if (source == null)
-    //            return default(T);
-    //        var attribute = source.Attribute(Name);
-    //        if (attribute == null || String.IsNullOrEmpty(attribute.Value))
-    //            return default(T);
-
-    //        return (T)Convert.ChangeType(attribute.Value, typeof(T));
-    //    }
-    //}
 }

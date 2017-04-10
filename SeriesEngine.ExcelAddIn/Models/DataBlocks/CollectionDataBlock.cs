@@ -17,14 +17,18 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
     [Serializable]
     public class CollectionDataBlock : SheetDataBlock
     {
+        private static XNamespace ns = "http://www.w3.org/2001/XMLSchema";
+        private static XNamespace msdata = "urn:schemas-microsoft-com:xml-msdata";
+
         public string NetworkName { get; set; }
         public int NetworkRevision { get; set; }
         public IEnumerable<ObjectMetamodel> SupportedModels { get; set; }
-        public int[] ObjectIds { get; set; }
         public bool ShowHeader { get; set; } = true;
         public PeriodType PeriodType { get; set; } = PeriodType.Common;
         public Period CustomPeriod { get; set; }
         public XDocument Xml { get; set; }
+        public IList<DataBlock> DataBlocks { get; private set; } = new List<DataBlock>();
+
         public CollectionDataBlock() : base(null)
         {
             CustomPeriod = Period.Default;
@@ -35,8 +39,15 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
             CustomPeriod = defaultPeriod;
         }
 
-        private static XNamespace ns = "http://www.w3.org/2001/XMLSchema";
-        private static XNamespace msdata = "urn:schemas-microsoft-com:xml-msdata";
+        public override void Export(int solutionId, BaseDataExporter exproter)
+        {
+            exproter.ExportDataBlock(solutionId, this);
+        }
+
+        public override void Import(int solutionId, BaseDataImporter importer)
+        {
+            importer.ImportDataBlock(solutionId, this);
+        }
 
         public string GetSchema()
         {
@@ -111,8 +122,7 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
                 new XAttribute("name", sf.NodeType.ToString()),
                 new XAttribute("type", sf.NodeType == NodeType.Since || sf.NodeType == NodeType.Till ? "xs:dateTime" : "xs:string"),
                 new XAttribute("use", sf.NodeType == NodeType.UniqueName ? "required" : "optional"),
-                new XAttribute("form", "unqualified"));//,
-                                                       //new XAttribute(msdata + "PrimaryKey", sf.NodeType == NodeType.UniqueName ? "true" : "false"));
+                new XAttribute("form", "unqualified"));
         }
 
         private static XElement GetShemaForVariable(VariableDataBlock sf)
@@ -124,24 +134,6 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
                 new XAttribute("maxOccurs", "1"),
                 new XAttribute("nillable", "true"),
                 new XAttribute("form", "unqualified"));
-        }
-
-        //public string GetXml(NetworkTree network, Period defaultPeriod)
-        //{
-        //    Xml = network.ConvertToXml(DataBlocks, defaultPeriod);
-        //    return Xml.ToString();
-        //}
-
-        public IList<DataBlock> DataBlocks = new List<DataBlock>();
-
-        public override void Export(int solutionId, BaseDataExporter exproter)
-        {
-            exproter.ExportDataBlock(solutionId, this);
-        }
-
-        public override void Import(int solutionId, BaseDataImporter importer)
-        {
-            importer.ImportDataBlock(solutionId, this);
         }
 
     }
