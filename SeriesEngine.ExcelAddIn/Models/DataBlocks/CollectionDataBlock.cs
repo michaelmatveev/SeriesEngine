@@ -39,14 +39,14 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
             CustomPeriod = defaultPeriod;
         }
 
-        public override void Export(int solutionId, BaseDataExporter exproter)
+        public override void Export(Solution solution, BaseDataExporter exproter)
         {
-            exproter.ExportDataBlock(solutionId, this);
+            exproter.ExportDataBlock(solution, this);
         }
 
-        public override void Import(int solutionId, BaseDataImporter importer)
+        public override void Import(Solution solution, BaseDataImporter importer)
         {
-            importer.ImportDataBlock(solutionId, this);
+            importer.ImportDataBlock(solution, this);
         }
 
         public string GetSchema()

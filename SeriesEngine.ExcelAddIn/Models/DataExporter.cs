@@ -1,6 +1,7 @@
 ﻿using Microsoft.Office.Tools.Excel;
 using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
+using SeriesEngine.Core.DataAccess;
 using SeriesEngine.ExcelAddIn.Helpers;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System;
@@ -33,15 +34,15 @@ namespace SeriesEngine.ExcelAddIn.Models
             using (new ActiveRangeKeeper(_workbook))
             {
                 var sheetDataBlocks = _blockProvider.GetDataBlocks().OfType<SheetDataBlock>();
-                ExportFromDataBlocks(commandData.Solution.Id, sheetDataBlocks);
+                ExportFromDataBlocks(commandData.Solution, sheetDataBlocks);
                 _blockProvider.Save(); // save NetworkRevision
             }
         }
 
-        public override void ExportDataBlock(int solutionId, CollectionDataBlock collectionDatablock)
+        public override void ExportDataBlock(Solution solution, CollectionDataBlock collectionDatablock)
         {
             var networkTree = _networksProvider
-                .GetNetworks(solutionId)
+                .GetNetworks(solution.Id)
                 .SingleOrDefault(n => n.Name == collectionDatablock.NetworkName);
             var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
             //var sourceXml = collectionDatablock.Xml ?? networkTree.ConvertToXml(collectionDatablock.DataBlocks, period);

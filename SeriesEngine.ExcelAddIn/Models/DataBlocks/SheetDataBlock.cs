@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SeriesEngine.Core.DataAccess;
+using System;
 
 namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
 {
@@ -13,7 +14,7 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
             Parent = parent;
         }
 
-        public abstract void Import(int solutionId, BaseDataImporter importer);
-        public abstract void Export(int solutionId, BaseDataExporter exproter);
+        public abstract void Import(Solution solution, BaseDataImporter importer);
+        public abstract void Export(Solution solution, BaseDataExporter exproter);
     }
 }

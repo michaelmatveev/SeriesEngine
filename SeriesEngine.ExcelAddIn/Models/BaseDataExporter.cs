@@ -1,4 +1,5 @@
-﻿using SeriesEngine.ExcelAddIn.Models.DataBlocks;
+﻿using SeriesEngine.Core.DataAccess;
+using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System;
 using System.Collections.Generic;
 
@@ -6,13 +7,13 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public abstract class BaseDataExporter : IErrorAware
     {
-        protected void ExportFromDataBlocks(int solutionId, IEnumerable<SheetDataBlock> dataBlocks)
+        protected void ExportFromDataBlocks(Solution solution, IEnumerable<SheetDataBlock> dataBlocks)
         {
             foreach (var db in dataBlocks)
             {
                 try
                 {
-                    db.Export(solutionId, this);
+                    db.Export(solution, this);
                 }
                 catch(Exception ex)
                 {
@@ -35,7 +36,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             return args.Cancel;
         }
 
-        public abstract void ExportDataBlock(int solutionId, CollectionDataBlock fragment);
+        public abstract void ExportDataBlock(Solution solution, CollectionDataBlock fragment);
 
         //protected virtual void ExportGridFragment(ObjectGridFragment fragment)
         //{

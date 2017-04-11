@@ -1,25 +1,44 @@
-﻿using System;
+﻿using LazyCache;
+using SeriesEngine.Msk1;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Solution = SeriesEngine.Core.DataAccess.Solution;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
     public class ObjectCache : IObjectCache
     {
-        public void AddObject(int solutionId, string type, string name)
+        public readonly IAppCache _cache;
+        private readonly TimeSpan _refreshSpan;
+
+        public ObjectCache()
         {
+            _cache = new CachingService();
+            _refreshSpan = TimeSpan.FromMinutes(10);
         }
 
-        public IEnumerable<string> GetObjectsOfType(int solutionId, string type)
+        public ICollection<string> GetObjectsOfType(Solution solution, string type)
         {
-            yield return type + "1";
-            yield return type + "2";
+            var key = $"{solution.Id}:{type}";
+            var query = $"SELECT Name FROM {solution.MetaModelName}.{type}s WHERE SolutionId = {solution.Id}";
+            return _cache.GetOrAdd(key, () => GetObjectNames(query), _refreshSpan);
         }
 
-        public void RemoveObject(int solutionId, string type, string name)
+        private static ICollection<string> GetObjectNames(string query)
         {
+            var result = new List<string>();
+            for(int i = 0; i < 100000; i++)
+            {
+                result.Add($"item{i}");
+            }
+            return result;
+
+            //using (var context = new Model1())
+            //{
+            //    return context.Database.SqlQuery<string>(query).ToList();
+            //}
         }
+
     }
 }

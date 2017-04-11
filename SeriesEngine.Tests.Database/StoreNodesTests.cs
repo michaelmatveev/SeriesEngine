@@ -160,11 +160,15 @@ namespace SeriesEngine.Tests.Database
             var network = provider.GetNetworks(_currentSolution.Id)
                 .Where(n => n.SolutionName == _currentSolution.Name)
                 .First(n => n.Name == "Main network 1");
- 
+
+            var source = new XDocument(
+                new XElement("DataImportExport"));
             var doc = new XDocument(
                 new XElement("DataImportExport", 
                     new XElement("Region", new XAttribute("UniqueName", "Region 2"))));
-            network.LoadFromXml(doc);
+
+
+            network.LoadFromXml(source, doc);
             var collectionDataBlock = GetCollectionDataBlock();
             var dataXml = network.ConvertToXml(collectionDataBlock.DataBlocks, Period.Default);
 

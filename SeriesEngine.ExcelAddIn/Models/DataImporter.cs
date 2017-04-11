@@ -5,6 +5,7 @@ using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
 using SeriesEngine.ExcelAddIn.Helpers;
+using SeriesEngine.Core.DataAccess;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -34,7 +35,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .OfType<CollectionDataBlock>();
                 
                 var period = _blockProvider.GetDefaultPeriod();
-                ImportDataForDataBlocks(commandData.Solution.Id, sheetDataBlocks, period);
+                ImportDataForDataBlocks(commandData.Solution, sheetDataBlocks, period);
                 _blockProvider.Save(); // save NetworkRevision
             }
         }
@@ -48,12 +49,12 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .OfType<CollectionDataBlock>();
 
                 var period = _blockProvider.GetDefaultPeriod();
-                ImportDataBlock(commandData.Solution.Id, sheetDataBlocks.Single(sb => sb.Name == commandData.BlockName));
+                ImportDataBlock(commandData.Solution, sheetDataBlocks.Single(sb => sb.Name == commandData.BlockName));
                 _blockProvider.Save(); // save NetworkRevision
             }
         }
 
-        public override void ImportDataBlock(int solutionId, CollectionDataBlock collectionDatablock)
+        public override void ImportDataBlock(Solution solution, CollectionDataBlock collectionDatablock)
         {
             try
             {
@@ -91,12 +92,12 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .First();
 
                 var block = collectionDatablock.DataBlocks.First();
-                SetColumn(column, xmlMap, block, solutionId);
+                SetColumn(column, xmlMap, block, solution);
 
                 foreach (var f in collectionDatablock.DataBlocks.Skip(1))
                 {
                     var newColumn = listObject.ListColumns.Add();
-                    SetColumn(newColumn, xmlMap, f, solutionId);
+                    SetColumn(newColumn, xmlMap, f, solution);
                 }
 
                 var blocks = collectionDatablock
@@ -109,7 +110,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 listObject.ShowHeaders = collectionDatablock.ShowHeader;
                 var network = _networksProvider
-                    .GetNetwork(solutionId, collectionDatablock.NetworkName, blocks, period);
+                    .GetNetwork(solution.Id, collectionDatablock.NetworkName, blocks, period);
 
                 using (network.GetImportLock(collectionDatablock))
                 {
@@ -130,7 +131,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        private void SetColumn(Excel.ListColumn column, Excel.XmlMap map, DataBlock block, int solutionId)
+        private void SetColumn(Excel.ListColumn column, Excel.XmlMap map, DataBlock block, Solution solution)
         {
             var nodeType = (block as NodeDataBlock)?.NodeType ?? NodeType.Path;
             column.Name = nodeType == NodeType.UniqueName ? block.Caption + "(+)" : block.Caption;
@@ -141,7 +142,8 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
             else if(nodeType == NodeType.UniqueName)
             {
-                var flatList = string.Join(";", _objectCache.GetObjectsOfType(solutionId, block.RefObject).ToArray());                
+                var objectNames = _objectCache.GetObjectsOfType(solution, block.RefObject);
+                var flatList = string.Join(";", objectNames.Take(1000).ToArray());                
                 column.Range.Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertInformation, Excel.XlFormatConditionOperator.xlBetween, flatList);
                 column.Range.Validation.ShowError = false;
                 column.Range.Validation.ShowInput = false;

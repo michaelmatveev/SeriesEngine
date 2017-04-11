@@ -16,7 +16,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                 {
                     Id = s.Id,
                     Name = s.Name,
-                    Description = s.Description
+                    Description = s.Description,
+                    MetaModelName = "pwk1"
                 });
             }
         }
@@ -32,7 +33,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                     {
                         Id = s.Id,
                         Name = s.Name,
-                        Description = s.Description
+                        Description = s.Description,
+                        MetaModelName = "pwk1"
                     };
                 }
 
