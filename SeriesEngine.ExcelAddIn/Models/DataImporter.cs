@@ -122,6 +122,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     collectionDatablock.Xml = xml;
 
                     var result = xmlMap.ImportXml(xml.ToString(), true);
+                    listObject.HeaderRowRange.Validation.Delete();
                 }
             }
             finally
@@ -142,9 +143,8 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
             else if(nodeType == NodeType.UniqueName)
             {
-                var objectNames = _objectCache.GetObjectsOfType(solution, block.RefObject);
-                var flatList = string.Join(";", objectNames.Take(1000).ToArray());                
-                column.Range.Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertInformation, Excel.XlFormatConditionOperator.xlBetween, flatList);
+                var formula = _objectCache.GetObjectsOfType(solution, block.RefObject);
+                column.Range.Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertInformation, Excel.XlFormatConditionOperator.xlBetween, formula);
                 column.Range.Validation.ShowError = false;
                 column.Range.Validation.ShowInput = false;
                 column.Range.Validation.IgnoreBlank = true;
