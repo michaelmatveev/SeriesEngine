@@ -12,7 +12,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             foreach (var db in dataBlocks)
             {
                 try
-                {
+                {                                     
                     db.Export(solution, this);
                 }
                 catch(Exception ex)

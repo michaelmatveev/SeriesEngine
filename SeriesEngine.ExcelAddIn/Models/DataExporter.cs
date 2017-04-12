@@ -44,8 +44,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             var networkTree = _networksProvider
                 .GetNetworks(solution.Id)
                 .SingleOrDefault(n => n.Name == collectionDatablock.NetworkName);
-            var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
-            //var sourceXml = collectionDatablock.Xml ?? networkTree.ConvertToXml(collectionDatablock.DataBlocks, period);
+            //var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
             Excel.Worksheet sheet = _workbook.Sheets[collectionDatablock.Sheet];
             var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == collectionDatablock.Name);
 
@@ -66,8 +65,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                 CreateOrUpdateRowInDataSet(row, dsChanged, listObject, 0, tree);
             }
 
-            var doc = XDocument.Parse(dsChanged.GetXml());
-            networkTree.LoadFromXml(collectionDatablock.Xml, doc);
+            //var source = new XDocument(collectionDatablock.Xml ?? networkTree.ConvertToXml(collectionDatablock.DataBlocks, period));
+            var source = new XDocument(collectionDatablock.Xml);
+            var target = XDocument.Parse(dsChanged.GetXml());
+            networkTree.LoadFromXml(source, target);
         }
 
   

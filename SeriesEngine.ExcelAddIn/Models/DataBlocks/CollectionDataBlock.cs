@@ -41,6 +41,10 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
 
         public override void Export(Solution solution, BaseDataExporter exproter)
         {
+            if(this.Xml == null)
+            {
+                throw new InvalidOperationException($"Обновите блок данных {this.Name}");
+            }
             exproter.ExportDataBlock(solution, this);
         }
 
