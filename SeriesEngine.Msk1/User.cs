@@ -11,12 +11,12 @@ namespace SeriesEngine.Msk1
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            Regions = new HashSet<Region>();
-            ConsumerObjects = new HashSet<ConsumerObject>();
-            Consumers = new HashSet<Consumer>();
-            Contracts = new HashSet<Contract>();
-            Points = new HashSet<Point>();
-            ElectricMeters = new HashSet<ElectricMeter>();
+            //Regions = new HashSet<Region>();
+            //ConsumerObjects = new HashSet<ConsumerObject>();
+            //Consumers = new HashSet<Consumer>();
+            //Contracts = new HashSet<Contract>();
+            //Points = new HashSet<Point>();
+            //ElectricMeters = new HashSet<ElectricMeter>();
         }
 
         public int Id { get; set; }
@@ -39,7 +39,7 @@ namespace SeriesEngine.Msk1
 
         public virtual Solution Solution { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+ /*       [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ElectricMeter> ElectricMeters { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -61,7 +61,7 @@ namespace SeriesEngine.Msk1
         public virtual ICollection<Point_MaxPower> Point_MaxPowers { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Point_VoltageLevel> Point_VoltageLevels { get; set; }
+        public virtual ICollection<Point_VoltageLevel> Point_VoltageLevels { get; set; }*/
 
     }
 }

@@ -1,11 +1,15 @@
-﻿<#+
+﻿<#@ include file="CreateSchemaTemplate.tt" #>
+<#+
 // <copyright file="EntitiesGenerator.tt" company="">
-//  Copyright © . All Rights Reserved.
+//  Copyright © Michael Matveev. All Rights Reserved.
 // </copyright>
 
 public class EntitiesGenerator : Generator
 {
 	public string Output;
+	public XDocument DataTypesDoc;
+	public XDocument ComponentsDoc;
+	public XDocument HierarchiesDoc;
 
 	protected override void RunCore()
 	{

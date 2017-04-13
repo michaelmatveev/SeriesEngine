@@ -13,7 +13,7 @@ namespace SeriesEngine.Msk1
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ElectricMeter()
         {
-            MainHierarchyNodes = new HashSet<MainHierarchyNode>();
+            //MainHierarchyNodes = new HashSet<MainHierarchyNode>();
         }
 
         public int SolutionId { get; set; }
@@ -39,8 +39,8 @@ namespace SeriesEngine.Msk1
 
         public virtual User User { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MainHierarchyNode> MainHierarchyNodes { get; set; }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public virtual ICollection<MainHierarchyNode> MainHierarchyNodes { get; set; }
 
         public override string GetName()
         {

@@ -47,50 +47,76 @@ namespace SeriesEngine.Msk1
                 .WithOptional(e => e.Parent)
                 .HasForeignKey(e => e.ParentId);
 
+            modelBuilder.Entity<MainHierarchyNode>()
+                .HasOptional(e => e.Region)
+                .WithMany()
+                .HasForeignKey(e => e.Region_Id);
+            modelBuilder.Entity<MainHierarchyNode>()
+                .HasOptional(e => e.Consumer)
+                .WithMany()
+                .HasForeignKey(e => e.Consumer_Id);
+            modelBuilder.Entity<MainHierarchyNode>()
+                .HasOptional(e => e.ConsumerObject)
+                .WithMany()
+                .HasForeignKey(e => e.ConsumerObject_Id);
+            modelBuilder.Entity<MainHierarchyNode>()
+                .HasOptional(e => e.Contract)
+                .WithMany()
+                .HasForeignKey(e => e.Contract_Id);
+            modelBuilder.Entity<MainHierarchyNode>()
+                .HasOptional(e => e.Point)
+                .WithMany()
+                .HasForeignKey(e => e.Point_Id);
+            modelBuilder.Entity<MainHierarchyNode>()
+                .HasOptional(e => e.ElectricMeter)
+                .WithMany()
+                .HasForeignKey(e => e.ElectricMeter_Id);
+
+
             modelBuilder.Entity<Solution>()
                 .HasMany(e => e.Networks)
                 .WithRequired(e => e.Solution)
                 .WillCascadeOnDelete(true);
 
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.ConsumerObjects)
-                .WithOptional(e => e.User)
-                .HasForeignKey(e => e.AuthorId);
+            //modelBuilder.Entity<User>()
+            //    .HasMany(e => e.ConsumerObjects)
+            //    .WithOptional(e => e.User)
+            //    .HasForeignKey(e => e.AuthorId);
 
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.Consumers)
-                .WithOptional(e => e.User)
-                .HasForeignKey(e => e.AuthorId);
+            //modelBuilder.Entity<User>()
+            //    .HasMany(e => e.Consumers)
+            //    .WithOptional(e => e.User)
+            //    .HasForeignKey(e => e.AuthorId);
 
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.Contracts)
-                .WithOptional(e => e.User)
-                .HasForeignKey(e => e.AuthorId);
+            //modelBuilder.Entity<User>()
+            //    .HasMany(e => e.Contracts)
+            //    .WithOptional(e => e.User)
+            //    .HasForeignKey(e => e.AuthorId);
 
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.Points)
-                .WithOptional(e => e.User)
-                .HasForeignKey(e => e.AuthorId);
+            //modelBuilder.Entity<User>()
+            //    .HasMany(e => e.Points)
+            //    .WithOptional(e => e.User)
+            //    .HasForeignKey(e => e.AuthorId);
 
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.ElectricMeters)
-                .WithOptional(e => e.User)
-                .HasForeignKey(e => e.AuthorId);
+            //modelBuilder.Entity<User>()
+            //    .HasMany(e => e.ElectricMeters)
+            //    .WithOptional(e => e.User)
+            //    .HasForeignKey(e => e.AuthorId);
 
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.Regions)
-                .WithOptional(e => e.User)
-                .HasForeignKey(e => e.AuthorId);
+            //modelBuilder.Entity<User>()
+            //    .HasMany(e => e.Regions)
+            //    .WithOptional(e => e.User)
+            //    .HasForeignKey(e => e.AuthorId);
 
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.Point_MaxPowers)
-                .WithOptional(e => e.User)
-                .HasForeignKey(e => e.AuthorId);
+            //modelBuilder.Entity<User>()
+            //    .HasMany(e => e.Point_MaxPowers)
+            //    .WithOptional(e => e.User)
+            //    .HasForeignKey(e => e.AuthorId);
 
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.Point_VoltageLevels)
-                .WithOptional(e => e.User)
-                .HasForeignKey(e => e.AuthorId);
+            //modelBuilder.Entity<User>()
+            //    .HasMany(e => e.Point_VoltageLevels)
+            //    .WithOptional(e => e.User)
+            //    .HasForeignKey(e => e.AuthorId);
 
             modelBuilder.Entity<ConsumerObject>()
                 .HasRequired(e => e.Solution)
@@ -99,13 +125,19 @@ namespace SeriesEngine.Msk1
                 .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<ConsumerObject>()
-                .Property(e => e.ConcurrencyStamp)
-                .IsFixedLength();
+                .HasOptional(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.AuthorId);
+
 
             modelBuilder.Entity<ConsumerObject>()
-                .HasMany(e => e.MainHierarchyNodes)
-                .WithOptional(e => e.ConsumerObject)
-                .HasForeignKey(e => e.ConsumerObject_Id);
+                .Property(e => e.ConcurrencyStamp)
+                .IsFixedLength();
+
+            //modelBuilder.Entity<ConsumerObject>()
+            //    .HasMany(e => e.MainHierarchyNodes)
+            //    .WithOptional(e => e.ConsumerObject)
+            //    .HasForeignKey(e => e.ConsumerObject_Id);
 
             modelBuilder.Entity<Consumer>()
                 .HasRequired(e => e.Solution)
@@ -114,13 +146,18 @@ namespace SeriesEngine.Msk1
                 .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Consumer>()
+                .HasOptional(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.AuthorId);
+
+            modelBuilder.Entity<Consumer>()
                 .Property(e => e.ConcurrencyStamp)
                 .IsFixedLength();
 
-            modelBuilder.Entity<Consumer>()
-                .HasMany(e => e.MainHierarchyNodes)
-                .WithOptional(e => e.Consumer)
-                .HasForeignKey(e => e.Consumer_Id);
+            //modelBuilder.Entity<Consumer>()
+            //    .HasMany(e => e.MainHierarchyNodes)
+            //    .WithOptional(e => e.Consumer)
+            //    .HasForeignKey(e => e.Consumer_Id);
 
             modelBuilder.Entity<Contract>()
                 .HasRequired(e => e.Solution)
@@ -129,13 +166,18 @@ namespace SeriesEngine.Msk1
                 .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Contract>()
+                .HasOptional(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.AuthorId);
+
+            modelBuilder.Entity<Contract>()
                 .Property(e => e.ConcurrencyStamp)
                 .IsFixedLength();
 
-            modelBuilder.Entity<Contract>()
-                .HasMany(e => e.MainHierarchyNodes)
-                .WithOptional(e => e.Contract)
-                .HasForeignKey(e => e.Contract_Id);
+            //modelBuilder.Entity<Contract>()
+            //    .HasMany(e => e.MainHierarchyNodes)
+            //    .WithOptional(e => e.Contract)
+            //    .HasForeignKey(e => e.Contract_Id);
 
             //modelBuilder.Entity<Contract>()
             //    .MapToStoredProcedures(s => s
@@ -150,28 +192,38 @@ namespace SeriesEngine.Msk1
                 .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<ElectricMeter>()
+                .HasOptional(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.AuthorId);
+
+            modelBuilder.Entity<ElectricMeter>()
                 .Property(e => e.ConcurrencyStamp)
                 .IsFixedLength();
 
-            modelBuilder.Entity<ElectricMeter>()
-                .HasMany(e => e.MainHierarchyNodes)
-                .WithOptional(e => e.ElectricMeter)
-                .HasForeignKey(e => e.ElectricMeter_Id);
+            //modelBuilder.Entity<ElectricMeter>()
+            //    .HasMany(e => e.MainHierarchyNodes)
+            //    .WithOptional(e => e.ElectricMeter)
+            //    .HasForeignKey(e => e.ElectricMeter_Id);
 
             modelBuilder.Entity<Point>()
                 .HasRequired(e => e.Solution)
                 .WithMany()
                 .HasForeignKey(e => e.SolutionId)
                 .WillCascadeOnDelete(true);
-            
+
+            modelBuilder.Entity<Point>()
+                .HasOptional(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.AuthorId);
+
             modelBuilder.Entity<Point>()
                 .Property(e => e.ConcurrencyStamp)
                 .IsFixedLength();
 
-            modelBuilder.Entity<Point>()
-                .HasMany(e => e.MainHierarchyNodes)
-                .WithOptional(e => e.Point)
-                .HasForeignKey(e => e.Point_Id);
+            //modelBuilder.Entity<Point>()
+            //    .HasMany(e => e.MainHierarchyNodes)
+            //    .WithOptional(e => e.Point)
+            //    .HasForeignKey(e => e.Point_Id);
 
             modelBuilder.Entity<Point>()
                 .HasMany(e => e.Point_MaxPowers)
@@ -212,13 +264,35 @@ namespace SeriesEngine.Msk1
                 .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Region>()
+                .HasOptional(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.AuthorId);
+
+            modelBuilder.Entity<Region>()
                 .Property(e => e.ConcurrencyStamp)
                 .IsFixedLength();
 
-            modelBuilder.Entity<Region>()
-                .HasMany(e => e.MainHierarchyNodes)
-                .WithOptional(e => e.Region)
-                .HasForeignKey(e => e.Region_Id);
+            //modelBuilder.Entity<Region>()
+            //    .HasMany(e => e.MainHierarchyNodes)
+            //    .WithOptional(e => e.Region)
+            //    .HasForeignKey(e => e.Region_Id);
+
+            modelBuilder.Entity<Point_VoltageLevel>()
+                .HasOptional(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.AuthorId);
+            modelBuilder.Entity<Point_MaxPower>()
+                .HasOptional(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.AuthorId);
+            modelBuilder.Entity<Point_PUPlace>()
+                .HasOptional(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.AuthorId);
+            modelBuilder.Entity<Point_TUCode>()
+                .HasOptional(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.AuthorId);
         }
     }
 }

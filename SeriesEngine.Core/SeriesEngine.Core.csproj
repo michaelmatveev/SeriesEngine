@@ -102,6 +102,7 @@
     <Content Include="Metamodels\msk1\DataStructures.xml" />
     <Content Include="Metamodels\test1\Components.xml" />
     <Content Include="Metamodels\test1\DataStructures.xml" />
+    <Content Include="Templates\EntityFramework6\DbContextTemplate.tt" />
     <Content Include="Templates\EntityFramework6\EntitiesGenerator.tt" />
     <Content Include="Templates\Header.tt" />
     <Content Include="Templates\MsSqlServer\CreateDatabaseGenerator.tt" />
