@@ -10,6 +10,7 @@ namespace SeriesEngine.Msk1
         public Model1()
             : base("name=Model1")
         {
+            Configuration.ProxyCreationEnabled = false;
         }
 
         public virtual DbSet<Network> Networks { get; set; }
@@ -35,7 +36,6 @@ namespace SeriesEngine.Msk1
             //modelBuilder.Entity<Network>()
             //    .Property(e => e.Description)
             //    .IsUnicode(false);
-
             modelBuilder.Entity<MainHierarchyNetwork>()
                 .HasMany(e => e.Nodes)
                 .WithRequired(e => e.Network)
@@ -44,7 +44,14 @@ namespace SeriesEngine.Msk1
 
             modelBuilder.Entity<Network>()
                 .Map<MainHierarchyNetwork>(m => m.Requires("NodeType").HasValue("msk1.MainHierarchyNode"));
-            
+
+            modelBuilder.Entity<MainHierarchyNode>()
+                .Map(m =>
+                {
+                    m.MapInheritedProperties();
+                    m.ToTable("msk1.MainHierarchyNodes");
+                });
+
             modelBuilder.Entity<MainHierarchyNode>()
                 .HasMany(e => e.Children)
                 .WithOptional(e => e.Parent)

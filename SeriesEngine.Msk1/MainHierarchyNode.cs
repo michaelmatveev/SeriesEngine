@@ -8,7 +8,7 @@ namespace SeriesEngine.Msk1
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("msk1.MainHierarchyNodes")]
+    //[Table("msk1.MainHierarchyNodes")]
     public partial class MainHierarchyNode : NetworkTreeNode
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -18,7 +18,7 @@ namespace SeriesEngine.Msk1
         }
 
         public int NetId { get; set; }
-
+        [ForeignKey("NetId")]
         public virtual MainHierarchyNetwork Network { get; set; }
 
         public override Network MyNetwork
@@ -30,6 +30,7 @@ namespace SeriesEngine.Msk1
             set
             {
                 Network = (MainHierarchyNetwork)value;
+                //NetId = Network.Id;
             }
         }
 
@@ -76,6 +77,7 @@ namespace SeriesEngine.Msk1
 
         public virtual Point Point { get; set; }
 
+        [ForeignKey("Region_Id")]
         public virtual Region Region { get; set; }
 
         public override NamedObject LinkedObject

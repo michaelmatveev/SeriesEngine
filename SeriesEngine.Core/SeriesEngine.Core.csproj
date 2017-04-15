@@ -62,6 +62,7 @@
     <Compile Include="DataAccess\Solution.cs" />
     <Compile Include="DataAccess\EditorObject.cs" />
     <Compile Include="DataAccess\Utilities.cs" />
+    <Compile Include="Helpers\CastedList.cs" />
     <Compile Include="ObjectMetamodel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reliability.cs" />

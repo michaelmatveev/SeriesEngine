@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SeriesEngine.Core.Helpers;
 
 namespace SeriesEngine.Msk1
 {
@@ -20,7 +21,7 @@ namespace SeriesEngine.Msk1
         {
             get
             {
-                return Nodes.Cast<NetworkTreeNode>().ToList();
+                return Nodes.CastCollection<MainHierarchyNode, NetworkTreeNode>();
             }
         }
     }

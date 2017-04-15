@@ -43,9 +43,11 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void LoadFromXml(XDocument source, XDocument target)
         {
-            ProcessNodesElements(source, null, target.Root.Elements());
-            FindNodesToDelete(source.Root.Elements());
-            Update(_network.MyNodes);
+            var nodes = new List<NetworkTreeNode>();
+            nodes.AddRange(ProcessNodesElements(source, null, target.Root.Elements()));
+            nodes.AddRange(FindNodesToDelete(source.Root.Elements()));
+            //Update(_network.MyNodes);
+            Update(nodes);
         }
         
         private static string GetXPath(XElement element)
@@ -60,8 +62,9 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        private void ProcessNodesElements(XDocument source, NetworkTreeNode parent, IEnumerable<XElement> elements)
+        private IList<NetworkTreeNode> ProcessNodesElements(XDocument source, NetworkTreeNode parent, IEnumerable<XElement> elements)
         {
+            var result = new List<NetworkTreeNode>();
             foreach (var element in elements.Where(e => e.Attribute("UniqueName") != null))
             {
                 NetworkTreeNode node;
@@ -71,7 +74,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                 {
                     // this is new node
                     node = CreateNode(element, parent);
-                    _network.MyNodes.Add(node);
+                    result.Add(node);
+                    //_network.MyNodes.Add(node);
                 }
                 else
                 {
@@ -79,15 +83,18 @@ namespace SeriesEngine.ExcelAddIn.Models
                     var id = int.Parse(sourceElement.Attribute("NodeId").Value);
                     node = _network.MyNodes.Single(n => n.Id == id);
                     UpdateNode(node, element, parent);
-                    _network.MyNodes.Add(node);
+                    //_network.MyNodes.Add(node);
+                    result.Add(node);
                     sourceElement.Attribute("NodeId").Value = "0"; // признак того что элемент обработан
                 }
-                ProcessNodesElements(source, node, element.Elements());
+                result.AddRange(ProcessNodesElements(source, node, element.Elements()));
             }
+            return result;
         }
 
-        private void FindNodesToDelete(IEnumerable<XElement> elements)
+        private IList<NetworkTreeNode> FindNodesToDelete(IEnumerable<XElement> elements)
         {
+            var result = new List<NetworkTreeNode>();
             foreach (var element in elements.Where(e => e.Attribute("NodeId") != null))
             {
                 var attr = element.Attribute("NodeId");
@@ -96,9 +103,11 @@ namespace SeriesEngine.ExcelAddIn.Models
                 {
                     var node = _network.MyNodes.Single(n => n.Id == id);
                     node.State = ObjectState.Deleted;
+                    result.Add(node);
                 }
-                FindNodesToDelete(element.Elements());
+                result.AddRange(FindNodesToDelete(element.Elements()));
             }
+            return result;
         }
 
         private NetworkTreeNode CreateNode(XElement element, NetworkTreeNode parent)
@@ -132,7 +141,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             var validFrom = ParseDateTimeString(element.Attribute("Since")?.Value);
             var validTill = ParseDateTimeString(element.Attribute("Till")?.Value);
 
-            //node.Network = _network;
+            node.MyNetwork = _network;
             node.MyParent = parent;
             node.ValidFrom = validFrom;
             node.ValidTill = validTill;
@@ -199,7 +208,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 case "Region":
                     return new Region
-                    {
+                    {                        
                         ObjectModel = MainHierarchyNode.RegionModel,
                         Solution = _network.Solution,
                         Name = objName,

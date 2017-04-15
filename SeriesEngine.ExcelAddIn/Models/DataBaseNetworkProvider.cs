@@ -16,6 +16,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 var nets = context
                     .Networks
+                    .OfType<MainHierarchyNetwork>()
                     .Include("Solution")
                     .Include("Nodes")
                     .Include("Nodes.Region")
@@ -38,6 +39,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 var net = context
                     .Networks
+                    .OfType<MainHierarchyNetwork>()
                     .Include("Solution")
                     .Include("Nodes")
                     .Include("Nodes.Region")
@@ -56,7 +58,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             using (var context = new Model1())
             {
-                var query = context.Networks.AsQueryable();
+                var query = context.Networks.OfType<MainHierarchyNetwork>().AsQueryable();
                 foreach (var v in variables)
                 {
                     var obj = v.RefObject;

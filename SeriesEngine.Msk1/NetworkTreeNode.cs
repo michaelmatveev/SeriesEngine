@@ -1,5 +1,6 @@
 ﻿using SeriesEngine.Core.DataAccess;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SeriesEngine.Msk1
@@ -7,14 +8,13 @@ namespace SeriesEngine.Msk1
     public abstract class NetworkTreeNode:
         IStateObject
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
         [NotMapped]
         public ObjectState State { get; set; }
         
-        public int Id { get; set; }
-
-        //public int NetId { get; set; }
-
-        //public virtual Network Network { get; set; }
         [NotMapped]
         public abstract Network MyNetwork { get; set; }
 
