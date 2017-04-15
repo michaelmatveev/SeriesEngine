@@ -23,6 +23,8 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
                 _currentSelection.Value = values
                     .ValuesForPeriod
+                    .OrderBy(v => v.Date)
+                    .ThenBy(vp => vp.Id == 0 ? int.MaxValue : vp.Id)
                     .Where(v => v.State != ObjectState.Deleted)
                     .LastOrDefault()
                     ?.Value

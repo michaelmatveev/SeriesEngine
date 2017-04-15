@@ -45,7 +45,7 @@ namespace SeriesEngine.ExcelAddIn.Views
             var sameDateGroups = VariablesToShow
                .ValuesForPeriod
                .OrderBy(vp => vp.Date)
-               .OrderBy(vp => vp.Id == 0 ? int.MaxValue : vp.Id)
+               .ThenBy(vp => vp.Id == 0 ? int.MaxValue : vp.Id)
                .Where(vp => vp.State != ObjectState.Deleted)
                .GroupBy(vp => vp.Date);
 
