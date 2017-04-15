@@ -32,15 +32,18 @@ namespace SeriesEngine.Msk1
             //modelBuilder.Entity<IStateObject>()
             //    .Ignore(s => s.State);
 
-            modelBuilder.Entity<Network>()
-                .Property(e => e.Description)
-                .IsUnicode(false);
+            //modelBuilder.Entity<Network>()
+            //    .Property(e => e.Description)
+            //    .IsUnicode(false);
 
-            modelBuilder.Entity<Network>()
+            modelBuilder.Entity<MainHierarchyNetwork>()
                 .HasMany(e => e.Nodes)
                 .WithRequired(e => e.Network)
                 .HasForeignKey(e => e.NetId)
                 .WillCascadeOnDelete(true);//?
+
+            modelBuilder.Entity<Network>()
+                .Map<MainHierarchyNetwork>(m => m.Requires("NodeType").HasValue("msk1.MainHierarchyNode"));
             
             modelBuilder.Entity<MainHierarchyNode>()
                 .HasMany(e => e.Children)
@@ -181,9 +184,9 @@ namespace SeriesEngine.Msk1
 
             //modelBuilder.Entity<Contract>()
             //    .MapToStoredProcedures(s => s
-            //        .Delete(d => d.HasName("pwk1.Contract_Delete"))
-            //        .Insert(i => i.HasName("pwk1.Contract_Insert"))
-            //        .Update(u => u.HasName("pwk1.Contract_Update")));
+            //        .Delete(d => d.HasName("msk1.Contract_Delete"))
+            //        .Insert(i => i.HasName("msk1.Contract_Insert"))
+            //        .Update(u => u.HasName("msk1.Contract_Update")));
 
             modelBuilder.Entity<ElectricMeter>()
                 .HasRequired(e => e.Solution)
@@ -254,7 +257,7 @@ namespace SeriesEngine.Msk1
             // http://stackoverflow.com/questions/27395338/entity-framework-6-map-only-one-statement-to-stored-procedure
             //modelBuilder.Entity<Point>()
             //    .MapToStoredProcedures(s =>
-            //        s.Delete(d => d.HasName("pwk1.Point_Delete")
+            //        s.Delete(d => d.HasName("msk1.Point_Delete")
             //            .Parameter(o => o.Id, "Id")));
 
             modelBuilder.Entity<Region>()

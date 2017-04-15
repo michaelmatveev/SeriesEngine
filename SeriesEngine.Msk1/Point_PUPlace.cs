@@ -6,7 +6,7 @@ namespace SeriesEngine.Msk1
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("pwk1.Point_PUPlaces")]
+    [Table("msk1.Point_PUPlaces")]
     public partial class Point_PUPlace
     {
         public int Id { get; set; }

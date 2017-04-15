@@ -31,11 +31,9 @@ namespace SeriesEngine.ExcelAddIn.Models
             var data = new XDocument();
             var rootElement = new XElement(RootName);
             var tree = _network
-                .Nodes
-                .Cast<NetworkTreeNode>()
-                .ToList()
+                .MyNodes
                 .Where(n => IsNodeInPeriod(n, defaultPeriod, false))
-                .GenerateTree(n => n.NodeName, n => n.Parent?.NodeName);
+                .GenerateTree(n => n.NodeName, n => n.MyParent?.NodeName);
 
             rootElement.Add(GetSubElements(tree, queryParamers));
             data.Add(rootElement);
@@ -45,10 +43,9 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void LoadFromXml(XDocument source, XDocument target)
         {
-            var nodes = new List<MainHierarchyNode>();
-            nodes.AddRange(ProcessNodesElements(source, null, target.Root.Elements()));
+            ProcessNodesElements(source, null, target.Root.Elements());
             FindNodesToDelete(source.Root.Elements());
-            Update(nodes);
+            Update(_network.MyNodes);
         }
         
         private static string GetXPath(XElement element)
@@ -63,62 +60,56 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        private IEnumerable<MainHierarchyNode> ProcessNodesElements(XDocument source, MainHierarchyNode parent, IEnumerable<XElement> elements)
+        private void ProcessNodesElements(XDocument source, NetworkTreeNode parent, IEnumerable<XElement> elements)
         {
-            var nodes = new List<MainHierarchyNode>();
             foreach (var element in elements.Where(e => e.Attribute("UniqueName") != null))
             {
-                MainHierarchyNode node;
+                NetworkTreeNode node;
                 var path = $"{GetXPath(element)}[@UniqueName='{element.Attribute("UniqueName").Value}']";
                 var sourceElement = source.XPathSelectElement(path);
                 if (sourceElement == null)
                 {
                     // this is new node
                     node = CreateNode(element, parent);
-                    nodes.Add(node);
+                    _network.MyNodes.Add(node);
                 }
                 else
                 {
                     // this is already existed node
                     var id = int.Parse(sourceElement.Attribute("NodeId").Value);
-                    node = _network.Nodes.Single(n => n.Id == id);
+                    node = _network.MyNodes.Single(n => n.Id == id);
                     UpdateNode(node, element, parent);
-                    nodes.Add(node);
+                    _network.MyNodes.Add(node);
                     sourceElement.Attribute("NodeId").Value = "0"; // признак того что элемент обработан
                 }
-                nodes.AddRange(ProcessNodesElements(source, node, element.Elements()));
+                ProcessNodesElements(source, node, element.Elements());
             }
-            return nodes;
         }
 
-        private IEnumerable<MainHierarchyNode> FindNodesToDelete(IEnumerable<XElement> elements)
+        private void FindNodesToDelete(IEnumerable<XElement> elements)
         {
-            var nodes = new List<MainHierarchyNode>();
             foreach (var element in elements.Where(e => e.Attribute("NodeId") != null))
             {
                 var attr = element.Attribute("NodeId");
                 var id = int.Parse(attr.Value);
                 if (id != 0)
                 {
-                    var node = _network.Nodes.Single(n => n.Id == id);
+                    var node = _network.MyNodes.Single(n => n.Id == id);
                     node.State = ObjectState.Deleted;
-                    nodes.Add(node);
                 }
                 FindNodesToDelete(element.Elements());
             }
-            return nodes;
         }
 
-        private MainHierarchyNode CreateNode(XElement element, MainHierarchyNode parent)
+        private NetworkTreeNode CreateNode(XElement element, NetworkTreeNode parent)
         {
             var validFrom = ParseDateTimeString(element.Attribute("Since")?.Value);
             var validTill = ParseDateTimeString(element.Attribute("Till")?.Value);
 
             var node = new MainHierarchyNode
             {
-                IsMarkedFlag = true,
-                Network = _network,
-                Parent = parent,
+                MyNetwork = _network,
+                MyParent = parent,
                 ValidFrom = validFrom,
                 ValidTill = validTill,
                 State = ObjectState.Added
@@ -136,13 +127,13 @@ namespace SeriesEngine.ExcelAddIn.Models
             return node;
         }
 
-        private void UpdateNode(MainHierarchyNode node, XElement element, MainHierarchyNode parent)
+        private void UpdateNode(NetworkTreeNode node, XElement element, NetworkTreeNode parent)
         {
             var validFrom = ParseDateTimeString(element.Attribute("Since")?.Value);
             var validTill = ParseDateTimeString(element.Attribute("Till")?.Value);
 
-            node.Network = _network;
-            node.Parent = parent;
+            //node.Network = _network;
+            node.MyParent = parent;
             node.ValidFrom = validFrom;
             node.ValidTill = validTill;
             node.State = ObjectState.Modified;
@@ -190,7 +181,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         public NamedObject FindObject(string objectTypeName, string name)
         {
             return _network
-                .Nodes
+                .MyNodes
                 .Where(n => n.LinkedObject.ObjectModel.Name == objectTypeName)
                 .SingleOrDefault(n => n.NodeName == name)
                 ?.LinkedObject;
@@ -311,7 +302,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 dynamic lo = node.LinkedObject;
                 var paramId = new SqlParameter("@Id", lo.Id);
                 var paramTs = new SqlParameter("@ConcurrencyStamp_Original", lo.ConcurrencyStamp);
-                var spName = $"pwk1.{node.LinkedObject.ObjectModel.Name}_Delete";
+                var spName = $"msk1.{node.LinkedObject.ObjectModel.Name}_Delete";
                 context.Database.ExecuteSqlCommand($"exec {spName} @Id, @ConcurrencyStamp_Original", paramId, paramTs);
                 //context.Entry(node.LinkedObject).State = System.Data.Entity.EntityState.Deleted;
                 //context.SaveChanges();

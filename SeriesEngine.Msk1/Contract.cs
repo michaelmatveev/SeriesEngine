@@ -7,7 +7,7 @@ namespace SeriesEngine.Msk1
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("pwk1.Contracts")]
+    [Table("msk1.Contracts")]
     public partial class Contract : NamedObject
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]

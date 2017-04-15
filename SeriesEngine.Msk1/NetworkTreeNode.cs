@@ -12,6 +12,15 @@ namespace SeriesEngine.Msk1
         
         public int Id { get; set; }
 
+        //public int NetId { get; set; }
+
+        //public virtual Network Network { get; set; }
+        [NotMapped]
+        public abstract Network MyNetwork { get; set; }
+
+        [NotMapped]
+        public abstract NetworkTreeNode MyParent { get; set; }
+
         public string NodeName
         {
             get
@@ -20,7 +29,6 @@ namespace SeriesEngine.Msk1
             }
         }
 
-        public virtual MainHierarchyNode Parent { get; set; }
         public abstract NamedObject LinkedObject { get; }
 
         public void SetLinkedObject(NamedObject obj)
@@ -31,9 +39,5 @@ namespace SeriesEngine.Msk1
 
         public DateTime? ValidFrom { get; set; }
         public DateTime? ValidTill { get; set; }
-
-        [NotMapped]
-        public bool IsMarkedFlag { get; set; }
-
     }
 }

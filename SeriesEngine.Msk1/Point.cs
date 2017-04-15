@@ -7,7 +7,7 @@ namespace SeriesEngine.Msk1
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("pwk1.Points")]
+    [Table("msk1.Points")]
     public partial class Point : NamedObject
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]

@@ -7,7 +7,7 @@ namespace SeriesEngine.Msk1
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("pwk1.Point_VoltageLevels")]
+    [Table("msk1.Point_VoltageLevels")]
     public partial class Point_VoltageLevel : PeriodVariable
     {
         public virtual User User { get; set; }

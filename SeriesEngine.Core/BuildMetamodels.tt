@@ -9,7 +9,6 @@
 <#@ output extension="txt" #>
 <#@ include file="T4Toolbox.tt" #>
 <#@ include file="Templates\MsSqlServer\CreateDatabaseGenerator.tt" #>
-<#@ include file="Templates\EntityFramework6\EntitiesGenerator.tt" #>
 This scripts creates an SQL script to create database schema from scratch 
 <#
 // <copyright file="BuildMetamodelScript.tt" company="">
@@ -36,14 +35,6 @@ This scripts creates an SQL script to create database schema from scratch
 			HierarchiesDoc = hierarchies
 		};
 		dbGenerator.Run();
-
-		var ef = new EntitiesGenerator 
-		{
-			Output = outputFile,
-			DataTypesDoc = dataTypes,
-			ComponentsDoc = components,
-			HierarchiesDoc = hierarchies
-		};
 #>
 The '<#= model #>' model has been created successfully.
 <#

@@ -7,7 +7,7 @@ namespace SeriesEngine.Msk1
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("pwk1.Point_TUCodes")]
+    [Table("msk1.Point_TUCodes")]
     public partial class Point_TUCode : PeriodVariable
     {
         public virtual User User { get; set; }

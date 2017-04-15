@@ -24,7 +24,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         public string GetObjectsOfType(Solution solution, string type)
         {
             var key = $"{solution.Id}:{type}";
-            var query = $"SELECT Name FROM {solution.MetaModelName}.{type}s WHERE SolutionId = {solution.Id}";
+            var query = $"SELECT Name FROM {solution.ModelName}.{type}s WHERE SolutionId = {solution.Id}";
 
             var hiddenSheetName = $"Hidden{solution.Id}";
             var hiddenSheet = _workbook

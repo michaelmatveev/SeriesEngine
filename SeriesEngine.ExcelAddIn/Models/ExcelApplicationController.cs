@@ -91,12 +91,6 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _.For<ICommand<ShowCustomPaneCommandArgs>>()
                     .Use(c => c.GetInstance<MainPanePresenter>());
 
-                _.For<IFilterView>()
-                    .Singleton()
-                    .Use<Filter>();
-
-                _.ForConcreteType<FilterPresenter>();
-
                 _.For<IDataBlockProvider>()
                     .Singleton()
                     .Use<WorkbookDataBlockProvider>();

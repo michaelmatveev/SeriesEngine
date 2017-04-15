@@ -36,7 +36,8 @@ GO
 
 CREATE TABLE [dbo].[Solutions] (
     "Id" INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
-    "Name" NVARCHAR(MAX) NOT NULL,
+    "Name" NVARCHAR(128) NOT NULL,
+	"ModelName" NVARCHAR(128) NOT NULL,
 	"Description" NVARCHAR(MAX) NULL
 );
 GO
@@ -50,7 +51,6 @@ CREATE TABLE [dbo].[Users] (
     "LastName" NVARCHAR(128) NOT NULL,
 	"FirstName" NVARCHAR(128) NOT NULL,
 	"MiddleName" NVARCHAR(128) NOT NULL,
-    "SolutionId" INT NULL,
 	"IsSystem" BIT NULL
 );
 GO
@@ -62,7 +62,8 @@ GO
 CREATE TABLE [dbo].[Networks] (
     "Id" INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
     "Name" NVARCHAR(128) NOT NULL,
-    "Description" TEXT NULL,
+	"NodeType" NVARCHAR(128) NOT NULL,
+    "Description" NVARCHAR(MAX) NULL,
 	"IsSystem" BIT NULL,
 	"CollectionType" INT,
 	"SolutionId" INT NOT NULL,
@@ -70,10 +71,6 @@ CREATE TABLE [dbo].[Networks] (
 	"Revision" INT NOT NULL DEFAULT 0, 
     "ConcurrencyStamp" ROWVERSION NOT NULL 
 );
-GO
-
-ALTER TABLE [dbo].[Users] WITH CHECK ADD CONSTRAINT [FK_Users_Solutions] FOREIGN KEY([SolutionId])
-REFERENCES [dbo].[Solutions] ([Id]);
 GO
 
 ALTER TABLE [dbo].[Networks] WITH CHECK ADD CONSTRAINT [FK_Networks_Solutions] FOREIGN KEY([SolutionId])

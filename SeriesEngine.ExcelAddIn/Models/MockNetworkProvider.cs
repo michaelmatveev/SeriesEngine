@@ -94,19 +94,19 @@ namespace SeriesEngine.ExcelAddIn.Models
             };
             //point3.Point.VoltageLevel = "СН-2";
 
-            mainTree = new Network()
+            mainTree = new MainHierarchyNetwork()
             {
                 Name = "Основные объекты",
             };
 
-            mainTree.Nodes.Add(region1);
-            mainTree.Nodes.Add(consumer1);
-            mainTree.Nodes.Add(contract1);
-            mainTree.Nodes.Add(consumerObject1);
-            mainTree.Nodes.Add(point1);
-            mainTree.Nodes.Add(point2);
-            mainTree.Nodes.Add(consumerObject2);
-            mainTree.Nodes.Add(point3);
+            mainTree.MyNodes.Add(region1);
+            mainTree.MyNodes.Add(consumer1);
+            mainTree.MyNodes.Add(contract1);
+            mainTree.MyNodes.Add(consumerObject1);
+            mainTree.MyNodes.Add(point1);
+            mainTree.MyNodes.Add(point2);
+            mainTree.MyNodes.Add(consumerObject2);
+            mainTree.MyNodes.Add(point3);
         }
 
         public ICollection<NetworkTree> GetNetworks(int solutionId)

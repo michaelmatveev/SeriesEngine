@@ -238,7 +238,6 @@
     <Compile Include="Models\WorkbookDataBlockProvider.cs" />
     <Compile Include="Models\DataBlockConverter.cs" />
     <Compile Include="Presenters\CollectionPropertiesPresenter.cs" />
-    <Compile Include="Presenters\FilterPresenter.cs" />
     <Compile Include="Presenters\NodeBlockPropertiesPresenter.cs" />
     <Compile Include="Presenters\MainPanePresenter.cs" />
     <Compile Include="Presenters\ObjectPropertiesPresenter.cs" />
@@ -264,14 +263,7 @@
     <Compile Include="Views\NodeBlockProperties.Designer.cs">
       <DependentUpon>NodeBlockProperties.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Filter.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\Filter.Designer.cs">
-      <DependentUpon>Filter.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\ICollectionPropertiesView.cs" />
-    <Compile Include="Views\IFilterView.cs" />
     <Compile Include="Views\IDataBlockPropertiesView.cs" />
     <Compile Include="Views\IMainPane.cs" />
     <Compile Include="Views\IPanes.cs" />
@@ -323,9 +315,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\NodeBlockProperties.resx">
       <DependentUpon>NodeBlockProperties.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Filter.resx">
-      <DependentUpon>Filter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\DataBlockProperties.resx">
       <DependentUpon>DataBlockProperties.cs</DependentUpon>

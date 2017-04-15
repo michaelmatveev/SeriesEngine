@@ -17,6 +17,9 @@ namespace SeriesEngine.Msk1
         [Required]
         public string Name { get; set; }
 
+        [Required]
+        public string ModelName { get; set; }
+
         public string Description { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

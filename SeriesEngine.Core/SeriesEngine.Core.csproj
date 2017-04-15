@@ -87,16 +87,6 @@
     <Content Include="CreateDatabaseSchema.test1.sql">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Content>
-    <Content Include="DataAccess\DataAccessScript.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastOutputs>.\DataAccessScript.cs</LastOutputs>
-      <LastGenOutput>DataAccessScript.txt</LastGenOutput>
-    </Content>
-    <Content Include="DataAccess\DataAccessScript.txt">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataAccessScript.tt</DependentUpon>
-    </Content>
     <Content Include="Metamodels\DataTypes\MsSqlServer.xml" />
     <Content Include="Metamodels\msk1\Components.xml" />
     <Content Include="Metamodels\msk1\DataStructures.xml" />

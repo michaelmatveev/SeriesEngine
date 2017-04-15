@@ -47,7 +47,7 @@ namespace SeriesEngine.Tests.Database
                     ContractType = "Contract Type 1"
                 };
 
-                var network = new Network()
+                var network = new MainHierarchyNetwork()
                 {
                     Name = "Main network 1",
                     Solution = solution

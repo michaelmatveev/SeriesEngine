@@ -16,7 +16,8 @@ namespace SeriesEngine.Tests.Database
                 var solution = new Solution
                 {
                     Name = "Тест 1",
-                    Description = "Тестовое решение"
+                    Description = "Тестовое решение",
+                    ModelName = "msk1"
                 };
 
                 var region = new Region()
@@ -105,7 +106,7 @@ namespace SeriesEngine.Tests.Database
                     MaxPower = "30"
                 });
 
-                var network = new Network()
+                var network = new MainHierarchyNetwork()
                 {
                     Name = "Основная коллекция объектов",
                     Solution = solution
@@ -181,9 +182,10 @@ namespace SeriesEngine.Tests.Database
                 var solution1 = new Solution
                 {
                     Name = "Реальные данные 1",
-                    Description = "Пример реальных данных"
+                    Description = "Пример реальных данных",
+                    ModelName = "msk1"
                 };
-                var network1 = new Network()
+                var network1 = new MainHierarchyNetwork()
                 {
                     Name = "Основная коллекция объектов",
                     Solution = solution1

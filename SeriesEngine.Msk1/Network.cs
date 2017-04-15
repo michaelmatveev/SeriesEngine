@@ -6,12 +6,10 @@ namespace SeriesEngine.Msk1
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Network
+    public abstract partial class Network
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Network()
         {
-            Nodes = new HashSet<MainHierarchyNode>();
         }
 
         public int Id { get; set; }
@@ -19,8 +17,7 @@ namespace SeriesEngine.Msk1
         [Required]
         [StringLength(128)]
         public string Name { get; set; }
-
-        [Column(TypeName = "text")]
+                
         public string Description { get; set; }
 
         public bool? IsSystem { get; set; }
@@ -38,8 +35,9 @@ namespace SeriesEngine.Msk1
 
         public int? Tag { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MainHierarchyNode> Nodes { get; set; }
+
+        [NotMapped]
+        public abstract ICollection<NetworkTreeNode> MyNodes { get; }
 
         public virtual Solution Solution { get; set; }
     }
