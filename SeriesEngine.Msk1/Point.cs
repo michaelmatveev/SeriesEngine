@@ -1,11 +1,9 @@
 namespace SeriesEngine.Msk1
 {
     using Core.DataAccess;
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     [Table("msk1.Points")]
     public partial class Point : NamedObject
@@ -20,7 +18,7 @@ namespace SeriesEngine.Msk1
             Point_TUCodes = new HashSet<Point_TUCode>();
         }
 
-         public int? AuthorId { get; set; }
+        public int? AuthorId { get; set; }
 
         [Required]
         [StringLength(int.MaxValue)]

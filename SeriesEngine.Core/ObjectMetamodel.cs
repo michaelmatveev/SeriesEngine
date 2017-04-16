@@ -1,4 +1,4 @@
-﻿using SeriesEngine.Core;
+﻿using SeriesEngine.Core.DataAccess;
 using System;
 using System.Collections.Generic;
 

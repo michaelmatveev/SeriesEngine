@@ -1,0 +1,98 @@
+﻿<#+
+// <copyright file="HeaderTemplate.tt" company="Michael Matveev">
+//  Copyright © Michael Matveev. All Rights Reserved.
+// </copyright>
+
+public class ObjectEntityTemplate : CSharpTemplate
+{
+	public string Schema;
+	public XElement Stereotype;
+
+	public override string TransformText()
+	{
+		base.TransformText();
+		string name = Stereotype.Attribute("Name").Value;
+		VariableSelector vs = new VariableSelector(this.Stereotype);
+#>
+using SeriesEngine.Core.DataAccess;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SeriesEngine.<#= Schema #>
+{
+    [Table("msk1.<#= name #>")]
+	public partial class <#= name #> : NamedObject
+	{
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public <#= name #>()
+        {
+<#+
+		foreach(var varElement in vs.QueryVariablesThat().Versioned().Variables)
+		{
+			var varName = varElement.Attribute("Name").Value;
+#>
+			<#= name #>_<#= varName#>s = new HashSet<<#= name #>_<#= varName#>>();
+<#+
+		}
+#>
+		}
+
+		public int? AuthorId { get; set; }
+
+        [Required]
+        [StringLength(int.MaxValue)]
+        [MaxLength]
+        public string Name { get; set; }
+
+        [Column(TypeName = "timestamp")]
+        [MaxLength(8)]
+        [Timestamp]
+        public byte[] ConcurrencyStamp { get; set; }
+
+        public int? Tag { get; set; }
+
+        public virtual User User { get; set; }
+
+		public int SolutionId { get; set; }
+
+        public virtual Solution Solution { get; set; }
+
+        public override string GetName()
+        {
+            return Name;
+        }
+
+        public override void SetName(string newName)
+        {
+            Name = newName;
+        }
+<#+
+		foreach(var varElement in vs.QueryVariablesThat().NotVersioned().Variables.Where(v => v.Attribute("Name").Value != "Name"))			
+		{
+			var varName = varElement.Attribute("Name").Value;
+#>
+
+        [Required]
+        [StringLength(int.MaxValue)]
+        [MaxLength]
+        public string  <#= varName #> { get; set; }
+<#+
+		}
+		foreach(var varElement in vs.QueryVariablesThat().Versioned().Variables)
+		{
+			var varName = varElement.Attribute("Name").Value;
+#>
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<<#= name #>_<#= varName#>> <#= name #>_<#= varName#>s { get; set; }
+<#+
+		}
+#>
+	}
+}
+<#+
+        return this.GenerationEnvironment.ToString();
+	}
+}
+#>

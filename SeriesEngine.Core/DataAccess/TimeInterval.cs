@@ -1,4 +1,4 @@
-﻿namespace SeriesEngine.Core
+﻿namespace SeriesEngine.Core.DataAccess
 {
     public enum TimeInterval
     {

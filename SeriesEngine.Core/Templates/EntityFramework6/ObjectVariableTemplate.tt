@@ -1,0 +1,53 @@
+﻿<#+
+// <copyright file="ObjectVariableTemplate.tt" company="">
+//  Copyright © Michael Matveev. All Rights Reserved.
+// </copyright>
+
+public class ObjectVariableTemplate : CSharpTemplate
+{
+	public string Schema;
+	public string Stereotype;
+	public XElement Variable;
+
+	public override string TransformText()
+	{
+		base.TransformText();
+		var name = Variable.Attribute("Name").Value;
+
+#>
+using SeriesEngine.Core.DataAccess;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SeriesEngine.<#= Schema #>
+{
+
+    [Table("<#= Schema #>.<#= Stereotype #>_<#= name #>s")]
+    public partial class <#= Stereotype #>_<#= name #> : PeriodVariable
+    {
+        public virtual User User { get; set; }
+
+        [Required]
+        [StringLength(200)]
+        public string <#= name #> { get; set; }
+
+        public virtual Point Point { get; set; }
+
+        public override object Value
+        {
+            get
+            {
+                return <#= name #>;
+            }
+            set
+            {
+                <#= name #> = (string)value;
+            }
+        }
+    }
+}
+<#+
+        return this.GenerationEnvironment.ToString();
+	}
+}
+#>

@@ -57,16 +57,63 @@
     <Compile Include="DataAccess\IStateObject.cs" />
     <Compile Include="DataAccess\NamedObject.cs" />
     <Compile Include="DataAccess\Network.cs" />
+    <Compile Include="DataAccess\NetworkTreeNode.cs" />
     <Compile Include="DataAccess\Period.cs" />
     <Compile Include="DataAccess\PeriodVariable.cs" />
     <Compile Include="DataAccess\Solution.cs" />
     <Compile Include="DataAccess\EditorObject.cs" />
+    <Compile Include="DataAccess\User.cs" />
     <Compile Include="DataAccess\Utilities.cs" />
     <Compile Include="Helpers\CastedList.cs" />
+    <Compile Include="msk1.Consumer.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ConsumerObject.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Contract.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point_MaxPower.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point_PUPlace.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point_TUCode.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point_VoltageLevel.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Region.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="ObjectMetamodel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reliability.cs" />
-    <Compile Include="TimeInterval.cs" />
+    <Compile Include="DataAccess\TimeInterval.cs" />
+    <Compile Include="test1.ObjectA.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="test1.ObjectA_PeriodDecimalVariable.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="test1.ObjectA_PeriodEnumVariable.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="test1.ObjectB.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="test1.ObjectC.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="BuildMetamodels.tt">
@@ -75,6 +122,21 @@
       <LastOutputs>
 .\CreateDatabaseSchema.msk1.sql
 .\CreateDatabaseSchema.test1.sql
+.\msk1.Consumer.cs
+.\msk1.ConsumerObject.cs
+.\msk1.Contract.cs
+.\msk1.ElectricMeter.cs
+.\msk1.Point.cs
+.\msk1.Point_MaxPower.cs
+.\msk1.Point_PUPlace.cs
+.\msk1.Point_TUCode.cs
+.\msk1.Point_VoltageLevel.cs
+.\msk1.Region.cs
+.\test1.ObjectA.cs
+.\test1.ObjectA_PeriodDecimalVariable.cs
+.\test1.ObjectA_PeriodEnumVariable.cs
+.\test1.ObjectB.cs
+.\test1.ObjectC.cs
 </LastOutputs>
     </Content>
     <Content Include="BuildMetamodels.txt">
@@ -95,6 +157,8 @@
     <Content Include="Metamodels\test1\DataStructures.xml" />
     <Content Include="Templates\EntityFramework6\DbContextTemplate.tt" />
     <Content Include="Templates\EntityFramework6\EntitiesGenerator.tt" />
+    <Content Include="Templates\EntityFramework6\ObjectEntityTemplate.tt" />
+    <Content Include="Templates\EntityFramework6\ObjectVariableTemplate.tt" />
     <Content Include="Templates\Header.tt" />
     <Content Include="Templates\MsSqlServer\CreateDatabaseGenerator.tt" />
     <Content Include="Templates\MsSqlServer\CreateHierarchyTemplate.tt" />
