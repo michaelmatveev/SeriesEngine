@@ -1,10 +1,7 @@
+using System.Data.Entity;
+
 namespace SeriesEngine.Msk1
 {
-    using System;
-    using System.Data.Entity;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
-    using Core.DataAccess;
     public partial class Model1 : DbContext
     {
         public Model1()

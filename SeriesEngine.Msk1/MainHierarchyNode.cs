@@ -1,12 +1,12 @@
+using SeriesEngine.Core;
+using SeriesEngine.Core.DataAccess;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+
+
 namespace SeriesEngine.Msk1
 {
-    using Core;
-    using Core.DataAccess;
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     //[Table("msk1.MainHierarchyNodes")]
     public partial class MainHierarchyNode : NetworkTreeNode
@@ -77,7 +77,7 @@ namespace SeriesEngine.Msk1
 
         public virtual Point Point { get; set; }
 
-        [ForeignKey("Region_Id")]
+        //[ForeignKey("Region_Id")]
         public virtual Region Region { get; set; }
 
         public override NamedObject LinkedObject

@@ -1,0 +1,46 @@
+﻿<#+
+// <copyright file="HierarchyTemplate.tt" company="">
+//  Copyright © Michael Matveev. All Rights Reserved.
+// </copyright>
+
+public class HierarchyTemplate : CSharpTemplate
+{
+	public string Shema;
+	public XElement Hierarchy;
+
+	public override string TransformText()
+	{
+		base.TransformText();
+		var name = Hierarchy.Attribute("Name").Value;
+#>
+using System.Collections.Generic;
+using SeriesEngine.Core.Helpers;
+using SeriesEngine.Core.DataAccess;
+
+namespace SeriesEngine.<#= Shema #>
+{
+    public class <#= name #>Network : Network
+    {
+        public <#= name #>Network()
+        {
+            Nodes = new HashSet<<#= name #>Node>();
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<<#= name #>Node> Nodes { get; set; }
+
+        public override ICollection<NetworkTreeNode> MyNodes
+        {
+            get
+            {
+                return Nodes.CastCollection<<#= name #>Node, NetworkTreeNode>();
+            }
+        }
+    }
+}
+
+<#+
+        return this.GenerationEnvironment.ToString();
+	}
+}
+#>

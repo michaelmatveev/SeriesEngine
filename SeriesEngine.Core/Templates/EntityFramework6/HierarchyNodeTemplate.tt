@@ -1,0 +1,109 @@
+﻿<#+
+// <copyright file="HierarchyNodeTemplate.tt" company="">
+//  Copyright © Michael Matveev. All Rights Reserved.
+// </copyright>
+
+public class HierarchyNodeTemplate : CSharpTemplate
+{
+	public string Shema;
+	public XElement Hierarchy;
+
+	public override string TransformText()
+	{
+		base.TransformText();
+		var name = Hierarchy.Attribute("Name").Value;
+		var stereotypes = Hierarchy.Descendants("UsedStereotype").Select(us => us.Attribute("Name").Value).Distinct();
+#>
+using SeriesEngine.Core;
+using SeriesEngine.Core.DataAccess;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+
+
+namespace SeriesEngine.<#= Shema #>
+{
+    //[Table("msk1.MainHierarchyNodes")]
+    public partial class <#= name #>Node : NetworkTreeNode
+    {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public <#= name #>Node()
+        {
+            Children = new HashSet<<#= name #>Node>();
+        }
+
+        public int NetId { get; set; }
+        [ForeignKey("NetId")]
+        public virtual <#= name #>Network Network { get; set; }
+
+        public override Network MyNetwork
+        {
+            get
+            {
+                return Network;
+            }
+            set
+            {
+                Network = (<#= name #>Network)value;
+            }
+        }
+
+        public override NetworkTreeNode MyParent
+        {
+            get
+            {
+                return Parent;
+            }
+            set
+            {
+                Parent = (<#= name #>Node)value;
+            }
+        }
+
+        public int? ParentId { get; set; }
+
+        public virtual <#= name #>Node Parent { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<<#= name #>Node> Children { get; set; }
+
+		public int? Tag { get; set; }
+
+<#+
+	foreach(var objName in stereotypes)
+	{
+#>
+
+        public int? <#= objName #>_Id { get; set; }
+        public virtual <#= objName #> <#= objName #> { get; set; }
+<#+
+	}
+#>
+
+        public override NamedObject LinkedObject
+        {
+            get
+            {
+<#+
+	foreach(var objName in stereotypes)
+	{
+#>
+                if (<#= objName #> != null)
+                {
+                    //<#= objName #>.ObjectModel = <#= objName #>Model;
+                    return <#= objName #>;
+                }
+<#+
+	}
+#>
+                return null;
+            }
+        }
+	}
+}
+
+<#+
+        return this.GenerationEnvironment.ToString();
+	}
+}
+#>

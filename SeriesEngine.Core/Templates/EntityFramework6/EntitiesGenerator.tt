@@ -1,5 +1,8 @@
-﻿<#@ include file="ObjectEntityTemplate.tt" #>
-<#@ include file="ObjectVariableTemplate.tt" #>
+﻿<#@ include file="ObjectVariableTemplate.tt" #>
+<#@ include file="ObjectEntityTemplate.tt" #>
+<#@ include file="HierarchyTemplate.tt" #>
+<#@ include file="HierarchyNodeTemplate.tt" #>
+<#@ include file="DbContextTemplate.tt" #>
 <#+
 // <copyright file="EntitiesGenerator.tt" company="">
 //  Copyright © Michael Matveev. All Rights Reserved.
@@ -48,6 +51,35 @@ public class EntitiesGenerator : Generator
 			}
 		}
 
+		var hierarchyTemplate = new HierarchyTemplate 
+		{
+			Shema = prefix
+		};
+
+		var hierarchyNodeTemplate = new HierarchyNodeTemplate 
+		{
+			Shema = prefix
+		};
+		
+		foreach(XElement hierarchyElement in HierarchiesDoc.Descendants("Hierarchy"))
+		{
+			hierarchyTemplate.Hierarchy = hierarchyElement;
+
+			var hName = hierarchyElement.Attribute("Name").Value;
+			var hierarhyOutput = String.Format("{0}.{1}Network.cs", prefix, hName);
+			hierarchyTemplate.RenderToFile(hierarhyOutput);
+
+			hierarchyNodeTemplate.Hierarchy = hierarchyElement;
+			var hierarhyNodeOutput = String.Format("{0}.{1}Node.cs", prefix, hName);
+			hierarchyNodeTemplate.RenderToFile(hierarhyNodeOutput);
+		}
+
+		var dbContextTemplate = new DbContextTemplate 
+		{
+			Schema = prefix
+		};
+		var contextOutput = String.Format("{0}.Model.cs", prefix);
+		dbContextTemplate.RenderToFile(contextOutput);
 	}
 }
 #>
