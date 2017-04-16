@@ -6,6 +6,7 @@
 public class DbContextTemplate : CSharpTemplate
 {
 	public string Schema;
+	public IEnumerable<XElement> Hierarchies;
 	public IEnumerable<XElement> Stereotypes;
 
 	public override string TransformText()
@@ -29,14 +30,120 @@ namespace SeriesEngine.<#= Schema #>
         public virtual DbSet<Solution> Solutions { get; set; }
         public virtual DbSet<User> Users { get; set; }
  
+<#+
+		foreach(var h in Hierarchies)
+		{
+			var name = h.Attribute("Name").Value;
+
+ #>
+         public virtual DbSet<<#= name #>Node> <#= name #>Nodes { get; set; }
+ <#+
+		 }
+ #>
+
+<#+
+		foreach(var s in Stereotypes)
+		{
+			var name = s.Attribute("Name").Value;
+ #>
+        public virtual DbSet<<#= name #>> <#= name #>s { get; set; }
+ <#+
+			var vs = new VariableSelector(s);
+			foreach(XElement variable in vs.QueryVariablesThat().Versioned().Variables)
+			{
+				var varName = variable.Attribute("Name").Value;
+#>
+		public virtual DbSet<<#= name #>_<#= varName #>> <#= name #>_<#= varName #>s { get; set; }
+<#+
+			}
+		}
+ #>
+ 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 			modelBuilder.Entity<Solution>()
                 .HasMany(e => e.Networks)
                 .WithRequired(e => e.Solution)
                 .WillCascadeOnDelete(true);
-		}
 
+			 modelBuilder.Entity<Network>()
+<#+
+		foreach(var h in Hierarchies)
+		{
+			var name = h.Attribute("Name").Value;
+ #>
+                 .Map<<#= name #>Network>(m => m.Requires("NodeType").HasValue("<#= Schema #>.<#= name #>Node"))
+<#+
+		 }
+#>
+			;
+<#+
+		foreach(var h in Hierarchies)
+		{
+			var name = h.Attribute("Name").Value;
+#>
+
+			// TODO probable this does not matter
+            modelBuilder.Entity<<#= name #>Node>()
+                .Map(m =>
+                {
+                    m.MapInheritedProperties();
+                    m.ToTable("<#= Schema #>.<#= name #>Nodes");
+                });
+
+             modelBuilder.Entity<<#= name #>Node>()
+                .HasMany(e => e.Children)
+                .WithOptional(e => e.Parent)
+                .HasForeignKey(e => e.ParentId);
+ <#+
+			foreach(var s in h.Descendants("UsedStereotype").Select(us => us.Attribute("Name").Value).Distinct())
+			{
+#>
+
+			modelBuilder.Entity<<#= name #>Node>()
+                .HasOptional(e => e.<#= s #>)
+                .WithMany()
+                .HasForeignKey(e => e.<#= s #>_Id);
+<#+
+			}	
+		}
+		foreach(var s in Stereotypes)
+		{
+			var name = s.Attribute("Name").Value;
+ #>
+
+            modelBuilder.Entity<<#= name #>>()
+                .HasRequired(e => e.Solution)
+                .WithMany()
+                .HasForeignKey(e => e.SolutionId)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<<#= name #>>()
+                .HasOptional(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.AuthorId);
+
+            modelBuilder.Entity<<#= name #>>()
+                .Property(e => e.ConcurrencyStamp)
+                .IsFixedLength();
+ <#+
+			var vs = new VariableSelector(s);
+			foreach(XElement variable in vs.QueryVariablesThat().Versioned().Variables)
+			{
+				var varName = variable.Attribute("Name").Value;
+#>
+
+            modelBuilder.Entity<<#= name #>>()
+                .HasMany(e => e.<#= name #>_<#= varName #>s)
+                .WithRequired(e => e.<#= name #>)
+                .HasForeignKey(e => e.ObjectId)
+                .WillCascadeOnDelete(false);
+<#+
+			}
+		}
+ #>
+
+		}
 	}
 }
 <#+

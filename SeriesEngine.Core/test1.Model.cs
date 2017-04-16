@@ -20,13 +20,134 @@ namespace SeriesEngine.test1
         public virtual DbSet<Solution> Solutions { get; set; }
         public virtual DbSet<User> Users { get; set; }
  
+         public virtual DbSet<MainHierarchyNode> MainHierarchyNodes { get; set; }
+          public virtual DbSet<SecondHierarchyNode> SecondHierarchyNodes { get; set; }
+         public virtual DbSet<ObjectA> ObjectAs { get; set; }
+ 		public virtual DbSet<ObjectA_PeriodDecimalVariable> ObjectA_PeriodDecimalVariables { get; set; }
+		public virtual DbSet<ObjectA_PeriodEnumVariable> ObjectA_PeriodEnumVariables { get; set; }
+        public virtual DbSet<ObjectB> ObjectBs { get; set; }
+         public virtual DbSet<ObjectC> ObjectCs { get; set; }
+  
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 			modelBuilder.Entity<Solution>()
                 .HasMany(e => e.Networks)
                 .WithRequired(e => e.Solution)
                 .WillCascadeOnDelete(true);
-		}
 
+			 modelBuilder.Entity<Network>()
+                 .Map<MainHierarchyNetwork>(m => m.Requires("NodeType").HasValue("test1.MainHierarchyNode"))
+                 .Map<SecondHierarchyNetwork>(m => m.Requires("NodeType").HasValue("test1.SecondHierarchyNode"))
+			;
+
+			// TODO probable this does not matter
+            modelBuilder.Entity<MainHierarchyNode>()
+                .Map(m =>
+                {
+                    m.MapInheritedProperties();
+                    m.ToTable("test1.MainHierarchyNodes");
+                });
+
+             modelBuilder.Entity<MainHierarchyNode>()
+                .HasMany(e => e.Children)
+                .WithOptional(e => e.Parent)
+                .HasForeignKey(e => e.ParentId);
+ 
+			modelBuilder.Entity<MainHierarchyNode>()
+                .HasOptional(e => e.ObjectA)
+                .WithMany()
+                .HasForeignKey(e => e.ObjectA_Id);
+
+			modelBuilder.Entity<MainHierarchyNode>()
+                .HasOptional(e => e.ObjectB)
+                .WithMany()
+                .HasForeignKey(e => e.ObjectB_Id);
+
+			modelBuilder.Entity<MainHierarchyNode>()
+                .HasOptional(e => e.ObjectC)
+                .WithMany()
+                .HasForeignKey(e => e.ObjectC_Id);
+
+			// TODO probable this does not matter
+            modelBuilder.Entity<SecondHierarchyNode>()
+                .Map(m =>
+                {
+                    m.MapInheritedProperties();
+                    m.ToTable("test1.SecondHierarchyNodes");
+                });
+
+             modelBuilder.Entity<SecondHierarchyNode>()
+                .HasMany(e => e.Children)
+                .WithOptional(e => e.Parent)
+                .HasForeignKey(e => e.ParentId);
+ 
+			modelBuilder.Entity<SecondHierarchyNode>()
+                .HasOptional(e => e.ObjectA)
+                .WithMany()
+                .HasForeignKey(e => e.ObjectA_Id);
+
+			modelBuilder.Entity<SecondHierarchyNode>()
+                .HasOptional(e => e.ObjectB)
+                .WithMany()
+                .HasForeignKey(e => e.ObjectB_Id);
+
+            modelBuilder.Entity<ObjectA>()
+                .HasRequired(e => e.Solution)
+                .WithMany()
+                .HasForeignKey(e => e.SolutionId)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<ObjectA>()
+                .HasOptional(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.AuthorId);
+
+            modelBuilder.Entity<ObjectA>()
+                .Property(e => e.ConcurrencyStamp)
+                .IsFixedLength();
+ 
+            modelBuilder.Entity<ObjectA>()
+                .HasMany(e => e.ObjectA_PeriodDecimalVariables)
+                .WithRequired(e => e.ObjectA)
+                .HasForeignKey(e => e.ObjectId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ObjectA>()
+                .HasMany(e => e.ObjectA_PeriodEnumVariables)
+                .WithRequired(e => e.ObjectA)
+                .HasForeignKey(e => e.ObjectId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ObjectB>()
+                .HasRequired(e => e.Solution)
+                .WithMany()
+                .HasForeignKey(e => e.SolutionId)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<ObjectB>()
+                .HasOptional(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.AuthorId);
+
+            modelBuilder.Entity<ObjectB>()
+                .Property(e => e.ConcurrencyStamp)
+                .IsFixedLength();
+ 
+            modelBuilder.Entity<ObjectC>()
+                .HasRequired(e => e.Solution)
+                .WithMany()
+                .HasForeignKey(e => e.SolutionId)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<ObjectC>()
+                .HasOptional(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.AuthorId);
+
+            modelBuilder.Entity<ObjectC>()
+                .Property(e => e.ConcurrencyStamp)
+                .IsFixedLength();
+ 
+		}
 	}
 }

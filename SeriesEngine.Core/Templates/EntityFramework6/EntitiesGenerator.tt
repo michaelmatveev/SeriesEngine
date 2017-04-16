@@ -76,7 +76,9 @@ public class EntitiesGenerator : Generator
 
 		var dbContextTemplate = new DbContextTemplate 
 		{
-			Schema = prefix
+			Schema = prefix,
+			Hierarchies = HierarchiesDoc.Descendants("Hierarchy"),
+			Stereotypes = ComponentsDoc.Descendants("Stereotype")
 		};
 		var contextOutput = String.Format("{0}.Model.cs", prefix);
 		dbContextTemplate.RenderToFile(contextOutput);
