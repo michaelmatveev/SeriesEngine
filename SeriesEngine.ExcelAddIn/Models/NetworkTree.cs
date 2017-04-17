@@ -1,7 +1,7 @@
 ﻿using SeriesEngine.Core.DataAccess;
 using SeriesEngine.ExcelAddIn.Helpers;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
-using SeriesEngine.Msk1;
+using SeriesEngine.msk1;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Collections.Generic;
 using System.Linq;
-using SeriesEngine.Msk1;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using SeriesEngine.Core.DataAccess;
+using SeriesEngine.msk1;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {

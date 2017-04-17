@@ -1,8 +1,7 @@
-﻿using SeriesEngine.Msk1;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
 using Solution = SeriesEngine.Core.DataAccess.Solution;
-
+using SeriesEngine.msk1;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {

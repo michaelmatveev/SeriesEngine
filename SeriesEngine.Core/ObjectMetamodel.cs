@@ -10,12 +10,19 @@ namespace SeriesEngine.Core
         public bool IsPeriodic { get; set; }
         public bool IsVersioned { get; set; }
         public TimeInterval PeriodInterval { get; set; }
-        public Type EntityType {get; set;}
+        public Type EntityType { get; set; }
     }
 
     public class ObjectMetamodel
     {
         public string Name { get; set; }
-        public List<Variable> Variables { get; set; }
+        public IEnumerable<Variable> Variables { get; set; }
     }
+
+    public class MetaModel
+    {
+        public string Name { get; set; }
+        public IEnumerable<ObjectMetamodel> ObjectModels;
+    }
+
 }

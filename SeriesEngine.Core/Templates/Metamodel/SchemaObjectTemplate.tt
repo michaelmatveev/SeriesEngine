@@ -1,0 +1,57 @@
+﻿<#+
+// <copyright file="ObjectModelTemplate.tt" company="">
+//  Copyright © Michael Matveev. All Rights Reserved.
+// </copyright>
+
+public class SchemaObjectTemplate : CSharpTemplate
+{
+	public string Schema;
+	public IEnumerable<string> Stereotypes;
+
+	public override string TransformText()
+	{
+		base.TransformText();
+#>
+using SeriesEngine.Core;
+using System.Collections.Generic;
+
+namespace SeriesEngine.<#= Schema #>
+{
+    public static class <#= Schema #>Objects
+    {
+        public static IEnumerable<ObjectMetamodel> UsedObjects
+        {
+            get
+            {
+<#+
+		foreach(var s in Stereotypes)
+		{
+#>
+                yield return <#= s #>;
+<#+
+		}
+#>
+            }
+        }
+
+<#+
+		foreach(var s in Stereotypes)
+		{
+#>
+
+        public static ObjectMetamodel <#= s #> = new ObjectMetamodel
+        {
+            Name = "<#= s #>",
+            Variables = <#= Schema #><#= s #>Variables.AllVariables
+        };
+<#+
+		}
+#>
+    }
+
+}
+<#+
+        return this.GenerationEnvironment.ToString();
+	}
+}
+#>

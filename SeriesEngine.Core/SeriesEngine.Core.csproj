@@ -53,6 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllModels.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\EditPeriodVariables.cs" />
     <Compile Include="DataAccess\IStateObject.cs" />
     <Compile Include="DataAccess\NamedObject.cs" />
@@ -71,10 +74,22 @@
     <Compile Include="msk1.ConsumerObject.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
+    <Compile Include="msk1.ConsumerObjectVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ConsumerVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="msk1.Contract.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
+    <Compile Include="msk1.ContractVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="msk1.ElectricMeter.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeterVariables.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
     <Compile Include="msk1.MainHierarchyNetwork.cs">
@@ -86,7 +101,13 @@
     <Compile Include="msk1.Model.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
+    <Compile Include="msk1.Objects.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="msk1.Point.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.PointVariables.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
     <Compile Include="msk1.Point_MaxPower.cs">
@@ -102,6 +123,9 @@
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
     <Compile Include="msk1.Region.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.RegionVariables.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
     <Compile Include="ObjectMetamodel.cs" />
@@ -120,6 +144,9 @@
     <Compile Include="test1.ObjectA.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
+    <Compile Include="test1.ObjectAVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="test1.ObjectA_PeriodDecimalVariable.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
@@ -129,7 +156,16 @@
     <Compile Include="test1.ObjectB.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
+    <Compile Include="test1.ObjectBVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="test1.ObjectC.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="test1.ObjectCVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="test1.Objects.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
     <Compile Include="test1.SecondHierarchyNetwork.cs">
@@ -144,29 +180,41 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>BuildMetamodels.txt</LastGenOutput>
       <LastOutputs>
+.\AllModels.cs
 .\CreateDatabaseSchema.msk1.sql
 .\CreateDatabaseSchema.test1.sql
 .\msk1.Consumer.cs
 .\msk1.ConsumerObject.cs
+.\msk1.ConsumerObjectVariables.cs
+.\msk1.ConsumerVariables.cs
 .\msk1.Contract.cs
+.\msk1.ContractVariables.cs
 .\msk1.ElectricMeter.cs
+.\msk1.ElectricMeterVariables.cs
 .\msk1.MainHierarchyNetwork.cs
 .\msk1.MainHierarchyNode.cs
 .\msk1.Model.cs
+.\msk1.Objects.cs
 .\msk1.Point.cs
 .\msk1.Point_MaxPower.cs
 .\msk1.Point_PUPlace.cs
 .\msk1.Point_TUCode.cs
 .\msk1.Point_VoltageLevel.cs
+.\msk1.PointVariables.cs
 .\msk1.Region.cs
+.\msk1.RegionVariables.cs
 .\test1.MainHierarchyNetwork.cs
 .\test1.MainHierarchyNode.cs
 .\test1.Model.cs
 .\test1.ObjectA.cs
 .\test1.ObjectA_PeriodDecimalVariable.cs
 .\test1.ObjectA_PeriodEnumVariable.cs
+.\test1.ObjectAVariables.cs
 .\test1.ObjectB.cs
+.\test1.ObjectBVariables.cs
 .\test1.ObjectC.cs
+.\test1.ObjectCVariables.cs
+.\test1.Objects.cs
 .\test1.SecondHierarchyNetwork.cs
 .\test1.SecondHierarchyNode.cs
 </LastOutputs>
@@ -194,6 +242,10 @@
     <Content Include="Templates\EntityFramework6\ObjectEntityTemplate.tt" />
     <Content Include="Templates\EntityFramework6\ObjectVariableTemplate.tt" />
     <Content Include="Templates\Header.tt" />
+    <Content Include="Templates\Metamodel\ConstantsGenerator.tt" />
+    <Content Include="Templates\Metamodel\ModelsTemplate.tt" />
+    <Content Include="Templates\Metamodel\SchemaObjectTemplate.tt" />
+    <Content Include="Templates\Metamodel\VariableTemplate.tt" />
     <Content Include="Templates\MsSqlServer\CreateDatabaseGenerator.tt" />
     <Content Include="Templates\MsSqlServer\CreateHierarchyTemplate.tt" />
     <Content Include="Templates\MsSqlServer\CreateSchemaTemplate.tt" />

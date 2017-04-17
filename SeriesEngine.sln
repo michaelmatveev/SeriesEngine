@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeriesEngine.ExcelAddIn", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeriesEngine.App", "SeriesEngine.App\SeriesEngine.App.csproj", "{BCB7A219-851B-46D2-A8D3-107A2C81E22F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeriesEngine.Msk1", "SeriesEngine.Msk1\SeriesEngine.Msk1.csproj", "{039797C1-A3F3-47C7-B887-75073B9B8E5E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeriesEngine.Tests.Unit", "SeriesEngine.Tests.Unit\SeriesEngine.Tests.Unit.csproj", "{E9E750CB-FCD0-4059-93A8-500DBC8904B1}"
 EndProject
 Global
@@ -37,10 +35,6 @@ Global
 		{BCB7A219-851B-46D2-A8D3-107A2C81E22F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCB7A219-851B-46D2-A8D3-107A2C81E22F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCB7A219-851B-46D2-A8D3-107A2C81E22F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{039797C1-A3F3-47C7-B887-75073B9B8E5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{039797C1-A3F3-47C7-B887-75073B9B8E5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{039797C1-A3F3-47C7-B887-75073B9B8E5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{039797C1-A3F3-47C7-B887-75073B9B8E5E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E9E750CB-FCD0-4059-93A8-500DBC8904B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E9E750CB-FCD0-4059-93A8-500DBC8904B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9E750CB-FCD0-4059-93A8-500DBC8904B1}.Release|Any CPU.ActiveCfg = Release|Any CPU

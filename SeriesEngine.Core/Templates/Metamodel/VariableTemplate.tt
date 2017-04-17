@@ -1,0 +1,74 @@
+﻿<#+
+// <copyright file="VariableTemplate.tt" company="">
+//  Copyright © Michael Matveev. All Rights Reserved.
+// </copyright>
+
+public class VariableTemplate : CSharpTemplate
+{
+	public string Schema;
+	public string Stereotype;
+	public IEnumerable<XElement> Variables;
+
+	public override string TransformText()
+	{
+		base.TransformText();
+		var noVariables = !Variables.Any();
+#>
+using SeriesEngine.Core;
+using System.Collections.Generic;
+
+namespace SeriesEngine.<#= Schema #>
+{
+	public class <#= Schema #><#= Stereotype #>Variables
+	{
+<#+		if(noVariables)
+		{
+#>
+        public static IEnumerable<Variable> AllVariables
+        {
+            get
+            {
+                yield break;
+            }
+        }
+<#+
+		}
+		else
+		{
+#>
+        public static IEnumerable<Variable> AllVariables
+        {
+            get
+            {
+<#+
+			foreach(var v in Variables) 
+			{
+#>
+				yield return <#= v.Attribute("Name").Value #>;
+<#+
+			}
+#>
+            }
+        }
+
+<#+
+		}
+
+		foreach(var v in Variables)
+		{
+			var name = v.Attribute("Name").Value;
+#>
+		public static Variable <#= name #> = new Variable
+        {
+			Name = "<#= name #>",
+		};
+<#+
+		}
+#>
+	}
+}
+<#+
+        return this.GenerationEnvironment.ToString();
+	}
+}
+#>

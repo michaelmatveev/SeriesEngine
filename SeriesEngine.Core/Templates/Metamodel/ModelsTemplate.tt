@@ -1,0 +1,61 @@
+﻿<#+
+// <copyright file="ModelsTemplate.tt" company="">
+//  Copyright © Michael Matveev. All Rights Reserved.
+// </copyright>
+
+public class ModelsTemplate : CSharpTemplate
+{
+	public IEnumerable<string> Models;
+
+	public override string TransformText()
+	{
+		base.TransformText();
+#>
+<#+
+		foreach(var m in Models)
+		{
+#>
+using SeriesEngine.<#= m #>;
+<#+
+		}
+#>
+using System.Collections.Generic;
+
+namespace SeriesEngine.Core
+{
+	public static class ModelsDescription
+	{
+        public static IEnumerable<MetaModel> All
+        {
+            get
+            {
+<#+
+		foreach(var m in Models)
+		{
+#>
+                yield return <#= m #>;
+<#+
+		}
+#>
+            }
+        }
+
+<#+
+		foreach(var m in Models)
+		{
+#>
+        public static MetaModel <#= m #> = new MetaModel
+        {
+            Name = "<#= m #>",
+            ObjectModels = <#= m #>Objects.UsedObjects
+        };
+<#+
+		}
+#>
+	}
+}
+<#+
+        return this.GenerationEnvironment.ToString();
+	}
+}
+#>

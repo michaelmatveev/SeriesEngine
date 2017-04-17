@@ -424,10 +424,6 @@
       <Project>{87D29B27-20D3-4CC8-AA8C-6A85987DB69C}</Project>
       <Name>SeriesEngine.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SeriesEngine.Msk1\SeriesEngine.Msk1.csproj">
-      <Project>{039797c1-a3f3-47c7-b887-75073b9b8e5e}</Project>
-      <Name>SeriesEngine.Msk1</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

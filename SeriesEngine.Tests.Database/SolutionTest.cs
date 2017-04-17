@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-//using SeriesEngine.Core.DataAccess;
-using SeriesEngine.Msk1;
+using SeriesEngine.msk1;
+using SeriesEngine.Core.DataAccess;
 
 namespace SeriesEngine.Tests.Database
 {

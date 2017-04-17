@@ -81,10 +81,6 @@
       <Project>{77F149F6-73C3-497D-B741-488DF15C12E8}</Project>
       <Name>SeriesEngine.ExcelAddIn</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SeriesEngine.Msk1\SeriesEngine.Msk1.csproj">
-      <Project>{039797c1-a3f3-47c7-b887-75073b9b8e5e}</Project>
-      <Name>SeriesEngine.Msk1</Name>
-    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

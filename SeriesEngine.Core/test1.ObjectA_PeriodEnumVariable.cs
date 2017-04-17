@@ -19,7 +19,7 @@ namespace SeriesEngine.test1
         [StringLength(200)]
         public string PeriodEnumVariable { get; set; }
 
-        public virtual Point Point { get; set; }
+        public virtual ObjectA ObjectA { get; set; }
 
         public override object Value
         {
