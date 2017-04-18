@@ -152,32 +152,14 @@ namespace SeriesEngine.ExcelAddIn.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
-        ///&lt;ObjectGrid xmlns=&quot;http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments&quot; Version=&quot;1&quot; Name=&quot;Таблица1&quot; Sheet=&quot;Лист1&quot; Cell=&quot;C2&quot; NetworkName=&quot;Основная коллекция объектов&quot;&gt;
+        ///&lt;ObjectGrid xmlns=&quot;http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments&quot; Version=&quot;1&quot; Model=&quot;msk1&quot; Name=&quot;Таблица1&quot; Sheet=&quot;Лист1&quot; Cell=&quot;C2&quot; NetworkName=&quot;Основная коллекция объектов&quot;&gt;
         ///  &lt;CFragment Caption=&quot;Регион&quot; CollectionName=&quot;Main&quot; Level=&quot;1&quot; RefObject=&quot;Region&quot; Type=&quot;UniqueName&quot;/&gt;
         ///  &lt;CFragment Caption=&quot;Потребитель&quot; CollectionName=&quot;Main&quot; Level=&quot;2&quot; RefObject=&quot;Consumer&quot; Type=&quot;UniqueName&quot;/&gt;
-        ///  &lt;CFragment Caption=&quot;Договор&quot; CollectionName=&quot;Main&quot; Level=&quot;3&quot; RefObject=&quot;Cont [rest of string was truncated]&quot;;.
+        ///  &lt;CFragment Caption=&quot;Договор&quot; CollectionName=&quot;Main&quot; Level=&quot;3&quot; Re [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TestGrid {
             get {
                 return ResourceManager.GetString("TestGrid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
-        ///&lt;DataImportExport&gt;
-        ///  &lt;!-- Данные импортируются с максимального уровня--&gt;
-        ///  &lt;Region UniqueName=&quot;Пензенская область&quot;&gt;
-        ///    &lt;Consumer UniqueName=&quot;ООО &amp;quot;МагнитЭнерго&amp;quot;&quot;&gt;
-        ///      &lt;Contract UniqueName=&quot;1001014-ЭН&quot; Since=&quot;2002-05-30T09:00:00&quot; Till=&quot;2008-05-30T09:00:00&quot;&gt;
-        ///        &lt;ContractType&gt;КП&lt;/ContractType&gt;
-        ///        &lt;ConsumerObject UniqueName=&quot;ММ &amp;quot;Влад&amp;quot; г. Пенза пр-т. Строителей, 24а&quot;&gt;
-        ///          &lt;Point UniqueName=&quot;ТП-530&quot;&gt;
-        ///            &lt;VoltageLevel&gt;С [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string TestGridData {
-            get {
-                return ResourceManager.GetString("TestGridData", resourceCulture);
             }
         }
         

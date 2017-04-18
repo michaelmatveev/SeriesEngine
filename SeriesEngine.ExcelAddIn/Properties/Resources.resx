@@ -135,7 +135,7 @@
   </data>
   <data name="TestGrid" xml:space="preserve">
     <value>&lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;ObjectGrid xmlns="http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments" Version="1" Name="Таблица1" Sheet="Лист1" Cell="C2" NetworkName="Основная коллекция объектов"&gt;
+&lt;ObjectGrid xmlns="http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments" Version="1" Model="msk1" Name="Таблица1" Sheet="Лист1" Cell="C2" NetworkName="Основная коллекция объектов"&gt;
   &lt;CFragment Caption="Регион" CollectionName="Main" Level="1" RefObject="Region" Type="UniqueName"/&gt;
   &lt;CFragment Caption="Потребитель" CollectionName="Main" Level="2" RefObject="Consumer" Type="UniqueName"/&gt;
   &lt;CFragment Caption="Договор" CollectionName="Main" Level="3" RefObject="Contract" Type="UniqueName"/&gt;
@@ -146,32 +146,6 @@
   &lt;CFragment Caption="Точка" CollectionName="Main" Level="5" RefObject="Point" Type="UniqueName"/&gt;
   &lt;VFragment Caption="Уровень расчетного напряжения" Level="5" CollectionName="Main"  RefObject="Point" Variable="VoltageLevel" Kind="Fact"/&gt;
 &lt;/ObjectGrid&gt;</value>
-  </data>
-  <data name="TestGridData" xml:space="preserve">
-    <value>&lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;DataImportExport&gt;
-  &lt;!-- Данные импортируются с максимального уровня--&gt;
-  &lt;Region UniqueName="Пензенская область"&gt;
-    &lt;Consumer UniqueName="ООО &amp;quot;МагнитЭнерго&amp;quot;"&gt;
-      &lt;Contract UniqueName="1001014-ЭН" Since="2002-05-30T09:00:00" Till="2008-05-30T09:00:00"&gt;
-        &lt;ContractType&gt;КП&lt;/ContractType&gt;
-        &lt;ConsumerObject UniqueName="ММ &amp;quot;Влад&amp;quot; г. Пенза пр-т. Строителей, 24а"&gt;
-          &lt;Point UniqueName="ТП-530"&gt;
-            &lt;VoltageLevel&gt;СН-2&lt;/VoltageLevel&gt;  
-          &lt;/Point&gt;
-          &lt;Point UniqueName="ТП-531"&gt;
-            &lt;VoltageLevel&gt;СН-2&lt;/VoltageLevel&gt;
-          &lt;/Point&gt;
-        &lt;/ConsumerObject&gt;
-        &lt;ConsumerObject UniqueName="ММ &amp;quot;Арбеково&amp;quot; г. Пенза пр. Строителей, 63"&gt;
-          &lt;Point UniqueName="ТП-796"&gt;
-            &lt;VoltageLevel&gt;СН-2&lt;/VoltageLevel&gt;
-          &lt;/Point&gt;
-        &lt;/ConsumerObject&gt;
-      &lt;/Contract&gt;
-    &lt;/Consumer&gt;
-  &lt;/Region&gt;
-&lt;/DataImportExport&gt;</value>
   </data>
   <data name="disconnect" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\disconnect.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

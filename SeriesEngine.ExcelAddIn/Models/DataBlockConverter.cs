@@ -24,6 +24,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 Cell = source.Root.Attribute("Cell").Value,
             };
 
+            var model = source.Root.Attribute("Model").Value;
             foreach (var f in source.Root.Descendants())
             {
                 DataBlock newFragment;
@@ -39,7 +40,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 {
                     var objectModel = ModelsDescription
                         .All
-                        .Single(m => m.Name == "msk1")
+                        .Single(m => m.Name == model)
                         .ObjectModels
                         .Single(om => om.Name == objectType);
 
