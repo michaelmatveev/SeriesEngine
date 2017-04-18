@@ -13,8 +13,6 @@ namespace SeriesEngine.msk1
     [Table("msk1.Point_TUCodes")]
     public partial class Point_TUCode : PeriodVariable
     {
-        public virtual User User { get; set; }
-
         [Required]
         [StringLength(200)]
         public string TUCode { get; set; }

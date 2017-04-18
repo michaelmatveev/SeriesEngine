@@ -21,12 +21,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SeriesEngine.<#= Schema #>
 {
-    [Table("msk1.<#= name #>")]
+    [Table("<#= Schema #>.<#= name #>s")]
 	public partial class <#= name #> : NamedObject
 	{
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public <#= name #>()
         {
+			ObjectModel = <#= Schema #>Objects.<#= name #>;
 <#+
 		foreach(var varElement in vs.QueryVariablesThat().Versioned().Variables)
 		{
@@ -37,26 +38,6 @@ namespace SeriesEngine.<#= Schema #>
 		}
 #>
 		}
-
-		public int? AuthorId { get; set; }
-
-        [Required]
-        [StringLength(int.MaxValue)]
-        [MaxLength]
-        public string Name { get; set; }
-
-        [Column(TypeName = "timestamp")]
-        [MaxLength(8)]
-        [Timestamp]
-        public byte[] ConcurrencyStamp { get; set; }
-
-        public int? Tag { get; set; }
-
-        public virtual User User { get; set; }
-
-		public int SolutionId { get; set; }
-
-        public virtual Solution Solution { get; set; }
 
         public override string GetName()
         {

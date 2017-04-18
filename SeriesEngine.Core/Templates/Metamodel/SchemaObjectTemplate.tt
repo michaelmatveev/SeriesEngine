@@ -38,11 +38,11 @@ namespace SeriesEngine.<#= Schema #>
 		foreach(var s in Stereotypes)
 		{
 #>
-
         public static ObjectMetamodel <#= s #> = new ObjectMetamodel
         {
             Name = "<#= s #>",
-            Variables = <#= Schema #><#= s #>Variables.AllVariables
+            Variables = <#= Schema #><#= s #>Variables.AllVariables,
+			ObjectType = typeof(<#= s #>)
         };
 <#+
 		}

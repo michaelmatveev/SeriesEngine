@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
@@ -9,7 +10,27 @@ namespace SeriesEngine.Core.DataAccess
     public abstract class NamedObject : IStateObject
     {
         public int Id { get; set; }
-        
+
+        [Required]
+        [StringLength(int.MaxValue)]
+        [MaxLength]
+        public string Name { get; set; }
+
+        public int? AuthorId { get; set; }
+
+        [Column(TypeName = "timestamp")]
+        [MaxLength(8)]
+        [Timestamp]
+        public byte[] ConcurrencyStamp { get; set; }
+
+        public int? Tag { get; set; }
+
+        public virtual User User { get; set; }
+
+        public int SolutionId { get; set; }
+
+        public virtual Solution Solution { get; set; }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime ObjectCreationTime { get; set; }
 

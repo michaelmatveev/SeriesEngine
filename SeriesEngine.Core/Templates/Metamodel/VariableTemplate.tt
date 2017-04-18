@@ -57,10 +57,20 @@ namespace SeriesEngine.<#= Schema #>
 		foreach(var v in Variables)
 		{
 			var name = v.Attribute("Name").Value;
+			bool isPeriodic = v.Attribute("Period") != null;
+
+			bool isVersioned;
+			if(!Boolean.TryParse(v.Attribute("Versioned")?.Value, out isVersioned)) 
+			{
+				isVersioned = false;
+			}
+
 #>
 		public static Variable <#= name #> = new Variable
         {
 			Name = "<#= name #>",
+			IsPeriodic = <#= isPeriodic.ToString().ToLower() #>,
+			IsVersioned = <#= isVersioned.ToString().ToLower() #>
 		};
 <#+
 		}

@@ -21,6 +21,8 @@ namespace SeriesEngine.msk1
 		public static Variable Name = new Variable
         {
 			Name = "Name",
+			IsPeriodic = false,
+			IsVersioned = false
 		};
 	}
 }

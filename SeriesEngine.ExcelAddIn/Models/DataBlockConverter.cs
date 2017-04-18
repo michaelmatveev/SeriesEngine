@@ -1,6 +1,6 @@
-﻿using SeriesEngine.Core.DataAccess;
+﻿using SeriesEngine.Core;
+using SeriesEngine.Core.DataAccess;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
-//using SeriesEngine.msk1;
 using System;
 using System.Linq;
 using System.Xml.Linq;
@@ -37,7 +37,12 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
                 else
                 {
-                    var objectModel = MainHierarchyNode.GetObjectModelByName(objectType);
+                    var objectModel = ModelsDescription
+                        .All
+                        .Single(m => m.Name == "msk1")
+                        .ObjectModels
+                        .Single(om => om.Name == objectType);
+
                     var variableType = f.Attribute("Variable").Value;
                     newFragment = new VariableDataBlock(result)
                     {

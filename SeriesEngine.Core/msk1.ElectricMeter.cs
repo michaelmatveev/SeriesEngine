@@ -10,33 +10,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SeriesEngine.msk1
 {
-    [Table("msk1.ElectricMeter")]
+    [Table("msk1.ElectricMeters")]
 	public partial class ElectricMeter : NamedObject
 	{
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ElectricMeter()
         {
+			ObjectModel = msk1Objects.ElectricMeter;
 		}
-
-		public int? AuthorId { get; set; }
-
-        [Required]
-        [StringLength(int.MaxValue)]
-        [MaxLength]
-        public string Name { get; set; }
-
-        [Column(TypeName = "timestamp")]
-        [MaxLength(8)]
-        [Timestamp]
-        public byte[] ConcurrencyStamp { get; set; }
-
-        public int? Tag { get; set; }
-
-        public virtual User User { get; set; }
-
-		public int SolutionId { get; set; }
-
-        public virtual Solution Solution { get; set; }
 
         public override string GetName()
         {

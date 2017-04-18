@@ -23,7 +23,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SeriesEngine.<#= Shema #>
 {
-    //[Table("msk1.MainHierarchyNodes")]
+    [Table("<#= Shema #>.<#= name #>Nodes")]
     public partial class <#= name #>Node : NetworkTreeNode
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -90,7 +90,6 @@ namespace SeriesEngine.<#= Shema #>
 #>
                 if (<#= objName #> != null)
                 {
-                    //<#= objName #>.ObjectModel = <#= objName #>Model;
                     return <#= objName #>;
                 }
 <#+

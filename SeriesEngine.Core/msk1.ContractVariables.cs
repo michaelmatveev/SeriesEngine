@@ -22,10 +22,14 @@ namespace SeriesEngine.msk1
 		public static Variable Name = new Variable
         {
 			Name = "Name",
+			IsPeriodic = false,
+			IsVersioned = false
 		};
 		public static Variable ContractType = new Variable
         {
 			Name = "ContractType",
+			IsPeriodic = false,
+			IsVersioned = false
 		};
 	}
 }

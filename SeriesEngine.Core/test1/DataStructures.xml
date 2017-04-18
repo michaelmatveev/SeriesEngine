@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Hierarchies>
-  <Hierarchy Name="MainHierarchy" WithHistory="True">
+  <Hierarchy Name="MainHierarchy2" WithHistory="True">
     <Level>
       <UsedStereotype Name="ObjectA"/>
       <Level>

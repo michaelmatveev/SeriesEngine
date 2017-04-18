@@ -10,33 +10,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SeriesEngine.msk1
 {
-    [Table("msk1.Contract")]
+    [Table("msk1.Contracts")]
 	public partial class Contract : NamedObject
 	{
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Contract()
         {
+			ObjectModel = msk1Objects.Contract;
 		}
-
-		public int? AuthorId { get; set; }
-
-        [Required]
-        [StringLength(int.MaxValue)]
-        [MaxLength]
-        public string Name { get; set; }
-
-        [Column(TypeName = "timestamp")]
-        [MaxLength(8)]
-        [Timestamp]
-        public byte[] ConcurrencyStamp { get; set; }
-
-        public int? Tag { get; set; }
-
-        public virtual User User { get; set; }
-
-		public int SolutionId { get; set; }
-
-        public virtual Solution Solution { get; set; }
 
         public override string GetName()
         {

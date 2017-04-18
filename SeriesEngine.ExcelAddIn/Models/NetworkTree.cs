@@ -1,4 +1,5 @@
-﻿using SeriesEngine.Core.DataAccess;
+﻿using SeriesEngine.Core;
+using SeriesEngine.Core.DataAccess;
 using SeriesEngine.ExcelAddIn.Helpers;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using SeriesEngine.msk1;
@@ -204,51 +205,19 @@ namespace SeriesEngine.ExcelAddIn.Models
         private NamedObject CreateObject(XElement element)
         {
             var objName = element.Attribute("UniqueName").Value;
-            switch (element.Name.LocalName)
-            {
-                case "Region":
-                    return new Region
-                    {                        
-                        ObjectModel = MainHierarchyNode.RegionModel,
-                        Solution = _network.Solution,
-                        Name = objName,
-                        State = ObjectState.Added
-                    };
-                case "Consumer":
-                    return new Consumer
-                    {
-                        ObjectModel = MainHierarchyNode.ConsumerModel,
-                        Solution = _network.Solution,
-                        Name = objName,
-                        State = ObjectState.Added
-                    };
-                case "Contract":
-                    return new Contract
-                    {
-                        ObjectModel = MainHierarchyNode.ContractModel,
-                        Solution = _network.Solution,
-                        Name = objName,
-                        State = ObjectState.Added
-                    };
-                case "ConsumerObject":
-                    return new ConsumerObject
-                    {
-                        ObjectModel = MainHierarchyNode.ConsumerObjectModel,
-                        Solution = _network.Solution,
-                        Name = objName,
-                        State = ObjectState.Added
-                    };
-                case "Point":
-                    return new Point
-                    {
-                        ObjectModel = MainHierarchyNode.PointModel,
-                        Solution = _network.Solution,
-                        Name = objName,
-                        State = ObjectState.Added
-                    };
+            var objectModel = ModelsDescription
+                .All
+                .Single(m => m.Name == _network.Solution.ModelName)
+                .ObjectModels
+                .Single(om => om.Name == element.Name.LocalName);
 
-                default: throw new NotSupportedException();
-            }
+            var objectInstance = (NamedObject)Activator.CreateInstance(objectModel.ObjectType);
+            objectInstance.ObjectModel = objectModel;
+            objectInstance.Solution = _network.Solution;
+            objectInstance.Name = objName;
+            objectInstance.State = ObjectState.Added;
+
+            return objectInstance;
         }
 
         public void Update(IEnumerable<IStateObject> valuesForPeriod)

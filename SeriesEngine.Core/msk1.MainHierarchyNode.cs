@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SeriesEngine.msk1
 {
-    //[Table("msk1.MainHierarchyNodes")]
+    [Table("msk1.MainHierarchyNodes")]
     public partial class MainHierarchyNode : NetworkTreeNode
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -83,32 +83,26 @@ namespace SeriesEngine.msk1
             {
                 if (Region != null)
                 {
-                    //Region.ObjectModel = RegionModel;
                     return Region;
                 }
                 if (Consumer != null)
                 {
-                    //Consumer.ObjectModel = ConsumerModel;
                     return Consumer;
                 }
                 if (Contract != null)
                 {
-                    //Contract.ObjectModel = ContractModel;
                     return Contract;
                 }
                 if (ConsumerObject != null)
                 {
-                    //ConsumerObject.ObjectModel = ConsumerObjectModel;
                     return ConsumerObject;
                 }
                 if (Point != null)
                 {
-                    //Point.ObjectModel = PointModel;
                     return Point;
                 }
                 if (ElectricMeter != null)
                 {
-                    //ElectricMeter.ObjectModel = ElectricMeterModel;
                     return ElectricMeter;
                 }
                 return null;

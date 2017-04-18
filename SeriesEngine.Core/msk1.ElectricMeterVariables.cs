@@ -22,10 +22,14 @@ namespace SeriesEngine.msk1
 		public static Variable Name = new Variable
         {
 			Name = "Name",
+			IsPeriodic = false,
+			IsVersioned = false
 		};
 		public static Variable PUType = new Variable
         {
 			Name = "PUType",
+			IsPeriodic = false,
+			IsVersioned = false
 		};
 	}
 }

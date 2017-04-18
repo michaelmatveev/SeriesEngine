@@ -13,8 +13,6 @@ namespace SeriesEngine.msk1
     [Table("msk1.Point_MaxPowers")]
     public partial class Point_MaxPower : PeriodVariable
     {
-        public virtual User User { get; set; }
-
         [Required]
         [StringLength(200)]
         public string MaxPower { get; set; }

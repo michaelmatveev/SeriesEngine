@@ -13,8 +13,6 @@ namespace SeriesEngine.msk1
     [Table("msk1.Point_PUPlaces")]
     public partial class Point_PUPlace : PeriodVariable
     {
-        public virtual User User { get; set; }
-
         [Required]
         [StringLength(200)]
         public string PUPlace { get; set; }

@@ -16,6 +16,7 @@ namespace SeriesEngine.Core
     public class ObjectMetamodel
     {
         public string Name { get; set; }
+        public Type ObjectType { get; set; }
         public IEnumerable<Variable> Variables { get; set; }
     }
 

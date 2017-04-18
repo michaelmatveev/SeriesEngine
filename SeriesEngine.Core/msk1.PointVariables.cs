@@ -25,22 +25,32 @@ namespace SeriesEngine.msk1
 		public static Variable Name = new Variable
         {
 			Name = "Name",
+			IsPeriodic = false,
+			IsVersioned = false
 		};
 		public static Variable VoltageLevel = new Variable
         {
 			Name = "VoltageLevel",
+			IsPeriodic = true,
+			IsVersioned = true
 		};
 		public static Variable MaxPower = new Variable
         {
 			Name = "MaxPower",
+			IsPeriodic = true,
+			IsVersioned = true
 		};
 		public static Variable TUCode = new Variable
         {
 			Name = "TUCode",
+			IsPeriodic = true,
+			IsVersioned = true
 		};
 		public static Variable PUPlace = new Variable
         {
 			Name = "PUPlace",
+			IsPeriodic = false,
+			IsVersioned = true
 		};
 	}
 }

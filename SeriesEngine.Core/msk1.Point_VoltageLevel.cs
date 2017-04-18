@@ -13,8 +13,6 @@ namespace SeriesEngine.msk1
     [Table("msk1.Point_VoltageLevels")]
     public partial class Point_VoltageLevel : PeriodVariable
     {
-        public virtual User User { get; set; }
-
         [Required]
         [StringLength(200)]
         public string VoltageLevel { get; set; }
