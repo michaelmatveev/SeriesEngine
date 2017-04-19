@@ -21,6 +21,7 @@ namespace SeriesEngine.msk1
         public virtual DbSet<User> Users { get; set; }
  
          public virtual DbSet<MainHierarchyNode> MainHierarchyNodes { get; set; }
+          public virtual DbSet<SupplierHierarchyNode> SupplierHierarchyNodes { get; set; }
          public virtual DbSet<Region> Regions { get; set; }
          public virtual DbSet<Consumer> Consumers { get; set; }
          public virtual DbSet<Contract> Contracts { get; set; }
@@ -31,6 +32,8 @@ namespace SeriesEngine.msk1
 		public virtual DbSet<Point_TUCode> Point_TUCodes { get; set; }
 		public virtual DbSet<Point_PUPlace> Point_PUPlaces { get; set; }
         public virtual DbSet<ElectricMeter> ElectricMeters { get; set; }
+         public virtual DbSet<Supplier> Suppliers { get; set; }
+         public virtual DbSet<SupplierContract> SupplierContracts { get; set; }
   
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -41,6 +44,7 @@ namespace SeriesEngine.msk1
 
 			 modelBuilder.Entity<Network>()
                  .Map<MainHierarchyNetwork>(m => m.Requires("NodeType").HasValue("msk1.MainHierarchyNode"))
+                 .Map<SupplierHierarchyNetwork>(m => m.Requires("NodeType").HasValue("msk1.SupplierHierarchyNode"))
 			;
 
 			// TODO probable this does not matter
@@ -85,6 +89,34 @@ namespace SeriesEngine.msk1
                 .HasOptional(e => e.ElectricMeter)
                 .WithMany()
                 .HasForeignKey(e => e.ElectricMeter_Id);
+
+			// TODO probable this does not matter
+            modelBuilder.Entity<SupplierHierarchyNode>()
+                .Map(m =>
+                {
+                    m.MapInheritedProperties();
+                    m.ToTable("msk1.SupplierHierarchyNodes");
+                });
+
+             modelBuilder.Entity<SupplierHierarchyNode>()
+                .HasMany(e => e.Children)
+                .WithOptional(e => e.Parent)
+                .HasForeignKey(e => e.ParentId);
+ 
+			modelBuilder.Entity<SupplierHierarchyNode>()
+                .HasOptional(e => e.Supplier)
+                .WithMany()
+                .HasForeignKey(e => e.Supplier_Id);
+
+			modelBuilder.Entity<SupplierHierarchyNode>()
+                .HasOptional(e => e.SupplierContract)
+                .WithMany()
+                .HasForeignKey(e => e.SupplierContract_Id);
+
+			modelBuilder.Entity<SupplierHierarchyNode>()
+                .HasOptional(e => e.Point)
+                .WithMany()
+                .HasForeignKey(e => e.Point_Id);
 
             modelBuilder.Entity<Region>()
                 .HasRequired(e => e.Solution)
@@ -197,6 +229,36 @@ namespace SeriesEngine.msk1
                 .HasForeignKey(e => e.AuthorId);
 
             modelBuilder.Entity<ElectricMeter>()
+                .Property(e => e.ConcurrencyStamp)
+                .IsFixedLength();
+ 
+            modelBuilder.Entity<Supplier>()
+                .HasRequired(e => e.Solution)
+                .WithMany()
+                .HasForeignKey(e => e.SolutionId)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Supplier>()
+                .HasOptional(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.AuthorId);
+
+            modelBuilder.Entity<Supplier>()
+                .Property(e => e.ConcurrencyStamp)
+                .IsFixedLength();
+ 
+            modelBuilder.Entity<SupplierContract>()
+                .HasRequired(e => e.Solution)
+                .WithMany()
+                .HasForeignKey(e => e.SolutionId)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<SupplierContract>()
+                .HasOptional(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.AuthorId);
+
+            modelBuilder.Entity<SupplierContract>()
                 .Property(e => e.ConcurrencyStamp)
                 .IsFixedLength();
  

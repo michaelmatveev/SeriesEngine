@@ -67,4 +67,18 @@
     </Variable>
   </Stereotype>
 
+  <Stereotype Name="Supplier">
+    <Variable Name="Name" DataType="StringMax">
+      <Family Rank="10">Основные свойства</Family>
+      <Help Context="Поставщик">Наименование поставщика</Help>
+    </Variable>
+  </Stereotype>
+
+  <Stereotype Name="SupplierContract">
+    <Variable Name="Name" DataType="StringMax">
+      <Family Rank="10">Основные свойства</Family>
+      <Help Context="Договор">Номер договора</Help>
+    </Variable>
+  </Stereotype>
+
 </Model>

@@ -128,6 +128,24 @@
     <Compile Include="msk1.RegionVariables.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
+    <Compile Include="msk1.Supplier.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.SupplierContract.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.SupplierContractVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.SupplierHierarchyNetwork.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.SupplierHierarchyNode.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.SupplierVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="ObjectMetamodel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reliability.cs" />
@@ -160,6 +178,12 @@
 .\msk1.PointVariables.cs
 .\msk1.Region.cs
 .\msk1.RegionVariables.cs
+.\msk1.Supplier.cs
+.\msk1.SupplierContract.cs
+.\msk1.SupplierContractVariables.cs
+.\msk1.SupplierHierarchyNetwork.cs
+.\msk1.SupplierHierarchyNode.cs
+.\msk1.SupplierVariables.cs
 </LastOutputs>
     </Content>
     <Content Include="BuildMetamodels.txt">
@@ -171,7 +195,9 @@
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Content>
     <Content Include="Metamodels\DataTypes\MsSqlServer.xml" />
-    <Content Include="Metamodels\msk1\Components.xml" />
+    <Content Include="Metamodels\msk1\Components.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Metamodels\msk1\DataStructures.xml" />
     <Content Include="Metamodels\test1\Components.xml" />
     <Content Include="Metamodels\test1\DataStructures.xml" />

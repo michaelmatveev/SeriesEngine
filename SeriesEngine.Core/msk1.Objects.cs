@@ -20,6 +20,8 @@ namespace SeriesEngine.msk1
                 yield return ConsumerObject;
                 yield return Point;
                 yield return ElectricMeter;
+                yield return Supplier;
+                yield return SupplierContract;
             }
         }
 
@@ -58,6 +60,18 @@ namespace SeriesEngine.msk1
             Name = "ElectricMeter",
             Variables = msk1ElectricMeterVariables.AllVariables,
 			ObjectType = typeof(ElectricMeter)
+        };
+        public static ObjectMetamodel Supplier = new ObjectMetamodel
+        {
+            Name = "Supplier",
+            Variables = msk1SupplierVariables.AllVariables,
+			ObjectType = typeof(Supplier)
+        };
+        public static ObjectMetamodel SupplierContract = new ObjectMetamodel
+        {
+            Name = "SupplierContract",
+            Variables = msk1SupplierContractVariables.AllVariables,
+			ObjectType = typeof(SupplierContract)
         };
     }
 

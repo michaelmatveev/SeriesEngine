@@ -108,9 +108,16 @@ namespace SeriesEngine.Tests.Database
 
                 var network = new MainHierarchyNetwork()
                 {
-                    Name = "Основная коллекция объектов",
+                    Name = "Регион - прибор учета",
                     Solution = solution
                 };
+
+                var network2 = new SupplierHierarchyNetwork()
+                {
+                    Name = "Поставщик - точка",
+                    Solution = solution
+                };
+
 
                 var node1 = new MainHierarchyNode()
                 {
@@ -178,6 +185,7 @@ namespace SeriesEngine.Tests.Database
                 network.Nodes.Add(node8);
 
                 context.Networks.Add(network);
+                context.Networks.Add(network2);
 
                 var solution1 = new Solution
                 {
@@ -190,10 +198,15 @@ namespace SeriesEngine.Tests.Database
                     Name = "Основная коллекция объектов",
                     Solution = solution1
                 };
+                var network3 = new SupplierHierarchyNetwork()
+                {
+                    Name = "Вторая коллекция объектов",
+                    Solution = solution1
+                };
+
                 context.Networks.Add(network1);
-
+                context.Networks.Add(network3);
                 context.SaveChanges();
-
             }
         }
     }

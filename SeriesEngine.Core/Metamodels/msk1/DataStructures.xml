@@ -20,4 +20,15 @@
       </Level>
     </Level>
   </Hierarchy>
+  <Hierarchy Name="SupplierHierarchy" WithHistory="True">
+    <Level>
+      <UsedStereotype Name="Supplier" />
+      <Level>
+        <UsedStereotype Name="SupplierContract" />
+        <Level>
+          <UsedStereotype Name="Point" />
+        </Level>
+      </Level>
+    </Level>  
+  </Hierarchy>  
 </Hierarchies>
