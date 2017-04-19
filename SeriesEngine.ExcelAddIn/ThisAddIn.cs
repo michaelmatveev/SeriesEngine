@@ -21,7 +21,12 @@ namespace SeriesEngine.ExcelAddIn
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            Application.WorkbookOpen += (wb) => CreateWorkbookController(wb);            
+            if(Application.Workbooks.Count == 1)
+            {
+                CreateWorkbookController(Application.Workbooks[1]);
+            }
+
+            Application.WorkbookOpen += (wb) => CreateWorkbookController(wb);   
             ((Excel.AppEvents_Event)Application).NewWorkbook += (wb) => CreateWorkbookController(wb);
 
             Application.WorkbookBeforeSave += (Excel.Workbook wb, bool save, ref bool cancel) =>

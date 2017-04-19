@@ -74,6 +74,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                         new XAttribute("NetworkRevision", coll.NetworkRevision),
                         new XAttribute("Name", coll.Name),
                         new XAttribute("Sheet", coll.Sheet),
+                        new XAttribute("Model", "msk1"),
                         new XAttribute("Cell", coll.Cell));
                 var doc = new XDocument(root);
 
