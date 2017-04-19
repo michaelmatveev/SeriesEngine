@@ -404,6 +404,7 @@
   <ItemGroup>
     <Content Include="Models\DataForObjectGrid1.xml" />
     <Content Include="Models\DataBlocks\ObjectGrid1.xml" />
+    <None Include="Resources\application_form_edit.png" />
     <None Include="Resources\delete.png" />
     <None Include="Resources\textfield_rename.png" />
     <None Include="Resources\table_gear.png" />

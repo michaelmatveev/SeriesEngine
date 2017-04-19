@@ -198,7 +198,9 @@
     <Content Include="Metamodels\msk1\Components.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Metamodels\msk1\DataStructures.xml" />
+    <Content Include="Metamodels\msk1\DataStructures.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Metamodels\test1\Components.xml" />
     <Content Include="Metamodels\test1\DataStructures.xml" />
     <Content Include="Templates\EntityFramework6\DbContextTemplate.tt" />

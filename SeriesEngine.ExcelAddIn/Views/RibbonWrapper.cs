@@ -6,7 +6,7 @@ namespace SeriesEngine.ExcelAddIn.Views
     {
         public event EventHandler<FilterArgs> FilterSelected;
         public event EventHandler InsertNewDataBlock;
-        public event EventHandler InsertSampleBlock;
+        public event EventHandler<SampleArgs> InsertSampleBlock;
         public event EventHandler<PaneArgs> ShowCustomPane;
         public event EventHandler RefreshAll;
         public event EventHandler SaveAll;

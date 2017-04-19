@@ -195,12 +195,12 @@ namespace SeriesEngine.Tests.Database
                 };
                 var network1 = new MainHierarchyNetwork()
                 {
-                    Name = "Основная коллекция объектов",
+                    Name = "Регион - прибор учета",
                     Solution = solution1
                 };
                 var network3 = new SupplierHierarchyNetwork()
                 {
-                    Name = "Вторая коллекция объектов",
+                    Name = "Поставщик - точка",
                     Solution = solution1
                 };
 

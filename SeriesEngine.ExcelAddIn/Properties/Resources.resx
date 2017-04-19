@@ -124,8 +124,13 @@
   <data name="gear_in1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\gear_in1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="table_export" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\table_export.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="TestGrid2" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;ObjectGrid xmlns="http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments" Version="1" Model="msk1" Name="Поставщик - Договор - Точка" Sheet="Лист1" Cell="C2" NetworkName="Поставщик - точка"&gt;
+  &lt;CFragment Caption="Поставщик" CollectionName="Main" Level="1" RefObject="Supplier" Type="UniqueName"/&gt;
+  &lt;CFragment Caption="Договор" CollectionName="Main" Level="2" RefObject="SupplierContract" Type="UniqueName"/&gt;
+  &lt;CFragment Caption="Точка" CollectionName="Main" Level="3" RefObject="Point" Type="UniqueName"/&gt;
+&lt;/ObjectGrid&gt;</value>
   </data>
   <data name="connect" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\connect.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -133,9 +138,27 @@
   <data name="table_gear" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\table_gear.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TestGrid" xml:space="preserve">
+  <data name="gear_in" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gear_in.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="disconnect" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\disconnect.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="table_export" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\table_export.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="textfield_rename" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\textfield_rename.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="table_import" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\table_import.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TestGrid1" xml:space="preserve">
     <value>&lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;ObjectGrid xmlns="http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments" Version="1" Model="msk1" Name="Таблица1" Sheet="Лист1" Cell="C2" NetworkName="Основная коллекция объектов"&gt;
+&lt;ObjectGrid xmlns="http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments" Version="1" Model="msk1" Name="Регион - Потребитель - Договор - Объект - Точка - Прибор учета" Sheet="Лист1" Cell="C2" NetworkName="Регион - прибор учета"&gt;
   &lt;CFragment Caption="Регион" CollectionName="Main" Level="1" RefObject="Region" Type="UniqueName"/&gt;
   &lt;CFragment Caption="Потребитель" CollectionName="Main" Level="2" RefObject="Consumer" Type="UniqueName"/&gt;
   &lt;CFragment Caption="Договор" CollectionName="Main" Level="3" RefObject="Contract" Type="UniqueName"/&gt;
@@ -147,19 +170,7 @@
   &lt;VFragment Caption="Уровень расчетного напряжения" Level="5" CollectionName="Main"  RefObject="Point" Variable="VoltageLevel" Kind="Fact"/&gt;
 &lt;/ObjectGrid&gt;</value>
   </data>
-  <data name="disconnect" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\disconnect.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="gear_in" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\gear_in.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="textfield_rename" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\textfield_rename.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="table_import" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\table_import.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="application_form_edit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\application_form_edit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -144,10 +144,13 @@ namespace SeriesEngine.ExcelAddIn.Models
             else if(nodeType == NodeType.UniqueName)
             {
                 var formula = _objectCache.GetObjectsOfType(solution, block.RefObject);
-                column.Range.Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertInformation, Excel.XlFormatConditionOperator.xlBetween, formula);
-                column.Range.Validation.ShowError = false;
-                column.Range.Validation.ShowInput = false;
-                column.Range.Validation.IgnoreBlank = true;
+                if (!string.IsNullOrEmpty(formula))
+                {
+                    column.Range.Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertInformation, Excel.XlFormatConditionOperator.xlBetween, formula);
+                    column.Range.Validation.ShowError = false;
+                    column.Range.Validation.ShowInput = false;
+                    column.Range.Validation.IgnoreBlank = true;
+                }
             }
             else
             {

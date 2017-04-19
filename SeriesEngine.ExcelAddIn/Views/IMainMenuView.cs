@@ -13,6 +13,11 @@ namespace SeriesEngine.ExcelAddIn.Views
         public Network SelectedNetwork { get; set; }
     }
 
+    public class SampleArgs: EventArgs
+    {
+        public string SampleName { get; set; }
+    } 
+
     public interface IMainMenuView : IView
     {
         event EventHandler<PaneArgs> ShowCustomPane;
@@ -20,7 +25,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         event EventHandler SaveAll;
         event EventHandler<FilterArgs> FilterSelected;
         event EventHandler InsertNewDataBlock;
-        event EventHandler InsertSampleBlock;
+        event EventHandler<SampleArgs> InsertSampleBlock;
         event EventHandler Connect;
         event EventHandler Disconnect;
         event EventHandler RenameObject;

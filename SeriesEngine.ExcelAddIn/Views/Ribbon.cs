@@ -11,7 +11,7 @@ namespace SeriesEngine.ExcelAddIn
         public event EventHandler SaveAll;
         public event EventHandler<FilterArgs> FilterSelected;
         public event EventHandler InsertNewDataBlock;
-        public event EventHandler InsertSampleBlock;
+        public event EventHandler<SampleArgs> InsertSampleBlock;
         public event EventHandler RenameObject;
         public event EventHandler DeleteObject;
         public event EventHandler EditVariable;
@@ -50,7 +50,7 @@ namespace SeriesEngine.ExcelAddIn
 
         private void buttonSample_Click(object sender, RibbonControlEventArgs e)
         {
-            InsertSampleBlock?.Invoke(this, EventArgs.Empty);
+            InsertSampleBlock?.Invoke(this, new SampleArgs { SampleName = (string)((RibbonButton)sender).Tag });
         }
 
         public void SetButtonToggleState(bool isChecked)

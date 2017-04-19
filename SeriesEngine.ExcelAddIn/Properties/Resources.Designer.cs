@@ -63,6 +63,16 @@ namespace SeriesEngine.ExcelAddIn.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap application_form_edit {
+            get {
+                object obj = ResourceManager.GetObject("application_form_edit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap connect {
             get {
                 object obj = ResourceManager.GetObject("connect", resourceCulture);
@@ -152,14 +162,27 @@ namespace SeriesEngine.ExcelAddIn.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
-        ///&lt;ObjectGrid xmlns=&quot;http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments&quot; Version=&quot;1&quot; Model=&quot;msk1&quot; Name=&quot;Таблица1&quot; Sheet=&quot;Лист1&quot; Cell=&quot;C2&quot; NetworkName=&quot;Основная коллекция объектов&quot;&gt;
+        ///&lt;ObjectGrid xmlns=&quot;http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments&quot; Version=&quot;1&quot; Model=&quot;msk1&quot; Name=&quot;Регион - Потребитель - Договор - Объект - Точка - Прибор учета&quot; Sheet=&quot;Лист1&quot; Cell=&quot;C2&quot; NetworkName=&quot;Регион - прибор учета&quot;&gt;
         ///  &lt;CFragment Caption=&quot;Регион&quot; CollectionName=&quot;Main&quot; Level=&quot;1&quot; RefObject=&quot;Region&quot; Type=&quot;UniqueName&quot;/&gt;
         ///  &lt;CFragment Caption=&quot;Потребитель&quot; CollectionName=&quot;Main&quot; Level=&quot;2&quot; RefObject=&quot;Consumer&quot; Type=&quot;UniqueName&quot;/&gt;
-        ///  &lt;CFragment Caption=&quot;Договор&quot; CollectionName=&quot;Main&quot; Level=&quot;3&quot; Re [rest of string was truncated]&quot;;.
+        ///  &lt;CFragment Capt [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string TestGrid {
+        internal static string TestGrid1 {
             get {
-                return ResourceManager.GetString("TestGrid", resourceCulture);
+                return ResourceManager.GetString("TestGrid1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        ///&lt;ObjectGrid xmlns=&quot;http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments&quot; Version=&quot;1&quot; Model=&quot;msk1&quot; Name=&quot;Поставщик - Договор - Точка&quot; Sheet=&quot;Лист1&quot; Cell=&quot;C2&quot; NetworkName=&quot;Поставщик - точка&quot;&gt;
+        ///  &lt;CFragment Caption=&quot;Поставщик&quot; CollectionName=&quot;Main&quot; Level=&quot;1&quot; RefObject=&quot;Supplier&quot; Type=&quot;UniqueName&quot;/&gt;
+        ///  &lt;CFragment Caption=&quot;Договор&quot; CollectionName=&quot;Main&quot; Level=&quot;2&quot; RefObject=&quot;SupplierContract&quot; Type=&quot;UniqueName&quot;/&gt;
+        ///  &lt;CFragment Caption=&quot;Точка&quot; CollectionName=&quot;Ma [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string TestGrid2 {
+            get {
+                return ResourceManager.GetString("TestGrid2", resourceCulture);
             }
         }
         

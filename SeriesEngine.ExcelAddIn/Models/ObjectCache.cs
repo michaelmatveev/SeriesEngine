@@ -50,9 +50,11 @@ namespace SeriesEngine.ExcelAddIn.Models
                 case "Consumer": return "B";
                 case "Contract": return "C";
                 case "ConsumerObject": return "D";
-                case "Point": return "E";                
+                case "Point": return "E";
+                case "Supplier": return "F";
+                case "SupplierContract": return "G";
             }
-            return "";
+            throw new NotImplementedException();
         } 
 
         private static string GetObjectNames(string query, Microsoft.Office.Interop.Excel.Worksheet sheet, string column)
@@ -68,6 +70,12 @@ namespace SeriesEngine.ExcelAddIn.Models
                 {
                     array[i++, 0] = name;
                 }
+
+                if(i == 0)
+                {
+                    return null;
+                }
+                         
                 sheet.get_Range($"{column}1:{column}{i}").Value2 = array;
                 return $"='{sheet.Name}'!${column}$1:${column}${i}";
             }
