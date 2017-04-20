@@ -100,17 +100,17 @@ namespace SeriesEngine.ExcelAddIn.Models
                     SetColumn(newColumn, xmlMap, f, solution);
                 }
 
-                var blocks = collectionDatablock
-                    .DataBlocks
-                    .OfType<VariableDataBlock>()
-                    .Where(b => b.VariableMetamodel.IsPeriodic)
-                    .ToList();
+                //var blocks = collectionDatablock
+                //    .DataBlocks
+                //    .OfType<VariableDataBlock>()
+                //    .Where(b => b.VariableMetamodel.IsPeriodic)
+                //    .ToList();
 
                 var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
 
                 listObject.ShowHeaders = collectionDatablock.ShowHeader;
                 var network = _networksProvider
-                    .GetNetwork(solution.Id, collectionDatablock.NetworkName, blocks, period);
+                    .GetNetwork(solution.Id, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, period);
 
                 using (network.GetImportLock(collectionDatablock))
                 {

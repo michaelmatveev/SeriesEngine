@@ -265,8 +265,13 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             using (var context = new Model1())
             {
-                var node = context.MainHierarchyNodes.Find(nodeId);
+                //var node = context.MainHierarchyNodes.Find(nodeId);
+                //node.LinkedObject.SetName(newName);
+
+                var node = _network.MyNodes.FirstOrDefault(n => n.Id == nodeId);
+                context.Entry(node).State = System.Data.Entity.EntityState.Unchanged;
                 node.LinkedObject.SetName(newName);
+
                 context.SaveChanges();
             }
         }

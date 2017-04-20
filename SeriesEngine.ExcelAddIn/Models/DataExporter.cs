@@ -41,10 +41,10 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public override void ExportDataBlock(Solution solution, CollectionDataBlock collectionDatablock)
         {
-            var networkTree = _networksProvider
-                .GetNetworks(solution.Id)
-                .SingleOrDefault(n => n.Name == collectionDatablock.NetworkName);
             //var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
+            var networkTree = _networksProvider
+                .GetNetwork(solution.Id, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, null);
+
             Excel.Worksheet sheet = _workbook.Sheets[collectionDatablock.Sheet];
             var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == collectionDatablock.Name);
 

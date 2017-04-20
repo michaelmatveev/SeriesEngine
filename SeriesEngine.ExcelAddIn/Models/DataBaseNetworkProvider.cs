@@ -9,33 +9,36 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public class DataBaseNetworkProvider : INetworksProvider
     {
-        public ICollection<NetworkTree> GetNetworks(int solutionId)
-        {
-            using (var context = new Model1())
-            {
-                var nets = context
-                    .Networks
-                    .OfType<MainHierarchyNetwork>()
-                    .Include("Solution")
-                    .Include("Nodes")
-                    .Include("Nodes.Region")
-                    .Include("Nodes.Consumer")
-                    .Include("Nodes.Contract")
-                    .Include("Nodes.ConsumerObject")
-                    .Include("Nodes.Point")
-                    .Include("Nodes.ElectricMeter")
-                    .Where(n => n.SolutionId == solutionId)
-                    .ToList();
-                return nets
-                    .Select(n => new NetworkTree(n))
-                    .ToList();
-            }
-        }
+        //public ICollection<NetworkTree> GetNetworks(int solutionId)
+        //{
+        //    using (var context = new Model1())
+        //    {
+        //        var nets = context
+        //            .Networks
+        //            .OfType<MainHierarchyNetwork>()
+        //            .Include("Solution")
+        //            .Include("Nodes")
+        //            .Include("Nodes.Region")
+        //            .Include("Nodes.Consumer")
+        //            .Include("Nodes.Contract")
+        //            .Include("Nodes.ConsumerObject")
+        //            .Include("Nodes.Point")
+        //            .Include("Nodes.ElectricMeter")
+        //            .Where(n => n.SolutionId == solutionId)
+        //            .ToList();
+        //        return nets
+        //            .Select(n => new NetworkTree(n))
+        //            .ToList();
+        //    }
+        //}
 
         public NetworkTree GetNetworkById(int networkId)
         {
             using (var context = new Model1())
             {
+                //var network = context.Networks.Find(networkId);
+                //return new NetworkTree(network);
+
                 var net = context
                     .Networks
                     .OfType<MainHierarchyNetwork>()
@@ -53,33 +56,38 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        public NetworkTree GetNetwork(int solutionId, string name, IEnumerable<VariableDataBlock> variables, Period period)
+        public NetworkTree GetNetwork(int solutionId, string name, IEnumerable<DataBlock> variables = null, Period period = null)
         {
             using (var context = new Model1())
             {
-                var query = context.Networks.OfType<MainHierarchyNetwork>().AsQueryable();
-                foreach (var v in variables)
+                var solution = context
+                    .Solutions
+                    .Include(s => s.Networks)
+                    .SingleOrDefault(s => s.Id == solutionId);
+
+                var network = solution.Networks.First(n => n.Name == name);
+                var query = context.Entry(network).Collection("Nodes").Query();
+
+                if (variables != null)
                 {
-                    var obj = v.RefObject;
-                    var vrb = v.VariableMetamodel.Name;
-                    query = query.Include($"Nodes.{obj}.{obj}_{vrb}s");
+                    foreach (var v in variables.OfType<VariableDataBlock>()
+                        .Where(b => b.VariableMetamodel.IsPeriodic))
+                    {
+                        var obj = v.RefObject;
+                        var vrb = v.VariableMetamodel.Name;
+                        query = query.Include($"{obj}.{obj}_{vrb}s");
+                    }
+
+                    foreach (var v in variables.OfType<NodeDataBlock>()
+                        .Where(n => n.NodeType == NodeType.UniqueName))
+                    {
+                        query = query.Include(v.RefObject);
+                    }
                 }
 
-                var net = query
-                    .Include("Solution")
-                    .Include("Nodes")
-                    .Include("Nodes.Region")
-                    .Include("Nodes.Consumer")
-                    .Include("Nodes.Contract")
-                    .Include("Nodes.ConsumerObject")
-                    .Include("Nodes.Point")
-                    .Include("Nodes.ElectricMeter")                    
-                    //.AsNoTracking()
-                    .Single(n => n.SolutionId == solutionId && n.Name == name);
-
-                return new NetworkTree(net);
+                query.Load();
+                return new NetworkTree(network);
             }
-
         }
 
     }

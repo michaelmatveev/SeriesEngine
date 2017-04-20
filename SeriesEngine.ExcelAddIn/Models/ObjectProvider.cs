@@ -48,9 +48,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .OfType<CollectionDataBlock>()
                     .SingleOrDefault(db => db.Name == listObject.Name);
 
-                var network = _networksProvider
-                    .GetNetworks(solution.Id)
-                    .SingleOrDefault(n => n.Name == collectionDatablock.NetworkName);
+                var network = _networksProvider.GetNetwork(solution.Id, collectionDatablock.NetworkName);
 
                 var xpath = GetXPathToNodeId(column.XPath.Value, selection.Value);
                 var id = ((IEnumerable<object>)collectionDatablock.Xml.Root.XPathEvaluate(xpath))
