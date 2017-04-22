@@ -34,9 +34,8 @@ namespace SeriesEngine.<#= Schema #>
 		foreach(var h in Hierarchies)
 		{
 			var name = h.Attribute("Name").Value;
-
  #>
-         public virtual DbSet<<#= name #>Node> <#= name #>Nodes { get; set; }
+        public virtual DbSet<<#= name #>Node> <#= name #>Nodes { get; set; }
  <#+
 		 }
  #>
@@ -111,6 +110,14 @@ namespace SeriesEngine.<#= Schema #>
 		{
 			var name = s.Attribute("Name").Value;
  #>
+
+			modelBuilder.Entity<<#= name #>>()
+                .MapToStoredProcedures(s =>
+					{
+						s.Update(u => u.HasName("<#= Schema#>.<#= name #>_Update"));  
+						s.Delete(d => d.HasName("<#= Schema#>.<#= name #>_Delete")); 
+						s.Insert(i => i.HasName("<#= Schema#>.<#= name #>_Insert"));
+					});
 
             modelBuilder.Entity<<#= name #>>()
                 .HasRequired(e => e.Solution)

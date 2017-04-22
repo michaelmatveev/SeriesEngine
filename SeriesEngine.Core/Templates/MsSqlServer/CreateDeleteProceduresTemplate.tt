@@ -6,7 +6,7 @@
 //  Copyright © Michael Matveev. All Rights Reserved.
 // </copyright>
 
-	public class CreateStoredProceduresTemplate : CSharpTemplate
+	public class CreateDeleteProceduresTemplate : CSharpTemplate
 	{
 		public String Schema;
 		public IEnumerable<XElement> LinkedHierarchies;

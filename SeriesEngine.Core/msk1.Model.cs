@@ -20,8 +20,8 @@ namespace SeriesEngine.msk1
         public virtual DbSet<Solution> Solutions { get; set; }
         public virtual DbSet<User> Users { get; set; }
  
-         public virtual DbSet<MainHierarchyNode> MainHierarchyNodes { get; set; }
-          public virtual DbSet<SupplierHierarchyNode> SupplierHierarchyNodes { get; set; }
+        public virtual DbSet<MainHierarchyNode> MainHierarchyNodes { get; set; }
+         public virtual DbSet<SupplierHierarchyNode> SupplierHierarchyNodes { get; set; }
          public virtual DbSet<Region> Regions { get; set; }
          public virtual DbSet<Consumer> Consumers { get; set; }
          public virtual DbSet<Contract> Contracts { get; set; }
@@ -118,6 +118,14 @@ namespace SeriesEngine.msk1
                 .WithMany()
                 .HasForeignKey(e => e.Point_Id);
 
+			modelBuilder.Entity<Region>()
+                .MapToStoredProcedures(s =>
+					{
+						s.Update(u => u.HasName("msk1.Region_Update"));  
+						s.Delete(d => d.HasName("msk1.Region_Delete")); 
+						s.Insert(i => i.HasName("msk1.Region_Insert"));
+					});
+
             modelBuilder.Entity<Region>()
                 .HasRequired(e => e.Solution)
                 .WithMany()
@@ -133,6 +141,14 @@ namespace SeriesEngine.msk1
                 .Property(e => e.ConcurrencyStamp)
                 .IsFixedLength();
  
+			modelBuilder.Entity<Consumer>()
+                .MapToStoredProcedures(s =>
+					{
+						s.Update(u => u.HasName("msk1.Consumer_Update"));  
+						s.Delete(d => d.HasName("msk1.Consumer_Delete")); 
+						s.Insert(i => i.HasName("msk1.Consumer_Insert"));
+					});
+
             modelBuilder.Entity<Consumer>()
                 .HasRequired(e => e.Solution)
                 .WithMany()
@@ -148,6 +164,14 @@ namespace SeriesEngine.msk1
                 .Property(e => e.ConcurrencyStamp)
                 .IsFixedLength();
  
+			modelBuilder.Entity<Contract>()
+                .MapToStoredProcedures(s =>
+					{
+						s.Update(u => u.HasName("msk1.Contract_Update"));  
+						s.Delete(d => d.HasName("msk1.Contract_Delete")); 
+						s.Insert(i => i.HasName("msk1.Contract_Insert"));
+					});
+
             modelBuilder.Entity<Contract>()
                 .HasRequired(e => e.Solution)
                 .WithMany()
@@ -163,6 +187,14 @@ namespace SeriesEngine.msk1
                 .Property(e => e.ConcurrencyStamp)
                 .IsFixedLength();
  
+			modelBuilder.Entity<ConsumerObject>()
+                .MapToStoredProcedures(s =>
+					{
+						s.Update(u => u.HasName("msk1.ConsumerObject_Update"));  
+						s.Delete(d => d.HasName("msk1.ConsumerObject_Delete")); 
+						s.Insert(i => i.HasName("msk1.ConsumerObject_Insert"));
+					});
+
             modelBuilder.Entity<ConsumerObject>()
                 .HasRequired(e => e.Solution)
                 .WithMany()
@@ -178,6 +210,14 @@ namespace SeriesEngine.msk1
                 .Property(e => e.ConcurrencyStamp)
                 .IsFixedLength();
  
+			modelBuilder.Entity<Point>()
+                .MapToStoredProcedures(s =>
+					{
+						s.Update(u => u.HasName("msk1.Point_Update"));  
+						s.Delete(d => d.HasName("msk1.Point_Delete")); 
+						s.Insert(i => i.HasName("msk1.Point_Insert"));
+					});
+
             modelBuilder.Entity<Point>()
                 .HasRequired(e => e.Solution)
                 .WithMany()
@@ -217,6 +257,14 @@ namespace SeriesEngine.msk1
                 .HasForeignKey(e => e.ObjectId)
                 .WillCascadeOnDelete(false);
 
+			modelBuilder.Entity<ElectricMeter>()
+                .MapToStoredProcedures(s =>
+					{
+						s.Update(u => u.HasName("msk1.ElectricMeter_Update"));  
+						s.Delete(d => d.HasName("msk1.ElectricMeter_Delete")); 
+						s.Insert(i => i.HasName("msk1.ElectricMeter_Insert"));
+					});
+
             modelBuilder.Entity<ElectricMeter>()
                 .HasRequired(e => e.Solution)
                 .WithMany()
@@ -232,6 +280,14 @@ namespace SeriesEngine.msk1
                 .Property(e => e.ConcurrencyStamp)
                 .IsFixedLength();
  
+			modelBuilder.Entity<Supplier>()
+                .MapToStoredProcedures(s =>
+					{
+						s.Update(u => u.HasName("msk1.Supplier_Update"));  
+						s.Delete(d => d.HasName("msk1.Supplier_Delete")); 
+						s.Insert(i => i.HasName("msk1.Supplier_Insert"));
+					});
+
             modelBuilder.Entity<Supplier>()
                 .HasRequired(e => e.Solution)
                 .WithMany()
@@ -247,6 +303,14 @@ namespace SeriesEngine.msk1
                 .Property(e => e.ConcurrencyStamp)
                 .IsFixedLength();
  
+			modelBuilder.Entity<SupplierContract>()
+                .MapToStoredProcedures(s =>
+					{
+						s.Update(u => u.HasName("msk1.SupplierContract_Update"));  
+						s.Delete(d => d.HasName("msk1.SupplierContract_Delete")); 
+						s.Insert(i => i.HasName("msk1.SupplierContract_Insert"));
+					});
+
             modelBuilder.Entity<SupplierContract>()
                 .HasRequired(e => e.Solution)
                 .WithMany()

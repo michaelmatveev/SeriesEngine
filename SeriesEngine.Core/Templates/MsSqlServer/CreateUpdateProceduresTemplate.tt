@@ -1,0 +1,58 @@
+﻿<#+
+// <copyright file="CreateUpdateProceduresTemplate.tt" company="">
+//  Copyright © Michael Matveev. All Rights Reserved.
+// </copyright>
+
+public class CreateUpdateProceduresTemplate : CSharpTemplate
+{
+	public String Schema;
+	public Dictionary<String, XElement> DataTypes;
+	public XElement Stereotype;
+
+	private void AddVariableParam(XElement variable)
+	{
+		var varName = variable.Attribute("Name").Value;
+        var typeName= variable.Attribute("DataType").Value;
+		var dataType = DataTypes[typeName];
+		var storeType = dataType.Attribute("StoreType").Value;
+#>
+	@<#= varName #> <#= storeType #>,
+<#+
+	}
+
+	public override string TransformText()
+	{
+		var objectName = Stereotype.Attribute("Name").Value;
+#>
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('[<#= Schema #>].[<#= objectName #>_Update]') AND type = 'P')
+	DROP PROCEDURE [<#= Schema #>].[<#= objectName #>_Update];
+GO
+
+CREATE PROCEDURE [<#= Schema #>].[<#= objectName #>_Update]
+	@Id int,
+	@SolutionId int,
+	@AuthorId int,
+	@Tag int,
+<#+ VariableSelector vs = new VariableSelector(this.Stereotype);
+	var tableAttrs = vs.QueryVariablesThat().NotPeriodic().NotVersioned().KindLess().Variables;	
+	foreach(var v in tableAttrs)
+	{
+		AddVariableParam(v);
+	}
+	var fields = tableAttrs.Select(v => v.Attribute("Name").Value);
+	var fieldsExceptName = string.Join(", ", fields.Select(v => "[" + v + "] = @" + v));
+#>
+	@ConcurrencyStamp_Original rowversion
+AS
+BEGIN
+	UPDATE [<#= Schema #>].[<#= objectName #>s] 
+	SET [SolutionId] = @SolutionId, [AuthorId] = @AuthorId, [Tag] = @Tag, <#= fieldsExceptName #>     
+	WHERE [Id] = @Id AND [ConcurrencyStamp] = @ConcurrencyStamp_Original;
+END
+GO
+
+<#+
+        return this.GenerationEnvironment.ToString();
+	}
+}
+#>

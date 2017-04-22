@@ -1,7 +1,9 @@
 ﻿<#@ include file="CreateSchemaTemplate.tt" #>
 <#@ include file="CreateTableTemplate.tt" #>
 <#@ include file="CreateHierarchyTemplate.tt" #>
-<#@ include file="CreateStoredProceduresTemplate.tt" #>
+<#@ include file="CreateInsertProceduresTemplate.tt" #>
+<#@ include file="CreateUpdateProceduresTemplate.tt" #>
+<#@ include file="CreateDeleteProceduresTemplate.tt" #>
 
 <#+
 // <copyright file="CreateDataBaseGenerator.tt" company="">
@@ -17,17 +19,17 @@ public class CreateDataBaseGenerator : Generator
 
 	protected override void RunCore()
 	{		
-		Dictionary<String, XElement> dataTypes = DataTypesDoc.Root.Elements().ToDictionary(x => x.Attribute("Name").Value, x => x);
+		var dataTypes = DataTypesDoc.Root.Elements().ToDictionary(x => x.Attribute("Name").Value, x => x);
 
-		String prefix = ComponentsDoc.Root.Attribute("Prefix").Value;
+		var prefix = ComponentsDoc.Root.Attribute("Prefix").Value;
     
-		CreateSchemaTemplate createSchemaTemplate = new CreateSchemaTemplate 
+		var createSchemaTemplate = new CreateSchemaTemplate 
 		{
 			Schema = prefix
 		};
 		createSchemaTemplate.RenderToFile(Output);
 
-		CreateTableTemplate createTableTempalte = new CreateTableTemplate 
+		var createTableTempalte = new CreateTableTemplate 
 		{
 			Schema = prefix,
 			DataTypes = dataTypes
@@ -39,7 +41,7 @@ public class CreateDataBaseGenerator : Generator
 			createTableTempalte.RenderToFile(Output);
 		}
 
-		CreateHeirarchyTemplate createHierarchyTempalte = new CreateHeirarchyTemplate()
+		var createHierarchyTempalte = new CreateHeirarchyTemplate()
 		{
 			Schema = prefix
 		};
@@ -50,19 +52,37 @@ public class CreateDataBaseGenerator : Generator
 			createHierarchyTempalte.RenderToFile(Output);
 		}
 
-		CreateStoredProceduresTemplate createStoredProceduresTemplate = new CreateStoredProceduresTemplate
+		var createDeleteProceduresTemplate = new CreateDeleteProceduresTemplate
 		{
 			Schema = prefix
+		};
+
+		var createInsertProceduresTemplate = new CreateInsertProceduresTemplate
+		{
+			Schema = prefix,
+			DataTypes = dataTypes
+		};
+
+		var createUpdateProceduresTemplate = new CreateUpdateProceduresTemplate
+		{
+			Schema = prefix,
+			DataTypes = dataTypes
 		};
 		
 		foreach(XElement stereotypeElement in ComponentsDoc.Descendants("Stereotype")) 
 		{
 			var name = stereotypeElement.Attribute("Name").Value;
-			createStoredProceduresTemplate.Stereotype = stereotypeElement;
-			createStoredProceduresTemplate.LinkedHierarchies = HierarchiesDoc
+			createDeleteProceduresTemplate.Stereotype = stereotypeElement;
+			createDeleteProceduresTemplate.LinkedHierarchies = HierarchiesDoc
 				.Descendants("Hierarchy")
 				.Where(d => d.Descendants("UsedStereotype").Any(e => e.Attribute("Name").Value == name));
-			createStoredProceduresTemplate.RenderToFile(Output);
+			createDeleteProceduresTemplate.RenderToFile(Output);
+
+			createInsertProceduresTemplate.Stereotype = stereotypeElement;
+			createInsertProceduresTemplate.RenderToFile(Output);
+
+			createUpdateProceduresTemplate.Stereotype = stereotypeElement;
+			createUpdateProceduresTemplate.RenderToFile(Output);
 		}
  
 	}

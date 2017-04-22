@@ -1,0 +1,80 @@
+﻿<#@ import namespace="System" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#+
+// <copyright file="CreateInsertProceduresTemplate.tt" company="">
+//  Copyright © Michael Matveev. All Rights Reserved.
+// </copyright>
+
+public class CreateInsertProceduresTemplate : CSharpTemplate
+{
+	public String Schema;
+	public Dictionary<String, XElement> DataTypes;
+	public XElement Stereotype;
+
+	private void AddVariableParam(XElement variable)
+	{
+		var varName = variable.Attribute("Name").Value;
+        var typeName= variable.Attribute("DataType").Value;
+		var dataType = DataTypes[typeName];
+		var storeType = dataType.Attribute("StoreType").Value;
+#>
+	@<#= varName #> <#= storeType #>,
+<#+
+	}
+
+	public override string TransformText()
+	{
+		var objectName = Stereotype.Attribute("Name").Value;
+#>
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('[<#= Schema #>].[<#= objectName #>_Insert]') AND type = 'P')
+	DROP PROCEDURE [<#= Schema #>].[<#= objectName #>_Insert];
+GO
+
+CREATE PROCEDURE [<#= Schema #>].[<#= objectName #>_Insert]
+	@SolutionId int,
+	@AuthorId int,
+	@Tag int,
+<#+ VariableSelector vs = new VariableSelector(this.Stereotype);
+	var tableAttrs = vs.QueryVariablesThat().NotPeriodic().NotVersioned().KindLess().Variables;	
+	foreach(var v in tableAttrs)
+	{
+		AddVariableParam(v);
+	}
+#>
+	@ConcurrencyStamp_Original rowversion
+AS
+BEGIN
+	SET NOCOUNT ON;
+	MERGE [<#= Schema #>].[<#= objectName #>s] AS T
+	USING (SELECT @SolutionId As SolutionId, @Name As Name) AS S--, @ConcurrencyStamp_Original  As ConcurrencyStamp) AS S
+	ON T.[SolutionId] = S.[SolutionId]
+	AND T.[Name] = S.[Name]
+	--AND T.[ConcurrencyStamp] = S.[ConcurrencyStamp]
+<#+
+		var allAttrs = tableAttrs.Select(v => v.Attribute("Name").Value);
+		var allAttrsExceptName = allAttrs.Where(a => a != "Name");
+		if(allAttrsExceptName.Any()) 
+		{
+			var fieldsExceptName = string.Join(", ", allAttrsExceptName.Select(v => "T.[" + v + "] = @" + v));
+#>
+	WHEN MATCHED THEN
+		UPDATE SET <#= fieldsExceptName #>
+<#+
+		}
+		var fieldsList = string.Join(", ", allAttrs.ToArray());
+		var allParams = tableAttrs.Select(v => "@" + v.Attribute("Name").Value);
+		var paramsList = string.Join(", ", allParams.ToArray());
+#>
+	WHEN NOT MATCHED THEN
+		INSERT (SolutionId, AuthorId, Tag, <#= fieldsList #>)
+		VALUES (@SolutionId, @AuthorId, @Tag, <#= paramsList #>)
+	OUTPUT INSERTED.*;
+END
+GO
+
+<#+
+        return this.GenerationEnvironment.ToString();
+	}
+}
+#>
