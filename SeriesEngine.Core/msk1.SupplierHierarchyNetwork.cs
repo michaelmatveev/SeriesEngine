@@ -11,7 +11,7 @@ namespace SeriesEngine.msk1
 {
     public class SupplierHierarchyNetwork : Network
     {
-        public SupplierHierarchyNetwork()
+        public SupplierHierarchyNetwork() : base(msk1Hierarchies.SupplierHierarchy)
         {
             Nodes = new HashSet<SupplierHierarchyNode>();
         }

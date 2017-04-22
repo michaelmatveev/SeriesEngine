@@ -20,10 +20,18 @@ namespace SeriesEngine.Core
         public IEnumerable<Variable> Variables { get; set; }
     }
 
+    public class HierarchyMemamodel
+    {
+        public string Name { get; set; }
+        public IEnumerable<ObjectMetamodel> ReferencedObjects { get; set; }
+        public Type NodeType { get; set; }
+    }
+
     public class MetaModel
     {
         public string Name { get; set; }
-        public IEnumerable<ObjectMetamodel> ObjectModels;
+        public IEnumerable<ObjectMetamodel> ObjectModels { get; set; }
+        public IEnumerable<HierarchyMemamodel> HierarchyModels { get; set; }
     }
 
 }

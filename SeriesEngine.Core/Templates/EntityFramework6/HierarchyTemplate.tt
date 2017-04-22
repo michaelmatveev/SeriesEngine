@@ -5,7 +5,7 @@
 
 public class HierarchyTemplate : CSharpTemplate
 {
-	public string Shema;
+	public string Schema;
 	public XElement Hierarchy;
 
 	public override string TransformText()
@@ -17,11 +17,11 @@ using System.Collections.Generic;
 using SeriesEngine.Core.Helpers;
 using SeriesEngine.Core.DataAccess;
 
-namespace SeriesEngine.<#= Shema #>
+namespace SeriesEngine.<#= Schema #>
 {
     public class <#= name #>Network : Network
     {
-        public <#= name #>Network()
+        public <#= name #>Network() : base(<#= Schema #>Hierarchies.<#= name #>)
         {
             Nodes = new HashSet<<#= name #>Node>();
         }

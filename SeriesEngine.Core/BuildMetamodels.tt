@@ -11,6 +11,7 @@
 <#@ include file="Templates\MsSqlServer\CreateDatabaseGenerator.tt" #>
 <#@ include file="Templates\EntityFramework6\EntitiesGenerator.tt" #>
 <#@ include file="Templates\Metamodel\ConstantsGenerator.tt" #>
+<#@ include file="Templates\Metamodel\ModelGenerator.tt" #>
 This scripts creates an SQL script to create database schema from scratch 
 <#
 // <copyright file="BuildMetamodelScript.tt" company="">
@@ -20,8 +21,8 @@ This scripts creates an SQL script to create database schema from scratch
 	var metaModelsPath = this.Host.ResolvePath(@"Metamodels");
 	var dataTypesPath = this.Host.ResolvePath(@"Metamodels\DataTypes\MsSqlServer.xml");
 	var dataTypes = XDocument.Load(dataTypesPath);
-	var compDocuments = new List<XDocument>();
-
+	var prefixes = new List<string>();
+	
 	foreach(var modelPath in Directory
 		.GetDirectories(metaModelsPath)
 		.Where(d => !d.EndsWith("DataTypes")))
@@ -30,7 +31,7 @@ This scripts creates an SQL script to create database schema from scratch
 		var outputFile = String.Format("CreateDatabaseSchema.{0}.sql", model);
 		var components = XDocument.Load(modelPath + @"\Components.xml");
 		var hierarchies = XDocument.Load(modelPath + @"\DataStructures.xml");
-		compDocuments.Add(components);
+		prefixes.Add(model);
 
 		var dbGenerator = new CreateDataBaseGenerator
 		{
@@ -48,14 +49,22 @@ This scripts creates an SQL script to create database schema from scratch
 			HierarchiesDoc = hierarchies
 		};
 		efGenerator.Run();
+
+		var cnsGenerator = new ConstantsGenerator 
+		{
+			ComponentsDoc = components,
+			HierarchiesDoc = hierarchies
+		};
+		cnsGenerator.Run();
 #>
 The '<#= model #>' model has been created successfully.
 <#
 	}
 
-	var cnsGenerator = new ConstantsGenerator 
+
+	var modelGenerator = new ModelGenerator 
 	{
-		ComponentsDocs = compDocuments
+		Prefixes = prefixes
 	};
-	cnsGenerator.Run();
+	modelGenerator.Run();
 #>

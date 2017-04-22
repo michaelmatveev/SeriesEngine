@@ -14,9 +14,8 @@ namespace SeriesEngine.msk1
 	public partial class ElectricMeter : NamedObject
 	{
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ElectricMeter()
+        public ElectricMeter() : base(msk1Objects.ElectricMeter)
         {
-			ObjectModel = msk1Objects.ElectricMeter;
 		}
 
         public override string GetName()

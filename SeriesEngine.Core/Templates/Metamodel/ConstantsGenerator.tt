@@ -1,6 +1,7 @@
 ﻿<#@ include file="VariableTemplate.tt" #>
 <#@ include file="SchemaObjectTemplate.tt" #>
-<#@ include file="ModelsTemplate.tt" #>
+<#@ include file="HierarchyModelTemplate.tt" #>
+
 <#+
 // <copyright file="ConstantsGenerator.tt" company="">
 //  Copyright © . All Rights Reserved.
@@ -8,43 +9,40 @@
 
 public class ConstantsGenerator : Generator
 {
-	public IEnumerable<XDocument> ComponentsDocs;
+	public XDocument ComponentsDoc;
+	public XDocument HierarchiesDoc;
 
 	protected override void RunCore()
 	{
 		var variableTemplate = new VariableTemplate();
 		var schemaObjectTemplate = new SchemaObjectTemplate();
 
-		var prefixes = new List<string>();
-		foreach(var cDoc in ComponentsDocs)
+		var stereotypes = ComponentsDoc.Descendants("Stereotype");
+		var prefix = ComponentsDoc.Root.Attribute("Prefix").Value;
+
+		schemaObjectTemplate.Schema = prefix;
+		schemaObjectTemplate.Stereotypes = stereotypes.Select(s => s.Attribute("Name").Value);
+		var objModelOutput = String.Format("{0}.Objects.cs", prefix);
+		schemaObjectTemplate.RenderToFile(objModelOutput);
+
+		foreach(XElement stereotypeElement in stereotypes)
 		{
-			var stereotypes = cDoc.Descendants("Stereotype");
-			var prefix = cDoc.Root.Attribute("Prefix").Value;
-			prefixes.Add(prefix);
-
-			schemaObjectTemplate.Schema = prefix;
-			schemaObjectTemplate.Stereotypes = stereotypes.Select(s => s.Attribute("Name").Value);
-			var objModelOutput = String.Format("{0}.Objects.cs", prefix);
-			schemaObjectTemplate.RenderToFile(objModelOutput);
-
-
-			foreach(XElement stereotypeElement in stereotypes)
-			{
-				var objectName = stereotypeElement.Attribute("Name").Value;
-				var output = String.Format("{0}.{1}Variables.cs", prefix, objectName);
-				variableTemplate.Schema = prefix;
-				variableTemplate.Stereotype = objectName;
-				variableTemplate.Variables = stereotypeElement.Elements("Variable");
-				variableTemplate.RenderToFile(output);
-			}
+			var objectName = stereotypeElement.Attribute("Name").Value;
+			var output = String.Format("{0}.{1}Variables.cs", prefix, objectName);
+			variableTemplate.Schema = prefix;
+			variableTemplate.Stereotype = objectName;
+			variableTemplate.Variables = stereotypeElement.Elements("Variable");
+			variableTemplate.RenderToFile(output);
 		}
 
-		var modelsTemplate = new ModelsTemplate
+		var hierarchyTemplate = new HierarchyModelTemplate 
 		{
-			Models = prefixes
+			Schema = prefix,
+			Hierarchies = HierarchiesDoc.Descendants("Hierarchy")
 		};
-		modelsTemplate.RenderToFile("AllModels.cs");
 
+		var hModelOutput = String.Format("{0}Hierarchies.cs", prefix);
+		hierarchyTemplate.RenderToFile(hModelOutput);
 	}
 }
 #>

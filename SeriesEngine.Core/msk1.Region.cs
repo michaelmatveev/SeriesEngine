@@ -14,9 +14,8 @@ namespace SeriesEngine.msk1
 	public partial class Region : NamedObject
 	{
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Region()
+        public Region() : base(msk1Objects.Region)
         {
-			ObjectModel = msk1Objects.Region;
 		}
 
         public override string GetName()

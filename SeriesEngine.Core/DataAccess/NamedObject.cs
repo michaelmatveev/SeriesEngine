@@ -9,6 +9,14 @@ namespace SeriesEngine.Core.DataAccess
 {
     public abstract class NamedObject : IStateObject
     {
+        [NotMapped]
+        public ObjectMetamodel ObjectModel { get; private set; }
+
+        public NamedObject(ObjectMetamodel objectModel)
+        {
+            ObjectModel = objectModel;
+        }
+
         public int Id { get; set; }
 
         [Required]
@@ -39,9 +47,6 @@ namespace SeriesEngine.Core.DataAccess
 
         public abstract string GetName();
         public abstract void SetName(string newName);
-
-        [NotMapped]
-        public ObjectMetamodel ObjectModel { get; set; }
 
         [NotMapped]
         public ObjectState State { get; set; }

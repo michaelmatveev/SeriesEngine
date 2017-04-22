@@ -33,11 +33,11 @@ namespace SeriesEngine.<#= Schema #>
 #>
             }
         }
-
 <#+
 		foreach(var s in Stereotypes)
 		{
 #>
+
         public static ObjectMetamodel <#= s #> = new ObjectMetamodel
         {
             Name = "<#= s #>",

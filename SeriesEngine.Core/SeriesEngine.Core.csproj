@@ -146,6 +146,9 @@
     <Compile Include="msk1.SupplierVariables.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
+    <Compile Include="msk1Hierarchies.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="ObjectMetamodel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reliability.cs" />
@@ -184,6 +187,7 @@
 .\msk1.SupplierHierarchyNetwork.cs
 .\msk1.SupplierHierarchyNode.cs
 .\msk1.SupplierVariables.cs
+.\msk1Hierarchies.cs
 </LastOutputs>
     </Content>
     <Content Include="BuildMetamodels.txt">
@@ -201,8 +205,6 @@
     <Content Include="Metamodels\msk1\DataStructures.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Metamodels\test1\Components.xml" />
-    <Content Include="Metamodels\test1\DataStructures.xml" />
     <Content Include="Templates\EntityFramework6\DbContextTemplate.tt" />
     <Content Include="Templates\EntityFramework6\EntitiesGenerator.tt" />
     <Content Include="Templates\EntityFramework6\HierarchyNodeTemplate.tt" />
@@ -211,6 +213,8 @@
     <Content Include="Templates\EntityFramework6\ObjectVariableTemplate.tt" />
     <Content Include="Templates\Header.tt" />
     <Content Include="Templates\Metamodel\ConstantsGenerator.tt" />
+    <Content Include="Templates\Metamodel\HierarchyModelTemplate.tt" />
+    <Content Include="Templates\Metamodel\ModelGenerator.tt" />
     <Content Include="Templates\Metamodel\ModelsTemplate.tt" />
     <Content Include="Templates\Metamodel\SchemaObjectTemplate.tt" />
     <Content Include="Templates\Metamodel\VariableTemplate.tt" />

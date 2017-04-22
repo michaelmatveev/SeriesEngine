@@ -212,7 +212,6 @@ namespace SeriesEngine.ExcelAddIn.Models
                 .Single(om => om.Name == element.Name.LocalName);
 
             var objectInstance = (NamedObject)Activator.CreateInstance(objectModel.ObjectType);
-            objectInstance.ObjectModel = objectModel;
             objectInstance.Solution = _network.Solution;
             objectInstance.Name = objName;
             objectInstance.State = ObjectState.Added;

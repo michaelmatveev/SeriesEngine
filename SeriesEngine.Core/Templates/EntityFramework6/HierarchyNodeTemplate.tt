@@ -5,7 +5,7 @@
 
 public class HierarchyNodeTemplate : CSharpTemplate
 {
-	public string Shema;
+	public string Schema;
 	public XElement Hierarchy;
 
 	public override string TransformText()
@@ -21,9 +21,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace SeriesEngine.<#= Shema #>
+namespace SeriesEngine.<#= Schema #>
 {
-    [Table("<#= Shema #>.<#= name #>Nodes")]
+    [Table("<#= Schema #>.<#= name #>Nodes")]
     public partial class <#= name #>Node : NetworkTreeNode
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]

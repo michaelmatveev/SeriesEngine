@@ -6,8 +6,12 @@ namespace SeriesEngine.Core.DataAccess
 {
     public abstract partial class Network
     {
-        public Network()
+        [NotMapped]
+        public HierarchyMemamodel HierarchyModel { get; private set; }
+
+        public Network(HierarchyMemamodel hierarchyModel)
         {
+            HierarchyModel = hierarchyModel;
         }
 
         public int Id { get; set; }

@@ -11,7 +11,7 @@ namespace SeriesEngine.msk1
 {
     public class MainHierarchyNetwork : Network
     {
-        public MainHierarchyNetwork()
+        public MainHierarchyNetwork() : base(msk1Hierarchies.MainHierarchy)
         {
             Nodes = new HashSet<MainHierarchyNode>();
         }

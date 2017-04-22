@@ -14,10 +14,9 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             var region1 = new MainHierarchyNode
             {
-                Region = new Region
+                Region = new Region()
                 {
-                    Name = "Пензенская область",
-                    ObjectModel = MockModelProvider.Region
+                    Name = "Пензенская область"
                 }
             };
             var consumer1 = new MainHierarchyNode
@@ -25,8 +24,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 Parent = region1,
                 Consumer = new Consumer
                 {
-                    Name = "OOO \"МагнитЭнерго\"",
-                    ObjectModel = MockModelProvider.Consumer
+                    Name = "OOO \"МагнитЭнерго\""
                 }
             };
             var contract1 = new MainHierarchyNode
@@ -36,8 +34,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 ValidTill = new DateTime(2016, 06, 05),
                 Contract = new Contract
                 {
-                    Name = "1001014-ЭН",
-                    ObjectModel = MockModelProvider.Contract
+                    Name = "1001014-ЭН"
                 }
             };
             contract1.Contract.ContractType = "КП";
@@ -47,8 +44,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 Parent = contract1,
                 ConsumerObject = new ConsumerObject
                 {
-                    Name = "ММ \"Влад\"; г. Пенза пр-т. Строителей, 24а",
-                    ObjectModel = MockModelProvider.ConsumerObject
+                    Name = "ММ \"Влад\"; г. Пенза пр-т. Строителей, 24а"
                 }
             };
             var point1 = new MainHierarchyNode
@@ -56,8 +52,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 Parent = consumerObject1,
                 Point = new Point
                 {
-                    Name = "ТП-530",
-                    ObjectModel = MockModelProvider.Point
+                    Name = "ТП-530"
                 }
             };
             //point1.Point.VoltageLevel = "СН-2";
@@ -67,8 +62,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 Parent = consumerObject1,
                 Point = new Point
                 {
-                    Name = "ТП-531",
-                    ObjectModel = MockModelProvider.Point
+                    Name = "ТП-531"
                 }
             };
             //point2.Point.VoltageLevel = "СН-2";
@@ -78,8 +72,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 Parent = contract1,
                 ConsumerObject = new ConsumerObject
                 {
-                    Name = "ММ \"Арбеково\" г.Пенза пр. Строителей, 63",
-                    ObjectModel = MockModelProvider.ConsumerObject
+                    Name = "ММ \"Арбеково\" г.Пенза пр. Строителей, 63"
                 }
             };
 
@@ -88,8 +81,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 Parent = consumerObject2,
                 Point = new Point
                 {
-                    Name = "ТП-796",
-                    ObjectModel = MockModelProvider.Point
+                    Name = "ТП-796"
                 }
             };
             //point3.Point.VoltageLevel = "СН-2";

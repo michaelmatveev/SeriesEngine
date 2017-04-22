@@ -31,42 +31,49 @@ namespace SeriesEngine.msk1
             Variables = msk1RegionVariables.AllVariables,
 			ObjectType = typeof(Region)
         };
+
         public static ObjectMetamodel Consumer = new ObjectMetamodel
         {
             Name = "Consumer",
             Variables = msk1ConsumerVariables.AllVariables,
 			ObjectType = typeof(Consumer)
         };
+
         public static ObjectMetamodel Contract = new ObjectMetamodel
         {
             Name = "Contract",
             Variables = msk1ContractVariables.AllVariables,
 			ObjectType = typeof(Contract)
         };
+
         public static ObjectMetamodel ConsumerObject = new ObjectMetamodel
         {
             Name = "ConsumerObject",
             Variables = msk1ConsumerObjectVariables.AllVariables,
 			ObjectType = typeof(ConsumerObject)
         };
+
         public static ObjectMetamodel Point = new ObjectMetamodel
         {
             Name = "Point",
             Variables = msk1PointVariables.AllVariables,
 			ObjectType = typeof(Point)
         };
+
         public static ObjectMetamodel ElectricMeter = new ObjectMetamodel
         {
             Name = "ElectricMeter",
             Variables = msk1ElectricMeterVariables.AllVariables,
 			ObjectType = typeof(ElectricMeter)
         };
+
         public static ObjectMetamodel Supplier = new ObjectMetamodel
         {
             Name = "Supplier",
             Variables = msk1SupplierVariables.AllVariables,
 			ObjectType = typeof(Supplier)
         };
+
         public static ObjectMetamodel SupplierContract = new ObjectMetamodel
         {
             Name = "SupplierContract",

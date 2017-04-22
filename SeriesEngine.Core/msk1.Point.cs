@@ -14,9 +14,8 @@ namespace SeriesEngine.msk1
 	public partial class Point : NamedObject
 	{
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Point()
+        public Point() : base(msk1Objects.Point)
         {
-			ObjectModel = msk1Objects.Point;
 			Point_VoltageLevels = new HashSet<Point_VoltageLevel>();
 			Point_MaxPowers = new HashSet<Point_MaxPower>();
 			Point_TUCodes = new HashSet<Point_TUCode>();

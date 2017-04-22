@@ -25,9 +25,8 @@ namespace SeriesEngine.<#= Schema #>
 	public partial class <#= name #> : NamedObject
 	{
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public <#= name #>()
+        public <#= name #>() : base(<#= Schema #>Objects.<#= name #>)
         {
-			ObjectModel = <#= Schema #>Objects.<#= name #>;
 <#+
 		foreach(var varElement in vs.QueryVariablesThat().Versioned().Variables)
 		{

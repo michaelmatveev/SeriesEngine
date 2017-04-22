@@ -14,9 +14,8 @@ namespace SeriesEngine.msk1
 	public partial class SupplierContract : NamedObject
 	{
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SupplierContract()
+        public SupplierContract() : base(msk1Objects.SupplierContract)
         {
-			ObjectModel = msk1Objects.SupplierContract;
 		}
 
         public override string GetName()

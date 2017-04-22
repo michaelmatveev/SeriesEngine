@@ -53,12 +53,12 @@ public class EntitiesGenerator : Generator
 
 		var hierarchyTemplate = new HierarchyTemplate 
 		{
-			Shema = prefix
+			Schema = prefix
 		};
 
 		var hierarchyNodeTemplate = new HierarchyNodeTemplate 
 		{
-			Shema = prefix
+			Schema = prefix
 		};
 		
 		foreach(XElement hierarchyElement in HierarchiesDoc.Descendants("Hierarchy"))

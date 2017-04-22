@@ -1,0 +1,68 @@
+﻿<#+
+// <copyright file="HierarchyModelTemplate.tt" company="">
+//  Copyright © . All Rights Reserved.
+// </copyright>
+
+public class HierarchyModelTemplate : CSharpTemplate
+{
+	public string Schema;
+	public IEnumerable<XElement> Hierarchies;
+
+	public override string TransformText()
+	{
+		base.TransformText();
+#>
+using SeriesEngine.Core;
+using System.Collections.Generic;
+
+namespace SeriesEngine.<#= Schema #>
+{
+    public static class <#= Schema #>Hierarchies
+    {
+        public static IEnumerable<HierarchyMemamodel> UsedHierarchies
+        {
+			get
+			{
+<#+
+		foreach(var h in Hierarchies)
+		{
+			var s = h.Attribute("Name").Value;
+#>
+				yield return <#= s #>;
+<#+
+		}
+#>
+			}
+		}
+<#+
+		foreach(var h in Hierarchies)
+		{
+			var s = h.Attribute("Name").Value;
+			var objs = h.Descendants("UsedStereotype").Select(v => v.Attribute("Name").Value);
+#>
+
+        public static HierarchyMemamodel <#= s #> = new HierarchyMemamodel
+        {
+            Name = "<#= s #>",
+            ReferencedObjects = new [] 
+			{
+<#+
+			foreach(var o in objs)
+			{
+#>				<#= Schema #>Objects.<#= o #>,
+<#+
+			}
+#>
+			},
+			NodeType = typeof(SeriesEngine.<#= Schema #>.<#= s #>Node)
+        };
+<#+
+		}
+#>
+	}
+}
+<#+
+        return this.GenerationEnvironment.ToString();
+	}
+}
+#>

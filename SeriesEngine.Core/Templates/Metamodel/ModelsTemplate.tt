@@ -47,7 +47,8 @@ namespace SeriesEngine.Core
         public static MetaModel <#= m #> = new MetaModel
         {
             Name = "<#= m #>",
-            ObjectModels = <#= m #>Objects.UsedObjects
+            ObjectModels = <#= m #>Objects.UsedObjects,
+			HierarchyModels = <#= m #>Hierarchies.UsedHierarchies
         };
 <#+
 		}

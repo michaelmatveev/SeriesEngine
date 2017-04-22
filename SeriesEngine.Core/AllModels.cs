@@ -21,7 +21,8 @@ namespace SeriesEngine.Core
         public static MetaModel msk1 = new MetaModel
         {
             Name = "msk1",
-            ObjectModels = msk1Objects.UsedObjects
+            ObjectModels = msk1Objects.UsedObjects,
+			HierarchyModels = msk1Hierarchies.UsedHierarchies
         };
 	}
 }

@@ -14,9 +14,8 @@ namespace SeriesEngine.msk1
 	public partial class ConsumerObject : NamedObject
 	{
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ConsumerObject()
+        public ConsumerObject() : base(msk1Objects.ConsumerObject)
         {
-			ObjectModel = msk1Objects.ConsumerObject;
 		}
 
         public override string GetName()

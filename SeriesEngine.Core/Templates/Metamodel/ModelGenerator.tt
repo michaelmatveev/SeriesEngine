@@ -1,0 +1,20 @@
+﻿<#@ include file="ModelsTemplate.tt" #>
+<#+
+// <copyright file="ModelGenerator.tt" company="">
+//  Copyright © . All Rights Reserved.
+// </copyright>
+
+public class ModelGenerator : Generator
+{
+	public IEnumerable<string> Prefixes;
+
+	protected override void RunCore()
+	{
+		var modelsTemplate = new ModelsTemplate
+		{
+			Models = Prefixes
+		};
+		modelsTemplate.RenderToFile("AllModels.cs");
+	}
+}
+#>
