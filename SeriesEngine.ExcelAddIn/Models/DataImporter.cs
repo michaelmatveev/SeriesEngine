@@ -56,11 +56,16 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public override void ImportDataBlock(Solution solution, CollectionDataBlock collectionDatablock)
         {
+            if(!_workbook.Worksheets.Cast<Excel.Worksheet>().Any(w => w.Name == collectionDatablock.Sheet))
+            {
+                return; // worksheet has been deleted before
+            }
+
             try
             {
                 _workbook.Application.EnableEvents = false;
                 _workbook.Application.DisplayAlerts = false;
-
+                
                 Excel.Worksheet sheet = _workbook.Sheets[collectionDatablock.Sheet];
                 sheet.Activate();
                 sheet.get_Range(collectionDatablock.Cell).Select();

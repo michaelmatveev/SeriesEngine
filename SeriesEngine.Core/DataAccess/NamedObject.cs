@@ -81,11 +81,12 @@ namespace SeriesEngine.Core.DataAccess
             var collection = property.GetValue(this, null) as IEnumerable<PeriodVariable>;
             return collection.OrderBy(pv => pv.Date);
         }
+
         public bool SetVariableValue(string variableName, object value)
         {
             var thisType = GetType();
             var property = thisType.GetProperty(variableName);
-            if(property == null ||  property.GetValue(this) == value)
+            if (property == null || Object.Equals(property.GetValue(this), value))
             {
                 return false;
             }

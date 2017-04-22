@@ -142,9 +142,12 @@ namespace SeriesEngine.ExcelAddIn.Models
 
             node.MyNetwork = _network;
             node.MyParent = parent;
-            node.ValidFrom = validFrom;
-            node.ValidTill = validTill;
-            node.State = ObjectState.Modified;
+            if (node.ValidFrom != validFrom || node.ValidTill != validTill)
+            {
+                node.ValidFrom = validFrom;
+                node.ValidTill = validTill;
+                node.State = ObjectState.Modified;
+            }
 
             var linkedObjectUpdated = false; // check that at least one field has been updated
             foreach (var v in element.Elements().Where(v => v.Attribute("UniqueName") == null))
@@ -210,7 +213,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                 .Single(om => om.Name == element.Name.LocalName);
 
             var objectInstance = (NamedObject)Activator.CreateInstance(objectModel.ObjectType);
-            objectInstance.Solution = _network.Solution;
+            //objectInstance.Solution = _network.Solution;
+            objectInstance.SolutionId = _network.SolutionId;
             objectInstance.Name = objName;
             objectInstance.State = ObjectState.Added;
 
@@ -221,7 +225,8 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             using (var context = new Model1())
             {
-                context.Configuration.AutoDetectChangesEnabled = false;
+                //context.Configuration.AutoDetectChangesEnabled = false;
+                context.Networks.Attach(_network);
                 foreach(var v in valuesForPeriod)
                 {
                     if (v.State == ObjectState.Added)
@@ -234,6 +239,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     }
                 }
                 context.FixState();
+                context.Database.Log = x => System.Diagnostics.Debug.WriteLine(x);
                 context.SaveChanges();
             }
         }
