@@ -116,14 +116,12 @@ namespace SeriesEngine.ExcelAddIn.Models
             var validFrom = ParseDateTimeString(element.Attribute("Since")?.Value);
             var validTill = ParseDateTimeString(element.Attribute("Till")?.Value);
 
-            var node = new MainHierarchyNode
-            {
-                MyNetwork = _network,
-                MyParent = parent,
-                ValidFrom = validFrom,
-                ValidTill = validTill,
-                State = ObjectState.Added
-            };
+            var node = (NetworkTreeNode)Activator.CreateInstance(_network.HierarchyModel.NodeType);
+            node.MyNetwork = _network;
+            node.MyParent = parent;
+            node.ValidFrom = validFrom;
+            node.ValidTill = validTill;
+            node.State = ObjectState.Added;
             node.SetLinkedObject(CreateObject(element));
             node.LinkedObject.State = ObjectState.Added;
                         
@@ -280,7 +278,12 @@ namespace SeriesEngine.ExcelAddIn.Models
             using (var context = new Model1())
             {
                 context.Database.Log = (s) => Debug.WriteLine(s);
-                var node = context.MainHierarchyNodes.Find(nodeId);
+
+                var nodeSetPropertyName = $"{_network.HierarchyModel.Name}Nodes";
+                var nodeSetProperty = context.GetType().GetProperty(nodeSetPropertyName);
+                dynamic nodeSet = nodeSetProperty.GetValue(context);
+                var node = nodeSet.Find(nodeId);
+                //var node = context.MainHierarchyNodes.Find(nodeId);
                 dynamic lo = node.LinkedObject;
                 var paramId = new SqlParameter("@Id", lo.Id);
                 var paramTs = new SqlParameter("@ConcurrencyStamp_Original", lo.ConcurrencyStamp);

@@ -54,15 +54,18 @@ namespace SeriesEngine.ExcelAddIn.Models
             var dsChanged = new DataSet();
             dsChanged.ReadXmlSchema(sr);
 
-            var tree = collectionDatablock
-                .DataBlocks
-                .Select((f, i) => new ColumnIdentity(f, i))
-                .GroupBy(ci => new ObjectIdentity(ci.RefObject, ci.Parent))
-                .GenerateTree(n => n.Key.RefObject, p => p.Key.Parent, NetworkTree.RootName);
-
-            for (int row = 1; row <= listObject.DataBodyRange.Rows.Count; row++)
+            if (listObject.DataBodyRange != null)
             {
-                CreateOrUpdateRowInDataSet(row, dsChanged, listObject, 0, tree);
+                var tree = collectionDatablock
+                    .DataBlocks
+                    .Select((f, i) => new ColumnIdentity(f, i))
+                    .GroupBy(ci => new ObjectIdentity(ci.RefObject, ci.Parent))
+                    .GenerateTree(n => n.Key.RefObject, p => p.Key.Parent, NetworkTree.RootName);
+
+                for (int row = 1; row <= listObject.DataBodyRange.Rows.Count; row++)
+                {
+                    CreateOrUpdateRowInDataSet(row, dsChanged, listObject, 0, tree);
+                }
             }
 
             //var source = new XDocument(collectionDatablock.Xml ?? networkTree.ConvertToXml(collectionDatablock.DataBlocks, period));

@@ -36,23 +36,27 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             using (var context = new Model1())
             {
-                //var network = context.Networks.Find(networkId);
-                //return new NetworkTree(network);
+                var network = context.Networks.Find(networkId);
+                var query = context.Entry(network).Collection("Nodes").Query();
+                foreach (var v in network.HierarchyModel.ReferencedObjects)
+                {
+                    query = query.Include(v.Name);
+                }
 
-                var net = context
-                    .Networks
-                    .OfType<MainHierarchyNetwork>()
-                    .Include("Solution")
-                    .Include("Nodes")
-                    .Include("Nodes.Region")
-                    .Include("Nodes.Consumer")
-                    .Include("Nodes.Contract")
-                    .Include("Nodes.ConsumerObject")
-                    .Include("Nodes.Point")
-                    .Include("Nodes.ElectricMeter")
-                    .Single(n => n.Id == networkId);
-
-                return new NetworkTree(net);
+                //var net = context
+                //    .Networks
+                //    .OfType<MainHierarchyNetwork>()
+                //    .Include("Solution")
+                //    .Include("Nodes")
+                //    .Include("Nodes.Region")
+                //    .Include("Nodes.Consumer")
+                //    .Include("Nodes.Contract")
+                //    .Include("Nodes.ConsumerObject")
+                //    .Include("Nodes.Point")
+                //    .Include("Nodes.ElectricMeter")
+                //    .Single(n => n.Id == networkId);
+                query.Load();
+                return new NetworkTree(network);
             }
         }
 

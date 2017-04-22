@@ -22,7 +22,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         }
 
         public string Cell => _range.AddressLocal.Replace("$", string.Empty);
-        public string Name => _range.AddressLocal.Replace("$", string.Empty);        
+        public string Name => _range.Address[External:true];//   AddressLocal.Replace("$", string.Empty);        
         public string Sheet => _range.Parent.Name;
         public int Row => _range.Row;
         public int Column => _range.Column;
