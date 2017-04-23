@@ -284,19 +284,20 @@ namespace SeriesEngine.ExcelAddIn.Models
             using (var context = new Model1())
             {
                 context.Database.Log = (s) => Debug.WriteLine(s);
+                context.Networks.Attach(_network);
 
                 var nodeSetPropertyName = $"{_network.HierarchyModel.Name}Nodes";
                 var nodeSetProperty = context.GetType().GetProperty(nodeSetPropertyName);
                 dynamic nodeSet = nodeSetProperty.GetValue(context);
                 var node = nodeSet.Find(nodeId);
-                //var node = context.MainHierarchyNodes.Find(nodeId);
-                dynamic lo = node.LinkedObject;
-                var paramId = new SqlParameter("@Id", lo.Id);
-                var paramTs = new SqlParameter("@ConcurrencyStamp_Original", lo.ConcurrencyStamp);
-                var spName = $"msk1.{node.LinkedObject.ObjectModel.Name}_Delete";
-                context.Database.ExecuteSqlCommand($"exec {spName} @Id, @ConcurrencyStamp_Original", paramId, paramTs);
-                //context.Entry(node.LinkedObject).State = System.Data.Entity.EntityState.Deleted;
-                //context.SaveChanges();
+                ////var node = context.MainHierarchyNodes.Find(nodeId);
+                //dynamic lo = node.LinkedObject;
+                //var paramId = new SqlParameter("@Id", lo.Id);
+                //var paramTs = new SqlParameter("@ConcurrencyStamp_Original", lo.ConcurrencyStamp);
+                //var spName = $"msk1.{node.LinkedObject.ObjectModel.Name}_Delete";
+                //context.Database.ExecuteSqlCommand($"exec {spName} @Id, @ConcurrencyStamp_Original", paramId, paramTs);
+                context.Entry(node.LinkedObject).State = System.Data.Entity.EntityState.Deleted;
+                context.SaveChanges();
             }
         }
 

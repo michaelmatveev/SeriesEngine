@@ -34,7 +34,6 @@ GO
 CREATE PROCEDURE [<#= Schema #>].[<#= objectName #>_Insert]
 	@SolutionId int,
 	@AuthorId int,
-	@Tag int,
 <#+ VariableSelector vs = new VariableSelector(this.Stereotype);
 	var tableAttrs = vs.QueryVariablesThat().NotPeriodic().NotVersioned().KindLess().Variables;	
 	foreach(var v in tableAttrs)
@@ -42,7 +41,8 @@ CREATE PROCEDURE [<#= Schema #>].[<#= objectName #>_Insert]
 		AddVariableParam(v);
 	}
 #>
-	@ConcurrencyStamp_Original rowversion
+	@Tag int
+	--@ConcurrencyStamp_Original rowversion
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -68,8 +68,9 @@ BEGIN
 #>
 	WHEN NOT MATCHED THEN
 		INSERT (SolutionId, AuthorId, Tag, <#= fieldsList #>)
-		VALUES (@SolutionId, @AuthorId, @Tag, <#= paramsList #>)
-	OUTPUT INSERTED.*;
+		VALUES (@SolutionId, @AuthorId, @Tag, <#= paramsList #>);
+
+	SELECT * FROM [<#= Schema #>].[<#= objectName #>s] WHERE [SolutionId] = @SolutionId AND [Name] = @Name;
 END
 GO
 

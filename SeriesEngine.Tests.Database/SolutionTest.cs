@@ -91,7 +91,7 @@ namespace SeriesEngine.Tests.Database
                 var point3 = new Point()
                 {
                     Solution = solution,
-                    Name = "ТП - 530",
+                    Name = "ТП - 533",
                 };
                 point3.Point_VoltageLevels.Add(new Point_VoltageLevel()
                 {

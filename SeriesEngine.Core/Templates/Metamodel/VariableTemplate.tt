@@ -70,7 +70,15 @@ namespace SeriesEngine.<#= Schema #>
         {
 			Name = "<#= name #>",
 			IsPeriodic = <#= isPeriodic.ToString().ToLower() #>,
-			IsVersioned = <#= isVersioned.ToString().ToLower() #>
+			IsVersioned = <#= isVersioned.ToString().ToLower() #>,
+<#+
+			if(isPeriodic)
+			{
+#>
+			EntityType = typeof(<#= Stereotype#>_<#= name #>)
+<#+
+			}
+#>
 		};
 <#+
 		}

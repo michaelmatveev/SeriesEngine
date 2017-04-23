@@ -22,7 +22,7 @@ namespace SeriesEngine.msk1
         {
 			Name = "Name",
 			IsPeriodic = false,
-			IsVersioned = false
+			IsVersioned = false,
 		};
 	}
 }

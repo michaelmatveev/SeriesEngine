@@ -26,31 +26,34 @@ namespace SeriesEngine.msk1
         {
 			Name = "Name",
 			IsPeriodic = false,
-			IsVersioned = false
+			IsVersioned = false,
 		};
 		public static Variable VoltageLevel = new Variable
         {
 			Name = "VoltageLevel",
 			IsPeriodic = true,
-			IsVersioned = true
+			IsVersioned = true,
+			EntityType = typeof(Point_VoltageLevel)
 		};
 		public static Variable MaxPower = new Variable
         {
 			Name = "MaxPower",
 			IsPeriodic = true,
-			IsVersioned = true
+			IsVersioned = true,
+			EntityType = typeof(Point_MaxPower)
 		};
 		public static Variable TUCode = new Variable
         {
 			Name = "TUCode",
 			IsPeriodic = true,
-			IsVersioned = true
+			IsVersioned = true,
+			EntityType = typeof(Point_TUCode)
 		};
 		public static Variable PUPlace = new Variable
         {
 			Name = "PUPlace",
 			IsPeriodic = false,
-			IsVersioned = true
+			IsVersioned = true,
 		};
 	}
 }
