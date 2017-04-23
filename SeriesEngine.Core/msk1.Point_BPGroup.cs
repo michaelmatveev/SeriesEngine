@@ -11,12 +11,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SeriesEngine.msk1
 {
 
-    [Table("msk1.Point_VoltageLevels")]
-    public partial class Point_VoltageLevel : PeriodVariable
+    [Table("msk1.Point_BPGroups")]
+    public partial class Point_BPGroup : PeriodVariable
     {
         [Required]
         //[StringLength(200)]
-        public String VoltageLevel { get; set; }
+        public String BPGroup { get; set; }
 
         public virtual Point Point { get; set; }
 
@@ -24,11 +24,11 @@ namespace SeriesEngine.msk1
         {
             get
             {
-                return VoltageLevel;
+                return BPGroup;
             }
             set
             {
-                VoltageLevel = (String)value;
+                BPGroup = (String)value;
             }
         }
     }

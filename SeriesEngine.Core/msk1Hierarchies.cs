@@ -16,6 +16,7 @@ namespace SeriesEngine.msk1
 			{
 				yield return MainHierarchy;
 				yield return SupplierHierarchy;
+				yield return CurcuitHierarchy;
 			}
 		}
 
@@ -44,6 +45,18 @@ namespace SeriesEngine.msk1
 				msk1Objects.Point,
 			},
 			NodeType = typeof(SeriesEngine.msk1.SupplierHierarchyNode)
+        };
+
+        public static HierarchyMemamodel CurcuitHierarchy = new HierarchyMemamodel
+        {
+            Name = "CurcuitHierarchy",
+            ReferencedObjects = new [] 
+			{
+				msk1Objects.Curcuit,
+				msk1Objects.CurcuitContract,
+				msk1Objects.Point,
+			},
+			NodeType = typeof(SeriesEngine.msk1.CurcuitHierarchyNode)
         };
 	}
 }

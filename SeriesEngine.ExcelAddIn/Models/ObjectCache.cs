@@ -53,6 +53,9 @@ namespace SeriesEngine.ExcelAddIn.Models
                 case "Point": return "E";
                 case "Supplier": return "F";
                 case "SupplierContract": return "G";
+                case "ElectricMeter": return "H";
+                case "Curcuit": return "I";
+                case "CurcuitContract": return "J";
             }
             throw new NotImplementedException();
         } 

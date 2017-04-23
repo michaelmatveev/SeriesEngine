@@ -7,6 +7,7 @@ public class ObjectEntityTemplate : CSharpTemplate
 {
 	public string Schema;
 	public XElement Stereotype;
+	public Dictionary<String, XElement> DataTypes;
 
 	public override string TransformText()
 	{
@@ -14,6 +15,7 @@ public class ObjectEntityTemplate : CSharpTemplate
 		string name = Stereotype.Attribute("Name").Value;
 		VariableSelector vs = new VariableSelector(this.Stereotype);
 #>
+using System;
 using SeriesEngine.Core.DataAccess;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -51,12 +53,22 @@ namespace SeriesEngine.<#= Schema #>
 		foreach(var varElement in vs.QueryVariablesThat().NotVersioned().Variables.Where(v => v.Attribute("Name").Value != "Name"))			
 		{
 			var varName = varElement.Attribute("Name").Value;
+			var typeName = varElement.Attribute("DataType").Value;
+			var type = DataTypes[typeName].Attribute("ClrType").Value;
+			var optional = varElement.Attribute("Optional")?.Value == "True";
 #>
-
+	
+<#+
+			if(!optional)
+			{
+#>
         [Required]
-        [StringLength(int.MaxValue)]
-        [MaxLength]
-        public string  <#= varName #> { get; set; }
+<#+
+			}
+#>
+        //[StringLength(int.MaxValue)]
+        //[MaxLength]
+        public <#= type #> <#= varName #> { get; set; }
 <#+
 		}
 		foreach(var varElement in vs.QueryVariablesThat().Versioned().Variables)

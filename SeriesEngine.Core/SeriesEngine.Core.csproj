@@ -86,6 +86,24 @@
     <Compile Include="msk1.ContractVariables.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
+    <Compile Include="msk1.Curcuit.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.CurcuitContract.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.CurcuitContractVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.CurcuitHierarchyNetwork.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.CurcuitHierarchyNode.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.CurcuitVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="msk1.ElectricMeter.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
@@ -108,6 +126,9 @@
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
     <Compile Include="msk1.PointVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point_BPGroup.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
     <Compile Include="msk1.Point_MaxPower.cs">
@@ -167,6 +188,12 @@
 .\msk1.ConsumerVariables.cs
 .\msk1.Contract.cs
 .\msk1.ContractVariables.cs
+.\msk1.Curcuit.cs
+.\msk1.CurcuitContract.cs
+.\msk1.CurcuitContractVariables.cs
+.\msk1.CurcuitHierarchyNetwork.cs
+.\msk1.CurcuitHierarchyNode.cs
+.\msk1.CurcuitVariables.cs
 .\msk1.ElectricMeter.cs
 .\msk1.ElectricMeterVariables.cs
 .\msk1.MainHierarchyNetwork.cs
@@ -174,6 +201,7 @@
 .\msk1.Model.cs
 .\msk1.Objects.cs
 .\msk1.Point.cs
+.\msk1.Point_BPGroup.cs
 .\msk1.Point_MaxPower.cs
 .\msk1.Point_PUPlace.cs
 .\msk1.Point_TUCode.cs

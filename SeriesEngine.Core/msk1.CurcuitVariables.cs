@@ -8,26 +8,19 @@ using System.Collections.Generic;
 
 namespace SeriesEngine.msk1
 {
-	public class msk1SupplierContractVariables
+	public class msk1CurcuitVariables
 	{
         public static IEnumerable<Variable> AllVariables
         {
             get
             {
 				yield return Name;
-				yield return ContractForm;
             }
         }
 
 		public static Variable Name = new Variable
         {
 			Name = "Name",
-			IsPeriodic = false,
-			IsVersioned = false,
-		};
-		public static Variable ContractForm = new Variable
-        {
-			Name = "ContractForm",
 			IsPeriodic = false,
 			IsVersioned = false,
 		};

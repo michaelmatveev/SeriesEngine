@@ -21,7 +21,8 @@ public class EntitiesGenerator : Generator
 
 		ObjectEntityTemplate objectEntityTemplate = new ObjectEntityTemplate 
 		{
-			Schema = prefix
+			Schema = prefix,
+			DataTypes = dataTypes
 		};
 		
 		ObjectVariableTemplate objectVariableTemplate = new ObjectVariableTemplate 
@@ -43,10 +44,13 @@ public class EntitiesGenerator : Generator
 				.Where(v => v.Attribute("Versioned")?.Value == "True"))
 			{
 				var varName = variableElement.Attribute("Name").Value;
+				var typeName = variableElement.Attribute("DataType").Value;
+				var varType = dataTypes[typeName].Attribute("ClrType").Value;
 				output = String.Format("{0}.{1}_{2}.cs", prefix, objectName, varName);
 				
 				objectVariableTemplate.Stereotype = objectName;
 				objectVariableTemplate.Variable = variableElement;
+				objectVariableTemplate.VarType = varType;
 				objectVariableTemplate.RenderToFile(output);
 			}
 		}

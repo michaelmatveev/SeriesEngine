@@ -18,6 +18,7 @@ namespace SeriesEngine.msk1
 				yield return VoltageLevel;
 				yield return MaxPower;
 				yield return TUCode;
+				yield return BPGroup;
 				yield return PUPlace;
             }
         }
@@ -48,6 +49,13 @@ namespace SeriesEngine.msk1
 			IsPeriodic = true,
 			IsVersioned = true,
 			EntityType = typeof(Point_TUCode)
+		};
+		public static Variable BPGroup = new Variable
+        {
+			Name = "BPGroup",
+			IsPeriodic = true,
+			IsVersioned = true,
+			EntityType = typeof(Point_BPGroup)
 		};
 		public static Variable PUPlace = new Variable
         {

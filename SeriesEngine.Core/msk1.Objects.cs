@@ -22,6 +22,8 @@ namespace SeriesEngine.msk1
                 yield return ElectricMeter;
                 yield return Supplier;
                 yield return SupplierContract;
+                yield return Curcuit;
+                yield return CurcuitContract;
             }
         }
 
@@ -79,6 +81,20 @@ namespace SeriesEngine.msk1
             Name = "SupplierContract",
             Variables = msk1SupplierContractVariables.AllVariables,
 			ObjectType = typeof(SupplierContract)
+        };
+
+        public static ObjectMetamodel Curcuit = new ObjectMetamodel
+        {
+            Name = "Curcuit",
+            Variables = msk1CurcuitVariables.AllVariables,
+			ObjectType = typeof(Curcuit)
+        };
+
+        public static ObjectMetamodel CurcuitContract = new ObjectMetamodel
+        {
+            Name = "CurcuitContract",
+            Variables = msk1CurcuitContractVariables.AllVariables,
+			ObjectType = typeof(CurcuitContract)
         };
     }
 

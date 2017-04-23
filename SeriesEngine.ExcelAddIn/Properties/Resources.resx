@@ -128,8 +128,13 @@
     <value>&lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;ObjectGrid xmlns="http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments" Version="1" Model="msk1" Name="Поставщик - Договор - Точка" Sheet="Лист1" Cell="C2" NetworkName="Поставщик - точка"&gt;
   &lt;CFragment Caption="Поставщик" CollectionName="Main" Level="1" RefObject="Supplier" Type="UniqueName"/&gt;
-  &lt;CFragment Caption="Договор" CollectionName="Main" Level="2" RefObject="SupplierContract" Type="UniqueName"/&gt;
-  &lt;CFragment Caption="Точка" CollectionName="Main" Level="3" RefObject="Point" Type="UniqueName"/&gt;
+  &lt;CFragment Caption="№ договора с поставщиком" CollectionName="Main" Level="2" RefObject="SupplierContract" Type="UniqueName"/&gt;
+  &lt;VFragment Caption="Тип договора" CollectionName="Main" Level="3" RefObject="SupplierContract" Variable="ContractForm" Kind="Fact"/&gt;
+  &lt;CFragment Caption="Дата договора с поставщиком" CollectionName="Main" Level="4" RefObject="SupplierContract" Type="Since"/&gt;
+  &lt;CFragment Caption="Дата завершения договора" CollectionName="Main" Level="5" RefObject="SupplierContract" Type="Till"/&gt;
+  &lt;CFragment Caption="Точка" CollectionName="Main" Level="6" RefObject="Point" Type="UniqueName"/&gt;
+  &lt;CFragment Caption="Дата включения в договор" CollectionName="Main" Level="7" RefObject="Point" Type="Since"/&gt;
+  &lt;CFragment Caption="Дата исключения из договора" CollectionName="Main" Level="8" RefObject="Point" Type="Till"/&gt; 
 &lt;/ObjectGrid&gt;</value>
   </data>
   <data name="connect" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -158,7 +163,7 @@
   </data>
   <data name="TestGrid1" xml:space="preserve">
     <value>&lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;ObjectGrid xmlns="http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments" Version="1" Model="msk1" Name="Регион - Потребитель - Договор - Объект - Точка - Прибор учета" Sheet="Лист1" Cell="C2" NetworkName="Регион - прибор учета"&gt;
+&lt;ObjectGrid xmlns="http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments" Version="1" Model="msk1" Name="Регион - Потребитель - Договор - Объект - Точка" Sheet="Лист1" Cell="C2" NetworkName="Регион - прибор учета"&gt;
   &lt;CFragment Caption="Регион" CollectionName="Main" Level="1" RefObject="Region" Type="UniqueName"/&gt;
   &lt;CFragment Caption="Потребитель" CollectionName="Main" Level="2" RefObject="Consumer" Type="UniqueName"/&gt;
   &lt;CFragment Caption="Договор" CollectionName="Main" Level="3" RefObject="Contract" Type="UniqueName"/&gt;
@@ -172,5 +177,41 @@
   </data>
   <data name="application_form_edit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\application_form_edit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TestGrid3" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;ObjectGrid xmlns="http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments" Version="1" Model="msk1" Name="Регион - Потребитель - Договор - Объект - Точка" Sheet="Лист1" Cell="C2" NetworkName="Регион - прибор учета"&gt;
+  &lt;CFragment Caption="Регион" CollectionName="Main" Level="1" RefObject="Region" Type="UniqueName"/&gt;
+  &lt;CFragment Caption="Потребитель" CollectionName="Main" Level="2" RefObject="Consumer" Type="UniqueName"/&gt;
+  &lt;CFragment Caption="Договор" CollectionName="Main" Level="3" RefObject="Contract" Type="UniqueName"/&gt;
+  &lt;VFragment Caption="Тип договора" CollectionName="Main" Level="3" RefObject="Contract" Variable="ContractType" Kind="Fact"/&gt;
+  &lt;CFragment Caption="Дата договора с потребителем" CollectionName="Main" Level="3" RefObject="Contract" Type="Since"/&gt;
+  &lt;CFragment Caption="Дата завершения договора" CollectionName="Main" Level="3" RefObject="Contract" Type="Till"/&gt;
+  &lt;CFragment Caption="Объект" CollectionName="Main" Level="4" RefObject="ConsumerObject" Type="UniqueName"/&gt;
+  &lt;CFragment Caption="Точка" CollectionName="Main" Level="5" RefObject="Point" Type="UniqueName"/&gt;
+  &lt;VFragment Caption="Уровень расчетного напряжения" Level="5" CollectionName="Main" RefObject="Point" Variable="VoltageLevel" Kind="Fact"/&gt;
+  &lt;VFragment Caption="Рмах, кВт." Level="5" CollectionName="Main" RefObject="Point" Variable="MaxPower" Kind="Fact"/&gt;
+  &lt;VFragment Caption="Код ТУ" Level="5" CollectionName="Main" RefObject="Point" Variable="TUCode" Kind="Fact"/&gt; 
+  &lt;VFragment Caption="Группа БП" Level="5" CollectionName="Main" RefObject="Point" Variable="BPGroup" Kind="Fact"/&gt;
+  &lt;VFragment Caption="Место установки прибора учета" Level="5" CollectionName="Main" RefObject="Point" Variable="PUPlace" Kind="Fact"/&gt;
+  &lt;CFragment Caption="Номер прибора учета" CollectionName="Main" Level="6" RefObject="ElectricMeter" Type="UniqueName"/&gt;
+  &lt;CFragment Caption="Дата включения в договор" CollectionName="Main" Level="6" RefObject="ElectricMeter" Type="Since"/&gt;
+  &lt;CFragment Caption="Дата исключения из договора" CollectionName="Main" Level="6" RefObject="ElectricMeter" Type="Till"/&gt;
+  &lt;VFragment Caption="Тип прибора учета" Level="6" CollectionName="Main" RefObject="ElectricMeter" Variable="PUType" Kind="Fact"/&gt;
+  &lt;VFragment Caption="Почасовой учет" Level="6" CollectionName="Main" RefObject="ElectricMeter" Variable="HourCount" Kind="Fact"/&gt;
+  &lt;VFragment Caption="Класс точности" Level="6" CollectionName="Main" RefObject="ElectricMeter" Variable="Class" Kind="Fact"/&gt;  
+&lt;/ObjectGrid&gt;</value>
+  </data>
+  <data name="TestGrid4" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;ObjectGrid xmlns="http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments" Version="1" Model="msk1" Name="Поставщик - Договор - Точка" Sheet="Лист1" Cell="C2" NetworkName="Сетевая организация - точка"&gt;
+  &lt;CFragment Caption="Сетевая организация" CollectionName="Main" Level="1" RefObject="Curcuit" Type="UniqueName"/&gt;
+  &lt;CFragment Caption="№ договора с сетевой организацией" CollectionName="Main" Level="2" RefObject="CurcuitContract" Type="UniqueName"/&gt;
+  &lt;CFragment Caption="Дата договора с сетевой организацией" CollectionName="Main" Level="4" RefObject="CurcuitContract" Type="Since"/&gt;
+  &lt;CFragment Caption="Дата завершения договора" CollectionName="Main" Level="5" RefObject="CurcuitContract" Type="Till"/&gt;
+  &lt;CFragment Caption="Точка" CollectionName="Main" Level="6" RefObject="Point" Type="UniqueName"/&gt;
+  &lt;CFragment Caption="Дата включения в договор" CollectionName="Main" Level="7" RefObject="Point" Type="Since"/&gt;
+  &lt;CFragment Caption="Дата исключения из договора" CollectionName="Main" Level="8" RefObject="Point" Type="Till"/&gt; 
+&lt;/ObjectGrid&gt;</value>
   </data>
 </root>

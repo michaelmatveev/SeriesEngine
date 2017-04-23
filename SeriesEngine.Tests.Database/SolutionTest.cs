@@ -35,7 +35,7 @@ namespace SeriesEngine.Tests.Database
                 var contract = new Contract()
                 {
                     Solution = solution,
-                    Name = "1001014 - ЭН",
+                    Name = "1001014-ЭН",
                     ContractType = "КП"
                 };
 
@@ -54,20 +54,20 @@ namespace SeriesEngine.Tests.Database
                 var point1 = new Point()
                 {
                     Solution = solution,
-                    Name = "ТП - 530",
+                    Name = "ТП-530",
                 };
 
                 point1.Point_VoltageLevels.Add(new Point_VoltageLevel()
                 {
                     Date = new DateTime(2014, 01, 01),
                     //CreationTime = new DateTime(2014, 01, 01),
-                    VoltageLevel = "СН - 2"
+                    VoltageLevel = "СН-2"
                 });
                 point1.Point_MaxPowers.Add(new Point_MaxPower()
                 {
                     Date = new DateTime(2014, 01, 01),
                     //CreationTime = new DateTime(2014, 01, 01),
-                    MaxPower = "10"
+                    MaxPower = 10
                 });
 
                 var point2 = new Point()
@@ -79,113 +79,119 @@ namespace SeriesEngine.Tests.Database
                 {
                     Date = new DateTime(2014, 01, 01),
                     //CreationTime = new DateTime(2014, 01, 01),
-                    VoltageLevel = "СН - 2"
+                    VoltageLevel = "СН-2"
                 });
                 point2.Point_MaxPowers.Add(new Point_MaxPower()
                 {
                     Date = new DateTime(2014, 01, 01),
                     //CreationTime = new DateTime(2014, 01, 01),
-                    MaxPower = "20"
+                    MaxPower = 20
                 });
 
                 var point3 = new Point()
                 {
                     Solution = solution,
-                    Name = "ТП - 533",
+                    Name = "ТП-796",
                 };
                 point3.Point_VoltageLevels.Add(new Point_VoltageLevel()
                 {
                     Date = new DateTime(2014, 01, 01),
                     //CreationTime = new DateTime(2014, 01, 01),
-                    VoltageLevel = "СН - 1"
+                    VoltageLevel = "СН-1"
                 });
                 point3.Point_MaxPowers.Add(new Point_MaxPower()
                 {
                     Date = new DateTime(2014, 01, 01),
                     //CreationTime = new DateTime(2014, 01, 01),
-                    MaxPower = "30"
+                    MaxPower = 30
                 });
 
-                var network = new MainHierarchyNetwork()
+                var network01 = new MainHierarchyNetwork()
                 {
                     Name = "Регион - прибор учета",
                     Solution = solution
                 };
 
-                var network2 = new SupplierHierarchyNetwork()
+                var network02 = new SupplierHierarchyNetwork()
                 {
                     Name = "Поставщик - точка",
                     Solution = solution
                 };
 
+                var network03 = new CurcuitHierarchyNetwork()
+                {
+                    Name = "Сетевая организация - точка",
+                    Solution = solution
+                };
 
                 var node1 = new MainHierarchyNode()
                 {
                     Region = region,
                     Parent = null,
-                    Network = network
+                    Network = network01
                 };
 
                 var node2 = new MainHierarchyNode()
                 {
                     Consumer = consumer,
                     Parent = node1,
-                    Network = network
+                    Network = network01
                 };
 
                 var node3 = new MainHierarchyNode()
                 {
                     Contract = contract,
                     Parent = node2,
-                    Network = network
+                    Network = network01
                 };
 
                 var node4 = new MainHierarchyNode()
                 {
                     ConsumerObject = consumerObject1,
                     Parent = node3,
-                    Network = network
+                    Network = network01
                 };
 
                 var node5 = new MainHierarchyNode()
                 {
                     ConsumerObject = consumerObject2,
                     Parent = node3,
-                    Network = network
+                    Network = network01
                 };
 
                 var node6 = new MainHierarchyNode()
                 {
                     Point = point1,
                     Parent = node4,
-                    Network = network
+                    Network = network01
                 };
 
                 var node7 = new MainHierarchyNode()
                 {
                     Point = point2,
                     Parent = node4,
-                    Network = network
+                    Network = network01
                 };
 
                 var node8 = new MainHierarchyNode()
                 {
                     Point = point3,
                     Parent = node5,
-                    Network = network
+                    Network = network01
                 };
 
-                network.Nodes.Add(node1);
-                network.Nodes.Add(node2);
-                network.Nodes.Add(node3);
-                network.Nodes.Add(node4);
-                network.Nodes.Add(node5);
-                network.Nodes.Add(node6);
-                network.Nodes.Add(node7);
-                network.Nodes.Add(node8);
+                network01.Nodes.Add(node1);
+                network01.Nodes.Add(node2);
+                network01.Nodes.Add(node3);
+                network01.Nodes.Add(node4);
+                network01.Nodes.Add(node5);
+                network01.Nodes.Add(node6);
+                network01.Nodes.Add(node7);
+                network01.Nodes.Add(node8);
 
-                context.Networks.Add(network);
-                context.Networks.Add(network2);
+                context.Networks.Add(network01);
+                context.Networks.Add(network02);
+                context.Networks.Add(network03);
 
                 var solution1 = new Solution
                 {
@@ -193,19 +199,25 @@ namespace SeriesEngine.Tests.Database
                     Description = "Пример реальных данных",
                     ModelName = "msk1"
                 };
-                var network1 = new MainHierarchyNetwork()
+                var network11 = new MainHierarchyNetwork()
                 {
                     Name = "Регион - прибор учета",
                     Solution = solution1
                 };
-                var network3 = new SupplierHierarchyNetwork()
+                var network12 = new SupplierHierarchyNetwork()
                 {
                     Name = "Поставщик - точка",
                     Solution = solution1
                 };
+                var network13 = new CurcuitHierarchyNetwork()
+                {
+                    Name = "Сетевая организация - точка",
+                    Solution = solution1
+                };
 
-                context.Networks.Add(network1);
-                context.Networks.Add(network3);
+                context.Networks.Add(network11);
+                context.Networks.Add(network12);
+                context.Networks.Add(network13);
                 context.SaveChanges();
             }
         }

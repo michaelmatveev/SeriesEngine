@@ -22,6 +22,7 @@ namespace SeriesEngine.msk1
  
         public virtual DbSet<MainHierarchyNode> MainHierarchyNodes { get; set; }
          public virtual DbSet<SupplierHierarchyNode> SupplierHierarchyNodes { get; set; }
+         public virtual DbSet<CurcuitHierarchyNode> CurcuitHierarchyNodes { get; set; }
          public virtual DbSet<Region> Regions { get; set; }
          public virtual DbSet<Consumer> Consumers { get; set; }
          public virtual DbSet<Contract> Contracts { get; set; }
@@ -30,10 +31,13 @@ namespace SeriesEngine.msk1
  		public virtual DbSet<Point_VoltageLevel> Point_VoltageLevels { get; set; }
 		public virtual DbSet<Point_MaxPower> Point_MaxPowers { get; set; }
 		public virtual DbSet<Point_TUCode> Point_TUCodes { get; set; }
+		public virtual DbSet<Point_BPGroup> Point_BPGroups { get; set; }
 		public virtual DbSet<Point_PUPlace> Point_PUPlaces { get; set; }
         public virtual DbSet<ElectricMeter> ElectricMeters { get; set; }
          public virtual DbSet<Supplier> Suppliers { get; set; }
          public virtual DbSet<SupplierContract> SupplierContracts { get; set; }
+         public virtual DbSet<Curcuit> Curcuits { get; set; }
+         public virtual DbSet<CurcuitContract> CurcuitContracts { get; set; }
   
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -45,6 +49,7 @@ namespace SeriesEngine.msk1
 			 modelBuilder.Entity<Network>()
                  .Map<MainHierarchyNetwork>(m => m.Requires("NodeType").HasValue("msk1.MainHierarchyNode"))
                  .Map<SupplierHierarchyNetwork>(m => m.Requires("NodeType").HasValue("msk1.SupplierHierarchyNode"))
+                 .Map<CurcuitHierarchyNetwork>(m => m.Requires("NodeType").HasValue("msk1.CurcuitHierarchyNode"))
 			;
 
 			// TODO probable this does not matter
@@ -114,6 +119,34 @@ namespace SeriesEngine.msk1
                 .HasForeignKey(e => e.SupplierContract_Id);
 
 			modelBuilder.Entity<SupplierHierarchyNode>()
+                .HasOptional(e => e.Point)
+                .WithMany()
+                .HasForeignKey(e => e.Point_Id);
+
+			// TODO probable this does not matter
+            modelBuilder.Entity<CurcuitHierarchyNode>()
+                .Map(m =>
+                {
+                    m.MapInheritedProperties();
+                    m.ToTable("msk1.CurcuitHierarchyNodes");
+                });
+
+             modelBuilder.Entity<CurcuitHierarchyNode>()
+                .HasMany(e => e.Children)
+                .WithOptional(e => e.Parent)
+                .HasForeignKey(e => e.ParentId);
+ 
+			modelBuilder.Entity<CurcuitHierarchyNode>()
+                .HasOptional(e => e.Curcuit)
+                .WithMany()
+                .HasForeignKey(e => e.Curcuit_Id);
+
+			modelBuilder.Entity<CurcuitHierarchyNode>()
+                .HasOptional(e => e.CurcuitContract)
+                .WithMany()
+                .HasForeignKey(e => e.CurcuitContract_Id);
+
+			modelBuilder.Entity<CurcuitHierarchyNode>()
                 .HasOptional(e => e.Point)
                 .WithMany()
                 .HasForeignKey(e => e.Point_Id);
@@ -252,6 +285,12 @@ namespace SeriesEngine.msk1
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Point>()
+                .HasMany(e => e.Point_BPGroups)
+                .WithRequired(e => e.Point)
+                .HasForeignKey(e => e.ObjectId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Point>()
                 .HasMany(e => e.Point_PUPlaces)
                 .WithRequired(e => e.Point)
                 .HasForeignKey(e => e.ObjectId)
@@ -323,6 +362,52 @@ namespace SeriesEngine.msk1
                 .HasForeignKey(e => e.AuthorId);
 
             modelBuilder.Entity<SupplierContract>()
+                .Property(e => e.ConcurrencyStamp)
+                .IsFixedLength();
+ 
+			modelBuilder.Entity<Curcuit>()
+                .MapToStoredProcedures(s =>
+					{
+						s.Update(u => u.HasName("msk1.Curcuit_Update"));  
+						s.Delete(d => d.HasName("msk1.Curcuit_Delete")); 
+						s.Insert(i => i.HasName("msk1.Curcuit_Insert"));
+					});
+
+            modelBuilder.Entity<Curcuit>()
+                .HasRequired(e => e.Solution)
+                .WithMany()
+                .HasForeignKey(e => e.SolutionId)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Curcuit>()
+                .HasOptional(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.AuthorId);
+
+            modelBuilder.Entity<Curcuit>()
+                .Property(e => e.ConcurrencyStamp)
+                .IsFixedLength();
+ 
+			modelBuilder.Entity<CurcuitContract>()
+                .MapToStoredProcedures(s =>
+					{
+						s.Update(u => u.HasName("msk1.CurcuitContract_Update"));  
+						s.Delete(d => d.HasName("msk1.CurcuitContract_Delete")); 
+						s.Insert(i => i.HasName("msk1.CurcuitContract_Insert"));
+					});
+
+            modelBuilder.Entity<CurcuitContract>()
+                .HasRequired(e => e.Solution)
+                .WithMany()
+                .HasForeignKey(e => e.SolutionId)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<CurcuitContract>()
+                .HasOptional(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.AuthorId);
+
+            modelBuilder.Entity<CurcuitContract>()
                 .Property(e => e.ConcurrencyStamp)
                 .IsFixedLength();
  

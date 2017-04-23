@@ -42,7 +42,7 @@
       <Family Rank="20">Основные свойства</Family>
       <Help Context="Уровень напряжения">Уровень напряжения</Help>
     </Variable>
-    <Variable Name="MaxPower" DataType="String200" Versioned="True" Period="NonPeriodic">
+    <Variable Name="MaxPower" DataType="Integer" Versioned="True" Period="NonPeriodic">
       <Family Rank="30">Основные свойства</Family>
       <Help Context="Максимальная мощность">Максимальная мощность</Help>
     </Variable>
@@ -50,8 +50,12 @@
       <Family Rank="40">Основные свойства</Family>
       <Help Context="Код ТУ">Код ТУ</Help>
     </Variable>
-    <Variable Name="PUPlace" DataType="String200" Optional="True" Versioned="True">
+    <Variable Name="BPGroup" DataType="String200" Optional="True" Versioned="True" Period="NonPeriodic">
       <Family Rank="50">Основные свойства</Family>
+      <Help Context="Группа БП">Группа БП</Help>
+    </Variable>
+    <Variable Name="PUPlace" DataType="String200" Optional="True" Versioned="True">
+      <Family Rank="60">Основные свойства</Family>
       <Help Context="Место установки прибора учета">Место установки прибора учета</Help>
     </Variable>
   </Stereotype>
@@ -65,6 +69,14 @@
       <Family Rank="20">Основные свойства</Family>
       <Help Context="Тип прибора учета">Тип прибора учета</Help>
     </Variable>
+    <Variable Name="HourCount" DataType="Boolean">
+      <Family Rank="30">Основные свойства</Family>
+      <Help Context="Почасовой учет">Почасовой учет</Help>
+    </Variable>
+    <Variable Name="Class" DataType="String200">
+      <Family Rank="40">Основные свойства</Family>
+      <Help Context="Класс точности">Класс точности</Help>
+    </Variable>
   </Stereotype>
 
   <Stereotype Name="Supplier">
@@ -75,6 +87,24 @@
   </Stereotype>
 
   <Stereotype Name="SupplierContract">
+    <Variable Name="Name" DataType="StringMax">
+      <Family Rank="10">Основные свойства</Family>
+      <Help Context="Договор">Номер договора</Help>
+    </Variable>
+    <Variable Name="ContractForm" DataType="String200">
+      <Family Rank="20">Основные свойства</Family>
+      <Help Context="Форма договора">Форма договора</Help>
+    </Variable>
+  </Stereotype>
+
+  <Stereotype Name="Curcuit">
+    <Variable Name="Name" DataType="StringMax">
+      <Family Rank="10">Основные свойства</Family>
+      <Help Context="Сетевая организация">Сетевая организация</Help>
+    </Variable>
+  </Stereotype>
+
+  <Stereotype Name="CurcuitContract">
     <Variable Name="Name" DataType="StringMax">
       <Family Rank="10">Основные свойства</Family>
       <Help Context="Договор">Номер договора</Help>

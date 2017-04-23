@@ -16,6 +16,8 @@ namespace SeriesEngine.msk1
             {
 				yield return Name;
 				yield return PUType;
+				yield return HourCount;
+				yield return Class;
             }
         }
 
@@ -28,6 +30,18 @@ namespace SeriesEngine.msk1
 		public static Variable PUType = new Variable
         {
 			Name = "PUType",
+			IsPeriodic = false,
+			IsVersioned = false,
+		};
+		public static Variable HourCount = new Variable
+        {
+			Name = "HourCount",
+			IsPeriodic = false,
+			IsVersioned = false,
+		};
+		public static Variable Class = new Variable
+        {
+			Name = "Class",
 			IsPeriodic = false,
 			IsVersioned = false,
 		};

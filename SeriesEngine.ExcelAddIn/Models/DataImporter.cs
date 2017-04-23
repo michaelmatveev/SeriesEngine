@@ -137,10 +137,23 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
+        private string GetColumnCaption(DataBlock block)
+        {
+            if (block is NodeDataBlock)
+            {
+                var nodeType = (block as NodeDataBlock)?.NodeType ?? NodeType.Path;
+                return nodeType == NodeType.UniqueName ? block.Caption + "(+)" : block.Caption;
+            }
+            else
+            {
+                return block.Caption;
+            }
+        }
+
         private void SetColumn(Excel.ListColumn column, Excel.XmlMap map, DataBlock block, Solution solution)
         {
             var nodeType = (block as NodeDataBlock)?.NodeType ?? NodeType.Path;
-            column.Name = nodeType == NodeType.UniqueName ? block.Caption + "(+)" : block.Caption;
+            column.Name = GetColumnCaption(block);
             column.Range.Validation.Delete();
             if (nodeType == NodeType.Since || nodeType == NodeType.Till)
             {

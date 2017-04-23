@@ -30,5 +30,16 @@
         </Level>
       </Level>
     </Level>  
+  </Hierarchy>
+  <Hierarchy Name="CurcuitHierarchy" WithHistory="True">
+    <Level>
+      <UsedStereotype Name="Curcuit" />
+      <Level>
+        <UsedStereotype Name="CurcuitContract" />
+        <Level>
+          <UsedStereotype Name="Point" />
+        </Level>
+      </Level>
+    </Level>  
   </Hierarchy>  
 </Hierarchies>

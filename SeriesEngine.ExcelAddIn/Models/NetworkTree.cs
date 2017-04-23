@@ -5,7 +5,6 @@ using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using SeriesEngine.msk1;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
@@ -244,35 +243,14 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        //private NamedObject FindNamedObject(Model1 context, XElement element)
-        //{
-        //    var objectType = $"{element.Name.LocalName}s";
-        //    var objectName = element.Attribute("UniqueName").Value;
-
-        //    var property = context.GetType().GetProperty(objectType);
-        //    dynamic dbSet = property.GetValue(context);
-
-        //    var prmSolutionId = new SqlParameter("@SolutionId", _network.SolutionId);
-        //    var prmObjectName = new SqlParameter("@ObjectName", objectName);
-
-        //    var entries = dbSet.SqlQuery($"SELECT * FROM pwk1.[{objectType}] where SolutionId=@SolutionId and Name=@ObjectName", prmSolutionId, prmObjectName);
-        //    foreach (NamedObject d in entries)
-        //    {
-        //        d.ObjectModel = MainHierarchyNode.GetObjectModelByName(element.Name.LocalName);
-        //        return d;
-        //    }
-        //    return null;
-        //}
-
         public void RenameObjectLinkedWithNode(int nodeId, string newName)
         {
             using (var context = new Model1())
             {
-                //var node = context.MainHierarchyNodes.Find(nodeId);
-                //node.LinkedObject.SetName(newName);
-
+                context.Database.Log = (s) => Debug.WriteLine(s);
                 var node = _network.MyNodes.FirstOrDefault(n => n.Id == nodeId);
-                context.Entry(node).State = System.Data.Entity.EntityState.Unchanged;
+                //context.Entry(node).State = System.Data.Entity.EntityState.Unchanged;
+                context.Entry(node.LinkedObject).State = System.Data.Entity.EntityState.Unchanged;
                 node.LinkedObject.SetName(newName);
 
                 context.SaveChanges();
@@ -284,19 +262,9 @@ namespace SeriesEngine.ExcelAddIn.Models
             using (var context = new Model1())
             {
                 context.Database.Log = (s) => Debug.WriteLine(s);
-                context.Networks.Attach(_network);
-
-                var nodeSetPropertyName = $"{_network.HierarchyModel.Name}Nodes";
-                var nodeSetProperty = context.GetType().GetProperty(nodeSetPropertyName);
-                dynamic nodeSet = nodeSetProperty.GetValue(context);
-                var node = nodeSet.Find(nodeId);
-                ////var node = context.MainHierarchyNodes.Find(nodeId);
-                //dynamic lo = node.LinkedObject;
-                //var paramId = new SqlParameter("@Id", lo.Id);
-                //var paramTs = new SqlParameter("@ConcurrencyStamp_Original", lo.ConcurrencyStamp);
-                //var spName = $"msk1.{node.LinkedObject.ObjectModel.Name}_Delete";
-                //context.Database.ExecuteSqlCommand($"exec {spName} @Id, @ConcurrencyStamp_Original", paramId, paramTs);
+                var node = _network.MyNodes.Single(n => n.Id == nodeId);
                 context.Entry(node.LinkedObject).State = System.Data.Entity.EntityState.Deleted;
+
                 context.SaveChanges();
             }
         }

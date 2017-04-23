@@ -48,6 +48,9 @@ BEGIN
 	UPDATE [<#= Schema #>].[<#= objectName #>s] 
 	SET [SolutionId] = @SolutionId, [AuthorId] = @AuthorId, [Tag] = @Tag, <#= fieldsExceptName #>     
 	WHERE [Id] = @Id AND [ConcurrencyStamp] = @ConcurrencyStamp_Original;
+
+	IF @@ROWCOUNT > 0
+		SELECT * FROM [<#= Schema #>].[<#= objectName #>s] WHERE [Id] = @Id;
 END
 GO
 

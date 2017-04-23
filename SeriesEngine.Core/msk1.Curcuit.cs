@@ -11,11 +11,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SeriesEngine.msk1
 {
-    [Table("msk1.SupplierContracts")]
-	public partial class SupplierContract : NamedObject
+    [Table("msk1.Curcuits")]
+	public partial class Curcuit : NamedObject
 	{
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public SupplierContract() : base(msk1Objects.SupplierContract)
+        public Curcuit() : base(msk1Objects.Curcuit)
         {
 		}
 
@@ -28,10 +28,5 @@ namespace SeriesEngine.msk1
         {
             Name = newName;
         }
-	
-        [Required]
-        //[StringLength(int.MaxValue)]
-        //[MaxLength]
-        public String ContractForm { get; set; }
 	}
 }

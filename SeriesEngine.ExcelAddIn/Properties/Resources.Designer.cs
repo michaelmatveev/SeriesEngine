@@ -162,10 +162,10 @@ namespace SeriesEngine.ExcelAddIn.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
-        ///&lt;ObjectGrid xmlns=&quot;http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments&quot; Version=&quot;1&quot; Model=&quot;msk1&quot; Name=&quot;Регион - Потребитель - Договор - Объект - Точка - Прибор учета&quot; Sheet=&quot;Лист1&quot; Cell=&quot;C2&quot; NetworkName=&quot;Регион - прибор учета&quot;&gt;
+        ///&lt;ObjectGrid xmlns=&quot;http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments&quot; Version=&quot;1&quot; Model=&quot;msk1&quot; Name=&quot;Регион - Потребитель - Договор - Объект - Точка&quot; Sheet=&quot;Лист1&quot; Cell=&quot;C2&quot; NetworkName=&quot;Регион - прибор учета&quot;&gt;
         ///  &lt;CFragment Caption=&quot;Регион&quot; CollectionName=&quot;Main&quot; Level=&quot;1&quot; RefObject=&quot;Region&quot; Type=&quot;UniqueName&quot;/&gt;
         ///  &lt;CFragment Caption=&quot;Потребитель&quot; CollectionName=&quot;Main&quot; Level=&quot;2&quot; RefObject=&quot;Consumer&quot; Type=&quot;UniqueName&quot;/&gt;
-        ///  &lt;CFragment Capt [rest of string was truncated]&quot;;.
+        ///  &lt;CFragment Caption=&quot;Договор&quot; C [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TestGrid1 {
             get {
@@ -177,12 +177,38 @@ namespace SeriesEngine.ExcelAddIn.Properties {
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
         ///&lt;ObjectGrid xmlns=&quot;http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments&quot; Version=&quot;1&quot; Model=&quot;msk1&quot; Name=&quot;Поставщик - Договор - Точка&quot; Sheet=&quot;Лист1&quot; Cell=&quot;C2&quot; NetworkName=&quot;Поставщик - точка&quot;&gt;
         ///  &lt;CFragment Caption=&quot;Поставщик&quot; CollectionName=&quot;Main&quot; Level=&quot;1&quot; RefObject=&quot;Supplier&quot; Type=&quot;UniqueName&quot;/&gt;
-        ///  &lt;CFragment Caption=&quot;Договор&quot; CollectionName=&quot;Main&quot; Level=&quot;2&quot; RefObject=&quot;SupplierContract&quot; Type=&quot;UniqueName&quot;/&gt;
-        ///  &lt;CFragment Caption=&quot;Точка&quot; CollectionName=&quot;Ma [rest of string was truncated]&quot;;.
+        ///  &lt;CFragment Caption=&quot;№ договора с поставщиком&quot; CollectionName=&quot;Main&quot; Level=&quot;2&quot; RefObject=&quot;SupplierContract&quot; Type=&quot;UniqueName&quot;/&gt;
+        ///  &lt;VFragment Caption=&quot;Тип дого [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TestGrid2 {
             get {
                 return ResourceManager.GetString("TestGrid2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        ///&lt;ObjectGrid xmlns=&quot;http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments&quot; Version=&quot;1&quot; Model=&quot;msk1&quot; Name=&quot;Регион - Потребитель - Договор - Объект - Точка&quot; Sheet=&quot;Лист1&quot; Cell=&quot;C2&quot; NetworkName=&quot;Регион - прибор учета&quot;&gt;
+        ///  &lt;CFragment Caption=&quot;Регион&quot; CollectionName=&quot;Main&quot; Level=&quot;1&quot; RefObject=&quot;Region&quot; Type=&quot;UniqueName&quot;/&gt;
+        ///  &lt;CFragment Caption=&quot;Потребитель&quot; CollectionName=&quot;Main&quot; Level=&quot;2&quot; RefObject=&quot;Consumer&quot; Type=&quot;UniqueName&quot;/&gt;
+        ///  &lt;CFragment Caption=&quot;Договор&quot; C [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string TestGrid3 {
+            get {
+                return ResourceManager.GetString("TestGrid3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        ///&lt;ObjectGrid xmlns=&quot;http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments&quot; Version=&quot;1&quot; Model=&quot;msk1&quot; Name=&quot;Поставщик - Договор - Точка&quot; Sheet=&quot;Лист1&quot; Cell=&quot;C2&quot; NetworkName=&quot;Сетевая организация - точка&quot;&gt;
+        ///  &lt;CFragment Caption=&quot;Сетевая организация&quot; CollectionName=&quot;Main&quot; Level=&quot;1&quot; RefObject=&quot;Curcuit&quot; Type=&quot;UniqueName&quot;/&gt;
+        ///  &lt;CFragment Caption=&quot;№ договора с сетевой организацией&quot; CollectionName=&quot;Main&quot; Level=&quot;2&quot; RefObject=&quot;CurcuitContract&quot; Type=&quot;UniqueName&quot;/&gt;
+        ///  &lt; [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string TestGrid4 {
+            get {
+                return ResourceManager.GetString("TestGrid4", resourceCulture);
             }
         }
         
