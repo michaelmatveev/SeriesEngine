@@ -82,15 +82,21 @@ namespace SeriesEngine.Core.DataAccess
             return collection.OrderBy(pv => pv.Date);
         }
 
-        public bool SetVariableValue(string variableName, object value)
+        public bool SetVariableValue(string variableName, string value)
         {
             var thisType = GetType();
             var property = thisType.GetProperty(variableName);
-            if (property == null || Object.Equals(property.GetValue(this), value))
+            var newValue = ObjectModel
+                .Variables
+                .Single(v => v.Name == variableName)
+                .Parse(value);
+
+            if (property == null || Object.Equals(property.GetValue(this), newValue))
             {
                 return false;
             }
-            property.SetValue(this, value);
+                        
+            property.SetValue(this, newValue);
             return true;
         }
 

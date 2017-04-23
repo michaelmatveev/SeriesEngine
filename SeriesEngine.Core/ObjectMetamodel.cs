@@ -11,6 +11,21 @@ namespace SeriesEngine.Core
         public bool IsVersioned { get; set; }
         public TimeInterval PeriodInterval { get; set; }
         public Type EntityType { get; set; }
+
+        internal object Parse(string value)
+        {
+            bool boolResult;
+            if(bool.TryParse(value, out boolResult))
+            {
+                return boolResult;
+            }
+            int intResult;
+            //if(int.TryParse(value, out intResult))
+            //{
+            //    return intResult;
+            //}
+            return value.Trim();
+        }
     }
 
     public class ObjectMetamodel

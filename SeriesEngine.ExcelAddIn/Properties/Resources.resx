@@ -129,12 +129,12 @@
 &lt;ObjectGrid xmlns="http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments" Version="1" Model="msk1" Name="Поставщик - Договор - Точка" Sheet="Лист1" Cell="C2" NetworkName="Поставщик - точка"&gt;
   &lt;CFragment Caption="Поставщик" CollectionName="Main" Level="1" RefObject="Supplier" Type="UniqueName"/&gt;
   &lt;CFragment Caption="№ договора с поставщиком" CollectionName="Main" Level="2" RefObject="SupplierContract" Type="UniqueName"/&gt;
-  &lt;VFragment Caption="Тип договора" CollectionName="Main" Level="3" RefObject="SupplierContract" Variable="ContractForm" Kind="Fact"/&gt;
-  &lt;CFragment Caption="Дата договора с поставщиком" CollectionName="Main" Level="4" RefObject="SupplierContract" Type="Since"/&gt;
-  &lt;CFragment Caption="Дата завершения договора" CollectionName="Main" Level="5" RefObject="SupplierContract" Type="Till"/&gt;
-  &lt;CFragment Caption="Точка" CollectionName="Main" Level="6" RefObject="Point" Type="UniqueName"/&gt;
-  &lt;CFragment Caption="Дата включения в договор" CollectionName="Main" Level="7" RefObject="Point" Type="Since"/&gt;
-  &lt;CFragment Caption="Дата исключения из договора" CollectionName="Main" Level="8" RefObject="Point" Type="Till"/&gt; 
+  &lt;VFragment Caption="Тип договора" CollectionName="Main" Level="2" RefObject="SupplierContract" Variable="ContractForm" Kind="Fact"/&gt;
+  &lt;CFragment Caption="Дата договора с поставщиком" CollectionName="Main" Level="2" RefObject="SupplierContract" Type="Since"/&gt;
+  &lt;CFragment Caption="Дата завершения договора" CollectionName="Main" Level="2" RefObject="SupplierContract" Type="Till"/&gt;
+  &lt;CFragment Caption="Точка" CollectionName="Main" Level="3" RefObject="Point" Type="UniqueName"/&gt;
+  &lt;CFragment Caption="Дата включения в договор" CollectionName="Main" Level="3" RefObject="Point" Type="Since"/&gt;
+  &lt;CFragment Caption="Дата исключения из договора" CollectionName="Main" Level="3" RefObject="Point" Type="Till"/&gt; 
 &lt;/ObjectGrid&gt;</value>
   </data>
   <data name="connect" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -207,11 +207,11 @@
 &lt;ObjectGrid xmlns="http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments" Version="1" Model="msk1" Name="Поставщик - Договор - Точка" Sheet="Лист1" Cell="C2" NetworkName="Сетевая организация - точка"&gt;
   &lt;CFragment Caption="Сетевая организация" CollectionName="Main" Level="1" RefObject="Curcuit" Type="UniqueName"/&gt;
   &lt;CFragment Caption="№ договора с сетевой организацией" CollectionName="Main" Level="2" RefObject="CurcuitContract" Type="UniqueName"/&gt;
-  &lt;CFragment Caption="Дата договора с сетевой организацией" CollectionName="Main" Level="4" RefObject="CurcuitContract" Type="Since"/&gt;
-  &lt;CFragment Caption="Дата завершения договора" CollectionName="Main" Level="5" RefObject="CurcuitContract" Type="Till"/&gt;
-  &lt;CFragment Caption="Точка" CollectionName="Main" Level="6" RefObject="Point" Type="UniqueName"/&gt;
-  &lt;CFragment Caption="Дата включения в договор" CollectionName="Main" Level="7" RefObject="Point" Type="Since"/&gt;
-  &lt;CFragment Caption="Дата исключения из договора" CollectionName="Main" Level="8" RefObject="Point" Type="Till"/&gt; 
+  &lt;CFragment Caption="Дата договора с сетевой организацией" CollectionName="Main" Level="2" RefObject="CurcuitContract" Type="Since"/&gt;
+  &lt;CFragment Caption="Дата завершения договора" CollectionName="Main" Level="2" RefObject="CurcuitContract" Type="Till"/&gt;
+  &lt;CFragment Caption="Точка" CollectionName="Main" Level="3" RefObject="Point" Type="UniqueName"/&gt;
+  &lt;CFragment Caption="Дата включения в договор" CollectionName="Main" Level="3" RefObject="Point" Type="Since"/&gt;
+  &lt;CFragment Caption="Дата исключения из договора" CollectionName="Main" Level="3" RefObject="Point" Type="Till"/&gt; 
 &lt;/ObjectGrid&gt;</value>
   </data>
 </root>

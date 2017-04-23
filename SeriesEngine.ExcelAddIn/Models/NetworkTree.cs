@@ -204,7 +204,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         private NamedObject CreateObject(XElement element)
         {
-            var objName = element.Attribute("UniqueName").Value;
+            var objName = element.Attribute("UniqueName").Value.Trim();
             var objectModel = ModelsDescription
                 .All
                 .Single(m => m.Name == _network.Solution.ModelName)
