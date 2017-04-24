@@ -67,6 +67,7 @@
     <Compile Include="DataAccess\EditorObject.cs" />
     <Compile Include="DataAccess\User.cs" />
     <Compile Include="DataAccess\Utilities.cs" />
+    <Compile Include="DataAccess\VersionedVariable.cs" />
     <Compile Include="Helpers\CastedList.cs" />
     <Compile Include="msk1.Consumer.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>

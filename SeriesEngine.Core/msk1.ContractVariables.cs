@@ -14,18 +14,11 @@ namespace SeriesEngine.msk1
         {
             get
             {
-				yield return Name;
 				yield return ContractType;
             }
         }
 
-		public static Variable Name = new Variable
-        {
-			Name = "Name",
-			IsPeriodic = false,
-			IsVersioned = false,
-		};
-		public static Variable ContractType = new Variable
+		public static Variable ContractType = new Variable(Contract.ContractTypeSetter)
         {
 			Name = "ContractType",
 			IsPeriodic = false,

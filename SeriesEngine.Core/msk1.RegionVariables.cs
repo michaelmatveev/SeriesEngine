@@ -14,15 +14,8 @@ namespace SeriesEngine.msk1
         {
             get
             {
-				yield return Name;
+                yield break;
             }
         }
-
-		public static Variable Name = new Variable
-        {
-			Name = "Name",
-			IsPeriodic = false,
-			IsVersioned = false,
-		};
 	}
 }

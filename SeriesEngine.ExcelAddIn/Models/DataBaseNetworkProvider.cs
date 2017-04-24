@@ -9,29 +9,6 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public class DataBaseNetworkProvider : INetworksProvider
     {
-        //public ICollection<NetworkTree> GetNetworks(int solutionId)
-        //{
-        //    using (var context = new Model1())
-        //    {
-        //        var nets = context
-        //            .Networks
-        //            .OfType<MainHierarchyNetwork>()
-        //            .Include("Solution")
-        //            .Include("Nodes")
-        //            .Include("Nodes.Region")
-        //            .Include("Nodes.Consumer")
-        //            .Include("Nodes.Contract")
-        //            .Include("Nodes.ConsumerObject")
-        //            .Include("Nodes.Point")
-        //            .Include("Nodes.ElectricMeter")
-        //            .Where(n => n.SolutionId == solutionId)
-        //            .ToList();
-        //        return nets
-        //            .Select(n => new NetworkTree(n))
-        //            .ToList();
-        //    }
-        //}
-
         public NetworkTree GetNetworkById(int networkId)
         {
             using (var context = new Model1())
@@ -42,19 +19,6 @@ namespace SeriesEngine.ExcelAddIn.Models
                 {
                     query = query.Include(v.Name);
                 }
-
-                //var net = context
-                //    .Networks
-                //    .OfType<MainHierarchyNetwork>()
-                //    .Include("Solution")
-                //    .Include("Nodes")
-                //    .Include("Nodes.Region")
-                //    .Include("Nodes.Consumer")
-                //    .Include("Nodes.Contract")
-                //    .Include("Nodes.ConsumerObject")
-                //    .Include("Nodes.Point")
-                //    .Include("Nodes.ElectricMeter")
-                //    .Single(n => n.Id == networkId);
                 query.Load();
                 return new NetworkTree(network);
             }
@@ -75,7 +39,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 if (variables != null)
                 {
                     foreach (var v in variables.OfType<VariableDataBlock>()
-                        .Where(b => b.VariableMetamodel.IsPeriodic))
+                        .Where(b => b.VariableMetamodel.IsPeriodic || b.VariableMetamodel.IsVersioned))
                     {
                         var obj = v.RefObject;
                         var vrb = v.VariableMetamodel.Name;

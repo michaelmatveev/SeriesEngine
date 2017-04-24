@@ -9,6 +9,7 @@ public class ObjectVariableTemplate : CSharpTemplate
 	public string Stereotype;
 	public XElement Variable;
 	public string VarType;
+	public string BaseType;
 
 	public override string TransformText()
 	{
@@ -25,7 +26,7 @@ namespace SeriesEngine.<#= Schema #>
 {
 
     [Table("<#= Schema #>.<#= Stereotype #>_<#= name #>s")]
-    public partial class <#= Stereotype #>_<#= name #> : PeriodVariable
+    public partial class <#= Stereotype #>_<#= name #> : <#= BaseType #>
     {
         [Required]
         //[StringLength(200)]

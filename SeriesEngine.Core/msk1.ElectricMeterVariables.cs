@@ -14,32 +14,27 @@ namespace SeriesEngine.msk1
         {
             get
             {
-				yield return Name;
 				yield return PUType;
 				yield return HourCount;
 				yield return Class;
             }
         }
 
-		public static Variable Name = new Variable
-        {
-			Name = "Name",
-			IsPeriodic = false,
-			IsVersioned = false,
-		};
-		public static Variable PUType = new Variable
+		public static Variable PUType = new Variable(ElectricMeter.PUTypeSetter)
         {
 			Name = "PUType",
 			IsPeriodic = false,
 			IsVersioned = false,
 		};
-		public static Variable HourCount = new Variable
+
+		public static Variable HourCount = new Variable(ElectricMeter.HourCountSetter)
         {
 			Name = "HourCount",
 			IsPeriodic = false,
 			IsVersioned = false,
 		};
-		public static Variable Class = new Variable
+
+		public static Variable Class = new Variable(ElectricMeter.ClassSetter)
         {
 			Name = "Class",
 			IsPeriodic = false,

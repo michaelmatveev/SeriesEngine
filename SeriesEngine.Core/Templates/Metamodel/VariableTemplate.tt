@@ -12,7 +12,8 @@ public class VariableTemplate : CSharpTemplate
 	public override string TransformText()
 	{
 		base.TransformText();
-		var noVariables = !Variables.Any();
+		var vars = Variables.Where(v => v.Attribute("Name").Value != "Name");
+		var noVariables = !vars.Any();
 #>
 using SeriesEngine.Core;
 using System.Collections.Generic;
@@ -41,20 +42,20 @@ namespace SeriesEngine.<#= Schema #>
             get
             {
 <#+
-			foreach(var v in Variables) 
+			foreach(var v in vars) 
 			{
+				var name = v.Attribute("Name").Value;
 #>
-				yield return <#= v.Attribute("Name").Value #>;
+				yield return <#= name #>;
 <#+
 			}
 #>
             }
         }
-
 <#+
 		}
 
-		foreach(var v in Variables)
+		foreach(var v in vars)
 		{
 			var name = v.Attribute("Name").Value;
 			bool isPeriodic = v.Attribute("Period") != null;
@@ -66,7 +67,8 @@ namespace SeriesEngine.<#= Schema #>
 			}
 
 #>
-		public static Variable <#= name #> = new Variable
+
+		public static Variable <#= name #> = new Variable(<#= Stereotype #>.<#= name #>Setter)
         {
 			Name = "<#= name #>",
 			IsPeriodic = <#= isPeriodic.ToString().ToLower() #>,

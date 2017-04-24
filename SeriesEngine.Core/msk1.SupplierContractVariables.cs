@@ -14,18 +14,11 @@ namespace SeriesEngine.msk1
         {
             get
             {
-				yield return Name;
 				yield return ContractForm;
             }
         }
 
-		public static Variable Name = new Variable
-        {
-			Name = "Name",
-			IsPeriodic = false,
-			IsVersioned = false,
-		};
-		public static Variable ContractForm = new Variable
+		public static Variable ContractForm = new Variable(SupplierContract.ContractFormSetter)
         {
 			Name = "ContractForm",
 			IsPeriodic = false,

@@ -33,5 +33,16 @@ namespace SeriesEngine.msk1
         //[StringLength(int.MaxValue)]
         //[MaxLength]
         public String ContractForm { get; set; }
+		public static bool ContractFormSetter(NamedObject obj, string value) 
+		{
+			var target = (SupplierContract)obj;
+
+			if(target.ContractForm != value) 
+			{
+				target.ContractForm = value;
+				return true;
+			}
+			return false;
+		}
 	}
 }

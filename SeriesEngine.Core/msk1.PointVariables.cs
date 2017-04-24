@@ -14,7 +14,6 @@ namespace SeriesEngine.msk1
         {
             get
             {
-				yield return Name;
 				yield return VoltageLevel;
 				yield return MaxPower;
 				yield return TUCode;
@@ -23,41 +22,39 @@ namespace SeriesEngine.msk1
             }
         }
 
-		public static Variable Name = new Variable
-        {
-			Name = "Name",
-			IsPeriodic = false,
-			IsVersioned = false,
-		};
-		public static Variable VoltageLevel = new Variable
+		public static Variable VoltageLevel = new Variable(Point.VoltageLevelSetter)
         {
 			Name = "VoltageLevel",
 			IsPeriodic = true,
 			IsVersioned = true,
 			EntityType = typeof(Point_VoltageLevel)
 		};
-		public static Variable MaxPower = new Variable
+
+		public static Variable MaxPower = new Variable(Point.MaxPowerSetter)
         {
 			Name = "MaxPower",
 			IsPeriodic = true,
 			IsVersioned = true,
 			EntityType = typeof(Point_MaxPower)
 		};
-		public static Variable TUCode = new Variable
+
+		public static Variable TUCode = new Variable(Point.TUCodeSetter)
         {
 			Name = "TUCode",
 			IsPeriodic = true,
 			IsVersioned = true,
 			EntityType = typeof(Point_TUCode)
 		};
-		public static Variable BPGroup = new Variable
+
+		public static Variable BPGroup = new Variable(Point.BPGroupSetter)
         {
 			Name = "BPGroup",
 			IsPeriodic = true,
 			IsVersioned = true,
 			EntityType = typeof(Point_BPGroup)
 		};
-		public static Variable PUPlace = new Variable
+
+		public static Variable PUPlace = new Variable(Point.PUPlaceSetter)
         {
 			Name = "PUPlace",
 			IsPeriodic = false,

@@ -12,7 +12,7 @@ namespace SeriesEngine.msk1
 {
 
     [Table("msk1.Point_PUPlaces")]
-    public partial class Point_PUPlace : PeriodVariable
+    public partial class Point_PUPlace : VersionedVariable
     {
         [Required]
         //[StringLength(200)]

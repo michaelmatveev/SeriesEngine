@@ -33,15 +33,53 @@ namespace SeriesEngine.msk1
         //[StringLength(int.MaxValue)]
         //[MaxLength]
         public String PUType { get; set; }
+		public static bool PUTypeSetter(NamedObject obj, string value) 
+		{
+			var target = (ElectricMeter)obj;
+
+			if(target.PUType != value) 
+			{
+				target.PUType = value;
+				return true;
+			}
+			return false;
+		}
 	
         [Required]
         //[StringLength(int.MaxValue)]
         //[MaxLength]
         public Boolean HourCount { get; set; }
+		public static bool HourCountSetter(NamedObject obj, string value) 
+		{
+			var target = (ElectricMeter)obj;
+
+			Boolean newValue;
+			if(Boolean.TryParse(value, out newValue)) 
+			{
+				if(target.HourCount != newValue)
+				{
+					target.HourCount = newValue;
+					return true;
+				}				
+				return false;			
+			}
+			throw new Exception("Cannot cast variable");
+		}
 	
         [Required]
         //[StringLength(int.MaxValue)]
         //[MaxLength]
         public String Class { get; set; }
+		public static bool ClassSetter(NamedObject obj, string value) 
+		{
+			var target = (ElectricMeter)obj;
+
+			if(target.Class != value) 
+			{
+				target.Class = value;
+				return true;
+			}
+			return false;
+		}
 	}
 }

@@ -69,6 +69,39 @@ namespace SeriesEngine.<#= Schema #>
         //[StringLength(int.MaxValue)]
         //[MaxLength]
         public <#= type #> <#= varName #> { get; set; }
+		public static bool <#= varName #>Setter(NamedObject obj, string value) 
+		{
+			var target = (<#= name #>)obj;
+
+<#+			if(type == "String")
+			{
+#>
+			if(target.<#= varName #> != value) 
+			{
+				target.<#= varName #> = value;
+				return true;
+			}
+			return false;
+<#+
+			}
+			else
+			{
+#>
+			<#= type #> newValue;
+			if(<#= type #>.TryParse(value, out newValue)) 
+			{
+				if(target.<#= varName #> != newValue)
+				{
+					target.<#= varName #> = newValue;
+					return true;
+				}				
+				return false;			
+			}
+			throw new Exception("Cannot cast variable");
+<#+
+			}
+#>
+		}
 <#+
 		}
 		foreach(var varElement in vs.QueryVariablesThat().Versioned().Variables)
@@ -78,6 +111,11 @@ namespace SeriesEngine.<#= Schema #>
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<<#= name #>_<#= varName#>> <#= name #>_<#= varName#>s { get; set; }
+		public static bool <#= varName #>Setter(NamedObject obj, string value) 
+		{
+			var target = (<#= name #>)obj;
+			return false;
+		}
 <#+
 		}
 #>

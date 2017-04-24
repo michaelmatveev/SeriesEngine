@@ -55,13 +55,23 @@ namespace SeriesEngine.Core.DataAccess
         {
             var thisType = GetType();
             PropertyInfo property;
-            if (variableModel.IsPeriodic || variableModel.IsVersioned)
+            if (variableModel.IsPeriodic && variableModel.IsVersioned)
             {
                 property = thisType.GetProperty($"{ObjectModel.Name}_{variableModel.Name}s");
                 var collection = property.GetValue(this, null) as IEnumerable<PeriodVariable>;
                 return collection
                     .OrderBy(v => v.Date)
                     .LastOrDefault(v => v.Date < requestedPeriod.Till)
+                    ?.Value;
+            }
+
+            if (!variableModel.IsPeriodic && variableModel.IsVersioned)
+            {
+                property = thisType.GetProperty($"{ObjectModel.Name}_{variableModel.Name}s");
+                var collection = property.GetValue(this, null) as IEnumerable<VersionedVariable>;
+                return collection
+                    .OrderBy(v => v.CreationTime)
+                    .LastOrDefault()
                     ?.Value;
             }
 
@@ -86,18 +96,25 @@ namespace SeriesEngine.Core.DataAccess
         {
             var thisType = GetType();
             var property = thisType.GetProperty(variableName);
-            var newValue = ObjectModel
+            return ObjectModel
                 .Variables
                 .Single(v => v.Name == variableName)
-                .Parse(value);
+                .SetValue(this, value);
 
-            if (property == null || Object.Equals(property.GetValue(this), newValue))
-            {
-                return false;
-            }
-                        
-            property.SetValue(this, newValue);
-            return true;
+            //var thisType = GetType();
+            //var property = thisType.GetProperty(variableName);
+            //var newValue = ObjectModel
+            //    .Variables
+            //    .Single(v => v.Name == variableName)
+            //    .Parse(value);
+
+            //if (property == null || Object.Equals(property.GetValue(this), newValue))
+            //{
+            //    return false;
+            //}
+
+            //property.SetValue(this, newValue);
+            //return true;
         }
 
     }

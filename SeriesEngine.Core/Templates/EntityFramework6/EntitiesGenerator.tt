@@ -47,10 +47,13 @@ public class EntitiesGenerator : Generator
 				var typeName = variableElement.Attribute("DataType").Value;
 				var varType = dataTypes[typeName].Attribute("ClrType").Value;
 				output = String.Format("{0}.{1}_{2}.cs", prefix, objectName, varName);
-				
+				var isPeriodic = variableElement.Attribute("Period") != null;
+
 				objectVariableTemplate.Stereotype = objectName;
 				objectVariableTemplate.Variable = variableElement;
 				objectVariableTemplate.VarType = varType;
+				objectVariableTemplate.BaseType = isPeriodic ? "PeriodVariable" : "VersionedVariable";
+
 				objectVariableTemplate.RenderToFile(output);
 			}
 		}

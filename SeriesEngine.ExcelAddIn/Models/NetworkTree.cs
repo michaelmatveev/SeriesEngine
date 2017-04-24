@@ -5,6 +5,7 @@ using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using SeriesEngine.msk1;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
@@ -222,24 +223,33 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void Update(IEnumerable<IStateObject> valuesForPeriod)
         {
-            using (var context = new Model1())
+            try
             {
-                //context.Configuration.AutoDetectChangesEnabled = false;
-                context.Networks.Attach(_network);
-                foreach(var v in valuesForPeriod)
+                using (var context = new Model1())
                 {
-                    if (v.State == ObjectState.Added)
+                    //context.Configuration.AutoDetectChangesEnabled = false;
+                    //context.Networks.Attach(_network);
+                    foreach (var v in valuesForPeriod)
                     {
-                        context.Set(v.GetType()).Add(v);
+                        if (v.State == ObjectState.Added)
+                        {
+                            context.Set(v.GetType()).Add(v);
+                        }
+                        else
+                        {
+                            context.Set(v.GetType()).Attach(v);
+                        }
                     }
-                    else
-                    {
-                        context.Set(v.GetType()).Attach(v);
-                    }
+                    context.FixState();
+                    context.Database.Log = x => System.Diagnostics.Debug.WriteLine(x);
+                    context.SaveChanges();
                 }
-                context.FixState();
-                context.Database.Log = x => System.Diagnostics.Debug.WriteLine(x);
-                context.SaveChanges();
+            }
+            catch(DbEntityValidationException ex)
+            {
+                var errors = ex.EntityValidationErrors.SelectMany(s => s.ValidationErrors);
+                var message = string.Join(", ", errors.Select(e => e.ErrorMessage));
+                throw new InvalidOperationException(message);
             }
         }
 

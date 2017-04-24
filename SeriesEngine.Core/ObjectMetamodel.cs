@@ -6,11 +6,27 @@ namespace SeriesEngine.Core
 {
     public class Variable
     {
+        private readonly Func<NamedObject, string, bool> _valueSetter;
+
+        public Variable()
+        {
+        }
+
+        public Variable(Func<NamedObject, string, bool> valueSetter)
+        {
+            _valueSetter = valueSetter;
+        }
+
         public string Name { get; set; }
         public bool IsPeriodic { get; set; }
         public bool IsVersioned { get; set; }
         public TimeInterval PeriodInterval { get; set; }
         public Type EntityType { get; set; }
+
+        public bool SetValue(NamedObject obj, string value)
+        {
+            return _valueSetter(obj, value);
+        }
 
         internal object Parse(string value)
         {
