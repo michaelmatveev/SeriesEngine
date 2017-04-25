@@ -6,6 +6,7 @@ using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
 using SeriesEngine.ExcelAddIn.Helpers;
 using SeriesEngine.Core.DataAccess;
+using System.Text.RegularExpressions;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -92,24 +93,22 @@ namespace SeriesEngine.ExcelAddIn.Models
                 listObject = sheet.ListObjects.Add();
                 listObject.Name = collectionDatablock.Name;
 
-                var column = listObject.ListColumns
-                    .Cast<Excel.ListColumn>()
-                    .First();
+                if (!collectionDatablock.AddIndexColumn)
+                {
+                    var column = listObject
+                        .ListColumns
+                        .Cast<Excel.ListColumn>()
+                        .First();
 
-                var block = collectionDatablock.DataBlocks.First();
-                SetColumn(column, xmlMap, block, solution);
+                    var block = collectionDatablock.DataBlocks.First();
+                    SetColumn(column, xmlMap, block, solution);
+                }
 
-                foreach (var f in collectionDatablock.DataBlocks.Skip(1))
+                foreach (var f in collectionDatablock.DataBlocks.Skip(collectionDatablock.AddIndexColumn ? 0 : 1))
                 {
                     var newColumn = listObject.ListColumns.Add();
                     SetColumn(newColumn, xmlMap, f, solution);
                 }
-
-                //var blocks = collectionDatablock
-                //    .DataBlocks
-                //    .OfType<VariableDataBlock>()
-                //    .Where(b => b.VariableMetamodel.IsPeriodic)
-                //    .ToList();
 
                 var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
 
@@ -127,7 +126,14 @@ namespace SeriesEngine.ExcelAddIn.Models
                     collectionDatablock.Xml = xml;
 
                     var result = xmlMap.ImportXml(xml.ToString(), true);
+                    // call after data assigment
+                    if (collectionDatablock.AddIndexColumn)
+                    {
+                        SetupIndexerColumn(listObject, collectionDatablock.Cell);
+                    }
+
                     listObject.HeaderRowRange.Validation.Delete();
+                    listObject.Range.Columns.AutoFit();                 
                 }
             }
             finally
@@ -135,6 +141,18 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _workbook.Application.EnableEvents = true;
                 _workbook.Application.DisplayAlerts = true;
             }
+        }
+
+        private static void SetupIndexerColumn(Excel.ListObject listObject, string startCell)
+        {
+            var column = listObject
+                .ListColumns
+                .Cast<Excel.ListColumn>()
+                .First();
+            var startRow = Regex.Match(startCell, @"\d+");
+            var rowNumberFormula = $"=ROW() - {startRow}";
+            column.DataBodyRange.Formula = rowNumberFormula;
+            column.Name = "#";
         }
 
         private string GetColumnCaption(DataBlock block)

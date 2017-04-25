@@ -27,16 +27,17 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
         public PeriodType PeriodType { get; set; } = PeriodType.Common;
         public Period CustomPeriod { get; set; }
         public XDocument Xml { get; set; }
+        public bool AddIndexColumn { get; set; }
         public IList<DataBlock> DataBlocks { get; private set; } = new List<DataBlock>();
 
-        public CollectionDataBlock() : base(null)
+        public CollectionDataBlock() : this(null, Period.Default)
         {
-            CustomPeriod = Period.Default;
         }
 
         public CollectionDataBlock(SheetDataBlock parent, Period defaultPeriod) : base(parent)
         {
             CustomPeriod = defaultPeriod;
+            AddIndexColumn = true;
         }
 
         public override void Export(Solution solution, BaseDataExporter exproter)
