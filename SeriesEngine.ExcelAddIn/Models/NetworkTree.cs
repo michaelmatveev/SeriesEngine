@@ -33,7 +33,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             var rootElement = new XElement(RootName);
             var tree = _network
                 .MyNodes
-                .Where(n => IsNodeInPeriod(n, defaultPeriod, false))
+                .Where(n => IsNodeInPeriod(n, defaultPeriod, false) && n.LinkedObject != null) // мы грузим все node для Network, но некторые из них не ссылаются на LinkedObject потому что соотвествующие объекты не были запрошены
                 .GenerateTree(n => n.NodeName, n => n.MyParent?.NodeName);
 
             rootElement.Add(GetSubElements(tree, queryParamers));
