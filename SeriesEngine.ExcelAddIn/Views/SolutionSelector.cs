@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Deployment.Application;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -14,9 +15,17 @@ namespace SeriesEngine.ExcelAddIn.Views
             InitializeComponent();
         }
 
+        private void SolutionSelector_Load(object sender, EventArgs e)
+        {
+            var version = ApplicationDeployment.IsNetworkDeployed ?
+                ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString() :
+                "Локальная сборка";
+            labelVersion.Text = $"Версия: {version}"; 
+        }
+
         public void ShowIt(IEnumerable<Solution> solutions, Solution selectedSolution)
         {
-            var items = solutions.Select(s => new ListViewItem(new[] { s.Name, s.Description })
+            var items = solutions.Select(s => new ListViewItem(new[] { s.Name, s.ModelName, s.Description })
             {
                 Tag = s,
                 Selected = selectedSolution != null ? s.Id == selectedSolution.Id : false
