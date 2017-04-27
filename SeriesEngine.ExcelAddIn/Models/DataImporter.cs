@@ -69,8 +69,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                 
                 Excel.Worksheet sheet = _workbook.Sheets[collectionDatablock.Sheet];
                 sheet.Activate();
-                sheet.get_Range(collectionDatablock.Cell).Select();
-
+                var tableCell = sheet.get_Range(collectionDatablock.Cell);
+                
                 var xmlMap = _workbook
                     .XmlMaps
                     .Cast<Excel.XmlMap>()
@@ -88,10 +88,20 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Cast<Excel.ListObject>()
                     .SingleOrDefault(l => l.Name == collectionDatablock.Name);
 
-                listObject?.Delete();
+                if (listObject == null)
+                {
+                    listObject = sheet.ListObjects.Add(SourceType: Excel.XlListObjectSourceType.xlSrcRange, Source: tableCell, Destination: tableCell, XlListObjectHasHeaders: Excel.XlYesNoGuess.xlNo);
+                    listObject.Name = collectionDatablock.Name;
+                    // contains one column
+                }
 
-                listObject = sheet.ListObjects.Add();
-                listObject.Name = collectionDatablock.Name;
+                foreach (var column in listObject
+                        .ListColumns
+                        .Cast<Excel.ListColumn>()
+                        .Skip(1))
+                {
+                    column.Delete();
+                }
 
                 if (!collectionDatablock.AddIndexColumn)
                 {
@@ -106,8 +116,12 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 foreach (var f in collectionDatablock.DataBlocks.Skip(collectionDatablock.AddIndexColumn ? 0 : 1))
                 {
-                    var newColumn = listObject.ListColumns.Add();
-                    SetColumn(newColumn, xmlMap, f, solution);
+                    var column = listObject.ListColumns.Add();
+                    if (listObject.ShowHeaders)
+                    {
+                        column.Name = GetColumnCaption(f);
+                    }
+                    SetColumn(column, xmlMap, f, solution);
                 }
 
                 var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
@@ -132,7 +146,11 @@ namespace SeriesEngine.ExcelAddIn.Models
                         SetupIndexerColumn(listObject, collectionDatablock.Cell);
                     }
 
-                    listObject.HeaderRowRange.Validation.Delete();
+                    if (listObject.ShowHeaders)
+                    {
+                        listObject.HeaderRowRange.Validation.Delete();
+                    }
+                    
                     listObject.Range.Columns.AutoFit();                 
                 }
             }
@@ -152,7 +170,10 @@ namespace SeriesEngine.ExcelAddIn.Models
             var startRow = Regex.Match(startCell, @"\d+");
             var rowNumberFormula = $"=ROW() - {startRow}";
             column.DataBodyRange.Formula = rowNumberFormula;
-            column.Name = "#";
+            if (listObject.ShowHeaders)
+            {
+                column.Name = "#";
+            }
         }
 
         private string GetColumnCaption(DataBlock block)
@@ -171,7 +192,6 @@ namespace SeriesEngine.ExcelAddIn.Models
         private void SetColumn(Excel.ListColumn column, Excel.XmlMap map, DataBlock block, Solution solution)
         {
             var nodeType = (block as NodeDataBlock)?.NodeType ?? NodeType.Path;
-            column.Name = GetColumnCaption(block);
             column.Range.Validation.Delete();
             if (nodeType == NodeType.Since || nodeType == NodeType.Till)
             {
@@ -182,6 +202,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var formula = _objectCache.GetObjectsOfType(solution, block.RefObject);
                 if (!string.IsNullOrEmpty(formula))
                 {
+                    column.Range.Validation.Delete();
                     column.Range.Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertInformation, Excel.XlFormatConditionOperator.xlBetween, formula);
                     column.Range.Validation.ShowError = false;
                     column.Range.Validation.ShowInput = false;

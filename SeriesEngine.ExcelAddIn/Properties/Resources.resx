@@ -163,7 +163,7 @@
   </data>
   <data name="TestGrid1" xml:space="preserve">
     <value>&lt;?xml version="1.0" encoding="utf-8" ?&gt;
-&lt;ObjectGrid xmlns="http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments" Version="1" Model="msk1" Name="Регион - Потребитель - Договор - Объект - Точка" Sheet="Лист1" Cell="C2" NetworkName="Регион - прибор учета"&gt;
+&lt;ObjectGrid xmlns="http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments" Version="1" Model="msk1" Name="Регион - Потребитель - Договор - Объект - Точка" Sheet="Лист1" Cell="C2" NetworkName="Регион - прибор учета" ShowHeader="False"&gt;
   &lt;CFragment Caption="Регион" CollectionName="Main" Level="1" RefObject="Region" Type="UniqueName"/&gt;
   &lt;CFragment Caption="Потребитель" CollectionName="Main" Level="2" RefObject="Consumer" Type="UniqueName"/&gt;
   &lt;CFragment Caption="Договор" CollectionName="Main" Level="3" RefObject="Contract" Type="UniqueName"/&gt;

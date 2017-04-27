@@ -22,6 +22,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                 Name = source.Root.Attribute("Name").Value,
                 Sheet = source.Root.Attribute("Sheet").Value,
                 Cell = source.Root.Attribute("Cell").Value,
+                AddIndexColumn = bool.Parse(source.Root.Attribute("AddIndexColumn")?.Value ?? "True"),
+                ShowHeader = bool.Parse(source.Root.Attribute("ShowHeader")?.Value ?? "True")
             };
 
             var model = source.Root.Attribute("Model").Value;
@@ -74,8 +76,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                         new XAttribute("NetworkRevision", coll.NetworkRevision),
                         new XAttribute("Name", coll.Name),
                         new XAttribute("Sheet", coll.Sheet),
-                        new XAttribute("Model", "msk1"),
-                        new XAttribute("Cell", coll.Cell));
+                        new XAttribute("Model", "msk1"), //TODO replace with current solution model
+                        new XAttribute("Cell", coll.Cell),
+                        new XAttribute("AddIndexColumn", coll.AddIndexColumn),
+                        new XAttribute("ShowHeader", coll.ShowHeader));
                 var doc = new XDocument(root);
 
                 foreach(var n in coll.DataBlocks)
