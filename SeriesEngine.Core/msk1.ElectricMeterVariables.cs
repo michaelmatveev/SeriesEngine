@@ -17,6 +17,8 @@ namespace SeriesEngine.msk1
 				yield return PUType;
 				yield return HourCount;
 				yield return Class;
+				yield return Direction;
+				yield return Integral;
             }
         }
 
@@ -39,6 +41,21 @@ namespace SeriesEngine.msk1
 			Name = "Class",
 			IsPeriodic = false,
 			IsVersioned = false,
+		};
+
+		public static Variable Direction = new Variable(ElectricMeter.DirectionSetter)
+        {
+			Name = "Direction",
+			IsPeriodic = false,
+			IsVersioned = true,
+		};
+
+		public static Variable Integral = new Variable(ElectricMeter.IntegralSetter)
+        {
+			Name = "Integral",
+			IsPeriodic = true,
+			IsVersioned = true,
+			EntityType = typeof(ElectricMeter_Integral)
 		};
 	}
 }

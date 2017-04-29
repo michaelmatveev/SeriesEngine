@@ -58,6 +58,10 @@
       <Family Rank="60">Основные свойства</Family>
       <Help Context="Место установки прибора учета">Место установки прибора учета</Help>
     </Variable>
+    <Variable Name="ContractPriceCategory" DataType="String200" Optional="True" Versioned="True">
+      <Family Rank="60">Основные свойства</Family>
+      <Help Context="Ценовая категория по контракту">Ценовая категория по контракту</Help>
+    </Variable>
   </Stereotype>
   
   <Stereotype Name="ElectricMeter">
@@ -77,6 +81,15 @@
       <Family Rank="40">Основные свойства</Family>
       <Help Context="Класс точности">Класс точности</Help>
     </Variable>
+    <Variable Name="Direction" DataType="String200" Optional="True" Versioned="True">
+      <Family Rank="50">Основные свойства</Family>
+      <Help Context="Класс точности">Класс точности</Help>
+    </Variable>
+    <Variable Name="Integral" DataType="Decimal" Optional="True" Versioned="True" Period="Month">
+      <Family Rank="60">Основные свойства</Family>
+      <Help Context="Класс точности">Класс точности</Help>
+    </Variable>
+
   </Stereotype>
 
   <Stereotype Name="Supplier">

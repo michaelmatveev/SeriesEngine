@@ -33,8 +33,11 @@ namespace SeriesEngine.msk1
 		public virtual DbSet<Point_TUCode> Point_TUCodes { get; set; }
 		public virtual DbSet<Point_BPGroup> Point_BPGroups { get; set; }
 		public virtual DbSet<Point_PUPlace> Point_PUPlaces { get; set; }
+		public virtual DbSet<Point_ContractPriceCategory> Point_ContractPriceCategorys { get; set; }
         public virtual DbSet<ElectricMeter> ElectricMeters { get; set; }
-         public virtual DbSet<Supplier> Suppliers { get; set; }
+ 		public virtual DbSet<ElectricMeter_Direction> ElectricMeter_Directions { get; set; }
+		public virtual DbSet<ElectricMeter_Integral> ElectricMeter_Integrals { get; set; }
+        public virtual DbSet<Supplier> Suppliers { get; set; }
          public virtual DbSet<SupplierContract> SupplierContracts { get; set; }
          public virtual DbSet<Curcuit> Curcuits { get; set; }
          public virtual DbSet<CurcuitContract> CurcuitContracts { get; set; }
@@ -296,6 +299,12 @@ namespace SeriesEngine.msk1
                 .HasForeignKey(e => e.ObjectId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Point>()
+                .HasMany(e => e.Point_ContractPriceCategorys)
+                .WithRequired(e => e.Point)
+                .HasForeignKey(e => e.ObjectId)
+                .WillCascadeOnDelete(false);
+
 			modelBuilder.Entity<ElectricMeter>()
                 .MapToStoredProcedures(s =>
 					{
@@ -319,6 +328,18 @@ namespace SeriesEngine.msk1
                 .Property(e => e.ConcurrencyStamp)
                 .IsFixedLength();
  
+            modelBuilder.Entity<ElectricMeter>()
+                .HasMany(e => e.ElectricMeter_Directions)
+                .WithRequired(e => e.ElectricMeter)
+                .HasForeignKey(e => e.ObjectId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ElectricMeter>()
+                .HasMany(e => e.ElectricMeter_Integrals)
+                .WithRequired(e => e.ElectricMeter)
+                .HasForeignKey(e => e.ObjectId)
+                .WillCascadeOnDelete(false);
+
 			modelBuilder.Entity<Supplier>()
                 .MapToStoredProcedures(s =>
 					{

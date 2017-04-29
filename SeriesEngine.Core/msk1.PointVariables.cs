@@ -19,6 +19,7 @@ namespace SeriesEngine.msk1
 				yield return TUCode;
 				yield return BPGroup;
 				yield return PUPlace;
+				yield return ContractPriceCategory;
             }
         }
 
@@ -57,6 +58,13 @@ namespace SeriesEngine.msk1
 		public static Variable PUPlace = new Variable(Point.PUPlaceSetter)
         {
 			Name = "PUPlace",
+			IsPeriodic = false,
+			IsVersioned = true,
+		};
+
+		public static Variable ContractPriceCategory = new Variable(Point.ContractPriceCategorySetter)
+        {
+			Name = "ContractPriceCategory",
 			IsPeriodic = false,
 			IsVersioned = true,
 		};

@@ -111,6 +111,12 @@
     <Compile Include="msk1.ElectricMeterVariables.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
+    <Compile Include="msk1.ElectricMeter_Direction.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_Integral.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="msk1.MainHierarchyNetwork.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
@@ -130,6 +136,9 @@
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
     <Compile Include="msk1.Point_BPGroup.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point_ContractPriceCategory.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
     <Compile Include="msk1.Point_MaxPower.cs">
@@ -196,6 +205,8 @@
 .\msk1.CurcuitHierarchyNode.cs
 .\msk1.CurcuitVariables.cs
 .\msk1.ElectricMeter.cs
+.\msk1.ElectricMeter_Direction.cs
+.\msk1.ElectricMeter_Integral.cs
 .\msk1.ElectricMeterVariables.cs
 .\msk1.MainHierarchyNetwork.cs
 .\msk1.MainHierarchyNode.cs
@@ -203,6 +214,7 @@
 .\msk1.Objects.cs
 .\msk1.Point.cs
 .\msk1.Point_BPGroup.cs
+.\msk1.Point_ContractPriceCategory.cs
 .\msk1.Point_MaxPower.cs
 .\msk1.Point_PUPlace.cs
 .\msk1.Point_TUCode.cs

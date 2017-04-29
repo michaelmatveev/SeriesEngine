@@ -22,6 +22,7 @@ namespace SeriesEngine.msk1
 			Point_TUCodes = new HashSet<Point_TUCode>();
 			Point_BPGroups = new HashSet<Point_BPGroup>();
 			Point_PUPlaces = new HashSet<Point_PUPlace>();
+			Point_ContractPriceCategorys = new HashSet<Point_ContractPriceCategory>();
 		}
 
         public override string GetName()
@@ -69,6 +70,14 @@ namespace SeriesEngine.msk1
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Point_PUPlace> Point_PUPlaces { get; set; }
 		public static bool PUPlaceSetter(NamedObject obj, string value) 
+		{
+			var target = (Point)obj;
+			return false;
+		}
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Point_ContractPriceCategory> Point_ContractPriceCategorys { get; set; }
+		public static bool ContractPriceCategorySetter(NamedObject obj, string value) 
 		{
 			var target = (Point)obj;
 			return false;

@@ -17,6 +17,8 @@ namespace SeriesEngine.msk1
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ElectricMeter() : base(msk1Objects.ElectricMeter)
         {
+			ElectricMeter_Directions = new HashSet<ElectricMeter_Direction>();
+			ElectricMeter_Integrals = new HashSet<ElectricMeter_Integral>();
 		}
 
         public override string GetName()
@@ -79,6 +81,22 @@ namespace SeriesEngine.msk1
 				target.Class = value;
 				return true;
 			}
+			return false;
+		}
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ElectricMeter_Direction> ElectricMeter_Directions { get; set; }
+		public static bool DirectionSetter(NamedObject obj, string value) 
+		{
+			var target = (ElectricMeter)obj;
+			return false;
+		}
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ElectricMeter_Integral> ElectricMeter_Integrals { get; set; }
+		public static bool IntegralSetter(NamedObject obj, string value) 
+		{
+			var target = (ElectricMeter)obj;
 			return false;
 		}
 	}

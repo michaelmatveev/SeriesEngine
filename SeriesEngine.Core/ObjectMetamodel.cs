@@ -28,20 +28,6 @@ namespace SeriesEngine.Core
             return _valueSetter(obj, value);
         }
 
-        internal object Parse(string value)
-        {
-            bool boolResult;
-            if(bool.TryParse(value, out boolResult))
-            {
-                return boolResult;
-            }
-            int intResult;
-            //if(int.TryParse(value, out intResult))
-            //{
-            //    return intResult;
-            //}
-            return value.Trim();
-        }
     }
 
     public class ObjectMetamodel
