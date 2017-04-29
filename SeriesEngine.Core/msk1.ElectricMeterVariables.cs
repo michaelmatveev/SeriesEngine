@@ -22,35 +22,35 @@ namespace SeriesEngine.msk1
             }
         }
 
-		public static Variable PUType = new Variable(ElectricMeter.PUTypeSetter)
+		public static Variable PUType = new Variable(ElectricMeter.PUTypeParser)
         {
 			Name = "PUType",
 			IsPeriodic = false,
 			IsVersioned = false,
 		};
 
-		public static Variable HourCount = new Variable(ElectricMeter.HourCountSetter)
+		public static Variable HourCount = new Variable(ElectricMeter.HourCountParser)
         {
 			Name = "HourCount",
 			IsPeriodic = false,
 			IsVersioned = false,
 		};
 
-		public static Variable Class = new Variable(ElectricMeter.ClassSetter)
+		public static Variable Class = new Variable(ElectricMeter.ClassParser)
         {
 			Name = "Class",
 			IsPeriodic = false,
 			IsVersioned = false,
 		};
 
-		public static Variable Direction = new Variable(ElectricMeter.DirectionSetter)
+		public static Variable Direction = new Variable(ElectricMeter.DirectionParser)
         {
 			Name = "Direction",
 			IsPeriodic = false,
 			IsVersioned = true,
 		};
 
-		public static Variable Integral = new Variable(ElectricMeter.IntegralSetter)
+		public static Variable Integral = new Variable(ElectricMeter.IntegralParser)
         {
 			Name = "Integral",
 			IsPeriodic = true,

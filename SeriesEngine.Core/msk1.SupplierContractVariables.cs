@@ -18,7 +18,7 @@ namespace SeriesEngine.msk1
             }
         }
 
-		public static Variable ContractForm = new Variable(SupplierContract.ContractFormSetter)
+		public static Variable ContractForm = new Variable(SupplierContract.ContractFormParser)
         {
 			Name = "ContractForm",
 			IsPeriodic = false,

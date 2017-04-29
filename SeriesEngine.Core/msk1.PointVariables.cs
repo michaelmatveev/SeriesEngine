@@ -23,7 +23,7 @@ namespace SeriesEngine.msk1
             }
         }
 
-		public static Variable VoltageLevel = new Variable(Point.VoltageLevelSetter)
+		public static Variable VoltageLevel = new Variable(Point.VoltageLevelParser)
         {
 			Name = "VoltageLevel",
 			IsPeriodic = true,
@@ -31,7 +31,7 @@ namespace SeriesEngine.msk1
 			EntityType = typeof(Point_VoltageLevel)
 		};
 
-		public static Variable MaxPower = new Variable(Point.MaxPowerSetter)
+		public static Variable MaxPower = new Variable(Point.MaxPowerParser)
         {
 			Name = "MaxPower",
 			IsPeriodic = true,
@@ -39,7 +39,7 @@ namespace SeriesEngine.msk1
 			EntityType = typeof(Point_MaxPower)
 		};
 
-		public static Variable TUCode = new Variable(Point.TUCodeSetter)
+		public static Variable TUCode = new Variable(Point.TUCodeParser)
         {
 			Name = "TUCode",
 			IsPeriodic = true,
@@ -47,7 +47,7 @@ namespace SeriesEngine.msk1
 			EntityType = typeof(Point_TUCode)
 		};
 
-		public static Variable BPGroup = new Variable(Point.BPGroupSetter)
+		public static Variable BPGroup = new Variable(Point.BPGroupParser)
         {
 			Name = "BPGroup",
 			IsPeriodic = true,
@@ -55,14 +55,14 @@ namespace SeriesEngine.msk1
 			EntityType = typeof(Point_BPGroup)
 		};
 
-		public static Variable PUPlace = new Variable(Point.PUPlaceSetter)
+		public static Variable PUPlace = new Variable(Point.PUPlaceParser)
         {
 			Name = "PUPlace",
 			IsPeriodic = false,
 			IsVersioned = true,
 		};
 
-		public static Variable ContractPriceCategory = new Variable(Point.ContractPriceCategorySetter)
+		public static Variable ContractPriceCategory = new Variable(Point.ContractPriceCategoryParser)
         {
 			Name = "ContractPriceCategory",
 			IsPeriodic = false,

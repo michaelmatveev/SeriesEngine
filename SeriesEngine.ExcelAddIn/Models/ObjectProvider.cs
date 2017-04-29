@@ -50,7 +50,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 var network = _networksProvider.GetNetwork(solution.Id, collectionDatablock.NetworkName);
 
-                var xpath = GetXPathToNodeId(column.XPath.Value, selection.Value);
+                var xpath = GetXPathToNodeId(column.XPath.Value, selection.Value.ToString());
                 var id = ((IEnumerable<object>)collectionDatablock.Xml.Root.XPathEvaluate(xpath))
                     .OfType<XAttribute>()
                     .FirstOrDefault();

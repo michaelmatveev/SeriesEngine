@@ -55,6 +55,10 @@
             this.buttonDeleteObject = this.Factory.CreateRibbonButton();
             this.groupVariable = this.Factory.CreateRibbonGroup();
             this.buttonEdit = this.Factory.CreateRibbonButton();
+            this.toggleButtonBeginOfPeriod = this.Factory.CreateRibbonToggleButton();
+            this.toggleButtonEndOfPeriod = this.Factory.CreateRibbonToggleButton();
+            this.label1 = this.Factory.CreateRibbonLabel();
+            this.buttonGroup1 = this.Factory.CreateRibbonButtonGroup();
             this.tab1.SuspendLayout();
             this.tabCustom.SuspendLayout();
             this.groupConnect.SuspendLayout();
@@ -62,6 +66,7 @@
             this.groupDataBlocks.SuspendLayout();
             this.groupObject.SuspendLayout();
             this.groupVariable.SuspendLayout();
+            this.buttonGroup1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
@@ -222,6 +227,8 @@
             // groupVariable
             // 
             this.groupVariable.Items.Add(this.buttonEdit);
+            this.groupVariable.Items.Add(this.label1);
+            this.groupVariable.Items.Add(this.buttonGroup1);
             this.groupVariable.Label = "Переменная";
             this.groupVariable.Name = "groupVariable";
             // 
@@ -232,6 +239,28 @@
             this.buttonEdit.Name = "buttonEdit";
             this.buttonEdit.ShowImage = true;
             this.buttonEdit.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonEdit_Click);
+            // 
+            // toggleButtonBeginOfPeriod
+            // 
+            this.toggleButtonBeginOfPeriod.Label = "на начало периода";
+            this.toggleButtonBeginOfPeriod.Name = "toggleButtonBeginOfPeriod";
+            // 
+            // toggleButtonEndOfPeriod
+            // 
+            this.toggleButtonEndOfPeriod.Checked = true;
+            this.toggleButtonEndOfPeriod.Label = "на конец периода";
+            this.toggleButtonEndOfPeriod.Name = "toggleButtonEndOfPeriod";
+            // 
+            // label1
+            // 
+            this.label1.Label = "Показывать значения";
+            this.label1.Name = "label1";
+            // 
+            // buttonGroup1
+            // 
+            this.buttonGroup1.Items.Add(this.toggleButtonBeginOfPeriod);
+            this.buttonGroup1.Items.Add(this.toggleButtonEndOfPeriod);
+            this.buttonGroup1.Name = "buttonGroup1";
             // 
             // Ribbon
             // 
@@ -253,6 +282,8 @@
             this.groupObject.PerformLayout();
             this.groupVariable.ResumeLayout(false);
             this.groupVariable.PerformLayout();
+            this.buttonGroup1.ResumeLayout(false);
+            this.buttonGroup1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -280,6 +311,10 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonSampleSecond;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonSampleMainObject2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonSampleButtonCurcuit;
+        internal Microsoft.Office.Tools.Ribbon.RibbonLabel label1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButtonGroup buttonGroup1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonBeginOfPeriod;
+        internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonEndOfPeriod;
     }
 
     partial class ThisRibbonCollection

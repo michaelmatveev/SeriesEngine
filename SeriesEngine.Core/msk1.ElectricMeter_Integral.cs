@@ -16,7 +16,7 @@ namespace SeriesEngine.msk1
     {
         [Required]
         //[StringLength(200)]
-        public Decimal Integral { get; set; }
+        public Double Integral { get; set; }
 
         public virtual ElectricMeter ElectricMeter { get; set; }
 
@@ -28,7 +28,7 @@ namespace SeriesEngine.msk1
             }
             set
             {
-                Integral = (Decimal)value;
+                Integral = (Double)value;
             }
         }
     }

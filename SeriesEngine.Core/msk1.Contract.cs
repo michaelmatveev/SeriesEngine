@@ -30,19 +30,14 @@ namespace SeriesEngine.msk1
         }
 	
         [Required]
-        //[StringLength(int.MaxValue)]
-        //[MaxLength]
         public String ContractType { get; set; }
-		public static bool ContractTypeSetter(NamedObject obj, string value) 
+		public static object NameParser(string value) 
 		{
-			var target = (Contract)obj;
-
-			if(target.ContractType != value) 
-			{
-				target.ContractType = value;
-				return true;
-			}
-			return false;
+			return value;
+		}
+		public static object ContractTypeParser(string value) 
+		{
+			return value;
 		}
 	}
 }

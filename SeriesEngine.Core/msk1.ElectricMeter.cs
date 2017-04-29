@@ -32,72 +32,52 @@ namespace SeriesEngine.msk1
         }
 	
         [Required]
-        //[StringLength(int.MaxValue)]
-        //[MaxLength]
         public String PUType { get; set; }
-		public static bool PUTypeSetter(NamedObject obj, string value) 
-		{
-			var target = (ElectricMeter)obj;
-
-			if(target.PUType != value) 
-			{
-				target.PUType = value;
-				return true;
-			}
-			return false;
-		}
 	
         [Required]
-        //[StringLength(int.MaxValue)]
-        //[MaxLength]
         public Boolean HourCount { get; set; }
-		public static bool HourCountSetter(NamedObject obj, string value) 
-		{
-			var target = (ElectricMeter)obj;
-
-			Boolean newValue;
-			if(Boolean.TryParse(value, out newValue)) 
-			{
-				if(target.HourCount != newValue)
-				{
-					target.HourCount = newValue;
-					return true;
-				}				
-				return false;			
-			}
-			throw new Exception("Cannot cast variable");
-		}
 	
         [Required]
-        //[StringLength(int.MaxValue)]
-        //[MaxLength]
         public String Class { get; set; }
-		public static bool ClassSetter(NamedObject obj, string value) 
-		{
-			var target = (ElectricMeter)obj;
-
-			if(target.Class != value) 
-			{
-				target.Class = value;
-				return true;
-			}
-			return false;
-		}
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ElectricMeter_Direction> ElectricMeter_Directions { get; set; }
-		public static bool DirectionSetter(NamedObject obj, string value) 
-		{
-			var target = (ElectricMeter)obj;
-			return false;
-		}
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ElectricMeter_Integral> ElectricMeter_Integrals { get; set; }
-		public static bool IntegralSetter(NamedObject obj, string value) 
+		public static object NameParser(string value) 
 		{
-			var target = (ElectricMeter)obj;
-			return false;
+			return value;
+		}
+		public static object PUTypeParser(string value) 
+		{
+			return value;
+		}
+		public static object HourCountParser(string value) 
+		{
+			Boolean newValue;
+			if(Boolean.TryParse(value, out newValue)) 
+			{
+				return newValue;
+			}
+			throw new Exception("Cannot cast variable");
+		}
+		public static object ClassParser(string value) 
+		{
+			return value;
+		}
+		public static object DirectionParser(string value) 
+		{
+			return value;
+		}
+		public static object IntegralParser(string value) 
+		{
+			Double newValue;
+			if(Double.TryParse(value, out newValue)) 
+			{
+				return newValue;
+			}
+			throw new Exception("Cannot cast variable");
 		}
 	}
 }

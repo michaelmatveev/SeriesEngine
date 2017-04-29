@@ -37,50 +37,53 @@ namespace SeriesEngine.msk1
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Point_VoltageLevel> Point_VoltageLevels { get; set; }
-		public static bool VoltageLevelSetter(NamedObject obj, string value) 
-		{
-			var target = (Point)obj;
-			return false;
-		}
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Point_MaxPower> Point_MaxPowers { get; set; }
-		public static bool MaxPowerSetter(NamedObject obj, string value) 
-		{
-			var target = (Point)obj;
-			return false;
-		}
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Point_TUCode> Point_TUCodes { get; set; }
-		public static bool TUCodeSetter(NamedObject obj, string value) 
-		{
-			var target = (Point)obj;
-			return false;
-		}
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Point_BPGroup> Point_BPGroups { get; set; }
-		public static bool BPGroupSetter(NamedObject obj, string value) 
-		{
-			var target = (Point)obj;
-			return false;
-		}
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Point_PUPlace> Point_PUPlaces { get; set; }
-		public static bool PUPlaceSetter(NamedObject obj, string value) 
-		{
-			var target = (Point)obj;
-			return false;
-		}
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Point_ContractPriceCategory> Point_ContractPriceCategorys { get; set; }
-		public static bool ContractPriceCategorySetter(NamedObject obj, string value) 
+		public static object NameParser(string value) 
 		{
-			var target = (Point)obj;
-			return false;
+			return value;
+		}
+		public static object VoltageLevelParser(string value) 
+		{
+			return value;
+		}
+		public static object MaxPowerParser(string value) 
+		{
+			Double newValue;
+			if(Double.TryParse(value, out newValue)) 
+			{
+				return newValue;
+			}
+			throw new Exception("Cannot cast variable");
+		}
+		public static object TUCodeParser(string value) 
+		{
+			return value;
+		}
+		public static object BPGroupParser(string value) 
+		{
+			return value;
+		}
+		public static object PUPlaceParser(string value) 
+		{
+			return value;
+		}
+		public static object ContractPriceCategoryParser(string value) 
+		{
+			return value;
 		}
 	}
 }

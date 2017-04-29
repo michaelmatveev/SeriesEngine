@@ -16,7 +16,7 @@ namespace SeriesEngine.msk1
     {
         [Required]
         //[StringLength(200)]
-        public Int32 MaxPower { get; set; }
+        public Double MaxPower { get; set; }
 
         public virtual Point Point { get; set; }
 
@@ -28,7 +28,7 @@ namespace SeriesEngine.msk1
             }
             set
             {
-                MaxPower = (Int32)value;
+                MaxPower = (Double)value;
             }
         }
     }

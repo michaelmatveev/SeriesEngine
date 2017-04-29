@@ -4,6 +4,8 @@ using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
 using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.Core.DataAccess;
+using System;
+using System.Globalization;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
@@ -21,14 +23,15 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                 var values = View.VariablesToShow;
                 _objectProvider.ChangeData(values.NetworkId, values.ValuesForPeriod);
 
-                _currentSelection.Value = values
+                var curVal = values
                     .ValuesForPeriod
                     .OrderBy(v => v.Date)
                     .ThenBy(vp => vp.Id == 0 ? int.MaxValue : vp.Id)
                     .Where(v => v.State != ObjectState.Deleted)
                     .LastOrDefault()
-                    ?.Value
-                    .ToString();
+                    ?.Value;
+
+                _currentSelection.Value = Convert.ToString(curVal, CultureInfo.CurrentCulture);
             };
         }
 

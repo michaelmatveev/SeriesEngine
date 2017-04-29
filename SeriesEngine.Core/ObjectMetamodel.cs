@@ -6,15 +6,15 @@ namespace SeriesEngine.Core
 {
     public class Variable
     {
-        private readonly Func<NamedObject, string, bool> _valueSetter;
+        public readonly Func<string, object> _parser;
 
         public Variable()
         {
         }
 
-        public Variable(Func<NamedObject, string, bool> valueSetter)
+        public Variable(Func<string, object> parser)
         {
-            _valueSetter = valueSetter;
+            _parser = parser;
         }
 
         public string Name { get; set; }
@@ -23,9 +23,14 @@ namespace SeriesEngine.Core
         public TimeInterval PeriodInterval { get; set; }
         public Type EntityType { get; set; }
 
-        public bool SetValue(NamedObject obj, string value)
+        //public bool SetValue(NamedObject obj, string value)
+        //{
+        //    return _valueSetter(obj, value);
+        //}
+
+        public object Parse(string value)
         {
-            return _valueSetter(obj, value);
+            return _parser(value);
         }
 
     }

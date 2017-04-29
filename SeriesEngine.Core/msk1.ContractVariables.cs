@@ -18,7 +18,7 @@ namespace SeriesEngine.msk1
             }
         }
 
-		public static Variable ContractType = new Variable(Contract.ContractTypeSetter)
+		public static Variable ContractType = new Variable(Contract.ContractTypeParser)
         {
 			Name = "ContractType",
 			IsPeriodic = false,

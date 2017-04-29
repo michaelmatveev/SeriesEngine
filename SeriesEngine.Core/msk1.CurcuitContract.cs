@@ -28,5 +28,9 @@ namespace SeriesEngine.msk1
         {
             Name = newName;
         }
+		public static object NameParser(string value) 
+		{
+			return value;
+		}
 	}
 }

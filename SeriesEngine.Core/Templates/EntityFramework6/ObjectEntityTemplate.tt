@@ -66,22 +66,32 @@ namespace SeriesEngine.<#= Schema #>
 <#+
 			}
 #>
-        //[StringLength(int.MaxValue)]
-        //[MaxLength]
         public <#= type #> <#= varName #> { get; set; }
-		public static bool <#= varName #>Setter(NamedObject obj, string value) 
-		{
-			var target = (<#= name #>)obj;
+<#+
+		}
 
+		foreach(var varElement in vs.QueryVariablesThat().Versioned().Variables)
+		{
+			var varName = varElement.Attribute("Name").Value;
+#>
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<<#= name #>_<#= varName#>> <#= name #>_<#= varName#>s { get; set; }
+<#+
+		}
+
+		foreach(var varElement in vs.QueryVariablesThat().Variables)
+		{
+			var varName = varElement.Attribute("Name").Value;
+			var typeName = varElement.Attribute("DataType").Value;
+			var type = DataTypes[typeName].Attribute("ClrType").Value;
+#>
+		public static object <#= varName #>Parser(string value) 
+		{
 <#+			if(type == "String")
 			{
 #>
-			if(target.<#= varName #> != value) 
-			{
-				target.<#= varName #> = value;
-				return true;
-			}
-			return false;
+			return value;
 <#+
 			}
 			else
@@ -90,31 +100,12 @@ namespace SeriesEngine.<#= Schema #>
 			<#= type #> newValue;
 			if(<#= type #>.TryParse(value, out newValue)) 
 			{
-				if(target.<#= varName #> != newValue)
-				{
-					target.<#= varName #> = newValue;
-					return true;
-				}				
-				return false;			
+				return newValue;
 			}
 			throw new Exception("Cannot cast variable");
 <#+
 			}
 #>
-		}
-<#+
-		}
-		foreach(var varElement in vs.QueryVariablesThat().Versioned().Variables)
-		{
-			var varName = varElement.Attribute("Name").Value;
-#>
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<<#= name #>_<#= varName#>> <#= name #>_<#= varName#>s { get; set; }
-		public static bool <#= varName #>Setter(NamedObject obj, string value) 
-		{
-			var target = (<#= name #>)obj;
-			return false;
 		}
 <#+
 		}

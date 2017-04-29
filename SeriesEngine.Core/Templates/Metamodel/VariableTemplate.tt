@@ -68,7 +68,7 @@ namespace SeriesEngine.<#= Schema #>
 
 #>
 
-		public static Variable <#= name #> = new Variable(<#= Stereotype #>.<#= name #>Setter)
+		public static Variable <#= name #> = new Variable(<#= Stereotype #>.<#= name #>Parser)
         {
 			Name = "<#= name #>",
 			IsPeriodic = <#= isPeriodic.ToString().ToLower() #>,

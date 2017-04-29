@@ -86,10 +86,7 @@ namespace SeriesEngine.ExcelAddIn.Views
             newVariable.Date = VariablesToShow.SelectedPeriod.Include(nowDate) ? nowDate : VariablesToShow.SelectedPeriod.From;
             newVariable.ObjectId = VariablesToShow.Object.Id;
 
-            using (var varEditor = new VariableEditor(newVariable, VariablesToShow.SelectedPeriod)
-            {
-                Text = VariablesToShow.VariableMetamodel.Name
-            })
+            using (var varEditor = new VariableEditor(newVariable, VariablesToShow.VariableMetamodel, VariablesToShow.SelectedPeriod))
             {
                 if (varEditor.ShowDialog() == DialogResult.OK)
                 {
@@ -108,10 +105,7 @@ namespace SeriesEngine.ExcelAddIn.Views
                 .Single()
                 .Tag as PeriodVariable;
 
-            using (var varEditor = new VariableEditor(selectedVariable, VariablesToShow.SelectedPeriod)
-            {
-                Text = VariablesToShow.VariableMetamodel.Name
-            })
+            using (var varEditor = new VariableEditor(selectedVariable, VariablesToShow.VariableMetamodel, VariablesToShow.SelectedPeriod))
             {
                 if (varEditor.ShowDialog() == DialogResult.OK)
                 {
