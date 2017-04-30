@@ -57,7 +57,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 return new EditorObject
                 {
-                    Name = selection.Value,
+                    Name = selection.Value.ToString(),
                     NetworkId = network.Id,
                     NodeId = id == null ? -1 : int.Parse(id.Value)
                 };

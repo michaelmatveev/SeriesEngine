@@ -26,7 +26,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         public string Sheet => _range.Parent.Name;
         public int Row => _range.Row;
         public int Column => _range.Column;
-        public override string Value {
+        public override object Value {
             get
             {
                 return _range.Value2;

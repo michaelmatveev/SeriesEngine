@@ -8,6 +8,7 @@ public class VariableTemplate : CSharpTemplate
 	public string Schema;
 	public string Stereotype;
 	public IEnumerable<XElement> Variables;
+	public Dictionary<String, XElement> DataTypes;
 
 	public override string TransformText()
 	{
@@ -15,8 +16,9 @@ public class VariableTemplate : CSharpTemplate
 		var vars = Variables.Where(v => v.Attribute("Name").Value != "Name");
 		var noVariables = !vars.Any();
 #>
-using SeriesEngine.Core;
+using System;
 using System.Collections.Generic;
+using SeriesEngine.Core;
 
 namespace SeriesEngine.<#= Schema #>
 {
@@ -59,6 +61,8 @@ namespace SeriesEngine.<#= Schema #>
 		{
 			var name = v.Attribute("Name").Value;
 			bool isPeriodic = v.Attribute("Period") != null;
+			var typeName = v.Attribute("DataType").Value;
+			var type = DataTypes[typeName].Attribute("ClrType").Value;
 
 			bool isVersioned;
 			if(!Boolean.TryParse(v.Attribute("Versioned")?.Value, out isVersioned)) 
@@ -73,6 +77,7 @@ namespace SeriesEngine.<#= Schema #>
 			Name = "<#= name #>",
 			IsPeriodic = <#= isPeriodic.ToString().ToLower() #>,
 			IsVersioned = <#= isVersioned.ToString().ToLower() #>,
+			ValueType = typeof(<#= type #>),
 <#+
 			if(isPeriodic)
 			{

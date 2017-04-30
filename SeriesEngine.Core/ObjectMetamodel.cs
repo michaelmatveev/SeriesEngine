@@ -22,7 +22,7 @@ namespace SeriesEngine.Core
         public bool IsVersioned { get; set; }
         public TimeInterval PeriodInterval { get; set; }
         public Type EntityType { get; set; }
-
+        public Type ValueType { get; set; }
         //public bool SetValue(NamedObject obj, string value)
         //{
         //    return _valueSetter(obj, value);

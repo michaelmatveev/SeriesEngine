@@ -11,9 +11,11 @@ namespace SeriesEngine.ExcelAddIn.Views
             InitializeComponent();
             Variable = variable;
             Text = metamodel.Name;
+
             dateTimePicker.MinDate = allowedPeriod.FromDate;
             dateTimePicker.MaxDate = allowedPeriod.TillDate.AddSeconds(-1);
             dateTimePicker.DataBindings.Add(nameof(dateTimePicker.Value), Variable, nameof(Variable.Date));
+
             var varBinding = textBoxValue.DataBindings.Add(nameof(textBoxValue.Text), Variable, nameof(Variable.Value), true);
             varBinding.Parse += (s, e) =>
             {

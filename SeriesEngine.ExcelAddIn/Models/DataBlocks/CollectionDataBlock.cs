@@ -131,9 +131,10 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
 
         private static XElement GetShemaForVariable(VariableDataBlock sf)
         {
+            var xmlType = sf.VariableMetamodel.ValueType == typeof(Double) ? "xs:decimal" : "xs:string";
             return new XElement(ns + "element",
                 new XAttribute("name", sf.VariableMetamodel.Name),
-                new XAttribute("type", "xs:string"),
+                new XAttribute("type", xmlType),
                 new XAttribute("minOccurs", "1"),
                 new XAttribute("maxOccurs", "1"),
                 new XAttribute("nillable", "true"),

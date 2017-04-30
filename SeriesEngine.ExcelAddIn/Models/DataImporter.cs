@@ -211,7 +211,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
             else
             {
-                column.Range.NumberFormat = "@";
+                column.Range.NumberFormat = "General";//"@";
             }
             column.XPath.SetValue(map, block.XmlPath);
         }

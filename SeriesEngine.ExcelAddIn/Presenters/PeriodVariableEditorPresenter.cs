@@ -31,7 +31,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                     .LastOrDefault()
                     ?.Value;
 
-                _currentSelection.Value = Convert.ToString(curVal, CultureInfo.CurrentCulture);
+                _currentSelection.Value = curVal;//Convert.ToString(curVal, CultureInfo.CurrentCulture);
             };
         }
 

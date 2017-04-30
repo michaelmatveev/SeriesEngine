@@ -2,6 +2,6 @@
 {
     public abstract class CurrentSelection
     {
-        public abstract string Value { get; set; }
+        public abstract object Value { get; set; }
     }
 }

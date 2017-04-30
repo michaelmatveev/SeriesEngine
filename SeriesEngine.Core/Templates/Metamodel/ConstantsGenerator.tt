@@ -9,6 +9,7 @@
 
 public class ConstantsGenerator : Generator
 {
+	public XDocument DataTypesDoc;
 	public XDocument ComponentsDoc;
 	public XDocument HierarchiesDoc;
 
@@ -19,6 +20,7 @@ public class ConstantsGenerator : Generator
 
 		var stereotypes = ComponentsDoc.Descendants("Stereotype");
 		var prefix = ComponentsDoc.Root.Attribute("Prefix").Value;
+		Dictionary<String, XElement> dataTypes = DataTypesDoc.Root.Elements().ToDictionary(x => x.Attribute("Name").Value, x => x);
 
 		schemaObjectTemplate.Schema = prefix;
 		schemaObjectTemplate.Stereotypes = stereotypes.Select(s => s.Attribute("Name").Value);
@@ -32,6 +34,7 @@ public class ConstantsGenerator : Generator
 			variableTemplate.Schema = prefix;
 			variableTemplate.Stereotype = objectName;
 			variableTemplate.Variables = stereotypeElement.Elements("Variable");
+			variableTemplate.DataTypes = dataTypes;
 			variableTemplate.RenderToFile(output);
 		}
 
