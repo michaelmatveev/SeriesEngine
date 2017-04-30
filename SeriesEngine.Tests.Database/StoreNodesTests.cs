@@ -164,7 +164,7 @@ namespace SeriesEngine.Tests.Database
                     new XElement("Region", new XAttribute("UniqueName", "Region 2"))));
 
 
-            network.LoadFromXml(source, doc);
+            //network.LoadFromXml(source, doc);
             var collectionDataBlock = GetCollectionDataBlock();
             var dataXml = network.ConvertToXml(collectionDataBlock.DataBlocks, Period.Default);
 

@@ -135,21 +135,5 @@ namespace SeriesEngine.ExcelAddIn.Views
             FillValues();
         }
 
-        //private void listViewVariable_DrawItem(object sender, DrawListViewItemEventArgs e)
-        //{
-        //     var inSameGroup = ValuesCollection
-        //        .ValuesForPeriod
-        //        .OrderBy(vp => vp.Date)
-        //        .OrderBy(vp => vp.Id)
-        //        .Where(vp => vp.State != ObjectState.Deleted)
-        //        .GroupBy(vp => vp.Date)
-        //        .Where(vg => vg.Count() > 1)
-        //        .Any(vg => vg.Key.ToString() == e.Item.SubItems[0].ToString());
-        //    if (inSameGroup)
-        //    {
-        //        e.Item.Text = "    " + e.Item.Text;
-        //    }
-        //    e.DrawDefault = true;
-        //}
     }
 }

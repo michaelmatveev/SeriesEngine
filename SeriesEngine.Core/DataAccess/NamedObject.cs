@@ -94,13 +94,6 @@ namespace SeriesEngine.Core.DataAccess
 
         public bool SetVariableValue(string variableName, string value)
         {
-            //var thisType = GetType();
-            //var property = thisType.GetProperty(variableName);
-            //return ObjectModel
-            //    .Variables
-            //    .Single(v => v.Name == variableName)
-            //    .SetValue(this, value);
-
             var thisType = GetType();
             var property = thisType.GetProperty(variableName);
             var newValue = ObjectModel

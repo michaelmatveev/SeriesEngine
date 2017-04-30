@@ -41,7 +41,8 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public override void ExportDataBlock(Solution solution, CollectionDataBlock collectionDatablock)
         {
-            //var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
+            var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
+
             var networkTree = _networksProvider
                 .GetNetwork(solution.Id, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, null);
 
@@ -71,7 +72,9 @@ namespace SeriesEngine.ExcelAddIn.Models
             //var source = new XDocument(collectionDatablock.Xml ?? networkTree.ConvertToXml(collectionDatablock.DataBlocks, period));
             var source = new XDocument(collectionDatablock.Xml);
             var target = XDocument.Parse(dsChanged.GetXml());
-            networkTree.LoadFromXml(source, target);
+
+            var networkTreeUpdater = networkTree.GetUpdater(period.FromDate);
+            networkTreeUpdater.LoadFromXml(source, target);
         }
 
   

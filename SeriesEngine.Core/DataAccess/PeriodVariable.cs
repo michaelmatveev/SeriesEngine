@@ -32,5 +32,6 @@ namespace SeriesEngine.Core.DataAccess
 
         [NotMapped]
         public ObjectState State { get; set; }
+
     }
 }

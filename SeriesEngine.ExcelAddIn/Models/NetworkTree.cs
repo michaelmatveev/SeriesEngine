@@ -42,127 +42,10 @@ namespace SeriesEngine.ExcelAddIn.Models
             return data;
         }
 
-        public void LoadFromXml(XDocument source, XDocument target)
+        public NetworkTreeUpdater GetUpdater(DateTime defaultPeriod)
         {
-            var nodes = new List<NetworkTreeNode>();
-            nodes.AddRange(ProcessNodesElements(source, null, target.Root.Elements()));
-            nodes.AddRange(FindNodesToDelete(source.Root.Elements()));
-            //Update(_network.MyNodes);
-            Update(nodes);
-        }
-        
-        private static string GetXPath(XElement element)
-        {
-            if(element == null)
-            {
-                return string.Empty;
-            }
-            else
-            {
-                return $"{GetXPath(element.Parent)}/{element.Name}";
-            }
-        }
-
-        private IList<NetworkTreeNode> ProcessNodesElements(XDocument source, NetworkTreeNode parent, IEnumerable<XElement> elements)
-        {
-            var result = new List<NetworkTreeNode>();
-            foreach (var element in elements.Where(e => e.Attribute("UniqueName") != null))
-            {
-                NetworkTreeNode node;
-                var path = $"{GetXPath(element)}[@UniqueName='{element.Attribute("UniqueName").Value}']";
-                var sourceElement = source.XPathSelectElement(path);
-                if (sourceElement == null)
-                {
-                    // this is new node
-                    node = CreateNode(element, parent);
-                    result.Add(node);
-                    //_network.MyNodes.Add(node);
-                }
-                else
-                {
-                    // this is already existed node
-                    var id = int.Parse(sourceElement.Attribute("NodeId").Value);
-                    node = _network.MyNodes.Single(n => n.Id == id);
-                    UpdateNode(node, element, parent);
-                    //_network.MyNodes.Add(node);
-                    result.Add(node);
-                    sourceElement.Attribute("NodeId").Value = "0"; // признак того что элемент обработан
-                }
-                result.AddRange(ProcessNodesElements(source, node, element.Elements()));
-            }
-            return result;
-        }
-
-        private IList<NetworkTreeNode> FindNodesToDelete(IEnumerable<XElement> elements)
-        {
-            var result = new List<NetworkTreeNode>();
-            foreach (var element in elements.Where(e => e.Attribute("NodeId") != null))
-            {
-                var attr = element.Attribute("NodeId");
-                var id = int.Parse(attr.Value);
-                if (id != 0)
-                {
-                    var node = _network.MyNodes.Single(n => n.Id == id);
-                    node.State = ObjectState.Deleted;
-                    result.Add(node);
-                }
-                result.AddRange(FindNodesToDelete(element.Elements()));
-            }
-            return result;
-        }
-
-        private NetworkTreeNode CreateNode(XElement element, NetworkTreeNode parent)
-        {
-            var validFrom = ParseDateTimeString(element.Attribute("Since")?.Value);
-            var validTill = ParseDateTimeString(element.Attribute("Till")?.Value);
-
-            var node = (NetworkTreeNode)Activator.CreateInstance(_network.HierarchyModel.NodeType);
-            node.MyNetwork = _network;
-            node.MyParent = parent;
-            node.ValidFrom = validFrom;
-            node.ValidTill = validTill;
-            node.State = ObjectState.Added;
-            node.SetLinkedObject(CreateObject(element));
-            node.LinkedObject.State = ObjectState.Added;
-                        
-            foreach (var v in element.Elements())
-            {
-                if(v.Attribute("UniqueName") == null)
-                {
-                    node.LinkedObject.SetVariableValue(v.Name.LocalName, v.Value);
-                }
-            }
-            return node;
-        }
-
-        private void UpdateNode(NetworkTreeNode node, XElement element, NetworkTreeNode parent)
-        {
-            var validFrom = ParseDateTimeString(element.Attribute("Since")?.Value);
-            var validTill = ParseDateTimeString(element.Attribute("Till")?.Value);
-
-            node.MyNetwork = _network;
-            node.MyParent = parent;
-            if (node.ValidFrom != validFrom || node.ValidTill != validTill)
-            {
-                node.ValidFrom = validFrom;
-                node.ValidTill = validTill;
-                node.State = ObjectState.Modified;
-            }
-
-            var linkedObjectUpdated = false; // check that at least one field has been updated
-            foreach (var v in element.Elements().Where(v => v.Attribute("UniqueName") == null))
-            {
-                if(node.LinkedObject.SetVariableValue(v.Name.LocalName, v.Value) && !linkedObjectUpdated)
-                {
-                    linkedObjectUpdated = true;
-                }
-            }
-
-            if(linkedObjectUpdated)
-            {
-                node.LinkedObject.State = ObjectState.Modified;
-            }
-        }
+            return new NetworkTreeUpdater(_network, defaultPeriod);
+        }     
 
         private static bool IsNodeInPeriod(NetworkTreeNode node, Period period, bool whenNodePeriodIsIncorrectResult)
         {
@@ -198,29 +81,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 ?.LinkedObject;
         }
 
-        private DateTime? ParseDateTimeString(string value)
-        {
-            return string.IsNullOrEmpty(value) ? new DateTime?() : DateTime.Parse(value);
-        }
-
-        private NamedObject CreateObject(XElement element)
-        {
-            var objName = element.Attribute("UniqueName").Value.Trim();
-            var objectModel = ModelsDescription
-                .All
-                .Single(m => m.Name == _network.Solution.ModelName)
-                .ObjectModels
-                .Single(om => om.Name == element.Name.LocalName);
-
-            var objectInstance = (NamedObject)Activator.CreateInstance(objectModel.ObjectType);
-            //objectInstance.Solution = _network.Solution;
-            objectInstance.SolutionId = _network.SolutionId;
-            objectInstance.Name = objName;
-            objectInstance.State = ObjectState.Added;
-
-            return objectInstance;
-        }
-
+        //TODO dublicate method in NetworkTreeUpdater
         public void Update(IEnumerable<IStateObject> valuesForPeriod)
         {
             try

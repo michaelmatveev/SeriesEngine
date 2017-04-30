@@ -212,6 +212,7 @@
     <Compile Include="Models\ISelectionProvider.cs" />
     <Compile Include="Models\ISolutionProvider.cs" />
     <Compile Include="Models\NetworkTree.cs" />
+    <Compile Include="Models\NetworkTreeUpdater.cs" />
     <Compile Include="Models\ObjectCache.cs" />
     <Compile Include="Models\ObjectProvider.cs" />
     <Compile Include="Models\SelectionProvider.cs" />
@@ -403,7 +404,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Models\DataForObjectGrid1.xml" />
     <Content Include="Models\DataBlocks\ObjectGrid1.xml" />
     <None Include="Resources\application_form_edit.png" />
     <None Include="Resources\delete.png" />
