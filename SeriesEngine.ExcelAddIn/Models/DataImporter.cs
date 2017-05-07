@@ -130,29 +130,26 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var network = _networksProvider
                     .GetNetwork(solution.Id, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, period);
 
-                using (network.GetImportLock(collectionDatablock))
+                foreach (var b in collectionDatablock.DataBlocks)
                 {
-                    foreach (var b in collectionDatablock.DataBlocks)
-                    {
-                        b.VariablePeriod = period; // TODO вычислить период в зависимости от сдвига
-                    }
-                    var xml = network.ConvertToXml(collectionDatablock.DataBlocks, period);
-                    collectionDatablock.Xml = xml;
-
-                    var result = xmlMap.ImportXml(xml.ToString(), true);
-                    // call after data assigment
-                    if (collectionDatablock.AddIndexColumn)
-                    {
-                        SetupIndexerColumn(listObject, collectionDatablock.Cell);
-                    }
-
-                    if (listObject.ShowHeaders)
-                    {
-                        listObject.HeaderRowRange.Validation.Delete();
-                    }
-                    
-                    listObject.Range.Columns.AutoFit();                 
+                    b.VariablePeriod = period; // TODO вычислить период в зависимости от сдвига
                 }
+                var xml = network.ConvertToXml(collectionDatablock.DataBlocks, period);
+                collectionDatablock.Xml = xml;
+
+                var result = xmlMap.ImportXml(xml.ToString(), true);
+                // call after data assigment
+                if (collectionDatablock.AddIndexColumn)
+                {
+                    SetupIndexerColumn(listObject, collectionDatablock.Cell);
+                }
+
+                if (listObject.ShowHeaders)
+                {
+                    listObject.HeaderRowRange.Validation.Delete();
+                }
+
+                listObject.Range.Columns.AutoFit();
             }
             finally
             {

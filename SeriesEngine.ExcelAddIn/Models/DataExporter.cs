@@ -69,8 +69,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
             }
 
-            //var source = new XDocument(collectionDatablock.Xml ?? networkTree.ConvertToXml(collectionDatablock.DataBlocks, period));
-            var source = new XDocument(collectionDatablock.Xml);
+            var source = new XDocument(collectionDatablock.Xml ?? networkTree.ConvertToXml(collectionDatablock.DataBlocks, period));
+            //var source = new XDocument(collectionDatablock.Xml);
             var target = XDocument.Parse(dsChanged.GetXml());
 
             var networkTreeUpdater = networkTree.GetUpdater(period.FromDate);

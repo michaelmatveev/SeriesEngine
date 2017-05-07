@@ -1,5 +1,4 @@
-﻿using SeriesEngine.Core;
-using SeriesEngine.Core.DataAccess;
+﻿using SeriesEngine.Core.DataAccess;
 using SeriesEngine.ExcelAddIn.Helpers;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using SeriesEngine.msk1;
@@ -9,7 +8,6 @@ using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
-using System.Xml.XPath;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -76,7 +74,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             return _network
                 .MyNodes
-                .Where(n => n.LinkedObject.ObjectModel.Name == objectTypeName)
+                .Where(n => n.LinkedObject?.ObjectModel.Name == objectTypeName)
                 .SingleOrDefault(n => n.NodeName == name)
                 ?.LinkedObject;
         }
@@ -191,34 +189,6 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var varModel = vsf.VariableMetamodel;
                 newElement.Add(new XElement(varModel.Name, node.LinkedObject.GetVariableValue(varModel, qp.VariablePeriod)));
             }
-        }
-
-        public IDisposable GetExportLock(CollectionDataBlock cb)
-        {
-            //TODO think about locking
-            //if(_network.Revision > cb.NetworkRevision)
-            //{
-            //    throw new Exception($"Данные в коллекции '{cb.Name}' отличаются от представленных на листе.");
-            //}
-
-            return new Disposable(() =>
-            {
-                using (var context = new Model1())
-                {
-                    context.Networks.Attach(_network);
-                    _network.Revision += 1;
-                    context.SaveChanges();
-                    cb.NetworkRevision = _network.Revision;
-                }
-            });
-        }
-
-        public IDisposable GetImportLock(CollectionDataBlock cb)
-        {
-            return new Disposable(() =>
-            {
-                cb.NetworkRevision = _network.Revision;
-            });
         }
 
     }

@@ -41,7 +41,11 @@ namespace SeriesEngine.msk1
         {
             get
             {
-                return Parent;
+                if (Parent == null)
+                {
+                    return null;
+                }
+                return Parent.LinkedObject != null ? Parent : Parent.MyParent;
             }
             set
             {
