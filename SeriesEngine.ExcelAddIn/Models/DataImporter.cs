@@ -110,11 +110,11 @@ namespace SeriesEngine.ExcelAddIn.Models
                         .Cast<Excel.ListColumn>()
                         .First();
 
-                    var block = collectionDatablock.DataBlocks.First();
+                    var block = collectionDatablock.DataBlocks.First(db => db.Visible);
                     SetColumn(column, xmlMap, block, solution);
                 }
-
-                foreach (var f in collectionDatablock.DataBlocks.Skip(collectionDatablock.AddIndexColumn ? 0 : 1))
+                
+                foreach (var f in collectionDatablock.DataBlocks.Where(db => db.Visible).Skip(collectionDatablock.AddIndexColumn ? 0 : 1))
                 {
                     var column = listObject.ListColumns.Add();
                     if (listObject.ShowHeaders)

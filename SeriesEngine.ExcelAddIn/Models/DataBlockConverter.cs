@@ -35,7 +35,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                 {
                     newFragment = new NodeDataBlock(result)
                     {
-                        NodeType = (NodeType)Enum.Parse(typeof(NodeType), f.Attribute("Type").Value)
+                        NodeType = (NodeType)Enum.Parse(typeof(NodeType), f.Attribute("Type").Value),
+                        ObjectName = f.Attribute("ObjName")?.Value
                     };
                 }
                 else
@@ -55,9 +56,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
 
                 newFragment.Caption = f.Attribute("Caption").Value;
-                newFragment.Level = Int32.Parse(f.Attribute("Level").Value);
+                newFragment.Level = int.Parse(f.Attribute("Level").Value);
                 newFragment.CollectionName = f.Attribute("CollectionName").Value;
                 newFragment.RefObject = objectType;
+                newFragment.Visible = bool.Parse(f.Attribute("Visible")?.Value ?? "True");
 
                 result.DataBlocks.Add(newFragment);
             }

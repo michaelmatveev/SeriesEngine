@@ -5,6 +5,7 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
 {
     public class DataBlock : BaseDataBlock
     {
+        public bool Visible { get; set; }
         public string XmlPath { get; set; }
         public string Caption { get; set; }
         public int Level { get; set; }
@@ -44,7 +45,7 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
     public class NodeDataBlock : DataBlock
     {
         public NodeType NodeType;
-
+        public string ObjectName;
         public NodeDataBlock(BaseDataBlock parent) : base(parent)
         {
         }

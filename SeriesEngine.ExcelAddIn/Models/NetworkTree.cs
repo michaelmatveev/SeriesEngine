@@ -146,18 +146,26 @@ namespace SeriesEngine.ExcelAddIn.Models
                 foreach (var node in groupOfSameObjects)
                 {
                     var newElement = new XElement(groupOfSameObjects.Key);
+                    var add = false;
                     foreach (var qp in queryParamers.Where(q => q.RefObject == groupOfSameObjects.Key))
                     {
-                        ProcessObjectElement(newElement, node.Item, qp);
+                        add = ProcessObjectElement(newElement, node.Item, qp);
+                        if(!add)
+                        {
+                            break;
+                        }
                     }
-                    newElement.Add(GetSubElements(node.Children, queryParamers));
-                    result.Add(newElement);
+                    if (add)
+                    {
+                        newElement.Add(GetSubElements(node.Children, queryParamers));
+                        result.Add(newElement);
+                    }
                 }
             }
             return result;
         }
 
-        private static void ProcessObjectElement(XElement newElement, NetworkTreeNode node, DataBlock qp)
+        private static bool ProcessObjectElement(XElement newElement, NetworkTreeNode node, DataBlock qp)
         {
             if (qp is NodeDataBlock)
             {
@@ -165,6 +173,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                 switch (nsf.NodeType)
                 {
                     case NodeType.UniqueName:
+                        if(nsf.ObjectName != null && node.LinkedObject.Name != nsf.ObjectName)
+                        {
+                            return false;
+                        }
                         newElement.Add(new XAttribute("UniqueName", node.NodeName), new XAttribute("NodeId", node.Id));
                         break;
                     case NodeType.Since:
@@ -189,6 +201,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var varModel = vsf.VariableMetamodel;
                 newElement.Add(new XElement(varModel.Name, node.LinkedObject.GetVariableValue(varModel, qp.VariablePeriod)));
             }
+            return true;
         }
 
     }
