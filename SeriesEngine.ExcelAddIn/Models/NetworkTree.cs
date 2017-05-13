@@ -147,9 +147,11 @@ namespace SeriesEngine.ExcelAddIn.Models
                 {
                     var newElement = new XElement(groupOfSameObjects.Key);
                     var add = false;
+                    var visible = false;
                     foreach (var qp in queryParamers.Where(q => q.RefObject == groupOfSameObjects.Key))
                     {
                         add = ProcessObjectElement(newElement, node.Item, qp);
+                        visible |= qp.Visible; // если все блоки visible то добавляем новый элемент, иначе не вставляем этот элемент и переходим к его дочерним элементам
                         if(!add)
                         {
                             break;
@@ -157,8 +159,15 @@ namespace SeriesEngine.ExcelAddIn.Models
                     }
                     if (add)
                     {
-                        newElement.Add(GetSubElements(node.Children, queryParamers));
-                        result.Add(newElement);
+                        if (visible)
+                        {
+                            newElement.Add(GetSubElements(node.Children, queryParamers));
+                            result.Add(newElement);
+                        }
+                        else
+                        {
+                            result.AddRange(GetSubElements(node.Children, queryParamers));
+                        }
                     }
                 }
             }

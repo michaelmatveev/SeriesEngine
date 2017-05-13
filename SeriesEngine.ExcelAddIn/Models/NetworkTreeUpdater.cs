@@ -1,5 +1,6 @@
 ﻿using SeriesEngine.Core;
 using SeriesEngine.Core.DataAccess;
+using SeriesEngine.ExcelAddIn.Helpers;
 using SeriesEngine.msk1;
 using System;
 using System.Collections.Generic;
@@ -156,7 +157,8 @@ namespace SeriesEngine.ExcelAddIn.Models
             foreach (var v in element.Elements().Where(v => v.Attribute("UniqueName") == null))
             {
                 var varName = v.Name.LocalName;
-                var model = targetObject.ObjectModel.Variables.Single(m => m.Name == varName);
+                var parsedVar = VariableNameParser.GetVariableModel(targetObject.ObjectModel, varName);
+                var model = parsedVar.VariableModel;
                 if (!model.IsVersioned & !model.IsPeriodic)
                 {
                     if (targetObject.SetVariableValue(varName, v.Value) && !linkedObjectUpdated)
@@ -170,7 +172,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     var newVariable = Activator.CreateInstance(model.EntityType) as PeriodVariable;
                     newVariable.ObjectId = targetObject.Id;
                     newVariable.Value = model.Parse(v.Value);
-                    newVariable.Date = _defaultDateForPeriodVariables;
+                    newVariable.Date = _defaultDateForPeriodVariables.AddMonths(parsedVar.Shift);
                     newVariable.State = ObjectState.Added;
                     result.Add(newVariable);
                 }

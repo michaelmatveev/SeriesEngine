@@ -59,6 +59,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 var tree = collectionDatablock
                     .DataBlocks
+                    .Where(d => d.Visible)
                     .Select((f, i) => new ColumnIdentity(f, i + (collectionDatablock.AddIndexColumn ? 1 : 0)))
                     .GroupBy(ci => new ObjectIdentity(ci.RefObject, ci.Parent))
                     .GenerateTree(n => n.Key.RefObject, p => p.Key.Parent, NetworkTree.RootName);

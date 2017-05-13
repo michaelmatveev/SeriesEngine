@@ -29,11 +29,11 @@ namespace SeriesEngine.ExcelAddIn.Models
             var model = source.Root.Attribute("Model").Value;
             foreach (var f in source.Root.Descendants())
             {
-                DataBlock newFragment;
+                DataBlock newDataBlock;
                 var objectType = f.Attribute("RefObject").Value;
                 if (f.Name.LocalName == NodeElementName)
                 {
-                    newFragment = new NodeDataBlock(result)
+                    newDataBlock = new NodeDataBlock(result)
                     {
                         NodeType = (NodeType)Enum.Parse(typeof(NodeType), f.Attribute("Type").Value),
                         ObjectName = f.Attribute("ObjName")?.Value
@@ -48,20 +48,20 @@ namespace SeriesEngine.ExcelAddIn.Models
                         .Single(om => om.Name == objectType);
 
                     var variableType = f.Attribute("Variable").Value;
-                    newFragment = new VariableDataBlock(result)
+                    newDataBlock = new VariableDataBlock(result)
                     {
                         Kind = (Kind)Enum.Parse(typeof(Kind), f.Attribute("Kind").Value),
                         VariableMetamodel = objectModel.Variables.Single(v => v.Name == variableType)
                     };
                 }
 
-                newFragment.Caption = f.Attribute("Caption").Value;
-                newFragment.Level = int.Parse(f.Attribute("Level").Value);
-                newFragment.CollectionName = f.Attribute("CollectionName").Value;
-                newFragment.RefObject = objectType;
-                newFragment.Visible = bool.Parse(f.Attribute("Visible")?.Value ?? "True");
-
-                result.DataBlocks.Add(newFragment);
+                newDataBlock.Caption = f.Attribute("Caption").Value;
+                newDataBlock.Level = int.Parse(f.Attribute("Level").Value);
+                newDataBlock.CollectionName = f.Attribute("CollectionName").Value;
+                newDataBlock.RefObject = objectType;
+                newDataBlock.Visible = bool.Parse(f.Attribute("Visible")?.Value ?? "True");
+                newDataBlock.Shift = int.Parse(f.Attribute("Shift")?.Value ?? "0");
+                result.DataBlocks.Add(newDataBlock);
             }
             return result;
         }
@@ -90,15 +90,16 @@ namespace SeriesEngine.ExcelAddIn.Models
                     if(n is NodeDataBlock)
                     {
                         var ndb = n as NodeDataBlock;
-                        newElement = new XElement(NodeElementName,
+                        newElement = new XElement(ns + NodeElementName,
                             new XAttribute("Type", ndb.NodeType));
                     }
                     else
                     {
                         var vdb = n as VariableDataBlock;
-                        newElement = new XElement(VariableElementName,
+                        newElement = new XElement(ns + VariableElementName,
                             new XAttribute("Variable", vdb.VariableMetamodel.Name),
-                            new XAttribute("Kind", vdb.Kind));
+                            new XAttribute("Kind", vdb.Kind),
+                            new XAttribute("Shift", vdb.Shift));
                     }
                     newElement.Add(new XAttribute("Caption", n.Caption));
                     newElement.Add(new XAttribute("Level", n.Level));

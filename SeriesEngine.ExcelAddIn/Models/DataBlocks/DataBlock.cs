@@ -1,5 +1,6 @@
 ﻿using SeriesEngine.Core;
 using SeriesEngine.Core.DataAccess;
+using SeriesEngine.ExcelAddIn.Helpers;
 
 namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
 {
@@ -58,5 +59,8 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
         public VariableDataBlock(BaseDataBlock parent) : base(parent)
         {
         }
+
+        public string VariableBlockName => VariableNameParser.GetVariableElementName(this);
+
     }
 }

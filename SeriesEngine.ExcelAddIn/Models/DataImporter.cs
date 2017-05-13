@@ -164,9 +164,13 @@ namespace SeriesEngine.ExcelAddIn.Models
                 .ListColumns
                 .Cast<Excel.ListColumn>()
                 .First();
-            var startRow = Regex.Match(startCell, @"\d+");
-            var rowNumberFormula = $"=ROW() - {startRow}";
-            column.DataBodyRange.Formula = rowNumberFormula;
+
+            if (column.DataBodyRange != null)
+            {
+                var startRow = Regex.Match(startCell, @"\d+");
+                var rowNumberFormula = $"=ROW() - {startRow}";
+                column.DataBodyRange.Formula = rowNumberFormula;
+            }
             if (listObject.ShowHeaders)
             {
                 column.Name = "#";

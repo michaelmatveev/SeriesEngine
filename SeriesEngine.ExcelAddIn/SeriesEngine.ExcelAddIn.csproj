@@ -198,6 +198,7 @@
     <Compile Include="Helpers\PanesManager.cs" />
     <Compile Include="Helpers\TreeHelpers.cs" />
     <Compile Include="Helpers\TreeViewExtensions.cs" />
+    <Compile Include="Helpers\VariableNameParser.cs" />
     <Compile Include="Helpers\WithSafeReleaseCom.cs" />
     <Compile Include="Helpers\WorkbookExtensions.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
