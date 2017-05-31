@@ -61,7 +61,9 @@ namespace SeriesEngine.Core.DataAccess
                 var collection = property.GetValue(this, null) as IEnumerable<PeriodVariable>;
                 return collection
                     .OrderBy(v => v.Date)
-                    .LastOrDefault(v => v.Date < requestedPeriod.Till)
+                    .Where(v => v.Date >= requestedPeriod.From && v.Date < requestedPeriod.Till)
+                    //.LastOrDefault(v => v.Date < requestedPeriod.Till)
+                    .LastOrDefault()
                     ?.Value;
             }
 

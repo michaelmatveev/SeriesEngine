@@ -40,10 +40,21 @@ namespace SeriesEngine.ExcelAddIn.Models
             return data;
         }
 
-        public NetworkTreeUpdater GetUpdater(DateTime defaultPeriod)
+        public NetworkTreeUpdater GetUpdater(Period defaultPeriod)
         {
-            return new NetworkTreeUpdater(_network, defaultPeriod);
+            return new NetworkTreeUpdater(_network, IsAllLevelsLoaded(_network), defaultPeriod);
         }     
+
+        private static bool IsAllLevelsLoaded(Network network)
+        {
+            var deep = network
+                .MyNodes
+                .Where(n => n.LinkedObject != null)
+                .GenerateTree(n => n.NodeName, n => n.MyParent?.NodeName)
+                .GetTreeDeep();
+            
+            return deep == network.HierarchyModel.ReferencedObjects.Count();
+        }
 
         private static bool IsNodeInPeriod(NetworkTreeNode node, Period period, bool whenNodePeriodIsIncorrectResult)
         {
@@ -208,7 +219,9 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 var vsf = (VariableDataBlock)qp;
                 var varModel = vsf.VariableMetamodel;
-                newElement.Add(new XElement(varModel.Name, node.LinkedObject.GetVariableValue(varModel, qp.VariablePeriod)));
+                var variableElementName = VariableNameParser.GetVariableElementName(vsf);
+                var variableElementValue = node.LinkedObject.GetVariableValue(varModel, qp.VariablePeriod);
+                newElement.Add(new XElement(variableElementName, variableElementValue));
             }
             return true;
         }

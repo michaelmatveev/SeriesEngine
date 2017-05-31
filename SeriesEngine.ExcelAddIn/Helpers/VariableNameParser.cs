@@ -33,5 +33,16 @@ namespace SeriesEngine.ExcelAddIn.Helpers
                 Shift = shiftMatch.Success ? int.Parse(shiftMatch.Value) : 0
             };
         }
+
+        public static string ExtractVariableName(string elementName)
+        {
+            return elementName.Split('.').First();
+        }
+
+        public static int ExtractPeriodShift(string elementName)
+        {
+            var period = elementName.Split('.').Skip(1).FirstOrDefault();
+            return int.Parse(period ?? "0");
+        }
     }
 }

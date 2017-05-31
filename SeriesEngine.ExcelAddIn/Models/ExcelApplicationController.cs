@@ -168,11 +168,11 @@ namespace SeriesEngine.ExcelAddIn.Models
             });
 
             var provider = Container.GetInstance<IDataBlockProvider>();
-            var solutionProver = Container.GetInstance<ISolutionProvider>();
+            var solutionProvider = Container.GetInstance<ISolutionProvider>();
             var id = provider.GetLastSolutionId();
             if (id != 0)
             {
-                CurrentSolution = solutionProver.GetSolutionById(id);
+                CurrentSolution = solutionProvider.GetSolutionById(id);
             }
             Container.GetInstance<MainMenuPresenter>();
             //Raise(new InitializeEventData());

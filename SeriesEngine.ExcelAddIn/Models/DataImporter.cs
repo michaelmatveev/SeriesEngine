@@ -132,7 +132,12 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 foreach (var b in collectionDatablock.DataBlocks)
                 {
-                    b.VariablePeriod = period; // TODO вычислить период в зависимости от сдвига
+                    b.VariablePeriod = new Period
+                    {
+                        From = period.From.AddMonths(b.Shift),
+                        Till = period.Till.AddMonths(b.Shift)
+                    };
+                    //b.VariablePeriod = period; // TODO вычислить период в зависимости от сдвига
                 }
                 var xml = network.ConvertToXml(collectionDatablock.DataBlocks, period);
                 collectionDatablock.Xml = xml;

@@ -6,8 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -16,10 +14,12 @@ namespace SeriesEngine.ExcelAddIn.Models
     public class NetworkTreeUpdater
     {
         private readonly Network _network;
-        private DateTime _defaultDateForPeriodVariables;
-        public NetworkTreeUpdater(Network network, DateTime defaultDateForPeriodVariables)
+        private readonly bool _updateHierarchyEnabled;
+        private Period _defaultDateForPeriodVariables;
+        public NetworkTreeUpdater(Network network, bool updateHiearchyEnabled, Period defaultDateForPeriodVariables)
         {
             _network = network;
+            _updateHierarchyEnabled = updateHiearchyEnabled;
             _defaultDateForPeriodVariables = defaultDateForPeriodVariables;
         }
 
@@ -38,7 +38,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 using (var context = new Model1())
                 {
-                    //context.Configuration.AutoDetectChangesEnabled = false;
+                    context.Configuration.AutoDetectChangesEnabled = false;
                     //context.Networks.Attach(_network);
                     foreach (var v in valuesForPeriod)
                     {
@@ -84,7 +84,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 NetworkTreeNode node;
                 var path = $"{GetXPath(element)}[@UniqueName='{element.Attribute("UniqueName").Value}']";
                 var sourceElement = source.XPathSelectElement(path);
-                if (sourceElement == null)
+                if (sourceElement == null && _updateHierarchyEnabled)
                 {
                     // this is new node
                     node = CreateNode(element, parent);
@@ -96,7 +96,13 @@ namespace SeriesEngine.ExcelAddIn.Models
                     // this is already existed node
                     var id = int.Parse(sourceElement.Attribute("NodeId").Value);
                     node = _network.MyNodes.Single(n => n.Id == id);
-                    result.AddRange(UpdateNode(node, element, parent));
+                    result.AddRange(UpdateNode(node, element));
+                    node.MyNetwork = _network;
+                    if (_updateHierarchyEnabled)
+                    {
+                        node.MyParent = parent;
+                    }
+
                     //_network.MyNodes.Add(node);
                     result.Add(node);
                     sourceElement.Attribute("NodeId").Value = "0"; // признак того что элемент обработан
@@ -135,15 +141,13 @@ namespace SeriesEngine.ExcelAddIn.Models
             return string.IsNullOrEmpty(value) ? new DateTime?() : DateTime.Parse(value);
         }
 
-        private IEnumerable<IStateObject> UpdateNode(NetworkTreeNode node, XElement element, NetworkTreeNode parent)
+        private IEnumerable<IStateObject> UpdateNode(NetworkTreeNode node, XElement element)
         {
             var result = new List<IStateObject>();
 
             var validFrom = ParseDateTimeString(element.Attribute("Since")?.Value);
             var validTill = ParseDateTimeString(element.Attribute("Till")?.Value);
 
-            node.MyNetwork = _network;
-            node.MyParent = parent;
             if (node.ValidFrom != validFrom || node.ValidTill != validTill)
             {
                 node.ValidFrom = validFrom;
@@ -169,12 +173,17 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 if(model.IsVersioned & model.IsPeriodic)
                 {
-                    var newVariable = Activator.CreateInstance(model.EntityType) as PeriodVariable;
-                    newVariable.ObjectId = targetObject.Id;
-                    newVariable.Value = model.Parse(v.Value);
-                    newVariable.Date = _defaultDateForPeriodVariables.AddMonths(parsedVar.Shift);
-                    newVariable.State = ObjectState.Added;
-                    result.Add(newVariable);
+                    var storedValue = targetObject.GetVariableValue(model, _defaultDateForPeriodVariables);
+                    var currentValue = model.Parse(v.Value);
+                    if (!Object.Equals(storedValue, currentValue))
+                    {
+                        var newVariable = Activator.CreateInstance(model.EntityType) as PeriodVariable;
+                        newVariable.ObjectId = targetObject.Id;
+                        newVariable.Value = currentValue;
+                        newVariable.Date = _defaultDateForPeriodVariables.From.AddMonths(parsedVar.Shift);
+                        newVariable.State = ObjectState.Added;
+                        result.Add(newVariable);
+                    }
                 }
             }
 

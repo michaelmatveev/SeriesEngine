@@ -74,7 +74,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             //var source = new XDocument(collectionDatablock.Xml);
             var target = XDocument.Parse(dsChanged.GetXml());
 
-            var networkTreeUpdater = networkTree.GetUpdater(period.FromDate);
+            var networkTreeUpdater = networkTree.GetUpdater(period);
             networkTreeUpdater.LoadFromXml(source, target);
         }
 

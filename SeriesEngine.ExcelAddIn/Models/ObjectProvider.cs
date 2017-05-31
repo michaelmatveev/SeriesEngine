@@ -7,6 +7,8 @@ using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using System.Collections.Generic;
+using System;
+using SeriesEngine.ExcelAddIn.Helpers;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -85,17 +87,21 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .OfType<CollectionDataBlock>()
                     .SingleOrDefault(db => db.Name == listObject.Name);
 
-                var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
-
                 var path = column.XPath.Value.Split(new[] { '/' });
-                var variableName = path.Last();
-                var objTypeName = path.ElementAt(path.Length - 2);
+                var element = path.Last();
+                var variableName = VariableNameParser.ExtractVariableName(element);
+                var shift = VariableNameParser.ExtractPeriodShift(element);
+                var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
+                period.From = period.From.AddMonths(shift);
+                period.Till = period.Till.AddMonths(shift);
 
+                var objTypeName = path.ElementAt(path.Length - 2);
+                
                 var variableBlock = collectionDatablock
                     .DataBlocks
                     .OfType<VariableDataBlock>()
                     .Where(db => db.VariableMetamodel.Name == variableName)
-                    .SingleOrDefault();
+                    .FirstOrDefault();
 
                 if (variableBlock != null)
                 {
@@ -156,5 +162,6 @@ namespace SeriesEngine.ExcelAddIn.Models
             var excludeUniqueName = splitted.Take(splitted.Length - 1);
             return $"{string.Join("/", excludeUniqueName)}[@UniqueName='{nameToFind}']/@NodeId";
         }
+
     }
 }

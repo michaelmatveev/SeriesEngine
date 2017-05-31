@@ -28,6 +28,7 @@ namespace SeriesEngine.Core.DataAccess
             }
         }
 
+        [NotMapped]
         public abstract NamedObject LinkedObject { get; }
 
         public void SetLinkedObject(NamedObject obj)
