@@ -1,6 +1,5 @@
 ﻿using SeriesEngine.Core;
 using SeriesEngine.Core.DataAccess;
-using SeriesEngine.ExcelAddIn.Helpers;
 
 namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
 {
@@ -10,7 +9,6 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
         public string XmlPath { get; set; }
         public string Caption { get; set; }
         public int Level { get; set; }
-        public string CollectionName { get; set; }
         public string RefObject { get; set; }
         public ObjectMetamodel ObjectMetamodel { get; set; }
         public Kind Kind { get; set; }
@@ -40,27 +38,6 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
             IntervalsByRows = true;
             UseCommonPeriod = true;
         }
-
-    }
-
-    public class NodeDataBlock : DataBlock
-    {
-        public NodeType NodeType;
-        public string ObjectName;
-        public NodeDataBlock(BaseDataBlock parent) : base(parent)
-        {
-        }
-    }
-
-    public class VariableDataBlock : DataBlock
-    {
-        public Variable VariableMetamodel { get; set; }
-
-        public VariableDataBlock(BaseDataBlock parent) : base(parent)
-        {
-        }
-
-        public string VariableBlockName => VariableNameParser.GetVariableElementName(this);
 
     }
 }

@@ -127,7 +127,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
 
                 listObject.ShowHeaders = collectionDatablock.ShowHeader;
-                var network = _networksProvider
+                var networkTree = _networksProvider
                     .GetNetwork(solution.Id, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, period);
 
                 foreach (var b in collectionDatablock.DataBlocks)
@@ -139,14 +139,26 @@ namespace SeriesEngine.ExcelAddIn.Models
                     };
                     //b.VariablePeriod = period; // TODO вычислить период в зависимости от сдвига
                 }
-                var xml = network.ConvertToXml(collectionDatablock.DataBlocks, period);
+                var xml = networkTree.ConvertToXml(collectionDatablock.DataBlocks, period);
                 collectionDatablock.Xml = xml;
 
                 var result = xmlMap.ImportXml(xml.ToString(), true);
+
                 // call after data assigment
                 if (collectionDatablock.AddIndexColumn)
                 {
                     SetupIndexerColumn(listObject, collectionDatablock.Cell);
+                }
+
+                var index = collectionDatablock.AddIndexColumn ? 0 : 1;
+                foreach(var db in collectionDatablock.DataBlocks)
+                {
+                    var fdb = db as FormulaDataBlock;
+                    if (fdb != null)
+                    {
+                        SetupFormulaColumn(listObject, index, fdb);
+                    }
+                    index++;
                 }
 
                 if (listObject.ShowHeaders)
@@ -154,7 +166,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                     listObject.HeaderRowRange.Validation.Delete();
                 }
 
-                listObject.Range.Columns.AutoFit();
+                if (collectionDatablock.AutoFitColumns)
+                {
+                    listObject.Range.Columns.AutoFit();
+                }
             }
             finally
             {
@@ -182,6 +197,16 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
+        private static void SetupFormulaColumn(Excel.ListObject listObject, int index, FormulaDataBlock fdb)
+        {
+            var column = listObject.ListColumns.Cast<Excel.ListColumn>().Skip(index).First();
+            column.DataBodyRange.Formula = fdb.Formula;
+            if (listObject.ShowHeaders)
+            {
+                column.Name = fdb.Caption;
+            }
+        }
+
         private string GetColumnCaption(DataBlock block)
         {
             if (block is NodeDataBlock)
@@ -197,29 +222,36 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         private void SetColumn(Excel.ListColumn column, Excel.XmlMap map, DataBlock block, Solution solution)
         {
-            var nodeType = (block as NodeDataBlock)?.NodeType ?? NodeType.Path;
-            column.Range.Validation.Delete();
-            if (nodeType == NodeType.Since || nodeType == NodeType.Till)
+            if (block is FormulaDataBlock)
             {
-                column.Range.NumberFormat = "dd.mm.yyyy";
-            }
-            else if(nodeType == NodeType.UniqueName)
-            {
-                var formula = _objectCache.GetObjectsOfType(solution, block.RefObject);
-                if (!string.IsNullOrEmpty(formula))
-                {
-                    column.Range.Validation.Delete();
-                    column.Range.Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertInformation, Excel.XlFormatConditionOperator.xlBetween, formula);
-                    column.Range.Validation.ShowError = false;
-                    column.Range.Validation.ShowInput = false;
-                    column.Range.Validation.IgnoreBlank = true;
-                }
+                //column.DataBodyRange.Formula = (block as FormulaDataBlock).Formula;
             }
             else
             {
-                column.Range.NumberFormat = "General";//"@";
+                var nodeType = (block as NodeDataBlock)?.NodeType ?? NodeType.Path;
+                column.Range.Validation.Delete();
+                if (nodeType == NodeType.Since || nodeType == NodeType.Till)
+                {
+                    column.Range.NumberFormat = "dd.mm.yyyy";
+                }
+                else if (nodeType == NodeType.UniqueName)
+                {
+                    var formula = _objectCache.GetObjectsOfType(solution, block.RefObject);
+                    if (!string.IsNullOrEmpty(formula))
+                    {
+                        column.Range.Validation.Delete();
+                        column.Range.Validation.Add(Excel.XlDVType.xlValidateList, Excel.XlDVAlertStyle.xlValidAlertInformation, Excel.XlFormatConditionOperator.xlBetween, formula);
+                        column.Range.Validation.ShowError = false;
+                        column.Range.Validation.ShowInput = false;
+                        column.Range.Validation.IgnoreBlank = true;
+                    }
+                }
+                else
+                {
+                    column.Range.NumberFormat = "General";//"@";
+                }
+                column.XPath.SetValue(map, block.XmlPath);
             }
-            column.XPath.SetValue(map, block.XmlPath);
         }
 
         //private void ImportNodeFragment(NodeFragment fragment)

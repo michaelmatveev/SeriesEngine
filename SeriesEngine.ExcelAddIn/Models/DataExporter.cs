@@ -43,8 +43,8 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
 
-            var networkTree = _networksProvider
-                .GetNetwork(solution.Id, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, null);
+            var sourceNetworkTree = _networksProvider
+                .GetNetwork(solution.Id, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, period);
 
             Excel.Worksheet sheet = _workbook.Sheets[collectionDatablock.Sheet];
             var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == collectionDatablock.Name);
@@ -59,7 +59,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 var tree = collectionDatablock
                     .DataBlocks
-                    .Where(d => d.Visible)
+                    .Where(d => !(d is FormulaDataBlock) &&  d.Visible)
                     .Select((f, i) => new ColumnIdentity(f, i + (collectionDatablock.AddIndexColumn ? 1 : 0)))
                     .GroupBy(ci => new ObjectIdentity(ci.RefObject, ci.Parent))
                     .GenerateTree(n => n.Key.RefObject, p => p.Key.Parent, NetworkTree.RootName);
@@ -70,11 +70,11 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
             }
 
-            var source = new XDocument(collectionDatablock.Xml ?? networkTree.ConvertToXml(collectionDatablock.DataBlocks, period));
+            var source = new XDocument(collectionDatablock.Xml ?? sourceNetworkTree.ConvertToXml(collectionDatablock.DataBlocks, period));
             //var source = new XDocument(collectionDatablock.Xml);
             var target = XDocument.Parse(dsChanged.GetXml());
 
-            var networkTreeUpdater = networkTree.GetUpdater(period);
+            var networkTreeUpdater = sourceNetworkTree.GetUpdater(period);
             networkTreeUpdater.LoadFromXml(source, target);
         }
 

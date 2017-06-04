@@ -11,6 +11,7 @@ namespace SeriesEngine.ExcelAddIn.Models
     {
         private const string NodeElementName = "CFragment";
         private const string VariableElementName = "VFragment";
+        private const string FormualElementName = "FFragment";
 
         public static BaseDataBlock GetDataBlock(XDocument source, Period defaultPeriod)
         {
@@ -30,7 +31,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             foreach (var f in source.Root.Descendants())
             {
                 DataBlock newDataBlock;
-                var objectType = f.Attribute("RefObject").Value;
+                var objectType = f.Attribute("RefObject")?.Value;
                 if (f.Name.LocalName == NodeElementName)
                 {
                     newDataBlock = new NodeDataBlock(result)
@@ -39,7 +40,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                         ObjectName = f.Attribute("ObjName")?.Value
                     };
                 }
-                else
+                else if(f.Name.LocalName == VariableElementName)
                 {
                     var objectModel = ModelsDescription
                         .All
@@ -54,10 +55,16 @@ namespace SeriesEngine.ExcelAddIn.Models
                         VariableMetamodel = objectModel.Variables.Single(v => v.Name == variableType)
                     };
                 }
+                else
+                {
+                    newDataBlock = new FormulaDataBlock(result)
+                    {
+                        Formula = f.Attribute("Formula").Value
+                    };
+                }
 
                 newDataBlock.Caption = f.Attribute("Caption").Value;
                 newDataBlock.Level = int.Parse(f.Attribute("Level").Value);
-                newDataBlock.CollectionName = f.Attribute("CollectionName").Value;
                 newDataBlock.RefObject = objectType;
                 newDataBlock.Visible = bool.Parse(f.Attribute("Visible")?.Value ?? "True");
                 newDataBlock.Shift = int.Parse(f.Attribute("Shift")?.Value ?? "0");
@@ -91,20 +98,25 @@ namespace SeriesEngine.ExcelAddIn.Models
                     {
                         var ndb = n as NodeDataBlock;
                         newElement = new XElement(ns + NodeElementName,
-                            new XAttribute("Type", ndb.NodeType));
+                            new XAttribute("Type", ndb.NodeType),
+                            new XAttribute("RefObject", n.RefObject));
                     }
-                    else
+                    else if(n is VariableDataBlock)
                     {
                         var vdb = n as VariableDataBlock;
                         newElement = new XElement(ns + VariableElementName,
                             new XAttribute("Variable", vdb.VariableMetamodel.Name),
                             new XAttribute("Kind", vdb.Kind),
-                            new XAttribute("Shift", vdb.Shift));
+                            new XAttribute("Shift", vdb.Shift),
+                            new XAttribute("RefObject", n.RefObject));
+                    } else
+                    {
+                        var fdb = n as FormulaDataBlock;
+                        newElement = new XElement(ns + FormualElementName,
+                            new XAttribute("Formula", fdb.Formula));
                     }
                     newElement.Add(new XAttribute("Caption", n.Caption));
                     newElement.Add(new XAttribute("Level", n.Level));
-                    newElement.Add(new XAttribute("CollectionName", n.CollectionName));
-                    newElement.Add(new XAttribute("RefObject", n.RefObject));
 
                     root.Add(newElement);
                 }

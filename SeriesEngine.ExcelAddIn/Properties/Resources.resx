@@ -227,6 +227,7 @@
   &lt;VFragment Caption="Направление перетока" Level="3" CollectionName="Main" RefObject="ElectricMeter" Variable="Direction" Kind="Fact"/&gt;
   &lt;VFragment Caption="Показание на первое число истекщего месяца" Level="3" CollectionName="Main" RefObject="ElectricMeter" Variable="Integral" Kind="Fact" Shift="-1"/&gt;
   &lt;VFragment Caption="Показание на первое число текущего месяца" Level="3" CollectionName="Main" RefObject="ElectricMeter" Variable="Integral" Kind="Fact"/&gt;
+  &lt;FFragment Caption="Разность показаний" Level="3" Formula="=[@[Показание на первое число текущего месяца]]-[@[Показание на первое число истекщего месяца]]"/&gt;  
 &lt;/ObjectGrid&gt;</value>
   </data>
 </root>

@@ -24,10 +24,12 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
         public int NetworkRevision { get; set; }
         public IEnumerable<ObjectMetamodel> SupportedModels { get; set; }
         public bool ShowHeader { get; set; } = true;
+        public bool AutoFitColumns { get; set; } = false;
+        public bool AddIndexColumn { get; set; } = true;
         public PeriodType PeriodType { get; set; } = PeriodType.Common;
         public Period CustomPeriod { get; set; }
         public XDocument Xml { get; set; }
-        public bool AddIndexColumn { get; set; } = true;
+
         public IList<DataBlock> DataBlocks { get; private set; } = new List<DataBlock>();
 
         public CollectionDataBlock() : this(null, Period.Default)
@@ -80,7 +82,7 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
                     }
                 });
 
-            foreach (var sfGroup in subFragmentsWithMostNestedStub
+            foreach (var blocksAtSameLevel in subFragmentsWithMostNestedStub
                 .GroupBy(sf => sf.Level)
                 .OrderBy(sfg => sfg.Key))
             {
@@ -88,9 +90,10 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
                 var sequence = new XElement(ns + "sequence", new XAttribute("minOccurs", "0"));
                 complexType.Add(sequence);
 
-                foreach (var sf in sfGroup)
+                foreach (var sf in blocksAtSameLevel)
                 {
-                    if (!lastElement.Descendants(ns + "element").Any(d => d.Attribute("name").Value == sf.RefObject))
+                    if (sf.RefObject != null && // RefObject == null for formula data blocks 
+                        !lastElement.Descendants(ns + "element").Any(d => d.Attribute("name").Value == sf.RefObject))
                     {
                         lastElement.Add(
                             new XElement(ns + "element",
@@ -106,23 +109,24 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
                     var nsf = sf as NodeDataBlock;
                     if (nsf != null)
                     {
-                        complexType.Add(GetShemaForNode(nsf));
+                        complexType.Add(GetSchemaForNode(nsf));
                         sf.XmlPath = $"{currentPath}/@{nsf.NodeType}";
                     }
 
                     var vsf = sf as VariableDataBlock;
                     if (vsf != null)
                     {
-                        sequence.Add(GetShemaForVariable(vsf));
+                        sequence.Add(GetSchemaForVariable(vsf));
                         sf.XmlPath = $"{currentPath}/{vsf.VariableBlockName}";
                     }
+
                 }
                 lastElement = sequence;
             }
             return schema.ToString();
         }
 
-        private static XElement GetShemaForNode(NodeDataBlock sf)
+        private static XElement GetSchemaForNode(NodeDataBlock sf)
         {
             return new XElement(ns + "attribute",
                 new XAttribute("name", sf.NodeType.ToString()),
@@ -131,7 +135,7 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
                 new XAttribute("form", "unqualified"));
         }
 
-        private static XElement GetShemaForVariable(VariableDataBlock sf)
+        private static XElement GetSchemaForVariable(VariableDataBlock sf)
         {
             var xmlType = sf.VariableMetamodel.ValueType == typeof(Double) ? "xs:decimal" : "xs:string";
             return new XElement(ns + "element",
