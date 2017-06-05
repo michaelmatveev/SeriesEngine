@@ -150,8 +150,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                     SetupIndexerColumn(listObject, collectionDatablock.Cell);
                 }
 
-                var index = collectionDatablock.AddIndexColumn ? 0 : 1;
-                foreach(var db in collectionDatablock.DataBlocks)
+                var index = collectionDatablock.AddIndexColumn ? 2 : 1;
+                foreach(var db in collectionDatablock.DataBlocks.Where(d => d.Visible))
                 {
                     var fdb = db as FormulaDataBlock;
                     if (fdb != null)
@@ -199,7 +199,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         private static void SetupFormulaColumn(Excel.ListObject listObject, int index, FormulaDataBlock fdb)
         {
-            var column = listObject.ListColumns.Cast<Excel.ListColumn>().Skip(index).First();
+            var column = listObject.ListColumns.Cast<Excel.ListColumn>().Single(c => c.Index == index);// Skip(index).First();
             column.DataBodyRange.Formula = fdb.Formula;
             if (listObject.ShowHeaders)
             {

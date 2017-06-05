@@ -52,6 +52,7 @@ namespace SeriesEngine.ExcelAddIn.Views
             var items = VariablesToShow
                 .ValuesForPeriod
                 .OrderBy(vp => vp.Date)
+                .ThenBy(vp => vp.Id == 0 ? int.MaxValue : vp.Id)
                 .Where(vp => vp.State != ObjectState.Deleted)
                 .Select(vp => 
                     new ListViewItem(

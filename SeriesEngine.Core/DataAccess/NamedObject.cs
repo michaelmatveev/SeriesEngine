@@ -60,9 +60,9 @@ namespace SeriesEngine.Core.DataAccess
                 property = thisType.GetProperty($"{ObjectModel.Name}_{variableModel.Name}s");
                 var collection = property.GetValue(this, null) as IEnumerable<PeriodVariable>;
                 return collection
-                    .OrderBy(v => v.Date)
                     .Where(v => v.Date >= requestedPeriod.From && v.Date < requestedPeriod.Till)
-                    //.LastOrDefault(v => v.Date < requestedPeriod.Till)
+                    .OrderBy(v => v.Date)
+                    .ThenBy(v => v.Id)
                     .LastOrDefault()
                     ?.Value;
             }
