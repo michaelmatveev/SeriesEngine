@@ -83,11 +83,27 @@
     </Variable>
     <Variable Name="Direction" DataType="String200" Optional="True" Versioned="True">
       <Family Rank="50">Основные свойства</Family>
-      <Help Context="Класс точности">Класс точности</Help>
+      <Help Context="Направление">Направление</Help>
     </Variable>
     <Variable Name="Integral" DataType="Decimal" Optional="True" Versioned="True" Period="Month">
       <Family Rank="60">Основные свойства</Family>
-      <Help Context="Класс точности">Класс точности</Help>
+      <Help Context="Интеграл">Интеграл</Help>
+    </Variable>
+    <Variable Name="CoeffOfTransformation" DataType="Decimal" Optional="True" Versioned="True">
+      <Family Rank="70">Основные свойства</Family>
+      <Help Context="Коэффициент трансформации">Коэффициент трансформации</Help>
+    </Variable>
+    <Variable Name="AdditionInPercent" DataType="Decimal" Optional="True" Versioned="True">
+      <Family Rank="80">Основные свойства</Family>
+      <Help Context="Добавка в процентах">Добавка в процентах</Help>
+    </Variable>
+    <Variable Name="Addition" DataType="Decimal" Optional="True" Versioned="True">
+      <Family Rank="90">Основные свойства</Family>
+      <Help Context="Постоянная добавка">Постоянная добавка</Help>
+    </Variable>
+    <Variable Name="Odn" DataType="Decimal" Optional="True" Versioned="True">
+      <Family Rank="100">Основные свойства</Family>
+      <Help Context="ОДН">Общедомовые нужды</Help>
     </Variable>
 
   </Stereotype>

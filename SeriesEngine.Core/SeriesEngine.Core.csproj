@@ -111,10 +111,22 @@
     <Compile Include="msk1.ElectricMeterVariables.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
+    <Compile Include="msk1.ElectricMeter_Addition.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_AdditionInPercent.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_CoeffOfTransformation.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="msk1.ElectricMeter_Direction.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
     <Compile Include="msk1.ElectricMeter_Integral.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_Odn.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
     <Compile Include="msk1.MainHierarchyNetwork.cs">
@@ -205,8 +217,12 @@
 .\msk1.CurcuitHierarchyNode.cs
 .\msk1.CurcuitVariables.cs
 .\msk1.ElectricMeter.cs
+.\msk1.ElectricMeter_Addition.cs
+.\msk1.ElectricMeter_AdditionInPercent.cs
+.\msk1.ElectricMeter_CoeffOfTransformation.cs
 .\msk1.ElectricMeter_Direction.cs
 .\msk1.ElectricMeter_Integral.cs
+.\msk1.ElectricMeter_Odn.cs
 .\msk1.ElectricMeterVariables.cs
 .\msk1.MainHierarchyNetwork.cs
 .\msk1.MainHierarchyNode.cs

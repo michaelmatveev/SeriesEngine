@@ -20,6 +20,10 @@ namespace SeriesEngine.msk1
         {
 			ElectricMeter_Directions = new HashSet<ElectricMeter_Direction>();
 			ElectricMeter_Integrals = new HashSet<ElectricMeter_Integral>();
+			ElectricMeter_CoeffOfTransformations = new HashSet<ElectricMeter_CoeffOfTransformation>();
+			ElectricMeter_AdditionInPercents = new HashSet<ElectricMeter_AdditionInPercent>();
+			ElectricMeter_Additions = new HashSet<ElectricMeter_Addition>();
+			ElectricMeter_Odns = new HashSet<ElectricMeter_Odn>();
 		}
 
         public override string GetName()
@@ -49,6 +53,18 @@ namespace SeriesEngine.msk1
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ElectricMeter_Integral> ElectricMeter_Integrals { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ElectricMeter_CoeffOfTransformation> ElectricMeter_CoeffOfTransformations { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ElectricMeter_AdditionInPercent> ElectricMeter_AdditionInPercents { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ElectricMeter_Addition> ElectricMeter_Additions { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ElectricMeter_Odn> ElectricMeter_Odns { get; set; }
 
 		public static object NameParser(string value) 
 		{
@@ -81,6 +97,58 @@ namespace SeriesEngine.msk1
 		}
 
 		public static object IntegralParser(string value) 
+		{
+			value = value.Replace(",", ".");
+			Double newValue;
+			var style = NumberStyles.Number;
+			var culture = CultureInfo.InvariantCulture;
+			if(Double.TryParse(value, style, culture, out newValue)) 
+			{
+				return newValue;
+			}
+			throw new Exception("Cannot cast variable");
+		}
+
+		public static object CoeffOfTransformationParser(string value) 
+		{
+			value = value.Replace(",", ".");
+			Double newValue;
+			var style = NumberStyles.Number;
+			var culture = CultureInfo.InvariantCulture;
+			if(Double.TryParse(value, style, culture, out newValue)) 
+			{
+				return newValue;
+			}
+			throw new Exception("Cannot cast variable");
+		}
+
+		public static object AdditionInPercentParser(string value) 
+		{
+			value = value.Replace(",", ".");
+			Double newValue;
+			var style = NumberStyles.Number;
+			var culture = CultureInfo.InvariantCulture;
+			if(Double.TryParse(value, style, culture, out newValue)) 
+			{
+				return newValue;
+			}
+			throw new Exception("Cannot cast variable");
+		}
+
+		public static object AdditionParser(string value) 
+		{
+			value = value.Replace(",", ".");
+			Double newValue;
+			var style = NumberStyles.Number;
+			var culture = CultureInfo.InvariantCulture;
+			if(Double.TryParse(value, style, culture, out newValue)) 
+			{
+				return newValue;
+			}
+			throw new Exception("Cannot cast variable");
+		}
+
+		public static object OdnParser(string value) 
 		{
 			value = value.Replace(",", ".");
 			Double newValue;

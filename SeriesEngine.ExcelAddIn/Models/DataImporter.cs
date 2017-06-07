@@ -111,6 +111,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                         .First();
 
                     var block = collectionDatablock.DataBlocks.First(db => db.Visible);
+                    if (listObject.ShowHeaders)
+                    {
+                        column.Name = GetColumnCaption(block);
+                    }
                     SetColumn(column, xmlMap, block, solution);
                 }
                 

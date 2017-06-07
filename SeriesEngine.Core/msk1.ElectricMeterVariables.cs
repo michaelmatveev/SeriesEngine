@@ -20,6 +20,10 @@ namespace SeriesEngine.msk1
 				yield return Class;
 				yield return Direction;
 				yield return Integral;
+				yield return CoeffOfTransformation;
+				yield return AdditionInPercent;
+				yield return Addition;
+				yield return Odn;
             }
         }
 
@@ -62,6 +66,38 @@ namespace SeriesEngine.msk1
 			IsVersioned = true,
 			ValueType = typeof(Double),
 			EntityType = typeof(ElectricMeter_Integral)
+		};
+
+		public static Variable CoeffOfTransformation = new Variable(ElectricMeter.CoeffOfTransformationParser)
+        {
+			Name = "CoeffOfTransformation",
+			IsPeriodic = false,
+			IsVersioned = true,
+			ValueType = typeof(Double),
+		};
+
+		public static Variable AdditionInPercent = new Variable(ElectricMeter.AdditionInPercentParser)
+        {
+			Name = "AdditionInPercent",
+			IsPeriodic = false,
+			IsVersioned = true,
+			ValueType = typeof(Double),
+		};
+
+		public static Variable Addition = new Variable(ElectricMeter.AdditionParser)
+        {
+			Name = "Addition",
+			IsPeriodic = false,
+			IsVersioned = true,
+			ValueType = typeof(Double),
+		};
+
+		public static Variable Odn = new Variable(ElectricMeter.OdnParser)
+        {
+			Name = "Odn",
+			IsPeriodic = false,
+			IsVersioned = true,
+			ValueType = typeof(Double),
 		};
 	}
 }

@@ -134,6 +134,18 @@ namespace SeriesEngine.ExcelAddIn.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        ///&lt;ObjectGrid xmlns=&quot;http://www.seriesengine.com/SeriesEngine.ExcelAddIn/GridFragments&quot; Version=&quot;1&quot; Model=&quot;msk1&quot; Name=&quot;Интегральный акт&quot; Sheet=&quot;Лист1&quot; Cell=&quot;C2&quot; NetworkName=&quot;Регион - прибор учета&quot; ShowHeader=&quot;True&quot; AddIndexColumn=&quot;False&quot;&gt;
+        ///  &lt;CFragment Caption=&quot;Договор&quot; CollectionName=&quot;Main&quot; Level=&quot;1&quot; RefObject=&quot;Contract&quot; ObjName=&quot;1001014-ЭН&quot; Type=&quot;UniqueName&quot; Visible=&quot;False&quot;/&gt;
+        ///  &lt;CFragment Caption=&quot;Точка&quot; CollectionName=&quot;Main&quot; Level=&quot;2&quot; RefObject=&quot;Point&quot; Type=&quot;Unique [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string IntegralAct2 {
+            get {
+                return ResourceManager.GetString("IntegralAct2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap table_add {

@@ -37,6 +37,10 @@ namespace SeriesEngine.msk1
         public virtual DbSet<ElectricMeter> ElectricMeters { get; set; }
  		public virtual DbSet<ElectricMeter_Direction> ElectricMeter_Directions { get; set; }
 		public virtual DbSet<ElectricMeter_Integral> ElectricMeter_Integrals { get; set; }
+		public virtual DbSet<ElectricMeter_CoeffOfTransformation> ElectricMeter_CoeffOfTransformations { get; set; }
+		public virtual DbSet<ElectricMeter_AdditionInPercent> ElectricMeter_AdditionInPercents { get; set; }
+		public virtual DbSet<ElectricMeter_Addition> ElectricMeter_Additions { get; set; }
+		public virtual DbSet<ElectricMeter_Odn> ElectricMeter_Odns { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
          public virtual DbSet<SupplierContract> SupplierContracts { get; set; }
          public virtual DbSet<Curcuit> Curcuits { get; set; }
@@ -336,6 +340,30 @@ namespace SeriesEngine.msk1
 
             modelBuilder.Entity<ElectricMeter>()
                 .HasMany(e => e.ElectricMeter_Integrals)
+                .WithRequired(e => e.ElectricMeter)
+                .HasForeignKey(e => e.ObjectId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ElectricMeter>()
+                .HasMany(e => e.ElectricMeter_CoeffOfTransformations)
+                .WithRequired(e => e.ElectricMeter)
+                .HasForeignKey(e => e.ObjectId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ElectricMeter>()
+                .HasMany(e => e.ElectricMeter_AdditionInPercents)
+                .WithRequired(e => e.ElectricMeter)
+                .HasForeignKey(e => e.ObjectId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ElectricMeter>()
+                .HasMany(e => e.ElectricMeter_Additions)
+                .WithRequired(e => e.ElectricMeter)
+                .HasForeignKey(e => e.ObjectId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ElectricMeter>()
+                .HasMany(e => e.ElectricMeter_Odns)
                 .WithRequired(e => e.ElectricMeter)
                 .HasForeignKey(e => e.ObjectId)
                 .WillCascadeOnDelete(false);
