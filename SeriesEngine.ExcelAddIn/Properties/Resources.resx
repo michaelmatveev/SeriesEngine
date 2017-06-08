@@ -227,7 +227,17 @@
   &lt;VFragment Caption="Направление перетока" Level="3" CollectionName="Main" RefObject="ElectricMeter" Variable="Direction" Kind="Fact"/&gt;
   &lt;VFragment Caption="Показание на первое число истекщего месяца" Level="3" CollectionName="Main" RefObject="ElectricMeter" Variable="Integral" Kind="Fact" Shift="-1"/&gt;
   &lt;VFragment Caption="Показание на первое число текущего месяца" Level="3" CollectionName="Main" RefObject="ElectricMeter" Variable="Integral" Kind="Fact"/&gt;
-  &lt;FFragment Caption="Разность показаний" Level="3" Formula="=[@[Показание на первое число текущего месяца]]-[@[Показание на первое число истекщего месяца]]"/&gt;  
+  &lt;FFragment Caption="Разность показаний" Level="3" Formula="=[@[Показание на первое число текущего месяца]]-[@[Показание на первое число истекщего месяца]]"/&gt;
+
+  &lt;VFragment Caption="Коэффициент трансформации комплекта" Level="3" CollectionName="Main" RefObject="ElectricMeter" Variable="CoeffOfTransformation" Kind="Fact"/&gt;
+  &lt;FFragment Caption="Количество электроэнергии, учтенной счетчиком" Level="3" Formula="=[@[Разность показаний]]*[@[Коэффициент трансформации комплекта]]"/&gt;
+  
+  &lt;VFragment Caption="Вычисляемая добавка процент" Level="3" CollectionName="Main" RefObject="ElectricMeter" Variable="AdditionInPercent" Kind="Fact"/&gt;
+  &lt;VFragment Caption="Вычисляемая добавка постоянная" Level="3" CollectionName="Main" RefObject="ElectricMeter" Variable="Addition" Kind="Fact"/&gt;
+  &lt;FFragment Caption="Итого потери" Level="3" Formula="=0"/&gt;
+  &lt;VFragment Caption="ОДН" Level="3" CollectionName="Main" RefObject="ElectricMeter" Variable="Odn" Kind="Fact"/&gt;
+  &lt;FFragment Caption="Суммарное количество" Level="3" Formula="=[@[Количество электроэнергии, учтенной счетчиком]]+[@[Итого потери]]+[@ОДН]"/&gt;
+  
 &lt;/ObjectGrid&gt;</value>
   </data>
   <data name="IntegralAct2" xml:space="preserve">
