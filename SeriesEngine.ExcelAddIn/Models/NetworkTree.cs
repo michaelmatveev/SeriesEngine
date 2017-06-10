@@ -15,10 +15,12 @@ namespace SeriesEngine.ExcelAddIn.Models
     {
         public const string RootName = "DataImportExport";
         private readonly Network _network;
+        private readonly bool _fullHierarchy;
 
-        public NetworkTree(Network network)
+        public NetworkTree(Network network, bool fullHierarchy)
         {
             _network = network;
+            _fullHierarchy = fullHierarchy;
         }
 
         public string Name => _network.Name;
@@ -40,20 +42,10 @@ namespace SeriesEngine.ExcelAddIn.Models
             return data;
         }
 
-        public NetworkTreeUpdater GetUpdater(Period defaultPeriod)
+        public void LoadFromXml(XDocument source, XDocument target, Period defaultPeriod)
         {
-            return new NetworkTreeUpdater(_network, IsAllLevelsLoaded(_network), defaultPeriod);
-        }     
-
-        private static bool IsAllLevelsLoaded(Network network)
-        {
-            var deep = network
-                .MyNodes
-                .Where(n => n.LinkedObject != null)
-                .GenerateTree(n => n.NodeName, n => n.MyParent?.NodeName)
-                .GetTreeDeep();
-            
-            return deep == network.HierarchyModel.ReferencedObjects.Count();
+            var updater = new NetworkTreeUpdater(_network, _fullHierarchy, defaultPeriod);
+            updater.UpdateFromSourceToTarget(source, target);
         }
 
         private static bool IsNodeInPeriod(NetworkTreeNode node, Period period, bool whenNodePeriodIsIncorrectResult)

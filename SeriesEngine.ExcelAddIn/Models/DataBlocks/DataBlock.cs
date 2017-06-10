@@ -10,7 +10,7 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
         public string Caption { get; set; }
         public int Level { get; set; }
         public string RefObject { get; set; }
-        public ObjectMetamodel ObjectMetamodel { get; set; }
+        public ObjectMetamodel ObjectMetamodel { get; set; }//TODO remove it
         public Kind Kind { get; set; }
         public TimeInterval Interval { get; set; }
         public bool IntervalsByRows { get; set; }

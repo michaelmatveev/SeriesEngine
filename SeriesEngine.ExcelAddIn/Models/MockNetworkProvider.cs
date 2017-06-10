@@ -115,18 +115,18 @@ namespace SeriesEngine.ExcelAddIn.Models
 
             //return new[] { result };
 
-            return new[] { new NetworkTree(mainTree) };
+            return new[] { new NetworkTree(mainTree, true) };
         }
 
         public NetworkTree GetNetwork(Solution solution, string name, IEnumerable<DataBlock> variables, Period period)
         {
-            return new NetworkTree(mainTree);
+            return new NetworkTree(mainTree, true);
         }
 
 
         public NetworkTree GetNetworkById(int networkId)
         {
-            return new NetworkTree(mainTree);
+            return new NetworkTree(mainTree, true);
         }
     }
 }

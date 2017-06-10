@@ -23,8 +23,9 @@ namespace SeriesEngine.ExcelAddIn.Models
             _defaultDateForPeriodVariables = defaultDateForPeriodVariables;
         }
 
-        public void LoadFromXml(XDocument source, XDocument target)
+        public void UpdateFromSourceToTarget(XDocument source, XDocument target)
         {
+            //_network.HierarchyModel.ReferencedObjects.All
             var nodes = new List<IStateObject>();
             nodes.AddRange(ProcessNodesElements(source, null, target.Root.Elements()));
             nodes.AddRange(FindNodesToDelete(source.Root.Elements()));

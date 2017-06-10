@@ -20,7 +20,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     query = query.Include(v.Name);
                 }
                 query.Load();
-                return new NetworkTree(network);
+                return new NetworkTree(network, false);
             }
         }
 
@@ -56,7 +56,18 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
 
                 query.Load();
-                return new NetworkTree(network);
+
+                var nodeObjects = variables
+                    .OfType<NodeDataBlock>()
+                    .Where(n => n.NodeType == NodeType.UniqueName)
+                    .Select(v => v.RefObject);
+
+                var fullHierarchy = network.HierarchyModel
+                    .ReferencedObjects
+                    .Select(o => o.Name)
+                    .Except(nodeObjects).Count() == 0;
+                
+                return new NetworkTree(network, fullHierarchy);
             }
         }
 
