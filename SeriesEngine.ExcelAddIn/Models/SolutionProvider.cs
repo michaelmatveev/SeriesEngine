@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using Solution = SeriesEngine.Core.DataAccess.Solution;
-using SeriesEngine.msk1;
+using SeriesEngine.Core;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -9,7 +9,7 @@ namespace SeriesEngine.ExcelAddIn.Models
     {
         public IEnumerable<Solution> GetAllSolutions()
         {
-            using (var context = new Model1())
+            using (var context = ModelsDescription.GetModel())
             {
                 return context.Solutions.ToList().Select(s => new Solution
                 {
@@ -23,7 +23,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public Solution GetSolutionById(int solutionId)
         {
-            using (var context = new Model1())
+            using (var context = ModelsDescription.GetModel())
             {
                 var s = context.Solutions.Find(solutionId);
                 if (s != null)

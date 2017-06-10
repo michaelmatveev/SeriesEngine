@@ -1,7 +1,7 @@
-﻿using SeriesEngine.Core.DataAccess;
+﻿using SeriesEngine.Core;
+using SeriesEngine.Core.DataAccess;
 using SeriesEngine.ExcelAddIn.Helpers;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
-using SeriesEngine.msk1;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
@@ -22,8 +22,8 @@ namespace SeriesEngine.ExcelAddIn.Models
         }
 
         public string Name => _network.Name;
+
         public int Id => _network.Id;
-        public string SolutionName => _network.Solution.Name;
 
         public XDocument ConvertToXml(IEnumerable<DataBlock> queryParamers, Period defaultPeriod)
         {
@@ -95,7 +95,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             try
             {
-                using (var context = new Model1())
+                using (var context = ModelsDescription.GetModel(_network.Solution.ModelName))
                 {
                     //context.Configuration.AutoDetectChangesEnabled = false;
                     //context.Networks.Attach(_network);
@@ -125,7 +125,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void RenameObjectLinkedWithNode(int nodeId, string newName)
         {
-            using (var context = new Model1())
+            using (var context = ModelsDescription.GetModel(_network.Solution.ModelName))
             {
                 context.Database.Log = (s) => Debug.WriteLine(s);
                 var node = _network.MyNodes.FirstOrDefault(n => n.Id == nodeId);
@@ -139,7 +139,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void DeleteObjectLinkedWithNode(int nodeId)
         {
-            using (var context = new Model1())
+            using (var context = ModelsDescription.GetModel(_network.Solution.ModelName))
             {
                 context.Database.Log = (s) => Debug.WriteLine(s);
                 var node = _network.MyNodes.Single(n => n.Id == nodeId);

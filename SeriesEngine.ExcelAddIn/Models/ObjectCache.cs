@@ -1,7 +1,8 @@
 ﻿using LazyCache;
 using Microsoft.Office.Tools.Excel;
-using SeriesEngine.msk1;
+using SeriesEngine.Core;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Solution = SeriesEngine.Core.DataAccess.Solution;
 
@@ -38,31 +39,21 @@ namespace SeriesEngine.ExcelAddIn.Models
                 hiddenSheet.Visible = Microsoft.Office.Interop.Excel.XlSheetVisibility.xlSheetHidden;
             }
 
-            var column = GetColumn(type);
-            return _cache.GetOrAdd(key, () => GetObjectNames(query, hiddenSheet, column), _refreshSpan);
+            var objectModels = ModelsDescription.All.Single(m => m.Name == solution.ModelName).ObjectModels;            
+            var column = GetColumn(objectModels, type);
+            return _cache.GetOrAdd(key, () => GetObjectNames(solution.ModelName, query, hiddenSheet, column), _refreshSpan);
         }
 
-        private string GetColumn(string type)
+        private string GetColumn(IEnumerable<ObjectMetamodel> objectModels, string type)
         {
-            switch(type)
-            {
-                case "Region": return "A";
-                case "Consumer": return "B";
-                case "Contract": return "C";
-                case "ConsumerObject": return "D";
-                case "Point": return "E";
-                case "Supplier": return "F";
-                case "SupplierContract": return "G";
-                case "ElectricMeter": return "H";
-                case "Curcuit": return "I";
-                case "CurcuitContract": return "J";
-            }
-            throw new NotImplementedException();
+            var index = objectModels.Select((m, i) => new { m, i }).Single(p => p.m.Name == type).i;
+            var c = (char)(65 + index);
+            return c.ToString();
         } 
 
-        private static string GetObjectNames(string query, Microsoft.Office.Interop.Excel.Worksheet sheet, string column)
+        private static string GetObjectNames(string modelName, string query, Microsoft.Office.Interop.Excel.Worksheet sheet, string column)
         {
-            using (var context = new Model1())
+            using (var context = ModelsDescription.GetModel(modelName))
             {
                 var names = context.Database.SqlQuery<string>(query).ToList();
                 var r = sheet.UsedRange.get_Range($"{column}:{column}");

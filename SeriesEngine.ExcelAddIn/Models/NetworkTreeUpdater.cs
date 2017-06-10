@@ -1,7 +1,6 @@
 ﻿using SeriesEngine.Core;
 using SeriesEngine.Core.DataAccess;
 using SeriesEngine.ExcelAddIn.Helpers;
-using SeriesEngine.msk1;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
@@ -16,6 +15,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         private readonly Network _network;
         private readonly bool _updateHierarchyEnabled;
         private Period _defaultDateForPeriodVariables;
+
         public NetworkTreeUpdater(Network network, bool updateHiearchyEnabled, Period defaultDateForPeriodVariables)
         {
             _network = network;
@@ -36,7 +36,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             try
             {
-                using (var context = new Model1())
+                using (var context = ModelsDescription.GetModel(_network.Solution.ModelName))
                 {
                     context.Configuration.AutoDetectChangesEnabled = false;
                     //context.Networks.Attach(_network);

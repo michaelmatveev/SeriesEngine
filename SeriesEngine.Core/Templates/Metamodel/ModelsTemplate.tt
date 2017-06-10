@@ -11,6 +11,9 @@ public class ModelsTemplate : CSharpTemplate
 	{
 		base.TransformText();
 #>
+using System;
+using System.Collections.Generic;
+using SeriesEngine.Core.DataAccess;
 <#+
 		foreach(var m in Models)
 		{
@@ -19,7 +22,6 @@ using SeriesEngine.<#= m #>;
 <#+
 		}
 #>
-using System.Collections.Generic;
 
 namespace SeriesEngine.Core
 {
@@ -53,6 +55,30 @@ namespace SeriesEngine.Core
 <#+
 		}
 #>
+
+        public static BaseModelContext GetModel(string modelName = null)
+        {
+			if(string.IsNullOrEmpty(modelName))
+			{
+<#+
+		var firstModel = Models.First();
+#>
+				return new SeriesEngine.<#= firstModel #>.Model1();
+			}
+
+<#+
+		foreach(var m in Models)
+		{
+#>
+			if(modelName == "<#= m #>")
+            {
+                return new SeriesEngine.<#= m #>.Model1();
+            }
+<#+
+		}
+#> 
+            throw new NotSupportedException();
+        }		
 	}
 }
 <#+

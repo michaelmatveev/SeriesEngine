@@ -141,7 +141,7 @@ namespace SeriesEngine.Tests.Database
         public void GetAllNodes()
         {
             var provider = new DataBaseNetworkProvider();
-            var network = provider.GetNetwork(_currentSolution.Id, "Main network 1");
+            var network = provider.GetNetwork(_currentSolution, "Main network 1");
  
             var collectionDataBlock = GetCollectionDataBlock();            
             var dataXml = network.ConvertToXml(collectionDataBlock.DataBlocks, Period.Default);
@@ -155,7 +155,7 @@ namespace SeriesEngine.Tests.Database
         public void AddNodesAndSave()
         {
             var provider = new DataBaseNetworkProvider();
-            var network = provider.GetNetwork(_currentSolution.Id, "Main network 1");
+            var network = provider.GetNetwork(_currentSolution, "Main network 1");
 
             var source = new XDocument(
                 new XElement("DataImportExport"));
@@ -177,7 +177,7 @@ namespace SeriesEngine.Tests.Database
         public void DeleteUpperLevelNodeAndSave()
         {
             var provider = new DataBaseNetworkProvider();
-            var network = provider.GetNetwork(_currentSolution.Id, "Main network 1");
+            var network = provider.GetNetwork(_currentSolution, "Main network 1");
 
             var collectionDataBlock = GetCollectionDataBlock();
             var dataXml = network.ConvertToXml(collectionDataBlock.DataBlocks, Period.Default);
@@ -185,7 +185,7 @@ namespace SeriesEngine.Tests.Database
             var nodeId = int.Parse(dataXml.XPathSelectElement(pathToDelete).Attribute("NodeId").Value);
             network.DeleteObjectLinkedWithNode(nodeId);
 
-            network = provider.GetNetwork(_currentSolution.Id, "Main network 1");
+            network = provider.GetNetwork(_currentSolution, "Main network 1");
 
             dataXml = network.ConvertToXml(collectionDataBlock.DataBlocks, Period.Default);
             Console.WriteLine(dataXml);
@@ -198,7 +198,7 @@ namespace SeriesEngine.Tests.Database
         public void DeleteLowLevelNodeAndSave()
         {
             var provider = new DataBaseNetworkProvider();
-            var network = provider.GetNetwork(_currentSolution.Id, "Main network 1");
+            var network = provider.GetNetwork(_currentSolution, "Main network 1");
 
             var collectionDataBlock = GetCollectionDataBlock();
             var dataXml = network.ConvertToXml(collectionDataBlock.DataBlocks, Period.Default);
@@ -206,7 +206,7 @@ namespace SeriesEngine.Tests.Database
             var nodeId = int.Parse(dataXml.XPathSelectElement(xPathToDelete).Attribute("NodeId").Value);
             network.DeleteObjectLinkedWithNode(nodeId);
 
-            network = provider.GetNetwork(_currentSolution.Id, "Main network 1");
+            network = provider.GetNetwork(_currentSolution, "Main network 1");
 
             dataXml = network.ConvertToXml(collectionDataBlock.DataBlocks, Period.Default);
             Console.WriteLine(dataXml);

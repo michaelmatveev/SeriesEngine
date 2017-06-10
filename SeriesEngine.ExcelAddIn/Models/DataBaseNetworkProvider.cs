@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using SeriesEngine.Core.DataAccess;
-using SeriesEngine.msk1;
+using SeriesEngine.Core;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -11,7 +11,7 @@ namespace SeriesEngine.ExcelAddIn.Models
     {
         public NetworkTree GetNetworkById(int networkId)
         {
-            using (var context = new Model1())
+            using (var context = ModelsDescription.GetModel(""))
             {
                 var network = context.Networks.Find(networkId);
                 var query = context.Entry(network).Collection("Nodes").Query();
@@ -24,14 +24,16 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        public NetworkTree GetNetwork(int solutionId, string name, IEnumerable<DataBlock> variables = null, Period period = null)
+        public NetworkTree GetNetwork(Solution solution, string name, IEnumerable<DataBlock> variables = null, Period period = null)
         {
-            using (var context = new Model1())
+            using (var context = ModelsDescription.GetModel(solution.ModelName))
             {
-                var solution = context
-                    .Solutions
-                    .Include(s => s.Networks)
-                    .SingleOrDefault(s => s.Id == solutionId);
+                context.Solutions.Attach(solution);
+                context.Entry(solution).Collection(s => s.Networks).Load();
+                //var solution = context
+                //    .Solutions
+                //    .Include(s => s.Networks)
+                //    .SingleOrDefault(s => s.Id == solutionId);
 
                 var network = solution.Networks.First(n => n.Name == name);
                 var query = context.Entry(network).Collection("Nodes").Query();

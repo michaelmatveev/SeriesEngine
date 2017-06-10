@@ -132,7 +132,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 listObject.ShowHeaders = collectionDatablock.ShowHeader;
                 var networkTree = _networksProvider
-                    .GetNetwork(solution.Id, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, period);
+                    .GetNetwork(solution, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, period);
 
                 foreach (var b in collectionDatablock.DataBlocks)
                 {

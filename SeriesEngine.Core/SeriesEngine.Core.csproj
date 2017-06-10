@@ -56,6 +56,7 @@
     <Compile Include="AllModels.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess\BaseModelContext.cs" />
     <Compile Include="DataAccess\EditPeriodVariables.cs" />
     <Compile Include="DataAccess\IStateObject.cs" />
     <Compile Include="DataAccess\NamedObject.cs" />

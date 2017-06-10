@@ -8,17 +8,11 @@ using SeriesEngine.Core.DataAccess;
 
 namespace SeriesEngine.msk1
 {
-    public partial class Model1 : DbContext
+    public partial class Model1 : BaseModelContext
     {
-        public Model1()
-            : base("name=Model1")
+        public Model1() : base("name=Model1")
         {
-            Configuration.ProxyCreationEnabled = false;
         }
-
-		public virtual DbSet<Network> Networks { get; set; }
-        public virtual DbSet<Solution> Solutions { get; set; }
-        public virtual DbSet<User> Users { get; set; }
  
         public virtual DbSet<MainHierarchyNode> MainHierarchyNodes { get; set; }
          public virtual DbSet<SupplierHierarchyNode> SupplierHierarchyNodes { get; set; }

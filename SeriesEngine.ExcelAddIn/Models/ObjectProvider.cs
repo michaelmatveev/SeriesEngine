@@ -50,7 +50,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .OfType<CollectionDataBlock>()
                     .SingleOrDefault(db => db.Name == listObject.Name);
 
-                var network = _networksProvider.GetNetwork(solution.Id, collectionDatablock.NetworkName);
+                var network = _networksProvider.GetNetwork(solution, collectionDatablock.NetworkName);
 
                 var xpath = GetXPathToNodeId(column.XPath.Value, selection.Value.ToString());
                 var id = ((IEnumerable<object>)collectionDatablock.Xml.Root.XPathEvaluate(xpath))
@@ -107,7 +107,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 {
                     var networkTree = _networksProvider
                         //.GetNetwork(solution.Id, collectionDatablock.NetworkName, new[] { variableBlock }, period); 
-                        .GetNetwork(solution.Id, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, period); //не оптимально запрашивать все данные
+                        .GetNetwork(solution, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, period); //не оптимально запрашивать все данные
 
                     var parentPath = $"{string.Join("/", path.Take(path.Length - 1))}/@UniqueName";
                     var columnWithObjectName = listObject
