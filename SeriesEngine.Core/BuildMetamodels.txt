@@ -9,4 +9,5 @@
 
 
 This scripts creates an SQL script to create database schema from scratch 
+The 'abc' model has been created successfully.
 The 'msk1' model has been created successfully.

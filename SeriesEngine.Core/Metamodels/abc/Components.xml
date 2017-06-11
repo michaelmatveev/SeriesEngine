@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Model Name="Test model" Prefix="abc" TargetDatabase="MsSqlServer">
+
+  <Stereotype Name="ObjectA">
+    <Variable Name="Name" DataType="StringMax">
+    </Variable>
+   
+    <Variable Name="VariableA01" DataType="String200" Optional="False" Versioned="True" Period="NonPeriodic">
+    </Variable>
+    <Variable Name="VariableA02" DataType="String200" Optional="False" Versioned="True" Period="Month">
+    </Variable>
+    <Variable Name="VariableA03" DataType="String200" Optional="False" Versioned="True" Period="Day">
+    </Variable>
+    <Variable Name="VariableA04" DataType="String200" Optional="False" Versioned="True" Period="Hour">
+    </Variable>
+
+    <!--<Variable Name="VariableA05" DataType="String200" Optional="False" Versioned="False" Period="NonPeriodic">
+    </Variable>
+    <Variable Name="VariableA06" DataType="String200" Optional="False" Versioned="False" Period="Month">
+    </Variable>
+    <Variable Name="VariableA07" DataType="String200" Optional="False" Versioned="False" Period="Day">
+    </Variable>
+    <Variable Name="VariableA08" DataType="String200" Optional="False" Versioned="False" Period="Hour">
+    </Variable>-->
+
+    <Variable Name="VariableA09" DataType="String200" Optional="True" Versioned="True" Period="NonPeriodic">
+    </Variable>
+    <Variable Name="VariableA10" DataType="String200" Optional="True" Versioned="True" Period="Month">
+    </Variable>
+    <Variable Name="VariableA11" DataType="String200" Optional="True" Versioned="True" Period="Day">
+    </Variable>
+    <Variable Name="VariableA12" DataType="String200" Optional="True" Versioned="True" Period="Hour">
+    </Variable>
+
+    <!--<Variable Name="VariableA13" DataType="String200" Optional="True" Versioned="False" Period="NonPeriodic">
+    </Variable>
+    <Variable Name="VariableA14" DataType="String200" Optional="True" Versioned="False" Period="Month">
+    </Variable>
+    <Variable Name="VariableA15" DataType="String200" Optional="True" Versioned="False" Period="Day">
+    </Variable>
+    <Variable Name="VariableA16" DataType="String200" Optional="True" Versioned="False" Period="Hour">
+    </Variable>-->
+
+  </Stereotype>
+
+  <Stereotype Name="ObjectB">
+    <Variable Name="Name" DataType="StringMax">
+    </Variable>
+  </Stereotype>
+
+  <Stereotype Name="ObjectC">
+    <Variable Name="Name" DataType="StringMax">
+    </Variable>
+  </Stereotype>
+
+  <Stereotype Name="ObjectD">
+    <Variable Name="Name" DataType="StringMax">
+    </Variable>
+  </Stereotype>
+
+  <Stereotype Name="ObjectE">
+    <Variable Name="Name" DataType="StringMax">
+    </Variable>
+  </Stereotype> 
+
+</Model>

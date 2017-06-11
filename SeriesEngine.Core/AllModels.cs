@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using SeriesEngine.Core.DataAccess;
+using SeriesEngine.abc;
 using SeriesEngine.msk1;
 
 namespace SeriesEngine.Core
@@ -16,10 +17,17 @@ namespace SeriesEngine.Core
         {
             get
             {
+                yield return abc;
                 yield return msk1;
             }
         }
 
+        public static MetaModel abc = new MetaModel
+        {
+            Name = "abc",
+            ObjectModels = abcObjects.UsedObjects,
+			HierarchyModels = abcHierarchies.UsedHierarchies
+        };
         public static MetaModel msk1 = new MetaModel
         {
             Name = "msk1",
@@ -31,9 +39,13 @@ namespace SeriesEngine.Core
         {
 			if(string.IsNullOrEmpty(modelName))
 			{
-				return new SeriesEngine.msk1.Model1();
+				return new SeriesEngine.abc.Model1();
 			}
 
+			if(modelName == "abc")
+            {
+                return new SeriesEngine.abc.Model1();
+            }
 			if(modelName == "msk1")
             {
                 return new SeriesEngine.msk1.Model1();
