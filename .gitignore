@@ -312,3 +312,5 @@ ModelManifest.xml
 /SeriesEngine.Core/msk1.ConsumerObjectVariables.cs
 /SeriesEngine.Core/msk1.ConsumerObject.cs
 /SeriesEngine.Core/msk1.Consumer.cs
+/SeriesEngine.Core/BuildMetamodels.txt
+/SeriesEngine.Core/AllModels.cs

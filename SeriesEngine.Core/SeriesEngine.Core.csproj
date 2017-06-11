@@ -128,6 +128,9 @@
     <Compile Include="abcHierarchies.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
+    <Compile Include="AllModels.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\BaseModelContext.cs" />
     <Compile Include="DataAccess\EditPeriodVariables.cs" />
     <Compile Include="DataAccess\IStateObject.cs" />
@@ -345,6 +348,11 @@
 .\msk1.SupplierVariables.cs
 .\msk1Hierarchies.cs
 </LastOutputs>
+    </Content>
+    <Content Include="BuildMetamodels.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Content>
     <Content Include="CreateDatabaseSchema.abc.sql">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
