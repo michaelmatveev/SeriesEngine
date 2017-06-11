@@ -128,9 +128,6 @@
     <Compile Include="abcHierarchies.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
-    <Compile Include="AllModels.cs">
-      <DependentUpon>BuildMetamodels.tt</DependentUpon>
-    </Compile>
     <Compile Include="DataAccess\BaseModelContext.cs" />
     <Compile Include="DataAccess\EditPeriodVariables.cs" />
     <Compile Include="DataAccess\IStateObject.cs" />
@@ -145,6 +142,129 @@
     <Compile Include="DataAccess\Utilities.cs" />
     <Compile Include="DataAccess\VersionedVariable.cs" />
     <Compile Include="Helpers\CastedList.cs" />
+    <Compile Include="msk1.Consumer.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ConsumerObject.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ConsumerObjectVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ConsumerVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Contract.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ContractVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Curcuit.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.CurcuitContract.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.CurcuitContractVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.CurcuitHierarchyNetwork.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.CurcuitHierarchyNode.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.CurcuitVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeterVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_Addition.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_AdditionInPercent.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_CoeffOfTransformation.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_Direction.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_Integral.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_Odn.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.MainHierarchyNetwork.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.MainHierarchyNode.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Model.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Objects.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.PointVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point_BPGroup.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point_ContractPriceCategory.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point_MaxPower.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point_PUPlace.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point_TUCode.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point_VoltageLevel.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Region.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.RegionVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Supplier.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.SupplierContract.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.SupplierContractVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.SupplierHierarchyNetwork.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.SupplierHierarchyNode.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.SupplierVariables.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1Hierarchies.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="ObjectMetamodel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reliability.cs" />
@@ -225,11 +345,6 @@
 .\msk1.SupplierVariables.cs
 .\msk1Hierarchies.cs
 </LastOutputs>
-    </Content>
-    <Content Include="BuildMetamodels.txt">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Content>
     <Content Include="CreateDatabaseSchema.abc.sql">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
