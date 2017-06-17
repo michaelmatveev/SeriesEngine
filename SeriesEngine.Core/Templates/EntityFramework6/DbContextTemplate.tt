@@ -54,22 +54,8 @@ namespace SeriesEngine.<#= Schema #>
  
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-			modelBuilder.Entity<Solution>()
-                .HasMany(e => e.Networks)
-                .WithRequired(e => e.Solution)
-                .WillCascadeOnDelete(true);
+			base.OnModelCreating(modelBuilder);
 
-			 modelBuilder.Entity<Network>()
-<#+
-		foreach(var h in Hierarchies)
-		{
-			var name = h.Attribute("Name").Value;
- #>
-                 .Map<<#= name #>Network>(m => m.Requires("NodeType").HasValue("<#= Schema #>.<#= name #>Node"))
-<#+
-		 }
-#>
-			;
 <#+
 		foreach(var h in Hierarchies)
 		{

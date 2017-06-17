@@ -1,0 +1,42 @@
+﻿<#+
+// <copyright file="BaseContextPartialTemplate.tt" company="">
+//  Copyright © . All Rights Reserved.
+// </copyright>
+
+public class BaseContextPartialTemplate : CSharpTemplate
+{
+	public string Schema;
+	public IEnumerable<XElement> Hierarchies;
+	
+	public override string TransformText()
+	{
+		base.TransformText();
+#>
+using SeriesEngine.<#= Schema #>;
+using System.Data.Entity;
+
+namespace SeriesEngine.Core.DataAccess
+{
+	public partial class BaseModelContext : DbContext
+	{
+		private void Map<#= Schema #>Networks(DbModelBuilder modelBuilder)
+		{
+			 modelBuilder.Entity<Network>()
+<#+
+		foreach(var h in Hierarchies)
+		{
+			var name = h.Attribute("Name").Value;
+ #>
+                 .Map<<#= name #>Network>(m => m.Requires("NodeType").HasValue("<#= Schema #>.<#= name #>Node"))
+<#+
+		 }
+#>
+			;
+		}
+	}
+}
+<#+
+        return this.GenerationEnvironment.ToString();
+	}
+}
+#>

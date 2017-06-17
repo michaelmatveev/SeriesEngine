@@ -1,0 +1,49 @@
+﻿<#+
+// <copyright file="BaseContextTemplate.tt" company="">
+//  Copyright © . All Rights Reserved.
+// </copyright>
+
+public class BaseContextTemplate : CSharpTemplate
+{
+	public IEnumerable<string> Models;
+	public override string TransformText()
+	{
+		base.TransformText();
+#>
+using System.Data.Entity;
+
+namespace SeriesEngine.Core.DataAccess
+{
+	public partial class BaseModelContext : DbContext
+	{
+        public BaseModelContext(string connectionString) : base(connectionString)
+        {
+            Configuration.ProxyCreationEnabled = false;
+        }
+
+        public virtual DbSet<Network> Networks { get; set; }
+        public virtual DbSet<Solution> Solutions { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Solution>()
+                .HasMany(e => e.Networks)
+                .WithRequired(e => e.Solution)
+                .WillCascadeOnDelete(true);
+<#+
+	foreach(var model in Models)
+	{
+#>
+			Map<#= model #>Networks(modelBuilder);
+<#+
+	}
+#>
+		}
+	}
+}
+<#+
+        return this.GenerationEnvironment.ToString();
+	}
+}
+#>

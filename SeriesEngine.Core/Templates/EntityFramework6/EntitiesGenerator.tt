@@ -2,6 +2,7 @@
 <#@ include file="ObjectEntityTemplate.tt" #>
 <#@ include file="HierarchyTemplate.tt" #>
 <#@ include file="HierarchyNodeTemplate.tt" #>
+<#@ include file="BaseContextPartialTemplate.tt" #>
 <#@ include file="DbContextTemplate.tt" #>
 <#+
 // <copyright file="EntitiesGenerator.tt" company="">
@@ -81,6 +82,14 @@ public class EntitiesGenerator : Generator
 			hierarchyNodeTemplate.RenderToFile(hierarhyNodeOutput);
 		}
 
+		var baseContextPartialTemplate = new BaseContextPartialTemplate 
+		{
+			Schema = prefix,
+			Hierarchies = HierarchiesDoc.Descendants("Hierarchy")
+		};
+		var baseOutput = String.Format("{0}.BaseModelContext1.cs", prefix);
+		baseContextPartialTemplate.RenderToFile(baseOutput);
+
 		var dbContextTemplate = new DbContextTemplate 
 		{
 			Schema = prefix,
@@ -89,6 +98,7 @@ public class EntitiesGenerator : Generator
 		};
 		var contextOutput = String.Format("{0}.Model.cs", prefix);
 		dbContextTemplate.RenderToFile(contextOutput);
+
 	}
 }
 #>

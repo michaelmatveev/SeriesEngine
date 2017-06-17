@@ -314,3 +314,6 @@ ModelManifest.xml
 /SeriesEngine.Core/msk1.Consumer.cs
 /SeriesEngine.Core/BuildMetamodels.txt
 /SeriesEngine.Core/AllModels.cs
+/SeriesEngine.Core/abc.BaseModelContext1.cs
+/SeriesEngine.Core/msk1.BaseModelContext1.cs
+/SeriesEngine.Core/BaseModelContext.cs

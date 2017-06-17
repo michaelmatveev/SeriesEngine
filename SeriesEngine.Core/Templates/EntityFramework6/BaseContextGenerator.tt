@@ -1,0 +1,20 @@
+﻿<#@ include file="BaseContextTemplate.tt" #>
+<#+
+// <copyright file="BaseContextGenerator.tt" company="">
+//  Copyright © Michael Matveev. All Rights Reserved.
+// </copyright>
+
+public class BaseContextGenerator : Generator
+{
+	public IEnumerable<string> Prefixes;
+
+	protected override void RunCore()
+	{
+		var baseContextTemplate = new BaseContextTemplate
+		{
+			Models = Prefixes
+		};
+		baseContextTemplate.RenderToFile("BaseModelContext.cs");
+	}
+}
+#>

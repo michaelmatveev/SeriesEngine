@@ -53,6 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="abc.BaseModelContext1.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="abc.FirstHierarchyNetwork.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
@@ -131,7 +134,9 @@
     <Compile Include="AllModels.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataAccess\BaseModelContext.cs" />
+    <Compile Include="BaseModelContext.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataAccess\EditPeriodVariables.cs" />
     <Compile Include="DataAccess\IStateObject.cs" />
     <Compile Include="DataAccess\NamedObject.cs" />
@@ -145,6 +150,9 @@
     <Compile Include="DataAccess\Utilities.cs" />
     <Compile Include="DataAccess\VersionedVariable.cs" />
     <Compile Include="Helpers\CastedList.cs" />
+    <Compile Include="msk1.BaseModelContext1.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="msk1.Consumer.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
@@ -278,6 +286,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>BuildMetamodels.txt</LastGenOutput>
       <LastOutputs>
+.\abc.BaseModelContext1.cs
 .\abc.FirstHierarchyNetwork.cs
 .\abc.FirstHierarchyNode.cs
 .\abc.Model.cs
@@ -304,8 +313,10 @@
 .\abc.SecondHierarchyNode.cs
 .\abcHierarchies.cs
 .\AllModels.cs
+.\BaseModelContext.cs
 .\CreateDatabaseSchema.abc.sql
 .\CreateDatabaseSchema.msk1.sql
+.\msk1.BaseModelContext1.cs
 .\msk1.Consumer.cs
 .\msk1.ConsumerObject.cs
 .\msk1.ConsumerObjectVariables.cs
@@ -373,6 +384,9 @@
     <Content Include="Metamodels\msk1\DataStructures.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Templates\EntityFramework6\BaseContextGenerator.tt" />
+    <Content Include="Templates\EntityFramework6\BaseContextPartialTemplate.tt" />
+    <Content Include="Templates\EntityFramework6\BaseContextTemplate.tt" />
     <Content Include="Templates\EntityFramework6\DbContextTemplate.tt" />
     <Content Include="Templates\EntityFramework6\EntitiesGenerator.tt" />
     <Content Include="Templates\EntityFramework6\HierarchyNodeTemplate.tt" />

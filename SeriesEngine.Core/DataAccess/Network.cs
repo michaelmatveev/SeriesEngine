@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,7 +20,7 @@ namespace SeriesEngine.Core.DataAccess
         [Required]
         [StringLength(128)]
         public string Name { get; set; }
-                
+
         public string Description { get; set; }
 
         public bool? IsSystem { get; set; }
@@ -43,4 +44,5 @@ namespace SeriesEngine.Core.DataAccess
 
         public virtual Solution Solution { get; set; }
     }
+
 }
