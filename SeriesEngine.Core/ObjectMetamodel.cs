@@ -23,10 +23,8 @@ namespace SeriesEngine.Core
         public TimeInterval PeriodInterval { get; set; }
         public Type EntityType { get; set; }
         public Type ValueType { get; set; }
-        //public bool SetValue(NamedObject obj, string value)
-        //{
-        //    return _valueSetter(obj, value);
-        //}
+
+        public string ObjectName { get; set; }
 
         public object Parse(string value)
         {

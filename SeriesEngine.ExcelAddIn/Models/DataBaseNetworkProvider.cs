@@ -30,13 +30,9 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 context.Solutions.Attach(solution);
                 context.Entry(solution).Collection(s => s.Networks).Load();
-                //var solution = context
-                //    .Solutions
-                //    .Include(s => s.Networks)
-                //    .SingleOrDefault(s => s.Id == solutionId);
-
                 var network = solution.Networks.First(n => n.Name == name);
                 var query = context.Entry(network).Collection("Nodes").Query();
+                bool fullHierarchy = false;
 
                 if (variables != null)
                 {
@@ -53,20 +49,20 @@ namespace SeriesEngine.ExcelAddIn.Models
                     {
                         query = query.Include(v.RefObject);
                     }
+
+                    var nodeObjects = variables
+                        .OfType<NodeDataBlock>()
+                        .Where(n => n.NodeType == NodeType.UniqueName)
+                        .Select(v => v.RefObject);
+
+                    fullHierarchy = network.HierarchyModel
+                        .ReferencedObjects
+                        .Select(o => o.Name)
+                        .Except(nodeObjects).Count() == 0;
                 }
 
-                query.Load();
-
-                var nodeObjects = variables
-                    .OfType<NodeDataBlock>()
-                    .Where(n => n.NodeType == NodeType.UniqueName)
-                    .Select(v => v.RefObject);
-
-                var fullHierarchy = network.HierarchyModel
-                    .ReferencedObjects
-                    .Select(o => o.Name)
-                    .Except(nodeObjects).Count() == 0;
-                
+                context.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+                query.Load();                
                 return new NetworkTree(network, fullHierarchy);
             }
         }

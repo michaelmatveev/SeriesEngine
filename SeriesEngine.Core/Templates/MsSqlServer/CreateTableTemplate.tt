@@ -141,7 +141,8 @@ GO
 
 ALTER TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s] WITH NOCHECK 
 ADD CONSTRAINT [FK_<#= Schema #>_<#= Table #>_<#= varName #>s_<#= Table #>s] FOREIGN KEY("ObjectId")
-REFERENCES [<#= Schema #>].[<#= Table #>s] ("Id");
+REFERENCES [<#= Schema #>].[<#= Table #>s] ("Id")
+ON DELETE CASCADE;
 GO
 
 <#+
@@ -179,7 +180,8 @@ GO
 
 ALTER TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s] WITH NOCHECK 
 ADD CONSTRAINT [FK_<#= Schema #>_<#= Table #>_<#= varName #>s_<#= Table #>s] FOREIGN KEY("ObjectId")
-REFERENCES [<#= Schema #>].[<#= Table #>s] ("Id");
+REFERENCES [<#= Schema #>].[<#= Table #>s] ("Id")
+ON DELETE CASCADE;
 GO
 
 <#+
@@ -217,7 +219,8 @@ GO
 
 ALTER TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s] WITH NOCHECK 
 ADD CONSTRAINT [FK_<#= Schema #>_<#= Table #>_<#= varName #>s_<#= Table #>s] FOREIGN KEY("ObjectId")
-REFERENCES [<#= Schema #>].[<#= Table #>s] ("Id");
+REFERENCES [<#= Schema #>].[<#= Table #>s] ("Id")
+ON DELETE CASCADE;
 GO
 
 <#+
@@ -254,7 +257,8 @@ GO
 
 ALTER TABLE [<#= Schema #>].[<#= Table #>_<#= varName #>s] WITH NOCHECK 
 ADD CONSTRAINT [FK_<#= Schema #>_<#= Table #>_<#= varName #>s_<#= Table #>s] FOREIGN KEY("ObjectId")
-REFERENCES [<#= Schema #>].[<#= Table #>s] ("Id");
+REFERENCES [<#= Schema #>].[<#= Table #>s] ("Id")
+ON DELETE CASCADE;
 GO
 
 <#+
