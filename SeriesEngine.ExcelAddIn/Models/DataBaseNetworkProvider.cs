@@ -32,6 +32,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 context.Entry(solution).Collection(s => s.Networks).Load();
                 var network = solution.Networks.First(n => n.Name == name);
                 var query = context.Entry(network).Collection("Nodes").Query();
+
                 bool fullHierarchy = false;
 
                 if (variables != null)

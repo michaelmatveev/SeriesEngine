@@ -143,7 +143,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     };
                     //b.VariablePeriod = period; // TODO вычислить период в зависимости от сдвига
                 }
-                var xml = networkTree.ConvertToXml(collectionDatablock.DataBlocks, period);
+                var xml = networkTree.ConvertToXml(collectionDatablock.DataBlocks, period, collectionDatablock.CustomPath);
                 collectionDatablock.Xml = xml;
 
                 var result = xmlMap.ImportXml(xml.ToString(), true);

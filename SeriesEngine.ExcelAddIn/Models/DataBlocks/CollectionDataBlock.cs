@@ -28,6 +28,7 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
         public bool AddIndexColumn { get; set; } = true;
         public PeriodType PeriodType { get; set; } = PeriodType.Common;
         public Period CustomPeriod { get; set; }
+        public string CustomPath { get; set; }
         public XDocument Xml { get; set; }
 
         public IList<DataBlock> DataBlocks { get; private set; } = new List<DataBlock>();

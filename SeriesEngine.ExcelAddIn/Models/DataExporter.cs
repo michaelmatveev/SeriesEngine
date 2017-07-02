@@ -70,7 +70,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
             }
 
-            var source = new XDocument(collectionDatablock.Xml ?? sourceNetworkTree.ConvertToXml(collectionDatablock.DataBlocks, period));
+            var source = new XDocument(collectionDatablock.Xml ?? sourceNetworkTree.ConvertToXml(collectionDatablock.DataBlocks, period, collectionDatablock.CustomPath));
             //var source = new XDocument(collectionDatablock.Xml);
             var target = XDocument.Parse(dsChanged.GetXml());
             sourceNetworkTree.LoadFromXml(source, target, period);

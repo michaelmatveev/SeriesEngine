@@ -27,14 +27,19 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public int Id => _network.Id;
 
-        public XDocument ConvertToXml(IEnumerable<DataBlock> queryParamers, Period defaultPeriod)
+        public XDocument ConvertToXml(IEnumerable<DataBlock> queryParamers, Period defaultPeriod, string path)
         {
             var data = new XDocument();
             var rootElement = new XElement(RootName);
             var tree = _network
                 .MyNodes
-                .Where(n => IsNodeInPeriod(n, defaultPeriod, false) && n.LinkedObject != null) // мы грузим все node для Network, но некторые из них не ссылаются на LinkedObject потому что соотвествующие объекты не были запрошены
+                .Where(n => IsNodeInPeriod(n, defaultPeriod) && n.LinkedObject != null) // мы грузим все node для Network, но некторые из них не ссылаются на LinkedObject потому что соотвествующие объекты не были запрошены
                 .GenerateTree(n => n.NodeName, n => n.MyParent?.NodeName);
+
+            if (!string.IsNullOrEmpty(path) && path != "*")
+            {
+                tree = tree.Where(n => n.Item.InPath(path));
+            }
 
             rootElement.Add(GetSubElements(tree, queryParamers));
             data.Add(rootElement);
@@ -48,7 +53,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             updater.UpdateFromSourceToTarget(source, target);
         }
 
-        private static bool IsNodeInPeriod(NetworkTreeNode node, Period period, bool whenNodePeriodIsIncorrectResult)
+        private static bool IsNodeInPeriod(NetworkTreeNode node, Period period)
         {
             if (!(node.ValidFrom.HasValue || node.ValidTill.HasValue))
             {
@@ -70,7 +75,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 return period.Intersect(node.ValidFrom.Value, node.ValidTill.Value);
             }
 
-            return whenNodePeriodIsIncorrectResult;
+            return false;
         }
 
         public NamedObject FindObject(string objectTypeName, string name)

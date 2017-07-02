@@ -29,6 +29,33 @@ namespace SeriesEngine.Core.DataAccess
         }
 
         [NotMapped]
+        public string Path
+        {
+            get
+            {
+                return $"{MyParent?.NodeName ?? string.Empty}/{NodeName}"; 
+            }
+        }
+
+        public bool InPath(string path)
+        {
+            var pathElements = path.Split('/');
+            var myPathElements = Path.Split('/');
+            for(int i = 0; i < pathElements.Length; i++)
+            {
+                if(pathElements[i] != myPathElements[i])
+                {
+                    return false;
+                }
+                if((i + 1) == myPathElements.Length)
+                {
+                    break;
+                }
+            }
+            return true;
+        }
+
+        [NotMapped]
         public abstract NamedObject LinkedObject { get; }
 
         public void SetLinkedObject(NamedObject obj)

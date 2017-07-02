@@ -144,7 +144,7 @@ namespace SeriesEngine.Tests.Database
             var network = provider.GetNetwork(_currentSolution, "Main network 1");
  
             var collectionDataBlock = GetCollectionDataBlock();            
-            var dataXml = network.ConvertToXml(collectionDataBlock.DataBlocks, Period.Default);
+            var dataXml = network.ConvertToXml(collectionDataBlock.DataBlocks, Period.Default, "*");
 
             Console.WriteLine(dataXml);
             AssertElementExists(dataXml, "DataImportExport/Region[@UniqueName='Region 1']");
@@ -166,7 +166,7 @@ namespace SeriesEngine.Tests.Database
 
             //network.LoadFromXml(source, doc);
             var collectionDataBlock = GetCollectionDataBlock();
-            var dataXml = network.ConvertToXml(collectionDataBlock.DataBlocks, Period.Default);
+            var dataXml = network.ConvertToXml(collectionDataBlock.DataBlocks, Period.Default, "*");
 
             Console.WriteLine(dataXml);
             AssertElementExists(dataXml, "DataImportExport/Region[@UniqueName='Region 2']");
@@ -180,14 +180,14 @@ namespace SeriesEngine.Tests.Database
             var network = provider.GetNetwork(_currentSolution, "Main network 1");
 
             var collectionDataBlock = GetCollectionDataBlock();
-            var dataXml = network.ConvertToXml(collectionDataBlock.DataBlocks, Period.Default);
+            var dataXml = network.ConvertToXml(collectionDataBlock.DataBlocks, Period.Default, "*");
             var pathToDelete = "DataImportExport/Region[@UniqueName='Region 1']";
             var nodeId = int.Parse(dataXml.XPathSelectElement(pathToDelete).Attribute("NodeId").Value);
             network.DeleteObjectLinkedWithNode(nodeId);
 
             network = provider.GetNetwork(_currentSolution, "Main network 1");
 
-            dataXml = network.ConvertToXml(collectionDataBlock.DataBlocks, Period.Default);
+            dataXml = network.ConvertToXml(collectionDataBlock.DataBlocks, Period.Default, "*");
             Console.WriteLine(dataXml);
 
             AssertElementDoesNotExist(dataXml, pathToDelete);
@@ -201,14 +201,14 @@ namespace SeriesEngine.Tests.Database
             var network = provider.GetNetwork(_currentSolution, "Main network 1");
 
             var collectionDataBlock = GetCollectionDataBlock();
-            var dataXml = network.ConvertToXml(collectionDataBlock.DataBlocks, Period.Default);
+            var dataXml = network.ConvertToXml(collectionDataBlock.DataBlocks, Period.Default, "*");
             var xPathToDelete = "DataImportExport/Region/Consumer/Contract[@UniqueName='Contract 1']";
             var nodeId = int.Parse(dataXml.XPathSelectElement(xPathToDelete).Attribute("NodeId").Value);
             network.DeleteObjectLinkedWithNode(nodeId);
 
             network = provider.GetNetwork(_currentSolution, "Main network 1");
 
-            dataXml = network.ConvertToXml(collectionDataBlock.DataBlocks, Period.Default);
+            dataXml = network.ConvertToXml(collectionDataBlock.DataBlocks, Period.Default, "*");
             Console.WriteLine(dataXml);
 
             AssertElementDoesNotExist(dataXml, xPathToDelete);
