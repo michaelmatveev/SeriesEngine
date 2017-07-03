@@ -2,8 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SeriesEngine.Core.DataAccess;
 using SeriesEngine.Core;
-using System.Linq;
-using System.Data.Entity;
 using SeriesEngine.abc;
 using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;

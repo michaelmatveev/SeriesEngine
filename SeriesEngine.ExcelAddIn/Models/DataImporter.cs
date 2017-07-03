@@ -204,11 +204,14 @@ namespace SeriesEngine.ExcelAddIn.Models
         private static void SetupFormulaColumn(Excel.ListObject listObject, int index, FormulaDataBlock fdb)
         {
             var column = listObject.ListColumns.Cast<Excel.ListColumn>().Single(c => c.Index == index);// Skip(index).First();
-            column.DataBodyRange.Formula = fdb.Formula;
+            if (column.DataBodyRange != null)
+            {
+                column.DataBodyRange.Formula = fdb.Formula;
+            }
             if (listObject.ShowHeaders)
             {
                 column.Name = fdb.Caption;
-            }
+            }            
         }
 
         private string GetColumnCaption(DataBlock block)

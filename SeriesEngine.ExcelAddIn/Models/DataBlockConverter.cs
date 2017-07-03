@@ -24,7 +24,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                 Sheet = source.Root.Attribute("Sheet").Value,
                 Cell = source.Root.Attribute("Cell").Value,
                 AddIndexColumn = bool.Parse(source.Root.Attribute("AddIndexColumn")?.Value ?? "True"),
-                ShowHeader = bool.Parse(source.Root.Attribute("ShowHeader")?.Value ?? "True")
+                ShowHeader = bool.Parse(source.Root.Attribute("ShowHeader")?.Value ?? "True"),
+                CustomPath = source.Root.Attribute("CustomPath")?.Value ?? string.Empty
             };
 
             var model = source.Root.Attribute("Model").Value;
@@ -88,7 +89,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                         new XAttribute("Model", "msk1"), //TODO replace with current solution model
                         new XAttribute("Cell", coll.Cell),
                         new XAttribute("AddIndexColumn", coll.AddIndexColumn),
-                        new XAttribute("ShowHeader", coll.ShowHeader));
+                        new XAttribute("ShowHeader", coll.ShowHeader),
+                        new XAttribute("CustomPath", coll.CustomPath));
                 var doc = new XDocument(root);
 
                 foreach(var n in coll.DataBlocks)

@@ -51,6 +51,7 @@
             this.buttonSampleSecond = this.Factory.CreateRibbonButton();
             this.buttonSampleButtonCurcuit = this.Factory.CreateRibbonButton();
             this.buttonIntegralAct = this.Factory.CreateRibbonButton();
+            this.buttonIntegralAct2 = this.Factory.CreateRibbonButton();
             this.groupObject = this.Factory.CreateRibbonGroup();
             this.buttonRenameObject = this.Factory.CreateRibbonButton();
             this.buttonDeleteObject = this.Factory.CreateRibbonButton();
@@ -60,7 +61,6 @@
             this.buttonGroup1 = this.Factory.CreateRibbonButtonGroup();
             this.toggleButtonBeginOfPeriod = this.Factory.CreateRibbonToggleButton();
             this.toggleButtonEndOfPeriod = this.Factory.CreateRibbonToggleButton();
-            this.buttonIntegralAct2 = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.tabCustom.SuspendLayout();
             this.groupConnect.SuspendLayout();
@@ -207,11 +207,19 @@
             // 
             // buttonIntegralAct
             // 
-            this.buttonIntegralAct.Label = "Интегральный акт";
+            this.buttonIntegralAct.Label = "Интегральный акт (договор 1001014-ЭН)";
             this.buttonIntegralAct.Name = "buttonIntegralAct";
             this.buttonIntegralAct.ShowImage = true;
             this.buttonIntegralAct.Tag = "IntegralAct";
             this.buttonIntegralAct.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonSample_Click);
+            // 
+            // buttonIntegralAct2
+            // 
+            this.buttonIntegralAct2.Label = "Интегральный акт 2";
+            this.buttonIntegralAct2.Name = "buttonIntegralAct2";
+            this.buttonIntegralAct2.ShowImage = true;
+            this.buttonIntegralAct2.Tag = "IntegralAct2";
+            this.buttonIntegralAct2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonSample_Click);
             // 
             // groupObject
             // 
@@ -273,14 +281,6 @@
             this.toggleButtonEndOfPeriod.Checked = true;
             this.toggleButtonEndOfPeriod.Label = "на конец периода";
             this.toggleButtonEndOfPeriod.Name = "toggleButtonEndOfPeriod";
-            // 
-            // buttonIntegralAct2
-            // 
-            this.buttonIntegralAct2.Label = "Интегральный акт 2";
-            this.buttonIntegralAct2.Name = "buttonIntegralAct2";
-            this.buttonIntegralAct2.ShowImage = true;
-            this.buttonIntegralAct2.Tag = "IntegralAct2";
-            this.buttonIntegralAct2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonSample_Click);
             // 
             // Ribbon
             // 
