@@ -19,6 +19,7 @@ public class VariableTemplate : CSharpTemplate
 using System;
 using System.Collections.Generic;
 using SeriesEngine.Core;
+using SeriesEngine.Core.DataAccess;
 
 namespace SeriesEngine.<#= Schema #>
 {
@@ -60,7 +61,7 @@ namespace SeriesEngine.<#= Schema #>
 		foreach(var v in vars)
 		{
 			var name = v.Attribute("Name").Value;
-			bool isPeriodic = v.Attribute("Period") != null;
+			var period = v.Attribute("Period")?.Value ?? "None";
 			var typeName = v.Attribute("DataType").Value;
 			var type = DataTypes[typeName].Attribute("ClrType").Value;
 
@@ -75,12 +76,12 @@ namespace SeriesEngine.<#= Schema #>
 		public static Variable <#= name #> = new Variable(<#= Stereotype #>.<#= name #>Parser)
         {
 			ObjectName = "<#= Stereotype #>",
-			Name = "<#= name #>",
-			IsPeriodic = <#= isPeriodic.ToString().ToLower() #>,
+			Name = "<#= name #>",			
+			PeriodInterval = TimeInterval.<#= period #>,
 			IsVersioned = <#= isVersioned.ToString().ToLower() #>,
 			ValueType = typeof(<#= type #>),
 <#+
-			if(isPeriodic)
+			if(period != "None")
 			{
 #>
 			EntityType = typeof(<#= Stereotype#>_<#= name #>)

@@ -149,34 +149,34 @@ namespace SeriesEngine.ExcelAddIn.Models
         private IEnumerable<XElement> GetSubElements(IEnumerable<TreeItem<NetworkTreeNode>> currentItems, IEnumerable<DataBlock> queryParamers)
         {
             var result = new List<XElement>();
-            foreach (var groupOfSameObjects in currentItems.GroupBy(c => c.Item.LinkedObject.ObjectModel.Name))
+            foreach (var groupOfTreeItemsWithTheSameType in currentItems.GroupBy(c => c.Item.LinkedObject.ObjectModel.Name))
             {
-                foreach (var node in groupOfSameObjects)
+                foreach (var treeItem in groupOfTreeItemsWithTheSameType)
                 {
-                    var newElement = new XElement(groupOfSameObjects.Key);
+                    var newElement = new XElement(groupOfTreeItemsWithTheSameType.Key);
                     var add = false;
-                    var visible = false;
-                    foreach (var qp in queryParamers.Where(q => q.RefObject == groupOfSameObjects.Key))
+                    //var visible = false;
+                    foreach (var qp in queryParamers.Where(q => q.RefObject == groupOfTreeItemsWithTheSameType.Key && q.Visible))
                     {
-                        add = ProcessObjectElement(newElement, node.Item, qp);
-                        visible |= qp.Visible; // если все блоки visible то добавляем новый элемент, иначе не вставляем этот элемент и переходим к его дочерним элементам
+                        add = ProcessObjectElement(newElement, treeItem.Item, qp);
+                        //visible |= qp.Visible; // если все блоки visible то добавляем новый элемент, иначе не вставляем этот элемент и переходим к его дочерним элементам
                         if(!add)
                         {
                             break;
                         }
                     }
-                    if (add)
-                    {
-                        if (visible)
+                    //if (add)
+                    //{
+                        if (add)
                         {
-                            newElement.Add(GetSubElements(node.Children, queryParamers));
+                            newElement.Add(GetSubElements(treeItem.Children, queryParamers));
                             result.Add(newElement);
                         }
                         else
                         {
-                            result.AddRange(GetSubElements(node.Children, queryParamers));
+                            result.AddRange(GetSubElements(treeItem.Children, queryParamers));
                         }
-                    }
+                    //}
                 }
             }
             return result;

@@ -38,19 +38,19 @@
       <Family Rank="10">Основные свойства</Family>
       <Help Context="Точка">Точка</Help>
     </Variable>
-    <Variable Name="VoltageLevel" DataType="String200" Versioned="True" Period="NonPeriodic">
+    <Variable Name="VoltageLevel" DataType="String200" Versioned="True" Period="Indefinite">
       <Family Rank="20">Основные свойства</Family>
       <Help Context="Уровень напряжения">Уровень напряжения</Help>
     </Variable>
-    <Variable Name="MaxPower" DataType="Decimal" Versioned="True" Period="NonPeriodic">
+    <Variable Name="MaxPower" DataType="Decimal" Versioned="True" Period="Indefinite">
       <Family Rank="30">Основные свойства</Family>
       <Help Context="Максимальная мощность">Максимальная мощность</Help>
     </Variable>
-    <Variable Name="TUCode" DataType="String200" Optional="True" Versioned="True" Period="NonPeriodic">
+    <Variable Name="TUCode" DataType="String200" Optional="True" Versioned="True" Period="Indefinite">
       <Family Rank="40">Основные свойства</Family>
       <Help Context="Код ТУ">Код ТУ</Help>
     </Variable>
-    <Variable Name="BPGroup" DataType="String200" Optional="True" Versioned="True" Period="NonPeriodic">
+    <Variable Name="BPGroup" DataType="String200" Optional="True" Versioned="True" Period="Indefinite">
       <Family Rank="50">Основные свойства</Family>
       <Help Context="Группа БП">Группа БП</Help>
     </Variable>

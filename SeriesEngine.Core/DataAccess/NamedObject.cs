@@ -55,7 +55,19 @@ namespace SeriesEngine.Core.DataAccess
         {
             var thisType = GetType();
             PropertyInfo property;
-            if (variableModel.IsPeriodic && variableModel.IsVersioned)
+            if(variableModel.PeriodInterval == TimeInterval.Indefinite )
+            {
+                property = thisType.GetProperty($"{ObjectModel.Name}_{variableModel.Name}s");
+                var collection = property.GetValue(this, null) as IEnumerable<PeriodVariable>;
+                return collection
+                    .Where(v => v.Date < requestedPeriod.Till)
+                    .OrderBy(v => v.Date)
+                    .ThenBy(v => v.Id)
+                    .LastOrDefault()
+                    ?.Value;
+            }
+
+            if (variableModel.IsFixedPeriod && variableModel.IsVersioned)
             {
                 property = thisType.GetProperty($"{ObjectModel.Name}_{variableModel.Name}s");
                 var collection = property.GetValue(this, null) as IEnumerable<PeriodVariable>;
@@ -67,7 +79,7 @@ namespace SeriesEngine.Core.DataAccess
                     ?.Value;
             }
 
-            if (!variableModel.IsPeriodic && variableModel.IsVersioned)
+            if (!variableModel.IsFixedPeriod && variableModel.IsVersioned)
             {
                 property = thisType.GetProperty($"{ObjectModel.Name}_{variableModel.Name}s");
                 var collection = property.GetValue(this, null) as IEnumerable<VersionedVariable>;
@@ -83,7 +95,7 @@ namespace SeriesEngine.Core.DataAccess
 
         public IEnumerable<PeriodVariable> GetPeriodVariable(Variable variableModel)
         {
-            if (!variableModel.IsPeriodic)
+            if (variableModel.PeriodInterval == TimeInterval.None)
             {
                 throw new ArgumentException(nameof(variableModel));
             }

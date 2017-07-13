@@ -67,7 +67,8 @@ namespace SeriesEngine.ExcelAddIn.Views
                 .ToArray();
 
             listViewVariable.Items.AddRange(items);
-
+            buttonModify.Enabled = buttonDelete.Enabled = items.Any();
+                 
             var lastValue = (items.LastOrDefault()?.Tag as PeriodVariable) ?? VariablesToShow.InitialValue;
             if (lastValue != null)
             {

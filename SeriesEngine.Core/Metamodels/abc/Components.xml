@@ -5,7 +5,7 @@
     <Variable Name="Name" DataType="StringMax">
     </Variable>
    
-    <Variable Name="VariableA01" DataType="String200" Optional="False" Versioned="True" Period="NonPeriodic">
+    <Variable Name="VariableA01" DataType="String200" Optional="False" Versioned="True" Period="Indefinite">
     </Variable>
     <Variable Name="VariableA02" DataType="String200" Optional="False" Versioned="True" Period="Month">
     </Variable>
@@ -23,7 +23,7 @@
     <Variable Name="VariableA08" DataType="String200" Optional="False" Versioned="False" Period="Hour">
     </Variable>-->
 
-    <Variable Name="VariableA09" DataType="String200" Optional="True" Versioned="True" Period="NonPeriodic">
+    <Variable Name="VariableA09" DataType="String200" Optional="True" Versioned="True" Period="Indefinite">
     </Variable>
     <Variable Name="VariableA10" DataType="String200" Optional="True" Versioned="True" Period="Month">
     </Variable>

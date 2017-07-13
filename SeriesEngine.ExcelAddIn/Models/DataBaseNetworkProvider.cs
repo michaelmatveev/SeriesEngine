@@ -38,7 +38,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 if (variables != null)
                 {
                     foreach (var v in variables.OfType<VariableDataBlock>()
-                        .Where(b => b.VariableMetamodel.IsPeriodic || b.VariableMetamodel.IsVersioned))
+                        .Where(b => b.VariableMetamodel.PeriodInterval != TimeInterval.None || b.VariableMetamodel.IsVersioned))
                     {
                         var obj = v.RefObject;
                         var vrb = v.VariableMetamodel.Name;

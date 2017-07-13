@@ -18,9 +18,16 @@ namespace SeriesEngine.Core
         }
 
         public string Name { get; set; }
-        public bool IsPeriodic { get; set; }
         public bool IsVersioned { get; set; }
         public TimeInterval PeriodInterval { get; set; }
+        public bool IsFixedPeriod
+        {
+            get
+            {
+                return PeriodInterval != TimeInterval.None && PeriodInterval != TimeInterval.Indefinite ;
+            }
+        }
+
         public Type EntityType { get; set; }
         public Type ValueType { get; set; }
 

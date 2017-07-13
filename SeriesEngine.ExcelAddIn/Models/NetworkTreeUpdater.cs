@@ -164,7 +164,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var varName = v.Name.LocalName;
                 var parsedVar = VariableNameParser.GetVariableModel(targetObject.ObjectModel, varName);
                 var model = parsedVar.VariableModel;
-                if (!model.IsVersioned & !model.IsPeriodic)
+                if (!model.IsVersioned & model.PeriodInterval == TimeInterval.None)
                 {
                     if (targetObject.SetVariableValue(varName, v.Value) && !linkedObjectUpdated)
                     {
@@ -172,7 +172,12 @@ namespace SeriesEngine.ExcelAddIn.Models
                     }
                 }
 
-                if(model.IsVersioned & model.IsPeriodic)
+                //if (model.IsVersioned & model.PeriodInterval == TimeInterval.NonPeriodic)
+               //{
+                    // апериодические переменные здесь не обновляются, потому что для каждого такой переменной следует указывать различное время
+                //}
+
+                if (model.IsVersioned & model.IsFixedPeriod)
                 {
                     var storedValue = targetObject.GetVariableValue(model, _defaultDateForPeriodVariables);
                     var currentValue = model.Parse(v.Value);
