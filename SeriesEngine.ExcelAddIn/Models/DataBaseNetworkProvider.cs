@@ -16,6 +16,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var network = context.Networks.Find(networkId);
                 context.Entry(network).Reference(n => n.Solution).Load();
                 var query = context.Entry(network).Collection("Nodes").Query();
+                //query.MergeOption = MergeOption.OverwriteChanges;
                 foreach (var v in network.HierarchyModel.ReferencedObjects)
                 {
                     query = query.Include(v.Name);
@@ -29,9 +30,9 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             using (var context = ModelsDescription.GetModel(solution.ModelName))
             {
-                context.Solutions.Attach(solution);
-                context.Entry(solution).Collection(s => s.Networks).Load();
-                var network = solution.Networks.First(n => n.Name == networkName);
+                var sln = context.Solutions.Find(solution.Id);
+                context.Entry(sln).Collection(s => s.Networks).Load();
+                var network = sln.Networks.First(n => n.Name == networkName);
                 var query = context.Entry(network).Collection("Nodes").Query();
 
                 bool fullHierarchy = false;
@@ -64,7 +65,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
 
                 context.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
-                query.Load();                
+                query.Load();
                 return new NetworkTree(network, fullHierarchy);
             }
         }

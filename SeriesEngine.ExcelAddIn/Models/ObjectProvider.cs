@@ -105,7 +105,6 @@ namespace SeriesEngine.ExcelAddIn.Models
                 if (variableBlock != null)
                 {
                     var networkTree = _networksProvider
-                        //.GetNetwork(solution.Id, collectionDatablock.NetworkName, new[] { variableBlock }, period); 
                         .GetNetwork(solution, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, period); //не оптимально запрашивать все данные
 
                     var parentPath = $"{string.Join("/", path.Take(path.Length - 1))}/@UniqueName";
