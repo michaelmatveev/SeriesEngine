@@ -9,11 +9,12 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public class DataBaseNetworkProvider : INetworksProvider
     {
-        public NetworkTree GetNetworkById(int networkId)
+        public NetworkTree GetNetworkById(string modelName, int networkId)
         {
-            using (var context = ModelsDescription.GetModel(""))
+            using (var context = ModelsDescription.GetModel(modelName))
             {
                 var network = context.Networks.Find(networkId);
+                context.Entry(network).Reference(n => n.Solution).Load();
                 var query = context.Entry(network).Collection("Nodes").Query();
                 foreach (var v in network.HierarchyModel.ReferencedObjects)
                 {
@@ -24,13 +25,13 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        public NetworkTree GetNetwork(Solution solution, string name, IEnumerable<DataBlock> variables = null, Period period = null)
+        public NetworkTree GetNetwork(Solution solution, string networkName, IEnumerable<DataBlock> variables = null, Period period = null)
         {
             using (var context = ModelsDescription.GetModel(solution.ModelName))
             {
                 context.Solutions.Attach(solution);
                 context.Entry(solution).Collection(s => s.Networks).Load();
-                var network = solution.Networks.First(n => n.Name == name);
+                var network = solution.Networks.First(n => n.Name == networkName);
                 var query = context.Entry(network).Collection("Nodes").Query();
 
                 bool fullHierarchy = false;

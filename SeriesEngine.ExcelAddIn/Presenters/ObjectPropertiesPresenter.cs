@@ -15,12 +15,12 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             _objectProvider = objectProvider;
             View.RenameConfirmed += (s, e) =>
             {
-                objectProvider.RenameObject(View.SelectedObject);
+                objectProvider.RenameObject(controller.CurrentSolution.ModelName, View.SelectedObject);
                 Controller.Execute(new ReloadAllCommandArgs());
             };
             View.DeleteConfirmed += (s, e) =>
             {
-                objectProvider.DeleteObject(View.SelectedObject);
+                objectProvider.DeleteObject(controller.CurrentSolution.ModelName, View.SelectedObject);
                 Controller.Execute(new ReloadAllCommandArgs());
             };
         }

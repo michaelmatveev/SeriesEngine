@@ -7,7 +7,6 @@ using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using System.Collections.Generic;
-using System;
 using SeriesEngine.ExcelAddIn.Helpers;
 
 namespace SeriesEngine.ExcelAddIn.Models
@@ -25,9 +24,9 @@ namespace SeriesEngine.ExcelAddIn.Models
             _networksProvider = networksProvider;
         }
 
-        public void ChangeData(int networkId, IEnumerable<IStateObject> objectsToChange)
+        public void ChangeData(string modelName, int networkId, IEnumerable<IStateObject> objectsToChange)
         {
-            var network = _networksProvider.GetNetworkById(networkId);
+            var network = _networksProvider.GetNetworkById(modelName, networkId);
             network.Update(objectsToChange);
         }
 
@@ -138,15 +137,15 @@ namespace SeriesEngine.ExcelAddIn.Models
             return null;
         }
 
-        public void RenameObject(EditorObject objectToRename)
+        public void RenameObject(string modelName, EditorObject objectToRename)
         {
-            var network = _networksProvider.GetNetworkById(objectToRename.NetworkId);
+            var network = _networksProvider.GetNetworkById(modelName, objectToRename.NetworkId);
             network.RenameObjectLinkedWithNode(objectToRename.NodeId, objectToRename.Name);
         }
 
-        public void DeleteObject(EditorObject objectToDelete)
+        public void DeleteObject(string modelName, EditorObject objectToDelete)
         {
-            var network = _networksProvider.GetNetworkById(objectToDelete.NetworkId);
+            var network = _networksProvider.GetNetworkById(modelName, objectToDelete.NetworkId);
             network.DeleteObjectLinkedWithNode(objectToDelete.NodeId);
         }
 

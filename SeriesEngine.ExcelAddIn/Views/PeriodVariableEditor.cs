@@ -21,7 +21,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         void IPeriodVariableView.ShowIt()
         {
             FillValues();
-            if (ShowDialog() == DialogResult.OK)
+            if (ShowDialog() == DialogResult.OK && VariablesToShow.ValuesForPeriod.Any())
             {
                 EditVariableCompleted?.Invoke(this, EventArgs.Empty); 
             }

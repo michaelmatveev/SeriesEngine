@@ -8,11 +8,11 @@ namespace SeriesEngine.ExcelAddIn.Models
     {
         EditorObject GetSelectedObject(CurrentSelection selection, Solution solution);
         EditPeriodVariables GetSelectedPeriodVaraible(CurrentSelection selection, Solution solution);
-        void RenameObject(EditorObject objectToUpdate);
-        void DeleteObject(EditorObject objectToDelete);
+        void RenameObject(string modelName, EditorObject objectToUpdate);
+        void DeleteObject(string modelName, EditorObject objectToDelete);
 
         //void UpdatePeriodVaraible(EditPeriodVariables variables);
-        void ChangeData(int networkId, IEnumerable<IStateObject> objectsToChange);
+        void ChangeData(string modelName, int networkId, IEnumerable<IStateObject> objectsToChange);
 
     }
 }

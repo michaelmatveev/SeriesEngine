@@ -6,7 +6,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 {
     public interface INetworksProvider
     {
-        NetworkTree GetNetworkById(int networkId);
-        NetworkTree GetNetwork(Solution solution, string name, IEnumerable<DataBlock> variables = null, Period period = null);
+        NetworkTree GetNetworkById(string modelName, int networkId);
+        NetworkTree GetNetwork(Solution solution, string networkName, IEnumerable<DataBlock> variables = null, Period period = null);
     }
 }

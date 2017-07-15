@@ -21,7 +21,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             View.EditVariableCompleted += (s, e) =>
             {
                 var values = View.VariablesToShow;
-                _objectProvider.ChangeData(values.NetworkId, values.ValuesForPeriod);
+                _objectProvider.ChangeData(controller.CurrentSolution.ModelName, values.NetworkId, values.ValuesForPeriod);
 
                 var curVal = values
                     .ValuesForPeriod
