@@ -121,6 +121,12 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
                         sf.XmlPath = $"{currentPath}/{vsf.VariableBlockName}";
                     }
 
+                    var fsf = sf as FormulaDataBlock;
+                    if(fsf != null)
+                    {
+                        sf.XmlPath = string.Empty;
+                    }
+
                 }
                 lastElement = sequence;
             }

@@ -59,8 +59,9 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 var tree = collectionDatablock
                     .DataBlocks
-                    .Where(d => !(d is FormulaDataBlock) &&  d.Visible)
-                    .Select((f, i) => new ColumnIdentity(f, i + (collectionDatablock.AddIndexColumn ? 1 : 0)))
+                    .Where(d => d.Visible) // исключаем невидимые
+                    .Select((f, i) => new ColumnIdentity(f, i + (collectionDatablock.AddIndexColumn ? 1 : 0))) // считаем номер колонки для всех видимые
+                    .Where(ci => !(ci.DataBlock is FormulaDataBlock)) // исключаем формулы поскольку результыты вычислений не сохраняются в БД
                     .GroupBy(ci => new ObjectIdentity(ci.RefObject, ci.Parent))
                     .GenerateTree(n => n.Key.RefObject, p => p.Key.Parent, NetworkTree.RootName);
 
@@ -230,6 +231,8 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             public string RefObject { get; protected set; }
             public string Parent { get; protected set; }
+            
+            public DataBlock DataBlock { get; private set; }
 
             public ObjectIdentity(string refObjectName, string parentName)
             {
@@ -240,7 +243,11 @@ namespace SeriesEngine.ExcelAddIn.Models
             protected ObjectIdentity(DataBlock sf)
             {
                 RefObject = sf.RefObject;
-                Parent = sf.XmlPath.Split('/').Reverse().Skip(2).First();
+                if (!string.IsNullOrEmpty(sf.XmlPath))
+                {
+                    Parent = sf.XmlPath.Split('/').Reverse().Skip(2).First();
+                }
+                DataBlock = sf;
             }
 
             public override bool Equals(object obj)

@@ -220,7 +220,7 @@
     <Compile Include="Models\ObjectCache.cs" />
     <Compile Include="Models\ObjectProvider.cs" />
     <Compile Include="Models\SelectionProvider.cs" />
-    <Compile Include="Models\SubFragment.cs" />
+    <Compile Include="Models\NodeType.cs" />
     <Compile Include="Models\CustomInterceptorPolicy.cs" />
     <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\DataBlocks\BaseDataBlock.cs" />
@@ -238,7 +238,6 @@
     <Compile Include="Models\Kind.cs" />
     <Compile Include="Models\ManagedObject.cs" />
     <Compile Include="Models\MockModelProvider.cs" />
-    <Compile Include="Models\NamedCollection.cs" />
     <Compile Include="Models\MockNetworkProvider.cs" />
     <Compile Include="Models\SubscribeInterceptor.cs" />
     <Compile Include="Models\WorkbookDataBlockProvider.cs" />

@@ -191,6 +191,20 @@ namespace SeriesEngine.ExcelAddIn.Models
                         result.Add(newVariable);
                     }
                 }
+
+                if(model.IsVersioned & model.PeriodInterval == TimeInterval.None)
+                {
+                    var storedValue = targetObject.GetVariableValue(model, _defaultDateForPeriodVariables);
+                    var currentValue = model.Parse(v.Value);
+                    if (!Object.Equals(storedValue, currentValue))
+                    {
+                        var newVariable = Activator.CreateInstance(model.EntityType) as VersionedVariable;
+                        newVariable.ObjectId = targetObject.Id;
+                        newVariable.Value = currentValue;
+                        newVariable.State = ObjectState.Added;
+                        result.Add(newVariable);
+                    }
+                }
             }
 
             if (linkedObjectUpdated)

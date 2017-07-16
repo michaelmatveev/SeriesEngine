@@ -81,7 +81,7 @@ namespace SeriesEngine.<#= Schema #>
 			IsVersioned = <#= isVersioned.ToString().ToLower() #>,
 			ValueType = typeof(<#= type #>),
 <#+
-			if(period != "None")
+			if(period != "None" || isVersioned)
 			{
 #>
 			EntityType = typeof(<#= Stereotype#>_<#= name #>)
