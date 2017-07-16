@@ -122,11 +122,15 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Use(c => c.GetInstance<DataExporter>());
 
                 _.ForConcreteType<CollectionPropertiesPresenter>();
+                _.ForConcreteType<XmlPropertiesPresenter>();
                 
                 _.For<ICollectionPropertiesView>()
                     .Use<CollectionProperties>()
                     .Ctor<Func<IList<string>>>()
                     .Is(GetWorksheetsName);
+
+                _.For<IXmlPropertiesView>()
+                    .Use<XmlProperties>();
 
                 _.ForConcreteType<NodeBlockPropertiesPresenter>();
 

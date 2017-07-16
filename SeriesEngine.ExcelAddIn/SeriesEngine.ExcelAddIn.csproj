@@ -250,6 +250,13 @@
     <Compile Include="Presenters\PeriodVariableEditorPresenter.cs" />
     <Compile Include="Presenters\SolutionSelectorPresenter.cs" />
     <Compile Include="Models\SolutionProvider.cs" />
+    <Compile Include="Presenters\DataBlockPresenter.cs" />
+    <Compile Include="Presenters\MainMenuPresenter.cs" />
+    <Compile Include="Presenters\Presenter.cs" />
+    <Compile Include="Presenters\XmlPropertiesPresenter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Views\BreadCrumbs.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -259,25 +266,41 @@
     <Compile Include="Views\CollectionProperties.Designer.cs">
       <DependentUpon>CollectionProperties.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\DataBlockProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\DataBlockProperties.Designer.cs">
+      <DependentUpon>DataBlockProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DataBlocksControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\DataBlocksControl.Designer.cs">
+      <DependentUpon>DataBlocksControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ICollectionPropertiesView.cs" />
+    <Compile Include="Views\IDataBlockPropertiesView.cs" />
+    <Compile Include="Views\IDataBlockView.cs" />
+    <Compile Include="Views\IMainMenuView.cs" />
+    <Compile Include="Views\IMainPane.cs" />
     <Compile Include="Views\IObjectPropertiesView.cs" />
+    <Compile Include="Views\IPanes.cs" />
     <Compile Include="Views\IPeriodVariableView.cs" />
+    <Compile Include="Views\IPeriodView.cs" />
     <Compile Include="Views\ISolutionSelectorView.cs" />
+    <Compile Include="Views\IView.cs" />
+    <Compile Include="Views\IXmlPropertiesView.cs" />
+    <Compile Include="Views\MainPaneControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\MainPaneControl.Designer.cs">
+      <DependentUpon>MainPaneControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\NodeBlockProperties.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\NodeBlockProperties.Designer.cs">
       <DependentUpon>NodeBlockProperties.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ICollectionPropertiesView.cs" />
-    <Compile Include="Views\IDataBlockPropertiesView.cs" />
-    <Compile Include="Views\IMainPane.cs" />
-    <Compile Include="Views\IPanes.cs" />
-    <Compile Include="Views\IPeriodView.cs" />
-    <Compile Include="Presenters\DataBlockPresenter.cs" />
-    <Compile Include="Presenters\MainMenuPresenter.cs" />
-    <Compile Include="Presenters\Presenter.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Views\ObjectProperties.cs">
       <SubType>Form</SubType>
@@ -285,11 +308,26 @@
     <Compile Include="Views\ObjectProperties.Designer.cs">
       <DependentUpon>ObjectProperties.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\PaneControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\PeriodSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\PeriodSelector.Designer.cs">
+      <DependentUpon>PeriodSelector.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\PeriodVariableEditor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\PeriodVariableEditor.Designer.cs">
       <DependentUpon>PeriodVariableEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Ribbon.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\Ribbon.Designer.cs">
+      <DependentUpon>Ribbon.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\RibbonWrapper.cs" />
     <Compile Include="Views\SolutionSelector.cs">
@@ -305,6 +343,12 @@
       <DependentUpon>VariableEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ViewNames.cs" />
+    <Compile Include="Views\XmlProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\XmlProperties.Designer.cs">
+      <DependentUpon>XmlProperties.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -318,9 +362,6 @@
     <EmbeddedResource Include="Views\CollectionProperties.resx">
       <DependentUpon>CollectionProperties.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\NodeBlockProperties.resx">
-      <DependentUpon>NodeBlockProperties.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Views\DataBlockProperties.resx">
       <DependentUpon>DataBlockProperties.cs</DependentUpon>
     </EmbeddedResource>
@@ -329,6 +370,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\MainPaneControl.resx">
       <DependentUpon>MainPaneControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\NodeBlockProperties.resx">
+      <DependentUpon>NodeBlockProperties.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ObjectProperties.resx">
       <DependentUpon>ObjectProperties.cs</DependentUpon>
@@ -348,6 +392,9 @@
     <EmbeddedResource Include="Views\VariableEditor.resx">
       <DependentUpon>VariableEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\XmlProperties.resx">
+      <DependentUpon>XmlProperties.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -357,42 +404,6 @@
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DataBlockProperties.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\DataBlockProperties.Designer.cs">
-      <DependentUpon>DataBlockProperties.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DataBlocksControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\DataBlocksControl.Designer.cs">
-      <DependentUpon>DataBlocksControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\IDataBlockView.cs" />
-    <Compile Include="Views\IMainMenuView.cs" />
-    <Compile Include="Views\IView.cs" />
-    <Compile Include="Views\MainPaneControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\MainPaneControl.Designer.cs">
-      <DependentUpon>MainPaneControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PaneControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\PeriodSelector.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\PeriodSelector.Designer.cs">
-      <DependentUpon>PeriodSelector.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Ribbon.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Views\Ribbon.Designer.cs">
-      <DependentUpon>Ribbon.cs</DependentUpon>
     </Compile>
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>

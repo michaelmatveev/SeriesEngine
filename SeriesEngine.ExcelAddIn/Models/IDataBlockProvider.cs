@@ -18,5 +18,8 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         int GetLastSolutionId();
         void SetLastSolutionId(int solutionId);
+
+        string GetXml(string name);
+        void UpdateXml(string name, string xml);
     }   
 }

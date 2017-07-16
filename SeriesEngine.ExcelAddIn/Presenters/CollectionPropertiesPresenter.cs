@@ -11,7 +11,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 {
     public class CollectionPropertiesPresenter : Presenter<ICollectionPropertiesView>,
         ICommand<InsertCollectionBlockCommandArgs>,
-        ICommand<EditCollectionBlockCommandArgs>,
+        //ICommand<EditCollectionBlockCommandArgs>,
         ICommand<InsertSampleCollectionBlockCommandArgs>
     {
         private readonly IDataBlockProvider _dataBlockProvider;
@@ -63,10 +63,10 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             View.ShowIt();
         }
 
-        void ICommand<EditCollectionBlockCommandArgs>.Execute(EditCollectionBlockCommandArgs commandData)
-        {
-            View.CollectionDataBlock = (CollectionDataBlock)commandData.CollectionDataBlockToEdit;
-            View.ShowIt();
-        }
+        //void ICommand<EditCollectionBlockCommandArgs>.Execute(EditCollectionBlockCommandArgs commandData)
+        //{
+        //    View.CollectionDataBlock = (CollectionDataBlock)commandData.CollectionDataBlockToEdit;
+        //    View.ShowIt();
+        //}
     }
 }

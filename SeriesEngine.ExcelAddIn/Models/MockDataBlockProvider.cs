@@ -371,5 +371,20 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             throw new NotImplementedException();
         }
+
+        public string GetXml(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateXml(string xml)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateXml(string name, string xml)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

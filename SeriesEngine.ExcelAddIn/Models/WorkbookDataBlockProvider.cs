@@ -8,6 +8,7 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Xml.Linq;
 using SeriesEngine.Core.DataAccess;
+using System.Xml.XPath;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -21,6 +22,11 @@ namespace SeriesEngine.ExcelAddIn.Models
             _workbook = workbook;
             _dataBlocks = new List<BaseDataBlock>();
 
+            LoadDatablocks();
+        }
+
+        private void LoadDatablocks()
+        {
             var gridParts = _workbook.CustomXMLParts
                 .Cast<CustomXMLPart>()
                 .Where(p => !p.BuiltIn && p.NamespaceURI == Constants.XmlNamespaceDataBlocks);
@@ -36,6 +42,51 @@ namespace SeriesEngine.ExcelAddIn.Models
         public IEnumerable<BaseDataBlock> GetDataBlocks()
         {
             return _dataBlocks;
+        }
+
+        public string GetXml(string name)
+        {
+            var gridParts = _workbook.CustomXMLParts
+                .Cast<CustomXMLPart>()
+                .Where(p => !p.BuiltIn && p.NamespaceURI == Constants.XmlNamespaceDataBlocks)
+                .ToList();
+
+            foreach (var part in gridParts)
+            {
+                var doc = XDocument.Parse(part.XML);
+                var partName = doc.Root.Attribute("Name")?.Value;
+                if (partName == name)
+                {
+                    return doc.ToString();
+                }
+            };
+
+            return string.Empty;
+
+        }
+        public void UpdateXml(string name, string xml)
+        {
+            var gridParts = _workbook.CustomXMLParts
+                .Cast<CustomXMLPart>()
+                .Where(p => !p.BuiltIn && p.NamespaceURI == Constants.XmlNamespaceDataBlocks)
+                .ToList();
+
+            CustomXMLPart target = null;
+            foreach (var part in gridParts)
+            {
+                var doc = XDocument.Parse(part.XML);
+                var partName = doc.Root.Attribute("Name")?.Value;
+                if (partName == name)
+                {
+                    target = part;
+                }
+            };
+            if (target != null)
+            {
+                target.Delete();
+            }
+            _workbook.CustomXMLParts.Add(xml);
+            LoadDatablocks();
         }
 
         public void Save()

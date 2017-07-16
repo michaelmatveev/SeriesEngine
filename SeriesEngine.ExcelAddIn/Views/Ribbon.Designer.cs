@@ -264,23 +264,27 @@
             // 
             this.label1.Label = "Показывать значения";
             this.label1.Name = "label1";
+            this.label1.Visible = false;
             // 
             // buttonGroup1
             // 
             this.buttonGroup1.Items.Add(this.toggleButtonBeginOfPeriod);
             this.buttonGroup1.Items.Add(this.toggleButtonEndOfPeriod);
             this.buttonGroup1.Name = "buttonGroup1";
+            this.buttonGroup1.Visible = false;
             // 
             // toggleButtonBeginOfPeriod
             // 
             this.toggleButtonBeginOfPeriod.Label = "на начало периода";
             this.toggleButtonBeginOfPeriod.Name = "toggleButtonBeginOfPeriod";
+            this.toggleButtonBeginOfPeriod.Visible = false;
             // 
             // toggleButtonEndOfPeriod
             // 
             this.toggleButtonEndOfPeriod.Checked = true;
             this.toggleButtonEndOfPeriod.Label = "на конец периода";
             this.toggleButtonEndOfPeriod.Name = "toggleButtonEndOfPeriod";
+            this.toggleButtonEndOfPeriod.Visible = false;
             // 
             // Ribbon
             // 
