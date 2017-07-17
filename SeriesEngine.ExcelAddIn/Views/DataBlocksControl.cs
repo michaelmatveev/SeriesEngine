@@ -86,7 +86,11 @@ namespace SeriesEngine.ExcelAddIn.Views
             {
                 Tag = dataBlock
             };
-            newNode.Nodes.AddRange(dataBlock.DataBlocks.Select(db => new TreeNode(db.Name) { Tag = db }).ToArray());
+            if(dataBlock.AddIndexColumn)
+            {
+                newNode.Nodes.Add(new TreeNode("Индекс"));
+            }
+            newNode.Nodes.AddRange(dataBlock.DataBlocks.Select(db => new TreeNode(db.Caption) { Tag = db }).ToArray());
             return newNode;
         }
 

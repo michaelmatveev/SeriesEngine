@@ -121,6 +121,13 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
                         sf.XmlPath = $"{currentPath}/{vsf.VariableBlockName}";
                     }
 
+                    var psf = sf as PeriodDataBlock;
+                    if(psf != null)
+                    {
+                        sequence.Add(GetSchemaForPeriod());
+                        sf.XmlPath = $"/{NetworkTree.RootName}/Period";
+                    }
+
                     var fsf = sf as FormulaDataBlock;
                     if(fsf != null)
                     {
@@ -152,6 +159,18 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
                 new XAttribute("maxOccurs", "1"),
                 new XAttribute("nillable", "true"),
                 new XAttribute("form", "unqualified"));
+        }
+
+        private static XElement GetSchemaForPeriod()
+        {
+            return new XElement(ns + "element",
+                new XAttribute("name", "Period"),
+                new XElement(ns + "complexType",
+                    new XElement(ns + "sequence"),
+                    new XElement(ns + "attribute",
+                        new XAttribute("name", "Interval"),
+                        new XAttribute("type", "xs:dateTime"),
+                        new XAttribute("use", "required"))));
         }
 
     }

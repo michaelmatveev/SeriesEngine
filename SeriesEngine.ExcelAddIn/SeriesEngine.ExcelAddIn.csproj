@@ -208,6 +208,7 @@
     <Compile Include="Models\DataBaseNetworkProvider.cs" />
     <Compile Include="Models\DataBlocks\FormulaDataBlock.cs" />
     <Compile Include="Models\DataBlocks\NodeDataBlock.cs" />
+    <Compile Include="Models\DataBlocks\PeriodDataBlock.cs" />
     <Compile Include="Models\DataBlocks\VariableDataBlock.cs" />
     <Compile Include="Models\ErrorOccuredEventArgs.cs" />
     <Compile Include="Models\IErrorAware.cs" />

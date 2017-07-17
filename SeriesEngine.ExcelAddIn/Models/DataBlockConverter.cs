@@ -25,8 +25,20 @@ namespace SeriesEngine.ExcelAddIn.Models
                 Cell = source.Root.Attribute("Cell").Value,
                 AddIndexColumn = bool.Parse(source.Root.Attribute("AddIndexColumn")?.Value ?? "True"),
                 ShowHeader = bool.Parse(source.Root.Attribute("ShowHeader")?.Value ?? "True"),
-                CustomPath = source.Root.Attribute("CustomPath")?.Value ?? string.Empty
+                CustomPath = source.Root.Attribute("CustomPath")?.Value ?? string.Empty,
             };
+
+            var interval = (TimeInterval)Enum.Parse(typeof(TimeInterval), source.Root.Attribute("Interval")?.Value ?? "None");
+            if (interval != TimeInterval.None && interval != TimeInterval.Indefinite)
+            {
+                var periodDataBlock = new PeriodDataBlock(result)
+                {
+                    PeriodInterval = interval,
+                    Level = 0,
+                    Caption = "Период"
+                };
+                result.DataBlocks.Add(periodDataBlock);
+            }
 
             var model = source.Root.Attribute("Model").Value;
             foreach (var f in source.Root.Descendants())
@@ -96,14 +108,14 @@ namespace SeriesEngine.ExcelAddIn.Models
                 foreach(var n in coll.DataBlocks)
                 {
                     XElement newElement;
-                    if(n is NodeDataBlock)
+                    if (n is NodeDataBlock)
                     {
                         var ndb = n as NodeDataBlock;
                         newElement = new XElement(ns + NodeElementName,
                             new XAttribute("Type", ndb.NodeType),
                             new XAttribute("RefObject", n.RefObject));
                     }
-                    else if(n is VariableDataBlock)
+                    else if (n is VariableDataBlock)
                     {
                         var vdb = n as VariableDataBlock;
                         newElement = new XElement(ns + VariableElementName,
@@ -111,7 +123,12 @@ namespace SeriesEngine.ExcelAddIn.Models
                             new XAttribute("Kind", vdb.Kind),
                             new XAttribute("Shift", vdb.Shift),
                             new XAttribute("RefObject", n.RefObject));
-                    } else
+                    }
+                    else if (n is PeriodDataBlock)
+                    {
+                        newElement = new XElement(ns + "Period");
+                    }
+                    else
                     {
                         var fdb = n as FormulaDataBlock;
                         newElement = new XElement(ns + FormualElementName,

@@ -231,7 +231,11 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             if (block is FormulaDataBlock)
             {
-                //column.DataBodyRange.Formula = (block as FormulaDataBlock).Formula;
+            }
+            else if(block is PeriodDataBlock)
+            {
+                column.Range.NumberFormat = "dd.mm.yyyy";
+                column.XPath.SetValue(map, block.XmlPath);
             }
             else
             {
