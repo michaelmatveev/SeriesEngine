@@ -1,5 +1,6 @@
 ﻿using SeriesEngine.Core;
 using SeriesEngine.Core.DataAccess;
+using SeriesEngine.ExcelAddIn.Business.Trees;
 using SeriesEngine.ExcelAddIn.Helpers;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System;
@@ -51,6 +52,15 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             var updater = new NetworkTreeUpdater(_network, _fullHierarchy, defaultPeriod);
             updater.UpdateFromSourceToTarget(source, target);
+        }
+
+        public IEnumerable<VariableGroup> ConvertToGroups(IEnumerable<DataBlock> queryParamers, Period defaultPeriod, string path)
+        {
+            yield return new VariableGroup
+            {
+                Caption = "Test"//,
+                //Values = 
+            };
         }
 
         private static bool IsNodeInPeriod(NetworkTreeNode node, Period period)

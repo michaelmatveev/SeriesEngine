@@ -15,6 +15,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public static BaseDataBlock GetDataBlock(XDocument source, Period defaultPeriod)
         {
+            var interval = (TimeInterval)Enum.Parse(typeof(TimeInterval), source.Root.Attribute("Interval")?.Value ?? "None");
             var result = new CollectionDataBlock
             {
                 CustomPeriod = defaultPeriod,
@@ -26,9 +27,9 @@ namespace SeriesEngine.ExcelAddIn.Models
                 AddIndexColumn = bool.Parse(source.Root.Attribute("AddIndexColumn")?.Value ?? "True"),
                 ShowHeader = bool.Parse(source.Root.Attribute("ShowHeader")?.Value ?? "True"),
                 CustomPath = source.Root.Attribute("CustomPath")?.Value ?? string.Empty,
+                Interval = interval
             };
 
-            var interval = (TimeInterval)Enum.Parse(typeof(TimeInterval), source.Root.Attribute("Interval")?.Value ?? "None");
             if (interval != TimeInterval.None && interval != TimeInterval.Indefinite)
             {
                 var periodDataBlock = new PeriodDataBlock(result)

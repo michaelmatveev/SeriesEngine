@@ -30,7 +30,7 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
         public Period CustomPeriod { get; set; }
         public string CustomPath { get; set; }
         public XDocument Xml { get; set; }
-
+        public TimeInterval Interval { get; set; } = TimeInterval.None;
         public IList<DataBlock> DataBlocks { get; private set; } = new List<DataBlock>();
 
         public CollectionDataBlock() : this(null, Period.Default)

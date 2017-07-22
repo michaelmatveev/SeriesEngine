@@ -7,6 +7,8 @@ using SeriesEngine.App.CommandArgs;
 using SeriesEngine.ExcelAddIn.Helpers;
 using SeriesEngine.Core.DataAccess;
 using System.Text.RegularExpressions;
+using System;
+using FluentDateTime;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -60,119 +62,20 @@ namespace SeriesEngine.ExcelAddIn.Models
             if(!_workbook.Worksheets.Cast<Excel.Worksheet>().Any(w => w.Name == collectionDatablock.Sheet))
             {
                 return; // worksheet has been deleted before
-            }
+            }            
 
             try
             {
                 _workbook.Application.EnableEvents = false;
                 _workbook.Application.DisplayAlerts = false;
-                
-                Excel.Worksheet sheet = _workbook.Sheets[collectionDatablock.Sheet];
-                sheet.Activate();
-                var tableCell = sheet.get_Range(collectionDatablock.Cell);
-                
-                var xmlMap = _workbook
-                    .XmlMaps
-                    .Cast<Excel.XmlMap>()
-                    .SingleOrDefault(m => m.Name == collectionDatablock.Name);
 
-                xmlMap?.Delete();
-
-                xmlMap = _workbook
-                    .XmlMaps
-                    .Add(collectionDatablock.GetSchema(), NetworkTree.RootName);
-                xmlMap.Name = collectionDatablock.Name;
-
-                var listObject = sheet
-                    .ListObjects
-                    .Cast<Excel.ListObject>()
-                    .SingleOrDefault(l => l.Name == collectionDatablock.Name);
-
-                if (listObject == null)
+                if (collectionDatablock.Interval == TimeInterval.None)
                 {
-                    listObject = sheet.ListObjects.Add(SourceType: Excel.XlListObjectSourceType.xlSrcRange, Source: tableCell, Destination: tableCell, XlListObjectHasHeaders: Excel.XlYesNoGuess.xlNo);
-                    listObject.Name = collectionDatablock.Name;
-                    // contains one column
+                    ImportIntoXmlMap(solution, collectionDatablock);
                 }
-
-                foreach (var column in listObject
-                        .ListColumns
-                        .Cast<Excel.ListColumn>()
-                        .Skip(1))
+                else
                 {
-                    column.Delete();
-                }
-
-                if (!collectionDatablock.AddIndexColumn)
-                {
-                    var column = listObject
-                        .ListColumns
-                        .Cast<Excel.ListColumn>()
-                        .First();
-
-                    var block = collectionDatablock.DataBlocks.First(db => db.Visible);
-                    if (listObject.ShowHeaders)
-                    {
-                        column.Name = GetColumnCaption(block);
-                    }
-                    SetColumn(column, xmlMap, block, solution);
-                }
-                
-                foreach (var f in collectionDatablock.DataBlocks.Where(db => db.Visible).Skip(collectionDatablock.AddIndexColumn ? 0 : 1))
-                {
-                    var column = listObject.ListColumns.Add();
-                    if (listObject.ShowHeaders)
-                    {
-                        column.Name = GetColumnCaption(f);
-                    }
-                    SetColumn(column, xmlMap, f, solution);
-                }
-
-                var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
-
-                listObject.ShowHeaders = collectionDatablock.ShowHeader;
-                var networkTree = _networksProvider
-                    .GetNetwork(solution, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, period);
-
-                foreach (var b in collectionDatablock.DataBlocks)
-                {
-                    b.VariablePeriod = new Period
-                    {
-                        From = period.From.AddMonths(b.Shift),
-                        Till = period.Till.AddMonths(b.Shift)
-                    };
-                    //b.VariablePeriod = period; // TODO вычислить период в зависимости от сдвига
-                }
-                var xml = networkTree.ConvertToXml(collectionDatablock.DataBlocks, period, collectionDatablock.CustomPath);
-                collectionDatablock.Xml = xml;
-
-                var result = xmlMap.ImportXml(xml.ToString(), true);
-
-                // call after data assigment
-                if (collectionDatablock.AddIndexColumn)
-                {
-                    SetupIndexerColumn(listObject, collectionDatablock.Cell);
-                }
-
-                var index = collectionDatablock.AddIndexColumn ? 2 : 1;
-                foreach(var db in collectionDatablock.DataBlocks.Where(d => d.Visible))
-                {
-                    var fdb = db as FormulaDataBlock;
-                    if (fdb != null)
-                    {
-                        SetupFormulaColumn(listObject, index, fdb);
-                    }
-                    index++;
-                }
-
-                if (listObject.ShowHeaders)
-                {
-                    listObject.HeaderRowRange.Validation.Delete();
-                }
-
-                if (collectionDatablock.AutoFitColumns)
-                {
-                    listObject.Range.Columns.AutoFit();
+                    ImportIntoTable(solution, collectionDatablock);
                 }
             }
             finally
@@ -180,6 +83,166 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _workbook.Application.EnableEvents = true;
                 _workbook.Application.DisplayAlerts = true;
             }
+        }
+
+        private void ImportIntoTable(Solution solution, CollectionDataBlock collectionDatablock)
+        {
+            Excel.Worksheet sheet = _workbook.Sheets[collectionDatablock.Sheet];
+            sheet.Activate();
+
+            var table = sheet.get_Range(collectionDatablock.Cell);
+            table.Clear();
+
+            var nameItem = _workbook.Names.OfType<Excel.Name>().SingleOrDefault(n => n.Name == collectionDatablock.Name);
+            nameItem?.Delete();
+
+            var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
+
+            var networkTree = _networksProvider
+                .GetNetwork(solution, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, period);
+
+            foreach (var b in collectionDatablock.DataBlocks)
+            {
+                b.VariablePeriod = new Period
+                {
+                    From = period.From.AddMonths(b.Shift),
+                    Till = period.Till.AddMonths(b.Shift)
+                };
+            }
+
+            var groups = networkTree.ConvertToGroups(collectionDatablock.DataBlocks, period, collectionDatablock.CustomPath);
+            var d = GetStartDate(period.From, collectionDatablock.Interval);
+            var row = 0;
+            while(d < period.Till)
+            {
+                var dateCell = sheet.get_Range(collectionDatablock.Cell).Offset[row, 0];
+                dateCell.Value2 = d;
+                dateCell.NumberFormat = GetFormat(collectionDatablock.Interval);
+                var i = 1;
+                foreach (var varGroup in groups)
+                {
+                    foreach(var v in varGroup.GetSlice(d))
+                    {
+                        var valueCell = sheet.get_Range(collectionDatablock.Cell).Offset[row, i];
+                        valueCell.Value2 = v;
+                        i++;
+                    }
+                }
+            }
+        }
+
+        #region ImportIntoXmlMap
+
+        private void ImportIntoXmlMap(Solution solution, CollectionDataBlock collectionDatablock)
+        {
+            Excel.Worksheet sheet = _workbook.Sheets[collectionDatablock.Sheet];
+            sheet.Activate();
+            var tableCell = sheet.get_Range(collectionDatablock.Cell);
+
+            var xmlMap = _workbook
+                .XmlMaps
+                .Cast<Excel.XmlMap>()
+                .SingleOrDefault(m => m.Name == collectionDatablock.Name);
+
+            xmlMap?.Delete();
+
+            xmlMap = _workbook
+                .XmlMaps
+                .Add(collectionDatablock.GetSchema(), NetworkTree.RootName);
+            xmlMap.Name = collectionDatablock.Name;
+
+            var listObject = sheet
+                .ListObjects
+                .Cast<Excel.ListObject>()
+                .SingleOrDefault(l => l.Name == collectionDatablock.Name);
+
+            if (listObject == null)
+            {
+                listObject = sheet.ListObjects.Add(SourceType: Excel.XlListObjectSourceType.xlSrcRange, Source: tableCell, Destination: tableCell, XlListObjectHasHeaders: Excel.XlYesNoGuess.xlNo);
+                listObject.Name = collectionDatablock.Name;
+                // contains one column
+            }
+
+            foreach (var column in listObject
+                    .ListColumns
+                    .Cast<Excel.ListColumn>()
+                    .Skip(1))
+            {
+                column.Delete();
+            }
+
+            if (!collectionDatablock.AddIndexColumn)
+            {
+                var column = listObject
+                    .ListColumns
+                    .Cast<Excel.ListColumn>()
+                    .First();
+
+                var block = collectionDatablock.DataBlocks.First(db => db.Visible);
+                if (listObject.ShowHeaders)
+                {
+                    column.Name = GetColumnCaption(block);
+                }
+                SetColumn(column, xmlMap, block, solution);
+            }
+
+            foreach (var f in collectionDatablock.DataBlocks.Where(db => db.Visible).Skip(collectionDatablock.AddIndexColumn ? 0 : 1))
+            {
+                var column = listObject.ListColumns.Add();
+                if (listObject.ShowHeaders)
+                {
+                    column.Name = GetColumnCaption(f);
+                }
+                SetColumn(column, xmlMap, f, solution);
+            }
+
+            var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
+
+            listObject.ShowHeaders = collectionDatablock.ShowHeader;
+            var networkTree = _networksProvider
+                .GetNetwork(solution, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, period);
+
+            foreach (var b in collectionDatablock.DataBlocks)
+            {
+                b.VariablePeriod = new Period
+                {
+                    From = period.From.AddMonths(b.Shift),
+                    Till = period.Till.AddMonths(b.Shift)
+                };
+                //b.VariablePeriod = period; // TODO вычислить период в зависимости от сдвига
+            }
+            var xml = networkTree.ConvertToXml(collectionDatablock.DataBlocks, period, collectionDatablock.CustomPath);
+            collectionDatablock.Xml = xml;
+
+            var result = xmlMap.ImportXml(xml.ToString(), true);
+
+            // call after data assigment
+            if (collectionDatablock.AddIndexColumn)
+            {
+                SetupIndexerColumn(listObject, collectionDatablock.Cell);
+            }
+
+            var index = collectionDatablock.AddIndexColumn ? 2 : 1;
+            foreach (var db in collectionDatablock.DataBlocks.Where(d => d.Visible))
+            {
+                var fdb = db as FormulaDataBlock;
+                if (fdb != null)
+                {
+                    SetupFormulaColumn(listObject, index, fdb);
+                }
+                index++;
+            }
+
+            if (listObject.ShowHeaders)
+            {
+                listObject.HeaderRowRange.Validation.Delete();
+            }
+
+            if (collectionDatablock.AutoFitColumns)
+            {
+                listObject.Range.Columns.AutoFit();
+            }
+
         }
 
         private static void SetupIndexerColumn(Excel.ListObject listObject, string startCell)
@@ -264,6 +327,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                 column.XPath.SetValue(map, block.XmlPath);
             }
         }
+
+        #endregion
 
         //private void ImportNodeFragment(NodeFragment fragment)
         //{
@@ -355,67 +420,66 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         //}
 
-        //private DateTime GetStartDate(DateTime from, TimeInterval interval)
-        //{
-        //    switch (interval)
-        //    {
-        //        case TimeInterval.Year:
-        //            return from.FirstDayOfYear();
-        //        case TimeInterval.Month:
-        //            return from.FirstDayOfMonth();
-        //        case TimeInterval.Week:
-        //            return from.FirstDayOfWeek();
-        //        case TimeInterval.Day:
-        //        case TimeInterval.Hour:
-        //        case TimeInterval.Minutes30:
-        //            return from;
-        //        default:
-        //            return DateTime.MaxValue;
-        //    }
-        //}
+        private DateTime GetStartDate(DateTime from, TimeInterval interval)
+        {
+            switch (interval)
+            {
+                case TimeInterval.Year:
+                    return from.FirstDayOfYear();
+                case TimeInterval.Month:
+                    return from.FirstDayOfMonth();
+                case TimeInterval.Week:
+                    return from.FirstDayOfWeek();
+                case TimeInterval.Day:
+                case TimeInterval.Hour:
+                case TimeInterval.Minutes30:
+                    return from;
+                default:
+                    return DateTime.MaxValue;
+            }
+        }
 
-        //private DateTime GetNextDate(DateTime current, TimeInterval interval)
-        //{
-        //    switch (interval)
-        //    {
-        //        case TimeInterval.Year:
-        //            return current.AddYears(1);
-        //        case TimeInterval.Month:
-        //            return current.AddMonths(1);
-        //        case TimeInterval.Week:
-        //            return current.AddDays(7);
-        //        case TimeInterval.Day:
-        //            return current.AddDays(1);
-        //        case TimeInterval.Hour:
-        //            return current.AddHours(1);
-        //        case TimeInterval.Minutes30:
-        //            return current.AddMinutes(30);
-        //        default:
-        //            return DateTime.MaxValue;
-        //    }
-        //}
+        private DateTime GetNextDate(DateTime current, TimeInterval interval)
+        {
+            switch (interval)
+            {
+                case TimeInterval.Year:
+                    return current.AddYears(1);
+                case TimeInterval.Month:
+                    return current.AddMonths(1);
+                case TimeInterval.Week:
+                    return current.AddDays(7);
+                case TimeInterval.Day:
+                    return current.AddDays(1);
+                case TimeInterval.Hour:
+                    return current.AddHours(1);
+                case TimeInterval.Minutes30:
+                    return current.AddMinutes(30);
+                default:
+                    return DateTime.MaxValue;
+            }
+        }
 
-        //private string GetFormat(TimeInterval interval)
-        //{
-        //    switch (interval)
-        //    {
-        //        case TimeInterval.Year:
-        //            return "YYYY";
-        //        case TimeInterval.Month:
-        //            return "MMMM YYYY";
-        //        case TimeInterval.Week:
-        //            return "dd.MM.YYYY";
-        //        case TimeInterval.Day:
-        //            return "dd.MM.YYYY";
-        //        case TimeInterval.Hour:
-        //            return "dd.MM.YYYY hh:mm";
-        //        case TimeInterval.Minutes30:
-        //            return "dd.MM.YYYY hh:mm";
-        //        default:
-        //            return string.Empty;
-        //    }
-
-        //}
+        private string GetFormat(TimeInterval interval)
+        {
+            switch (interval)
+            {
+                case TimeInterval.Year:
+                    return "YYYY";
+                case TimeInterval.Month:
+                    return "MMMM YYYY";
+                case TimeInterval.Week:
+                    return "dd.MM.YYYY";
+                case TimeInterval.Day:
+                    return "dd.MM.YYYY";
+                case TimeInterval.Hour:
+                    return "dd.MM.YYYY hh:mm";
+                case TimeInterval.Minutes30:
+                    return "dd.MM.YYYY hh:mm";
+                default:
+                    return string.Empty;
+            }
+         }
 
     }
 }

@@ -132,6 +132,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FluentDateTime, Version=1.13.0.0, Culture=neutral, PublicKeyToken=6ccbc613702e6c71, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentDateTime.1.13.0\lib\NET35\FluentDateTime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="LazyCache, Version=0.7.1.44, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LazyCache.0.7.1.44\lib\net45\LazyCache.dll</HintPath>
       <Private>True</Private>
@@ -193,6 +197,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Business\Trees\VariableGroup.cs" />
     <Compile Include="Helpers\ActiveRangeKeeper.cs" />
     <Compile Include="Helpers\Disposable.cs" />
     <Compile Include="Helpers\PanesManager.cs" />
@@ -202,47 +207,47 @@
     <Compile Include="Helpers\WithSafeReleaseCom.cs" />
     <Compile Include="Helpers\WorkbookExtensions.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
-    <Compile Include="Models\BaseDataExporter.cs" />
-    <Compile Include="Models\BaseDataImporter.cs" />
-    <Compile Include="Models\Constants.cs" />
-    <Compile Include="Models\DataBaseNetworkProvider.cs" />
-    <Compile Include="Models\DataBlocks\FormulaDataBlock.cs" />
-    <Compile Include="Models\DataBlocks\NodeDataBlock.cs" />
-    <Compile Include="Models\DataBlocks\PeriodDataBlock.cs" />
-    <Compile Include="Models\DataBlocks\VariableDataBlock.cs" />
-    <Compile Include="Models\ErrorOccuredEventArgs.cs" />
-    <Compile Include="Models\IErrorAware.cs" />
-    <Compile Include="Models\IObjectCache.cs" />
-    <Compile Include="Models\IObjectProvider.cs" />
-    <Compile Include="Models\ISelectionProvider.cs" />
-    <Compile Include="Models\ISolutionProvider.cs" />
-    <Compile Include="Models\NetworkTree.cs" />
-    <Compile Include="Models\NetworkTreeUpdater.cs" />
-    <Compile Include="Models\ObjectCache.cs" />
-    <Compile Include="Models\ObjectProvider.cs" />
-    <Compile Include="Models\SelectionProvider.cs" />
-    <Compile Include="Models\NodeType.cs" />
-    <Compile Include="Models\CustomInterceptorPolicy.cs" />
-    <Compile Include="Models\Extensions.cs" />
-    <Compile Include="Models\DataBlocks\BaseDataBlock.cs" />
-    <Compile Include="Models\DataExporter.cs" />
-    <Compile Include="Models\DataBlocks\SheetDataBlock.cs" />
-    <Compile Include="Models\DataImporter.cs" />
-    <Compile Include="Models\ExcelApplicationController.cs" />
-    <Compile Include="Models\DataBlocks\CollectionDataBlock.cs" />
-    <Compile Include="Models\DataBlocks\DataBlock.cs" />
-    <Compile Include="Models\MockDataBlockProvider.cs" />
-    <Compile Include="Models\IController.cs" />
-    <Compile Include="Models\IDataBlockProvider.cs" />
-    <Compile Include="Models\IModelProvider.cs" />
-    <Compile Include="Models\INetworksProvider.cs" />
-    <Compile Include="Models\Kind.cs" />
-    <Compile Include="Models\ManagedObject.cs" />
-    <Compile Include="Models\MockModelProvider.cs" />
-    <Compile Include="Models\MockNetworkProvider.cs" />
-    <Compile Include="Models\SubscribeInterceptor.cs" />
-    <Compile Include="Models\WorkbookDataBlockProvider.cs" />
-    <Compile Include="Models\DataBlockConverter.cs" />
+    <Compile Include="Business\Export\BaseDataExporter.cs" />
+    <Compile Include="Business\Import\BaseDataImporter.cs" />
+    <Compile Include="Business\Constants.cs" />
+    <Compile Include="Business\DataBaseNetworkProvider.cs" />
+    <Compile Include="Business\DataBlocks\FormulaDataBlock.cs" />
+    <Compile Include="Business\DataBlocks\NodeDataBlock.cs" />
+    <Compile Include="Business\DataBlocks\PeriodDataBlock.cs" />
+    <Compile Include="Business\DataBlocks\VariableDataBlock.cs" />
+    <Compile Include="Business\ErrorOccuredEventArgs.cs" />
+    <Compile Include="Business\IErrorAware.cs" />
+    <Compile Include="Business\IObjectCache.cs" />
+    <Compile Include="Business\IObjectProvider.cs" />
+    <Compile Include="Business\ISelectionProvider.cs" />
+    <Compile Include="Business\ISolutionProvider.cs" />
+    <Compile Include="Business\Trees\NetworkTree.cs" />
+    <Compile Include="Business\Trees\NetworkTreeUpdater.cs" />
+    <Compile Include="Business\ObjectCache.cs" />
+    <Compile Include="Business\ObjectProvider.cs" />
+    <Compile Include="Business\SelectionProvider.cs" />
+    <Compile Include="Business\NodeType.cs" />
+    <Compile Include="Business\CustomInterceptorPolicy.cs" />
+    <Compile Include="Business\Extensions.cs" />
+    <Compile Include="Business\DataBlocks\BaseDataBlock.cs" />
+    <Compile Include="Business\Export\DataExporter.cs" />
+    <Compile Include="Business\DataBlocks\SheetDataBlock.cs" />
+    <Compile Include="Business\Import\DataImporter.cs" />
+    <Compile Include="Business\ExcelApplicationController.cs" />
+    <Compile Include="Business\DataBlocks\CollectionDataBlock.cs" />
+    <Compile Include="Business\DataBlocks\DataBlock.cs" />
+    <Compile Include="Business\MockDataBlockProvider.cs" />
+    <Compile Include="Business\IController.cs" />
+    <Compile Include="Business\IDataBlockProvider.cs" />
+    <Compile Include="Business\IModelProvider.cs" />
+    <Compile Include="Business\INetworksProvider.cs" />
+    <Compile Include="Business\Kind.cs" />
+    <Compile Include="Business\ManagedObject.cs" />
+    <Compile Include="Business\MockModelProvider.cs" />
+    <Compile Include="Business\MockNetworkProvider.cs" />
+    <Compile Include="Business\SubscribeInterceptor.cs" />
+    <Compile Include="Business\WorkbookDataBlockProvider.cs" />
+    <Compile Include="Business\DataBlockConverter.cs" />
     <Compile Include="Presenters\CollectionPropertiesPresenter.cs" />
     <Compile Include="Presenters\NodeBlockPropertiesPresenter.cs" />
     <Compile Include="Presenters\MainPanePresenter.cs" />
@@ -250,7 +255,7 @@
     <Compile Include="Presenters\PeriodSelectorPresenter.cs" />
     <Compile Include="Presenters\PeriodVariableEditorPresenter.cs" />
     <Compile Include="Presenters\SolutionSelectorPresenter.cs" />
-    <Compile Include="Models\SolutionProvider.cs" />
+    <Compile Include="Business\SolutionProvider.cs" />
     <Compile Include="Presenters\DataBlockPresenter.cs" />
     <Compile Include="Presenters\MainMenuPresenter.cs" />
     <Compile Include="Presenters\Presenter.cs" />
