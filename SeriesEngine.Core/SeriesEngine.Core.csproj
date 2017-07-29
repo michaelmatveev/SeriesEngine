@@ -150,6 +150,7 @@
     <Compile Include="DataAccess\Utilities.cs" />
     <Compile Include="DataAccess\VersionedVariable.cs" />
     <Compile Include="Helpers\CastedList.cs" />
+    <Compile Include="Helpers\DateTimeHelper.cs" />
     <Compile Include="msk1.BaseModelContext1.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>

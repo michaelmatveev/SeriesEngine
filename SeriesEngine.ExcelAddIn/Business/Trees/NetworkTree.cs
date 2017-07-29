@@ -56,11 +56,22 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public IEnumerable<VariableGroup> ConvertToGroups(IEnumerable<DataBlock> queryParamers, Period defaultPeriod, string path)
         {
-            yield return new VariableGroup
+            var nodes = _network
+                .MyNodes
+                .Where(n => IsNodeInPeriod(n, defaultPeriod) && n.LinkedObject != null)
+                .GroupBy(n => n.LinkedObject.ObjectModel);
+
+            foreach (var q in queryParamers.OfType<VariableDataBlock>())
             {
-                Caption = "Test"//,
-                //Values = 
-            };
+                var data = nodes.Where(n => n.Key == q.ObjectMetamodel).SelectMany(n => n);
+                {
+                    yield return new VariableGroup
+                    {
+                        Variable = q.VariableMetamodel,
+                        ObjectsToScan = data.Select(d => d.LinkedObject).ToList()
+                    };
+                }
+            }
         }
 
         private static bool IsNodeInPeriod(NetworkTreeNode node, Period period)

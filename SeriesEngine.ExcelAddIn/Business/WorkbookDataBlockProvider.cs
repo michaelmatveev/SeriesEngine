@@ -30,7 +30,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             var gridParts = _workbook.CustomXMLParts
                 .Cast<CustomXMLPart>()
                 .Where(p => !p.BuiltIn && p.NamespaceURI == Constants.XmlNamespaceDataBlocks);
-
+            _dataBlocks.Clear();
             var defaultPeriod = GetDefaultPeriod();
             foreach (var part in gridParts)
             {

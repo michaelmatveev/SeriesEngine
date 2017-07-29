@@ -12,6 +12,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         private const string NodeElementName = "CFragment";
         private const string VariableElementName = "VFragment";
         private const string FormualElementName = "FFragment";
+        private const string PeriodElemenentName = "Period";
 
         public static BaseDataBlock GetDataBlock(XDocument source, Period defaultPeriod)
         {
@@ -69,6 +70,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                         VariableMetamodel = objectModel.Variables.Single(v => v.Name == variableType)
                     };
                 }
+                else if(f.Name.LocalName == PeriodElemenentName)
+                {
+                    newDataBlock = new PeriodDataBlock(result);
+                }
                 else
                 {
                     newDataBlock = new FormulaDataBlock(result)
@@ -103,7 +108,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                         new XAttribute("Cell", coll.Cell),
                         new XAttribute("AddIndexColumn", coll.AddIndexColumn),
                         new XAttribute("ShowHeader", coll.ShowHeader),
-                        new XAttribute("CustomPath", coll.CustomPath));
+                        new XAttribute("CustomPath", coll.CustomPath),                        
+                        new XAttribute("Interval", coll.Interval));
                 var doc = new XDocument(root);
 
                 foreach(var n in coll.DataBlocks)

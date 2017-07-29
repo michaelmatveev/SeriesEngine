@@ -9,6 +9,7 @@ using SeriesEngine.Core.DataAccess;
 using System.Text.RegularExpressions;
 using System;
 using FluentDateTime;
+using SeriesEngine.Core.Helpers;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -111,13 +112,13 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
 
             var groups = networkTree.ConvertToGroups(collectionDatablock.DataBlocks, period, collectionDatablock.CustomPath);
-            var d = GetStartDate(period.From, collectionDatablock.Interval);
+            var d = period.From.GetStartDate(collectionDatablock.Interval);
             var row = 0;
             while(d < period.Till)
             {
                 var dateCell = sheet.get_Range(collectionDatablock.Cell).Offset[row, 0];
                 dateCell.Value2 = d;
-                dateCell.NumberFormat = GetFormat(collectionDatablock.Interval);
+                dateCell.NumberFormat = DateTimeHelper.GetTimeFormat(collectionDatablock.Interval);
                 var i = 1;
                 foreach (var varGroup in groups)
                 {
@@ -128,6 +129,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                         i++;
                     }
                 }
+                d = DateTimeHelper.GetNextDate(d, collectionDatablock.Interval);
+                row++;
             }
         }
 
@@ -420,66 +423,6 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         //}
 
-        private DateTime GetStartDate(DateTime from, TimeInterval interval)
-        {
-            switch (interval)
-            {
-                case TimeInterval.Year:
-                    return from.FirstDayOfYear();
-                case TimeInterval.Month:
-                    return from.FirstDayOfMonth();
-                case TimeInterval.Week:
-                    return from.FirstDayOfWeek();
-                case TimeInterval.Day:
-                case TimeInterval.Hour:
-                case TimeInterval.Minutes30:
-                    return from;
-                default:
-                    return DateTime.MaxValue;
-            }
-        }
-
-        private DateTime GetNextDate(DateTime current, TimeInterval interval)
-        {
-            switch (interval)
-            {
-                case TimeInterval.Year:
-                    return current.AddYears(1);
-                case TimeInterval.Month:
-                    return current.AddMonths(1);
-                case TimeInterval.Week:
-                    return current.AddDays(7);
-                case TimeInterval.Day:
-                    return current.AddDays(1);
-                case TimeInterval.Hour:
-                    return current.AddHours(1);
-                case TimeInterval.Minutes30:
-                    return current.AddMinutes(30);
-                default:
-                    return DateTime.MaxValue;
-            }
-        }
-
-        private string GetFormat(TimeInterval interval)
-        {
-            switch (interval)
-            {
-                case TimeInterval.Year:
-                    return "YYYY";
-                case TimeInterval.Month:
-                    return "MMMM YYYY";
-                case TimeInterval.Week:
-                    return "dd.MM.YYYY";
-                case TimeInterval.Day:
-                    return "dd.MM.YYYY";
-                case TimeInterval.Hour:
-                    return "dd.MM.YYYY hh:mm";
-                case TimeInterval.Minutes30:
-                    return "dd.MM.YYYY hh:mm";
-                default:
-                    return string.Empty;
-            }
-         }
 
     }
 }
