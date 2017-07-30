@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System;
 using FluentDateTime;
 using SeriesEngine.Core.Helpers;
+using SeriesEngine.Core;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -86,51 +87,88 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        private void ImportIntoTable(Solution solution, CollectionDataBlock collectionDatablock)
+        private void ClearTable(Excel.Worksheet sheet, CollectionDataBlock collectionDataBlock)
         {
-            Excel.Worksheet sheet = _workbook.Sheets[collectionDatablock.Sheet];
+            if(string.IsNullOrEmpty(collectionDataBlock.EndCell))
+            {
+                var table = sheet.get_Range(collectionDataBlock.StartCell);
+                table.Clear();
+            }
+        }
+
+        private void ImportIntoTable(Solution solution, CollectionDataBlock collectionDataBlock)
+        {
+            Excel.Worksheet sheet = _workbook.Sheets[collectionDataBlock.Sheet];
             sheet.Activate();
 
-            var table = sheet.get_Range(collectionDatablock.Cell);
-            table.Clear();
+            ClearTable(sheet, collectionDataBlock);
 
-            var nameItem = _workbook.Names.OfType<Excel.Name>().SingleOrDefault(n => n.Name == collectionDatablock.Name);
+            var nameItem = _workbook.Names.OfType<Excel.Name>().SingleOrDefault(n => n.Name == collectionDataBlock.Name);
             nameItem?.Delete();
 
-            var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
+            var period = _blockProvider.GetDefaultPeriod(collectionDataBlock);
 
             var networkTree = _networksProvider
-                .GetNetwork(solution, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, period);
+                .GetNetwork(solution, collectionDataBlock.NetworkName, collectionDataBlock.DataBlocks, period);
 
-            foreach (var b in collectionDatablock.DataBlocks)
+            var model = ModelsDescription.All.Single(m => m.Name == solution.ModelName);
+            foreach (var b in collectionDataBlock.DataBlocks.OfType<VariableDataBlock>())
             {
                 b.VariablePeriod = new Period
                 {
                     From = period.From.AddMonths(b.Shift),
                     Till = period.Till.AddMonths(b.Shift)
                 };
+                b.ObjectMetamodel = model.ObjectModels.Single(m => m.Name == b.RefObject);
+                b.VariableMetamodel = b.ObjectMetamodel.Variables.Single(m => m.Name == b.VariableBlockName);
             }
 
-            var groups = networkTree.ConvertToGroups(collectionDatablock.DataBlocks, period, collectionDatablock.CustomPath);
-            var d = period.From.GetStartDate(collectionDatablock.Interval);
-            var row = 0;
-            while(d < period.Till)
+            var groups = networkTree.ConvertToGroups(collectionDataBlock.DataBlocks, period, collectionDataBlock.CustomPath);
+            var d = period.From.GetStartDate(collectionDataBlock.Interval);
+            var row = collectionDataBlock.ShowHeader ? 1 : 0;
+            Excel.Range valueCells = null;
+
+            while (d < period.Till)
             {
-                var dateCell = sheet.get_Range(collectionDatablock.Cell).Offset[row, 0];
+                var dateCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[row, 0];
                 dateCell.Value2 = d;
-                dateCell.NumberFormat = DateTimeHelper.GetTimeFormat(collectionDatablock.Interval);
-                var i = 1;
+                dateCell.NumberFormat = DateTimeHelper.GetTimeFormat(collectionDataBlock.Interval);
+                var column = 1;
                 foreach (var varGroup in groups)
                 {
-                    foreach(var v in varGroup.GetSlice(d))
+                    var countOfObjects = varGroup.ObjectsToScan.Count;
+                    if (collectionDataBlock.ShowHeader)
                     {
-                        var valueCell = sheet.get_Range(collectionDatablock.Cell).Offset[row, i];
-                        valueCell.Value2 = v;
-                        i++;
+                        var captionStartCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[0, column];
+                        var captionEndCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[0, column + countOfObjects - 1];
+                        var captionCells = sheet.get_Range(captionStartCell, captionEndCell);
+                        var captionArray = new object[1, countOfObjects];
+                        for(int i = 0; i < countOfObjects; i++)
+                        {
+                            captionArray[0, i] = varGroup.ObjectsToScan[i].Name;
+                        }
+                        captionCells.Value2 = captionArray;
                     }
+
+                    var values = varGroup.GetSlice(d);
+                    var valueStartCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[row, column];
+                    var valueEndCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[row, column + countOfObjects - 1];
+                    valueCells = sheet.get_Range(valueStartCell, valueEndCell);
+                    var valueArray = new object[1, countOfObjects];
+                    for(int i = 0; i < countOfObjects; i++)
+                    {
+                        valueArray[0, i] = values[i];
+                    }
+                    valueCells.Value2 = valueArray;
+                    column++;
                 }
-                d = DateTimeHelper.GetNextDate(d, collectionDatablock.Interval);
+                d = DateTimeHelper.GetNextDate(d, collectionDataBlock.Interval);
                 row++;
+            }
+
+            if (valueCells != null)
+            {
+                collectionDataBlock.EndCell = valueCells.get_End(Excel.XlDirection.xlToRight).AddressLocal;
             }
         }
 
@@ -140,7 +178,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             Excel.Worksheet sheet = _workbook.Sheets[collectionDatablock.Sheet];
             sheet.Activate();
-            var tableCell = sheet.get_Range(collectionDatablock.Cell);
+            var tableCell = sheet.get_Range(collectionDatablock.StartCell);
 
             var xmlMap = _workbook
                 .XmlMaps
@@ -222,7 +260,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             // call after data assigment
             if (collectionDatablock.AddIndexColumn)
             {
-                SetupIndexerColumn(listObject, collectionDatablock.Cell);
+                SetupIndexerColumn(listObject, collectionDatablock.StartCell);
             }
 
             var index = collectionDatablock.AddIndexColumn ? 2 : 1;

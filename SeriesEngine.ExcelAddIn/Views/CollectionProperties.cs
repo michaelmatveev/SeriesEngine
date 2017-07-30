@@ -33,7 +33,7 @@ namespace SeriesEngine.ExcelAddIn.Views
 
             textBoxCell.DataBindings.Add(nameof(textBoxCell.Text),
                 CollectionDataBlock,
-                nameof(CollectionDataBlock.Cell));
+                nameof(CollectionDataBlock.StartCell));
 
             if (ShowDialog() == DialogResult.OK)
             {

@@ -267,7 +267,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 {
                     Name = "СтруктураОбъектов",
                     Sheet = "Лист1",
-                    Cell = "A1",
+                    StartCell = "A1",
                 };
 
                 //var supportedModels = new List<ObjectMetamodel>();

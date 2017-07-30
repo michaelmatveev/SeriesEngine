@@ -7,7 +7,8 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
     public abstract class SheetDataBlock : BaseDataBlock
     {
         public string Sheet { get; set; }
-        public string Cell { get; set; }
+        public string StartCell { get; set; }
+        public string EndCell { get; set; }
 
         public SheetDataBlock(BaseDataBlock parent)
         {

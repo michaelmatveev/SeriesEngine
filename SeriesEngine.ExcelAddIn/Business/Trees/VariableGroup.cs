@@ -25,7 +25,7 @@ namespace SeriesEngine.ExcelAddIn.Business.Trees
             var result = new List<object>();
             foreach(var o in ObjectsToScan)
             {
-                o.GetVariableValue(Variable, period);
+                result.Add(o.GetVariableValue(Variable, period));
             }
             return result;
         }
