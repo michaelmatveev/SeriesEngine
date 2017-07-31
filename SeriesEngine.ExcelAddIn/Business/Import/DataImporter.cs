@@ -7,8 +7,6 @@ using SeriesEngine.App.CommandArgs;
 using SeriesEngine.ExcelAddIn.Helpers;
 using SeriesEngine.Core.DataAccess;
 using System.Text.RegularExpressions;
-using System;
-using FluentDateTime;
 using SeriesEngine.Core.Helpers;
 using SeriesEngine.Core;
 
@@ -89,10 +87,19 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         private void ClearTable(Excel.Worksheet sheet, CollectionDataBlock collectionDataBlock)
         {
-            if(string.IsNullOrEmpty(collectionDataBlock.EndCell))
+            //if(string.IsNullOrEmpty(collectionDataBlock.EndCell))
+            //{
+            //    var table = sheet.get_Range(collectionDataBlock.StartCell);
+            //    table.Clear();
+            //}
+            var listObject = sheet
+                .ListObjects
+                .Cast<Excel.ListObject>()
+                .SingleOrDefault(l => l.Name == collectionDataBlock.Name);
+            if(listObject != null)
             {
-                var table = sheet.get_Range(collectionDataBlock.StartCell);
-                table.Clear();
+                //listObject.Range.Clear();
+                listObject.Delete();
             }
         }
 
@@ -127,7 +134,8 @@ namespace SeriesEngine.ExcelAddIn.Models
             var d = period.From.GetStartDate(collectionDataBlock.Interval);
             var row = collectionDataBlock.ShowHeader ? 1 : 0;
             Excel.Range valueCells = null;
-
+            Excel.Range valueStartCell = null;
+            Excel.Range valueEndCell = null;
             while (d < period.Till)
             {
                 var dateCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[row, 0];
@@ -151,8 +159,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                     }
 
                     var values = varGroup.GetSlice(d);
-                    var valueStartCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[row, column];
-                    var valueEndCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[row, column + countOfObjects - 1];
+                    valueStartCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[row, column];
+                    valueEndCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[row, column + countOfObjects - 1];
                     valueCells = sheet.get_Range(valueStartCell, valueEndCell);
                     var valueArray = new object[1, countOfObjects];
                     for(int i = 0; i < countOfObjects; i++)
@@ -168,7 +176,23 @@ namespace SeriesEngine.ExcelAddIn.Models
 
             if (valueCells != null)
             {
-                collectionDataBlock.EndCell = valueCells.get_End(Excel.XlDirection.xlToRight).AddressLocal;
+                collectionDataBlock.EndCell = valueEndCell.AddressLocal;
+                var tableCell = sheet.get_Range(collectionDataBlock.StartCell, collectionDataBlock.EndCell);
+
+                var listObject = sheet
+                    .ListObjects
+                    .Cast<Excel.ListObject>()
+                    .SingleOrDefault(l => l.Name == collectionDataBlock.Name);
+
+                if (listObject == null)
+                {
+                    listObject = sheet.ListObjects.Add(
+                        SourceType: Excel.XlListObjectSourceType.xlSrcRange,
+                        Source: tableCell, 
+                        Destination: tableCell, 
+                        XlListObjectHasHeaders: collectionDataBlock.ShowHeader ? Excel.XlYesNoGuess.xlYes : Excel.XlYesNoGuess.xlNo);
+                    listObject.Name = collectionDataBlock.Name;
+                }
             }
         }
 
@@ -370,97 +394,5 @@ namespace SeriesEngine.ExcelAddIn.Models
         }
 
         #endregion
-
-        //private void ImportNodeFragment(NodeFragment fragment)
-        //{
-        //    Excel.Worksheet sheet = _workbook.Sheets[fragment.Sheet];
-        //    sheet.get_Range(fragment.Cell).Value = fragment.Name;
-
-        //    MockNetworkProvider netwrokProvider = new MockNetworkProvider();
-        //    var network = netwrokProvider.GetNetworks(string.Empty);
-
-        //    int i = 1;
-        //    foreach(var node in (network.First() as NetworkTree).Nodes.Where(n => n.LinkedObject.ObjectModel == fragment.Model))
-        //    {
-        //        var cell = sheet.get_Range(fragment.Cell).Offset[i++, 0];
-        //        switch (fragment.NodeValue)
-        //        {
-        //            case ExportNodeValue.Name: cell.Value2 = node.NodeName; break;
-        //            case ExportNodeValue.Since: cell.Value2 = node.Since; break;
-        //            case ExportNodeValue.Till: cell.Value2 = node.Till; break;
-        //        }
-        //    }
-        //}
-
-        //public void ImportFromFragments(IEnumerable<Fragment> fragments, Period period)
-        //{
-        //    foreach (var f in fragments)
-        //    {
-        //        if (f.UseCommonPeriod)
-        //        {
-        //            ImportFramgent(f, f.CustomPeriod);
-        //        }
-        //        else
-        //        {
-        //            ImportFramgent(f, period);
-        //        }
-        //    }
-        //}
-
-        //private void ImportFramgent(Fragment fragment, Period period)
-        //{
-        //    Excel.Worksheet sheet = _workbook.Sheets[fragment.Sheet];
-        //    sheet.get_Range(fragment.Cell).Value = fragment.Name;
-
-        //    int row = 0;
-        //    int col = 0;
-        //    if (fragment.IntervalsByRows)
-        //    {
-        //        DateTime d = GetStartDate(period.From, fragment.Interval);
-        //        for (int i = 0; i < 20; i++) //TODO Replace on interation throught collection
-        //        {
-        //            while (d < period.Till)
-        //            {
-        //                row = 0;
-        //                if (fragment.ShowIntervals)
-        //                {
-        //                    sheet.get_Range(fragment.Cell).Offset[row, i].Value2 = d;
-        //                    sheet.get_Range(fragment.Cell).Offset[row, i].NumberFormat = GetFormat(fragment.Interval);
-        //                    sheet.get_Range(fragment.Cell).Offset[row++, i + 1].Value2 = _random.Next(100);
-        //                }
-        //                else
-        //                {
-        //                    sheet.get_Range(fragment.Cell).Offset[row++, i].Value2 = _random.Next(100);
-        //                }
-        //                d = GetNextDate(d, fragment.Interval);
-        //            }
-        //        }
-        //    }        
-        //    else
-        //    {
-        //        for (int i = 0; i < 20; i++) //TODO Replace on interation throught collection
-        //        {
-        //            DateTime d = GetStartDate(period.From, fragment.Interval);
-        //            while (d < period.Till)
-        //            {
-        //                col = 0;
-        //                if (fragment.ShowIntervals)
-        //                {
-        //                    sheet.get_Range(fragment.Cell).Offset[i, col].Value2 = d;
-        //                    sheet.get_Range(fragment.Cell).Offset[i, col].NumberFormat = GetFormat(fragment.Interval);
-        //                    sheet.get_Range(fragment.Cell).Offset[i + 1, col++].Value2 = _random.Next(100);
-        //                }
-        //                else
-        //                {
-        //                    sheet.get_Range(fragment.Cell).Offset[i, col++].Value2 = _random.Next(100);
-        //                }
-        //                d = GetNextDate(d, fragment.Interval);
-        //            }                    
-        //        }
-        //    }
-
-        //}
-
-
     }
 }

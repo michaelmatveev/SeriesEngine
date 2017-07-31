@@ -62,6 +62,10 @@
       <Family Rank="60">Основные свойства</Family>
       <Help Context="Ценовая категория по контракту">Ценовая категория по контракту</Help>
     </Variable>
+    <Variable Name="HourConsuming" DataType="Decimal" Optional="True" Versioned="True" Period="Hour">
+      <Family Rank="60">Основные свойства</Family>
+      <Help Context="Почасовое потребление">Почасовое потребление</Help>
+    </Variable>
   </Stereotype>
   
   <Stereotype Name="ElectricMeter">

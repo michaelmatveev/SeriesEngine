@@ -1,7 +1,9 @@
 ﻿using Microsoft.Office.Tools.Excel;
 using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
+using SeriesEngine.Core;
 using SeriesEngine.Core.DataAccess;
+using SeriesEngine.Core.Helpers;
 using SeriesEngine.ExcelAddIn.Helpers;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System;
@@ -41,15 +43,76 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public override void ExportDataBlock(Solution solution, CollectionDataBlock collectionDatablock)
         {
-            var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
+            if(collectionDatablock.Interval != TimeInterval.None)
+            {
+                ExportFromTable(solution, collectionDatablock);
+            }
+            else
+            {
+                ExportFromXmlMap(solution, collectionDatablock);
+            }
+        }
+
+        private void ExportFromTable(Solution solution, CollectionDataBlock collectionDataBlock)
+        {
+            Excel.Worksheet sheet = _workbook.Sheets[collectionDataBlock.Sheet];
+            var period = _blockProvider.GetDefaultPeriod(collectionDataBlock);
+
+            var networkTree = _networksProvider
+                .GetNetwork(solution, collectionDataBlock.NetworkName, collectionDataBlock.DataBlocks, period);
+                    
+            var groups = networkTree.ConvertToGroups(collectionDataBlock.DataBlocks, period, collectionDataBlock.CustomPath);
+
+            var valuesToUpdate = new List<IStateObject>();
+            var d = period.From.GetStartDate(collectionDataBlock.Interval);
+            var row = collectionDataBlock.ShowHeader ? 1 : 0;
+            while (d < period.Till)
+            {
+                var column = 1;
+                foreach (var varGroup in groups)
+                {
+                    var countOfObjects = varGroup.ObjectsToScan.Count;
+                    var values = varGroup.GetSlice(d);
+                    var valueStartCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[row, column];
+                    for (int i = 0; i < countOfObjects; i++)
+                    {
+                        var currentValue = valueStartCell.Offset[0, i].Value2;
+                        var storedValue = values[i];
+                        if ((currentValue != null && storedValue == null) || (storedValue != null && !storedValue.Equals(currentValue as object)))
+                        {
+                            var variableEntity = CreateVariable(varGroup.Variable, currentValue, d, varGroup.ObjectsToScan[i]);
+                            valuesToUpdate.Add(variableEntity);
+                        }
+                    }
+                    column++;
+                }
+                row++;
+                d = DateTimeHelper.GetNextDate(d, collectionDataBlock.Interval);
+            }
+            networkTree.Update(valuesToUpdate);
+        }
+        
+        public IStateObject CreateVariable(Variable modelVariable, object value, DateTime period, NamedObject parent)
+        {
+            var varObject = (PeriodVariable)Activator.CreateInstance(modelVariable.EntityType);
+            varObject.ObjectId = parent.Id;
+            varObject.State = ObjectState.Added;
+            varObject.Value = value;
+            varObject.Date = period;
+            return varObject;
+        }
+
+        private void ExportFromXmlMap(Solution solution, CollectionDataBlock collectionDataBlock)
+        {
+            var period = _blockProvider.GetDefaultPeriod(collectionDataBlock);
 
             var sourceNetworkTree = _networksProvider
-                .GetNetwork(solution, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, period);
+                .GetNetwork(solution, collectionDataBlock.NetworkName, collectionDataBlock.DataBlocks, period);
 
-            Excel.Worksheet sheet = _workbook.Sheets[collectionDatablock.Sheet];
-            var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == collectionDatablock.Name);
+            Excel.Worksheet sheet = _workbook.Sheets[collectionDataBlock.Sheet];
+            var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == collectionDataBlock.Name);
 
-            var schema = collectionDatablock.GetSchema();
+            var schema = collectionDataBlock.GetSchema();
             var sr = new StringReader(schema);
 
             var dsChanged = new DataSet();
@@ -57,10 +120,10 @@ namespace SeriesEngine.ExcelAddIn.Models
 
             if (listObject.DataBodyRange != null)
             {
-                var tree = collectionDatablock
+                var tree = collectionDataBlock
                     .DataBlocks
                     .Where(d => d.Visible) // исключаем невидимые
-                    .Select((f, i) => new ColumnIdentity(f, i + (collectionDatablock.AddIndexColumn ? 1 : 0))) // считаем номер колонки для всех видимые
+                    .Select((f, i) => new ColumnIdentity(f, i + (collectionDataBlock.AddIndexColumn ? 1 : 0))) // считаем номер колонки для всех видимые
                     .Where(ci => !(ci.DataBlock is FormulaDataBlock)) // исключаем формулы поскольку результыты вычислений не сохраняются в БД
                     .GroupBy(ci => new ObjectIdentity(ci.RefObject, ci.Parent))
                     .GenerateTree(n => n.Key.RefObject, p => p.Key.Parent, NetworkTree.RootName);
@@ -71,48 +134,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
             }
 
-            var source = new XDocument(collectionDatablock.Xml ?? sourceNetworkTree.ConvertToXml(collectionDatablock.DataBlocks, period, collectionDatablock.CustomPath));
-            //var source = new XDocument(collectionDatablock.Xml);
+            var source = new XDocument(collectionDataBlock.Xml ?? sourceNetworkTree.ConvertToXml(collectionDataBlock.DataBlocks, period, collectionDataBlock.CustomPath));
             var target = XDocument.Parse(dsChanged.GetXml());
             sourceNetworkTree.LoadFromXml(source, target, period);
-            //var networkTreeUpdater = sourceNetworkTree.GetUpdater(period);
-            //networkTreeUpdater.LoadFromXml(source, target);
         }
-
-  
-        //public override void ExportDataBlock(int solutionId, CollectionDataBlock collection)
-        //{
-        //    var network = _networksProvider
-        //        .GetNetworks(solutionId)
-        //        .SingleOrDefault(n => n.Name == collection.NetworkName);
-
-        //    using (network.GetExportLock(collection))
-        //    {
-        //        Excel.Worksheet sheet = _workbook.Sheets[collection.Sheet];
-        //        var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == collection.Name);
-        //        // another way http://stackoverflow.com/questions/12572439/why-does-readxmlschema-create-extra-id-column
-        //        var schema = collection.GetSchema();
-        //        var sr = new StringReader(schema);
-
-        //        var dsChanged = new DataSet();
-        //        dsChanged.ReadXmlSchema(sr);
-
-        //        var tree = collection
-        //            .DataBlocks
-        //            .Select((f, i) => new ColumnIdentity(f, i))
-        //            .GroupBy(ci => new ObjectIdentity(ci.RefObject, ci.Parent))
-        //            .GenerateTree(n => n.Key.RefObject, p => p.Key.Parent, NetworkTree.RootName);
-
-        //        for (int row = 1; row <= listObject.DataBodyRange.Rows.Count; row++)
-        //        {
-        //            CreateOrUpdateRowInDataSet(row, dsChanged, listObject, 0, tree);
-        //        }
-
-        //        var doc = XDocument.Parse(dsChanged.GetXml());
-        //        network.LoadFromXml(doc);
-        //        //network.UpdateVariables();
-        //    }
-        //}
 
         private void CreateOrUpdateRowInDataSet(int row, DataSet dataSet, Excel.ListObject listObject, int rootId, IEnumerable<TreeItem<IGrouping<ObjectIdentity, ColumnIdentity>>> currentItems)
         {

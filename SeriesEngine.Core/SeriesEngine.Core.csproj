@@ -238,6 +238,9 @@
     <Compile Include="msk1.Point_ContractPriceCategory.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
+    <Compile Include="msk1.Point_HourConsuming.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="msk1.Point_MaxPower.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
@@ -345,6 +348,7 @@
 .\msk1.Point.cs
 .\msk1.Point_BPGroup.cs
 .\msk1.Point_ContractPriceCategory.cs
+.\msk1.Point_HourConsuming.cs
 .\msk1.Point_MaxPower.cs
 .\msk1.Point_PUPlace.cs
 .\msk1.Point_TUCode.cs

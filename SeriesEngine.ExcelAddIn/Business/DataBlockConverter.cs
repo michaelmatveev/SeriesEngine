@@ -73,7 +73,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
                 else if(f.Name.LocalName == PeriodElemenentName)
                 {
-                    newDataBlock = new PeriodDataBlock(result);
+                    continue;
+                    //newDataBlock = new PeriodDataBlock(result);
                 }
                 else
                 {
