@@ -4,6 +4,7 @@ using SeriesEngine.App.CommandArgs;
 using SeriesEngine.Core;
 using SeriesEngine.Core.DataAccess;
 using SeriesEngine.Core.Helpers;
+using SeriesEngine.ExcelAddIn.Business.Trees;
 using SeriesEngine.ExcelAddIn.Helpers;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System;
@@ -61,7 +62,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             var networkTree = _networksProvider
                 .GetNetwork(solution, collectionDataBlock.NetworkName, collectionDataBlock.DataBlocks, period);
                     
-            var groups = networkTree.ConvertToGroups(collectionDataBlock.DataBlocks, period, collectionDataBlock.CustomPath);
+            var groups = networkTree.ConvertToGroups(collectionDataBlock.DataBlocks, period, collectionDataBlock.CustomPath).OfType<VariableGroup>();
 
             var valuesToUpdate = new List<IStateObject>();
             var d = period.From.GetStartDate(collectionDataBlock.Interval);

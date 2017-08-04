@@ -38,6 +38,7 @@ namespace SeriesEngine.Core
             return _parser(value);
         }
 
+        public bool IsOptional { get; set; }
     }
 
     public class ObjectMetamodel

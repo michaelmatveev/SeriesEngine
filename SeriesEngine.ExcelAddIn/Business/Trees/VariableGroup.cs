@@ -8,11 +8,8 @@ using System.Threading.Tasks;
 
 namespace SeriesEngine.ExcelAddIn.Business.Trees
 {
-    public class VariableGroup
-    {
-        //public Dictionary<DateTime, IList<string>> _slices = new Dictionary<DateTime, IList<string>>();
-         
-        public string Caption { get; set; }
+    public class VariableGroup : TableGroup
+    {       
         public Variable Variable { get; set; }
         public IList<NamedObject> ObjectsToScan; 
         public IList<object> GetSlice(DateTime d)
@@ -29,6 +26,5 @@ namespace SeriesEngine.ExcelAddIn.Business.Trees
             }
             return result;
         }
-
     }
 }

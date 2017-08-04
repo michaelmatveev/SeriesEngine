@@ -9,6 +9,9 @@ using SeriesEngine.Core.DataAccess;
 using System.Text.RegularExpressions;
 using SeriesEngine.Core.Helpers;
 using SeriesEngine.Core;
+using SeriesEngine.ExcelAddIn.Business.Trees;
+using System.Collections.Generic;
+using System;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -68,6 +71,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 _workbook.Application.EnableEvents = false;
                 _workbook.Application.DisplayAlerts = false;
+                _workbook.Application.Calculation = Excel.XlCalculation.xlCalculationManual;
 
                 if (collectionDatablock.Interval == TimeInterval.None)
                 {
@@ -82,23 +86,18 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 _workbook.Application.EnableEvents = true;
                 _workbook.Application.DisplayAlerts = true;
+                _workbook.Application.Calculation = Excel.XlCalculation.xlCalculationAutomatic;
             }
         }
 
         private void ClearTable(Excel.Worksheet sheet, CollectionDataBlock collectionDataBlock)
         {
-            //if(string.IsNullOrEmpty(collectionDataBlock.EndCell))
-            //{
-            //    var table = sheet.get_Range(collectionDataBlock.StartCell);
-            //    table.Clear();
-            //}
             var listObject = sheet
                 .ListObjects
                 .Cast<Excel.ListObject>()
                 .SingleOrDefault(l => l.Name == collectionDataBlock.Name);
             if(listObject != null)
             {
-                //listObject.Range.Clear();
                 listObject.Delete();
             }
         }
@@ -136,39 +135,59 @@ namespace SeriesEngine.ExcelAddIn.Models
             Excel.Range valueCells = null;
             Excel.Range valueStartCell = null;
             Excel.Range valueEndCell = null;
+            Dictionary<Excel.Range, string> formulaRanges = new Dictionary<Excel.Range, string>();
+
             while (d < period.Till)
             {
                 var dateCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[row, 0];
                 dateCell.Value2 = d;
                 dateCell.NumberFormat = DateTimeHelper.GetTimeFormat(collectionDataBlock.Interval);
-                var column = 1;
-                foreach (var varGroup in groups)
-                {
-                    var countOfObjects = varGroup.ObjectsToScan.Count;
-                    if (collectionDataBlock.ShowHeader)
-                    {
-                        var captionStartCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[0, column];
-                        var captionEndCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[0, column + countOfObjects - 1];
-                        var captionCells = sheet.get_Range(captionStartCell, captionEndCell);
-                        var captionArray = new object[1, countOfObjects];
-                        for(int i = 0; i < countOfObjects; i++)
-                        {
-                            captionArray[0, i] = varGroup.ObjectsToScan[i].Name;
-                        }
-                        captionCells.Value2 = captionArray;
-                    }
 
-                    var values = varGroup.GetSlice(d);
+                var column = 1;
+                foreach (var group in groups)
+                {
+                    var captionStartCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[0, column];
                     valueStartCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[row, column];
-                    valueEndCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[row, column + countOfObjects - 1];
-                    valueCells = sheet.get_Range(valueStartCell, valueEndCell);
-                    var valueArray = new object[1, countOfObjects];
-                    for(int i = 0; i < countOfObjects; i++)
+
+                    if (group is VariableGroup)
                     {
-                        valueArray[0, i] = values[i];
+                        var varGroup = group as VariableGroup;
+                        var countOfObjects = varGroup.ObjectsToScan.Count;
+                        if (collectionDataBlock.ShowHeader)
+                        {
+                            var captionEndCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[0, column + countOfObjects - 1];
+                            var captionCells = sheet.get_Range(captionStartCell, captionEndCell);
+                            var captionArray = new object[1, countOfObjects];
+                            for (int i = 0; i < countOfObjects; i++)
+                            {
+                                captionArray[0, i] = varGroup.ObjectsToScan[i].Name;
+                            }
+                            captionCells.Value2 = captionArray;
+                        }
+
+                        var values = varGroup.GetSlice(d);
+                        valueEndCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[row, column + countOfObjects - 1];
+                        valueCells = sheet.get_Range(valueStartCell, valueEndCell);
+                        var valueArray = new object[1, countOfObjects];
+                        for (int i = 0; i < countOfObjects; i++)
+                        {
+                            valueArray[0, i] = values[i];
+                        }
+                        valueCells.Value2 = valueArray;
+                        column += countOfObjects;
                     }
-                    valueCells.Value2 = valueArray;
-                    column++;
+                    else if (group is FormulaGroup)
+                    {
+                        var frmGroup = group as FormulaGroup;
+                        if (collectionDataBlock.ShowHeader)
+                        {
+                            captionStartCell.Value2 = frmGroup.Caption;
+                        }
+                        formulaRanges.Add(valueStartCell, frmGroup.Formula);
+                        valueEndCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[row, column];
+                        //valueStartCell.Formula = frmGroup.Formula;
+                        column++;
+                    }
                 }
                 d = DateTimeHelper.GetNextDate(d, collectionDataBlock.Interval);
                 row++;
@@ -192,6 +211,11 @@ namespace SeriesEngine.ExcelAddIn.Models
                         Destination: tableCell, 
                         XlListObjectHasHeaders: collectionDataBlock.ShowHeader ? Excel.XlYesNoGuess.xlYes : Excel.XlYesNoGuess.xlNo);
                     listObject.Name = collectionDataBlock.Name;
+                }
+
+                foreach(var f in formulaRanges)
+                {
+                    f.Key.Formula = f.Value;
                 }
             }
         }
@@ -364,6 +388,49 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 column.Range.NumberFormat = "dd.mm.yyyy";
                 column.XPath.SetValue(map, block.XmlPath);
+            }
+            else if(block is VariableDataBlock)
+            {
+                column.Range.Select();
+                var variable = (block as VariableDataBlock).VariableMetamodel;
+                column.Range.Validation.Delete();
+                column.Range.NumberFormat = "General";
+                if (variable.ValueType == typeof(bool))
+                {
+                    column.Range.Validation.Add(Excel.XlDVType.xlValidateList, 
+                        Excel.XlDVAlertStyle.xlValidAlertWarning,
+                        Excel.XlFormatConditionOperator.xlBetween, 
+                        "ЛОЖЬ;ИСТИНА");
+                    column.Range.Validation.InCellDropdown = true;
+                    column.Range.Validation.IgnoreBlank = variable.IsOptional;
+                }
+                else if(variable.ValueType == typeof(double))
+                {
+                    column.Range.Validation.Add(Excel.XlDVType.xlValidateDecimal,
+                        Excel.XlDVAlertStyle.xlValidAlertWarning,
+                        Excel.XlFormatConditionOperator.xlBetween,
+                        double.MinValue / 2,
+                        double.MaxValue / 2);
+                    column.Range.Validation.IgnoreBlank = variable.IsOptional;
+                }
+                else if(variable.ValueType == typeof(int))
+                {
+                    column.Range.Validation.Add(Excel.XlDVType.xlValidateDecimal,
+                        Excel.XlDVAlertStyle.xlValidAlertWarning,
+                        Excel.XlFormatConditionOperator.xlBetween,
+                        int.MinValue,
+                        int.MaxValue);
+                    column.Range.Validation.IgnoreBlank = variable.IsOptional;
+                }
+                else if(variable.ValueType == typeof(short))
+                {
+                    column.Range.Validation.Add(Excel.XlDVType.xlValidateDecimal,
+                        Excel.XlDVAlertStyle.xlValidAlertWarning,
+                        Excel.XlFormatConditionOperator.xlBetween,
+                        short.MinValue,
+                        short.MaxValue);
+                    column.Range.Validation.IgnoreBlank = variable.IsOptional;
+                }
             }
             else
             {

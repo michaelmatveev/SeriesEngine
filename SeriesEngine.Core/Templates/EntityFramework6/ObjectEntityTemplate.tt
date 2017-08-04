@@ -108,7 +108,7 @@ namespace SeriesEngine.<#= Schema #>
 			{
 				return newValue;
 			}
-			throw new Exception("Cannot cast variable");
+			throw new Exception($"Невозможно преобразовать значение '{value}' присвоенное значению <#=varName#> в <#= type #>");
 <#+
 			}
 			else
@@ -119,7 +119,7 @@ namespace SeriesEngine.<#= Schema #>
 			{
 				return newValue;
 			}
-			throw new Exception("Cannot cast variable");
+			throw new Exception($"Невозможно преобразовать значение '{value}' присвоенное значению <#=varName#> в <#= type #>");
 <#+
 			}
 #>

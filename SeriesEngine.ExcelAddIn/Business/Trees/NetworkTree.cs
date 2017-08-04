@@ -54,21 +54,36 @@ namespace SeriesEngine.ExcelAddIn.Models
             updater.UpdateFromSourceToTarget(source, target);
         }
 
-        public IEnumerable<VariableGroup> ConvertToGroups(IEnumerable<DataBlock> queryParamers, Period defaultPeriod, string path)
+        public IEnumerable<TableGroup> ConvertToGroups(IEnumerable<DataBlock> queryParamers, Period defaultPeriod, string path)
         {
             var nodes = _network
                 .MyNodes
                 .Where(n => IsNodeInPeriod(n, defaultPeriod) && n.LinkedObject != null)
                 .GroupBy(n => n.LinkedObject.ObjectModel);
 
-            foreach (var q in queryParamers.OfType<VariableDataBlock>())
+            foreach (var q in queryParamers.Where(db => db.Visible))
             {
-                var data = nodes.Where(n => n.Key == q.ObjectMetamodel).SelectMany(n => n);
+                if (q is VariableDataBlock)
                 {
-                    yield return new VariableGroup
+                    var data = nodes.Where(n => n.Key == q.ObjectMetamodel).SelectMany(n => n);
                     {
-                        Variable = q.VariableMetamodel,
-                        ObjectsToScan = data.Select(d => d.LinkedObject).ToList()
+                        yield return new VariableGroup
+                        {
+                            Variable = (q as VariableDataBlock).VariableMetamodel,
+                            ObjectsToScan = data.Select(d => d.LinkedObject).ToList()
+                        };
+                    }
+                }
+                else if(q is NodeDataBlock)
+                {
+                    
+                }
+                else if(q is FormulaDataBlock)
+                {
+                    yield return new FormulaGroup
+                    {
+                        Caption = q.Caption,
+                        Formula = (q as FormulaDataBlock).Formula
                     };
                 }
             }

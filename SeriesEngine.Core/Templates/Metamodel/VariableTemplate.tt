@@ -64,6 +64,7 @@ namespace SeriesEngine.<#= Schema #>
 			var period = v.Attribute("Period")?.Value ?? "None";
 			var typeName = v.Attribute("DataType").Value;
 			var type = DataTypes[typeName].Attribute("ClrType").Value;
+			var isOptional = v.Attribute("Optional")?.Value ?? "False";
 
 			bool isVersioned;
 			if(!Boolean.TryParse(v.Attribute("Versioned")?.Value, out isVersioned)) 
@@ -80,6 +81,7 @@ namespace SeriesEngine.<#= Schema #>
 			PeriodInterval = TimeInterval.<#= period #>,
 			IsVersioned = <#= isVersioned.ToString().ToLower() #>,
 			ValueType = typeof(<#= type #>),
+			IsOptional = <#= isOptional.ToLower() #>,
 <#+
 			if(period != "None" || isVersioned)
 			{
