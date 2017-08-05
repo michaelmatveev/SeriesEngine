@@ -23,7 +23,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         event EventHandler<PaneArgs> ShowCustomPane;
         event EventHandler RefreshAll;
         event EventHandler SaveAll;
-        event EventHandler<FilterArgs> FilterSelected;
+        event EventHandler MergeAll;
         event EventHandler InsertNewDataBlock;
         event EventHandler<SampleArgs> InsertSampleBlock;
         event EventHandler Connect;
@@ -32,7 +32,6 @@ namespace SeriesEngine.ExcelAddIn.Views
         event EventHandler DeleteObject;
         event EventHandler EditVariable;
 
-        //void InitializeFilters(IEnumerable<Network> networks);
         void SetButtonToggleState(bool isVisible);
         void SetTabVisibleState(bool isVisible);
     }

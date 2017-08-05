@@ -1,9 +1,10 @@
 ﻿using SeriesEngine.Core.DataAccess;
+using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System;
 using System.Collections.Generic;
 
-namespace SeriesEngine.ExcelAddIn.Models
+namespace SeriesEngine.ExcelAddIn.Business.Export
 {
     public abstract class BaseDataExporter : IErrorAware
     {

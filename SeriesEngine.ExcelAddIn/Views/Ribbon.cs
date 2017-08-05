@@ -9,7 +9,7 @@ namespace SeriesEngine.ExcelAddIn
         public event EventHandler<PaneArgs> ShowCustomPane;
         public event EventHandler RefreshAll;
         public event EventHandler SaveAll;
-        public event EventHandler<FilterArgs> FilterSelected;
+        public event EventHandler MergeAll;
         public event EventHandler InsertNewDataBlock;
         public event EventHandler<SampleArgs> InsertSampleBlock;
         public event EventHandler RenameObject;
@@ -28,8 +28,6 @@ namespace SeriesEngine.ExcelAddIn
 
         private void toggleButtonShowPane_Click(object sender, RibbonControlEventArgs e)
         {
-            //var clicks = Observable.FromEventPattern<PaneArgs>(this, "ShowCustomPane");
-            //clicks.Where(c => c)
             ShowCustomPane?.Invoke(this, CreatePaneArgs(sender));
         }
 
@@ -88,22 +86,10 @@ namespace SeriesEngine.ExcelAddIn
             EditVariable?.Invoke(this, EventArgs.Empty);
         }
 
-        //public void InitializeFilters(IEnumerable<Network> networks)
-        //{
-        //    foreach (var network in networks)
-        //    {
-        //        var item = Factory.CreateRibbonButton();
-        //        item.Click += (s, e) =>
-        //        {
-        //            FilterSelected?.Invoke(this, new FilterArgs
-        //            {
-        //                SelectedNetwork = network
-        //            });
-        //        };
-        //        item.Label = network.Name;
-        //        menuFilter.Items.Add(item);
-        //    }
-        //}
+        private void buttonMerge_Click(object sender, RibbonControlEventArgs e)
+        {
+            MergeAll?.Invoke(this, EventArgs.Empty);
+        }
 
     }
 }

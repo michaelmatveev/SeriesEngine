@@ -1,5 +1,7 @@
 ﻿using SeriesEngine.Core;
 using SeriesEngine.Core.DataAccess;
+using SeriesEngine.ExcelAddIn.Business.Export;
+using SeriesEngine.ExcelAddIn.Business.Import;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,17 +39,32 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
         {
         }
 
-        public CollectionDataBlock(SheetDataBlock parent, Period defaultPeriod) : base(parent)
+        public CollectionDataBlock(SheetDataBlock parent, Period customPeriod) : base(parent)
         {
-            CustomPeriod = defaultPeriod;
+            CustomPeriod = customPeriod;
         }
+
+        public void SetupPeriodForNestedBlocks(Solution solution, Period defaultPeriod)
+        {
+            var model = ModelsDescription.All.Single(m => m.Name == solution.ModelName);
+            foreach (var b in DataBlocks.OfType<VariableDataBlock>())
+            {
+                b.VariablePeriod = new Period
+                {
+                    From = defaultPeriod.From.AddMonths(b.Shift),
+                    Till = defaultPeriod.Till.AddMonths(b.Shift)
+                };
+                b.ObjectMetamodel = model.ObjectModels.Single(m => m.Name == b.RefObject);
+                b.VariableMetamodel = b.ObjectMetamodel.Variables.Single(m => m.Name == b.VariableBlockName);
+            }
+        } 
 
         public override void Export(Solution solution, BaseDataExporter exproter)
         {
-            if(this.Xml == null && this.Interval == TimeInterval.None)
-            {
-                throw new InvalidOperationException($"Обновите блок данных {this.Name}");
-            }
+            //if(this.Xml == null && this.Interval == TimeInterval.None)
+            //{
+            //    throw new InvalidOperationException($"Обновите или объедените блок данных '{Name}'");
+            //}
             exproter.ExportDataBlock(solution, this);
         }
 
@@ -151,7 +168,20 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
 
         private static XElement GetSchemaForVariable(VariableDataBlock sf)
         {
-            var xmlType = sf.VariableMetamodel.ValueType == typeof(Double) ? "xs:decimal" : "xs:string";
+            string xmlType;
+            if(sf.VariableMetamodel.ValueType == typeof(double))
+            {
+                xmlType = "xs:decimal";
+            }            
+            else if(sf.VariableMetamodel.ValueType == typeof(bool))
+            {
+                xmlType = "xs:boolean";
+            }
+            else
+            {
+                xmlType = "xs:string";
+            }
+
             return new XElement(ns + "element",
                 new XAttribute("name", sf.VariableBlockName),
                 new XAttribute("type", xmlType),

@@ -11,9 +11,9 @@ using SeriesEngine.Core.Helpers;
 using SeriesEngine.Core;
 using SeriesEngine.ExcelAddIn.Business.Trees;
 using System.Collections.Generic;
-using System;
+using SeriesEngine.ExcelAddIn.Models;
 
-namespace SeriesEngine.ExcelAddIn.Models
+namespace SeriesEngine.ExcelAddIn.Business.Import
 {
     public class DataImporter : BaseDataImporter,
         ICommand<ReloadAllCommandArgs>,
@@ -73,6 +73,9 @@ namespace SeriesEngine.ExcelAddIn.Models
                 _workbook.Application.DisplayAlerts = false;
                 _workbook.Application.Calculation = Excel.XlCalculation.xlCalculationManual;
 
+                var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
+                collectionDatablock.SetupPeriodForNestedBlocks(solution, period);
+
                 if (collectionDatablock.Interval == TimeInterval.None)
                 {
                     ImportIntoXmlMap(solution, collectionDatablock);
@@ -116,18 +119,6 @@ namespace SeriesEngine.ExcelAddIn.Models
 
             var networkTree = _networksProvider
                 .GetNetwork(solution, collectionDataBlock.NetworkName, collectionDataBlock.DataBlocks, period);
-
-            var model = ModelsDescription.All.Single(m => m.Name == solution.ModelName);
-            foreach (var b in collectionDataBlock.DataBlocks.OfType<VariableDataBlock>())
-            {
-                b.VariablePeriod = new Period
-                {
-                    From = period.From.AddMonths(b.Shift),
-                    Till = period.Till.AddMonths(b.Shift)
-                };
-                b.ObjectMetamodel = model.ObjectModels.Single(m => m.Name == b.RefObject);
-                b.VariableMetamodel = b.ObjectMetamodel.Variables.Single(m => m.Name == b.VariableBlockName);
-            }
 
             var groups = networkTree.ConvertToGroups(collectionDataBlock.DataBlocks, period, collectionDataBlock.CustomPath);
             var d = period.From.GetStartDate(collectionDataBlock.Interval);
@@ -270,7 +261,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var block = collectionDatablock.DataBlocks.First(db => db.Visible);
                 if (listObject.ShowHeaders)
                 {
-                    column.Name = GetColumnCaption(block);
+                    column.Name = GetColumnName(block);
                 }
                 SetColumn(column, xmlMap, block, solution);
             }
@@ -280,7 +271,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var column = listObject.ListColumns.Add();
                 if (listObject.ShowHeaders)
                 {
-                    column.Name = GetColumnCaption(f);
+                    column.Name = GetColumnName(f);
                 }
                 SetColumn(column, xmlMap, f, solution);
             }
@@ -291,15 +282,6 @@ namespace SeriesEngine.ExcelAddIn.Models
             var networkTree = _networksProvider
                 .GetNetwork(solution, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, period);
 
-            foreach (var b in collectionDatablock.DataBlocks)
-            {
-                b.VariablePeriod = new Period
-                {
-                    From = period.From.AddMonths(b.Shift),
-                    Till = period.Till.AddMonths(b.Shift)
-                };
-                //b.VariablePeriod = period; // TODO вычислить период в зависимости от сдвига
-            }
             var xml = networkTree.ConvertToXml(collectionDatablock.DataBlocks, period, collectionDatablock.CustomPath);
             collectionDatablock.Xml = xml;
 
@@ -366,7 +348,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             }            
         }
 
-        private string GetColumnCaption(DataBlock block)
+        private string GetColumnName(DataBlock block)
         {
             if (block is NodeDataBlock)
             {
@@ -375,8 +357,21 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
             else
             {
-                return block.Caption;
+                if (block is VariableDataBlock)
+                {
+                    var varible = (block as VariableDataBlock).VariableMetamodel;
+                    var mandatory = !varible.IsOptional;
+                    if(mandatory)
+                    {
+                        return $"{block.Caption}(*)";
+                    }
+                    if(varible.PeriodInterval == TimeInterval.Indefinite)
+                    {
+                        return $"{block.Caption}(t)";
+                    }
+                }
             }
+            return block.Caption;
         }
 
         private void SetColumn(Excel.ListColumn column, Excel.XmlMap map, DataBlock block, Solution solution)
@@ -431,6 +426,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                         short.MaxValue);
                     column.Range.Validation.IgnoreBlank = variable.IsOptional;
                 }
+                column.XPath.SetValue(map, block.XmlPath);
             }
             else
             {

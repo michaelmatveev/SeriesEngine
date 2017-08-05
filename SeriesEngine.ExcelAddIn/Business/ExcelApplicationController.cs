@@ -11,6 +11,8 @@ using StructureMap.Building.Interception;
 using SeriesEngine.App.EventData;
 using System;
 using System.Windows.Forms;
+using SeriesEngine.ExcelAddIn.Business.Import;
+using SeriesEngine.ExcelAddIn.Business.Export;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -120,6 +122,13 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 _.For<ICommand<SaveAllCommandArgs>>()
                     .Use(c => c.GetInstance<DataExporter>());
+
+                _.ForConcreteType<DataMerger>()
+                    .Configure
+                    .Singleton();
+
+                _.For<ICommand<MergeAllCommandArgs>>()
+                    .Use(c => c.GetInstance<DataMerger>());
 
                 _.ForConcreteType<CollectionPropertiesPresenter>();
                 _.ForConcreteType<XmlPropertiesPresenter>();

@@ -48,6 +48,7 @@
     <Compile Include="ApplicationController.cs" />
     <Compile Include="CommandArgs\DeleteObjectCommandArgs.cs" />
     <Compile Include="CommandArgs\EditPeriodVariableCommandArg.cs" />
+    <Compile Include="CommandArgs\MergeAllCommandArgs.cs" />
     <Compile Include="CurrentSelection.cs" />
     <Compile Include="CommandArgs\BaseCommandArgs.cs" />
     <Compile Include="CommandArgs\EditCollectionBlockCommandArgs.cs" />

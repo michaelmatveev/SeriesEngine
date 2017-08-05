@@ -197,6 +197,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Business\Import\DataMerger.cs" />
     <Compile Include="Business\Trees\FormulaGroup.cs" />
     <Compile Include="Business\Trees\TableGroup.cs" />
     <Compile Include="Business\Trees\VariableGroup.cs" />
@@ -448,7 +449,12 @@
       <Name>SeriesEngine.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\database_table.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\data_table.png" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

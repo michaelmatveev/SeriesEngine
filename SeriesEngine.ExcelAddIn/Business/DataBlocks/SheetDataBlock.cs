@@ -1,4 +1,6 @@
 ﻿using SeriesEngine.Core.DataAccess;
+using SeriesEngine.ExcelAddIn.Business.Export;
+using SeriesEngine.ExcelAddIn.Business.Import;
 using System;
 
 namespace SeriesEngine.ExcelAddIn.Models.DataBlocks

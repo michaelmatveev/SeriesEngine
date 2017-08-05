@@ -41,6 +41,7 @@
             this.buttonDisconnect = this.Factory.CreateRibbonButton();
             this.groupData = this.Factory.CreateRibbonGroup();
             this.buttonRefresh = this.Factory.CreateRibbonButton();
+            this.buttonMerge = this.Factory.CreateRibbonButton();
             this.buttonSave = this.Factory.CreateRibbonButton();
             this.groupDataBlocks = this.Factory.CreateRibbonGroup();
             this.buttonAddDataBlock = this.Factory.CreateRibbonButton();
@@ -115,6 +116,7 @@
             // groupData
             // 
             this.groupData.Items.Add(this.buttonRefresh);
+            this.groupData.Items.Add(this.buttonMerge);
             this.groupData.Items.Add(this.buttonSave);
             this.groupData.Label = "Данные";
             this.groupData.Name = "groupData";
@@ -123,16 +125,26 @@
             // 
             this.buttonRefresh.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.buttonRefresh.Image = global::SeriesEngine.ExcelAddIn.Properties.Resources.table_import;
-            this.buttonRefresh.Label = "Получить данные по всем блокам";
+            this.buttonRefresh.Label = "Загрузить";
             this.buttonRefresh.Name = "buttonRefresh";
             this.buttonRefresh.ShowImage = true;
             this.buttonRefresh.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonRefresh_Click);
+            // 
+            // buttonMerge
+            // 
+            this.buttonMerge.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.buttonMerge.Image = global::SeriesEngine.ExcelAddIn.Properties.Resources.data_table;
+            this.buttonMerge.Label = "Объеденить";
+            this.buttonMerge.Name = "buttonMerge";
+            this.buttonMerge.ShowImage = true;
+            this.buttonMerge.Visible = false;
+            this.buttonMerge.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonMerge_Click);
             // 
             // buttonSave
             // 
             this.buttonSave.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.buttonSave.Image = global::SeriesEngine.ExcelAddIn.Properties.Resources.table_export;
-            this.buttonSave.Label = "Отправить данные из всех блоков";
+            this.buttonSave.Label = "Сохранить";
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.ShowImage = true;
             this.buttonSave.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonSave_Click);
@@ -341,6 +353,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButtonEndOfPeriod;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonIntegralAct;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonIntegralAct2;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonMerge;
     }
 
     partial class ThisRibbonCollection

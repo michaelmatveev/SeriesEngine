@@ -4,12 +4,12 @@ namespace SeriesEngine.ExcelAddIn.Views
 {
     public class RibbonWrapper : IMainMenuView
     {
-        public event EventHandler<FilterArgs> FilterSelected;
         public event EventHandler InsertNewDataBlock;
         public event EventHandler<SampleArgs> InsertSampleBlock;
         public event EventHandler<PaneArgs> ShowCustomPane;
         public event EventHandler RefreshAll;
         public event EventHandler SaveAll;
+        public event EventHandler MergeAll;
         public event EventHandler Connect;
         public event EventHandler Disconnect;
         public event EventHandler RenameObject;

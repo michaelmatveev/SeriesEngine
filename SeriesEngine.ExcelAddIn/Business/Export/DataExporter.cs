@@ -6,6 +6,7 @@ using SeriesEngine.Core.DataAccess;
 using SeriesEngine.Core.Helpers;
 using SeriesEngine.ExcelAddIn.Business.Trees;
 using SeriesEngine.ExcelAddIn.Helpers;
+using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
 
-namespace SeriesEngine.ExcelAddIn.Models
+namespace SeriesEngine.ExcelAddIn.Business.Export
 {
     public class DataExporter : BaseDataExporter,
         ICommand<SaveAllCommandArgs>,
@@ -44,13 +45,16 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public override void ExportDataBlock(Solution solution, CollectionDataBlock collectionDatablock)
         {
-            if(collectionDatablock.Interval != TimeInterval.None)
+            var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
+            collectionDatablock.SetupPeriodForNestedBlocks(solution, period);
+
+            if (collectionDatablock.Interval == TimeInterval.None)
             {
-                ExportFromTable(solution, collectionDatablock);
+                ExportFromXmlMap(solution, collectionDatablock);
             }
             else
             {
-                ExportFromXmlMap(solution, collectionDatablock);
+                ExportFromTable(solution, collectionDatablock);
             }
         }
 

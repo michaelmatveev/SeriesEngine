@@ -39,6 +39,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
             View.RefreshAll += (s, e) => Controller.Execute(new ReloadAllCommandArgs());
             View.SaveAll += (s, e) => Controller.Execute(new SaveAllCommandArgs());
+            View.MergeAll += (s, e) => Controller.Execute(new MergeAllCommandArgs());
 
             View.InsertNewDataBlock += (s, e) => Controller.Execute(new InsertCollectionBlockCommandArgs
             {

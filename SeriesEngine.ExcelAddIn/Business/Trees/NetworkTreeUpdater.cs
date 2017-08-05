@@ -172,7 +172,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     }
                 }
 
-                //if (model.IsVersioned & model.PeriodInterval == TimeInterval.NonPeriodic)
+                //if (model.IsVersioned & model.PeriodInterval == TimeInterval.Indefinite)
                //{
                     // апериодические переменные здесь не обновляются, потому что для каждого такой переменной следует указывать различное время
                 //}

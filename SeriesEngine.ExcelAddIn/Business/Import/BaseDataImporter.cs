@@ -2,7 +2,7 @@
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System.Collections.Generic;
 
-namespace SeriesEngine.ExcelAddIn.Models
+namespace SeriesEngine.ExcelAddIn.Business.Import
 {
     public abstract class BaseDataImporter
     {
