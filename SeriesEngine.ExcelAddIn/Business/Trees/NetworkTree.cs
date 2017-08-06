@@ -98,7 +98,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
             if (node.ValidFrom.HasValue && !node.ValidTill.HasValue)
             {
-                return period.Till >= node.ValidFrom.Value;
+                return period.Till > node.ValidFrom.Value;
             }
 
             if (node.ValidTill.HasValue && !node.ValidFrom.HasValue)

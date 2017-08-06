@@ -39,7 +39,7 @@ namespace SeriesEngine.Core.DataAccess
 
         public bool Intersect(DateTime start, DateTime finish)
         {
-            return From < finish && Till >= start;
+            return From < finish && Till > start;
         }
 
         public override string ToString()
