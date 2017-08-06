@@ -2,6 +2,7 @@
 using SeriesEngine.Core.DataAccess;
 using SeriesEngine.ExcelAddIn.Business.Export;
 using SeriesEngine.ExcelAddIn.Business.Import;
+using SeriesEngine.ExcelAddIn.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,7 +56,8 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
                     Till = defaultPeriod.Till.AddMonths(b.Shift)
                 };
                 b.ObjectMetamodel = model.ObjectModels.Single(m => m.Name == b.RefObject);
-                b.VariableMetamodel = b.ObjectMetamodel.Variables.Single(m => m.Name == b.VariableBlockName);
+                var varName = VariableNameParser.ExtractVariableName(b.VariableBlockName);
+                b.VariableMetamodel = b.ObjectMetamodel.Variables.Single(m => m.Name == varName);
             }
         } 
 

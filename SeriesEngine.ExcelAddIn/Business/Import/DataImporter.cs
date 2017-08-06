@@ -130,11 +130,12 @@ namespace SeriesEngine.ExcelAddIn.Business.Import
 
             while (d < period.Till)
             {
-                var dateCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[row, 0];
+                var column = collectionDataBlock.AddIndexColumn ? 1 : 0;
+                var dateCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[row, column];
                 dateCell.Value2 = d;
                 dateCell.NumberFormat = DateTimeHelper.GetTimeFormat(collectionDataBlock.Interval);
+                column++;
 
-                var column = 1;
                 foreach (var group in groups)
                 {
                     var captionStartCell = sheet.get_Range(collectionDataBlock.StartCell).Offset[0, column];
@@ -208,6 +209,19 @@ namespace SeriesEngine.ExcelAddIn.Business.Import
                 {
                     f.Key.Formula = f.Value;
                 }
+
+                // call after data assigment
+                if (collectionDataBlock.AddIndexColumn)
+                {
+                    SetupIndexerColumn(listObject, collectionDataBlock.StartCell);
+                }
+
+                var dateColumn = listObject
+                    .ListColumns
+                    .Cast<Excel.ListColumn>()
+                    .Skip(collectionDataBlock.AddIndexColumn ? 1 : 0)
+                    .First();
+                dateColumn.Name = "T";
             }
         }
 
