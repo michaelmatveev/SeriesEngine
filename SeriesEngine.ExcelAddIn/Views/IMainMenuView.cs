@@ -17,6 +17,7 @@ namespace SeriesEngine.ExcelAddIn.Views
     public class SampleArgs: EventArgs
     {
         public string SampleName { get; set; }
+        public string XmlQuery { get; set; }
     } 
 
     public interface IMainMenuView : IView

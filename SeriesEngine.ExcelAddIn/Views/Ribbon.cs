@@ -121,7 +121,7 @@ namespace SeriesEngine.ExcelAddIn
 
         private void QueryMenuButton_Click(object sender, RibbonControlEventArgs e)
         {
-            InsertSampleBlock?.Invoke(this, new SampleArgs { SampleName = (string)((RibbonButton)sender).Tag });
+            InsertSampleBlock?.Invoke(this, new SampleArgs { XmlQuery = ((StoredQuery)((RibbonButton)sender).Tag).Text });
         }
 
         private void buttonEditStoredQueries_Click(object sender, RibbonControlEventArgs e)

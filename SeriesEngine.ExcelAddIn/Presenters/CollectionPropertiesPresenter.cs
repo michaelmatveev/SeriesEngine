@@ -38,7 +38,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
 
         void ICommand<InsertSampleCollectionBlockCommandArgs>.Execute(InsertSampleCollectionBlockCommandArgs commandData)
         {
-            var doc = XDocument.Parse(Resources.ResourceManager.GetString(commandData.SampleName));
+            var doc = XDocument.Parse(commandData.Query);
             var selection = commandData.CurrentSelection as ExcelCurrentSelection;
             var newBlock = (CollectionDataBlock)DataBlockConverter.GetDataBlock(doc, Period.Default);
             newBlock.Name = selection.Name;

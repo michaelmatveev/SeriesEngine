@@ -8,6 +8,6 @@
 
     public class InsertSampleCollectionBlockCommandArgs : InsertCollectionBlockCommandArgs
     {
-        public string SampleName { get; set; }
+        public string Query { get; set; }
     }
 }

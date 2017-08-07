@@ -43,7 +43,7 @@
             this.textBoxDataBlock.Location = new System.Drawing.Point(3, 3);
             this.textBoxDataBlock.Multiline = true;
             this.textBoxDataBlock.Name = "textBoxDataBlock";
-            this.textBoxDataBlock.Size = new System.Drawing.Size(797, 538);
+            this.textBoxDataBlock.Size = new System.Drawing.Size(913, 538);
             this.textBoxDataBlock.TabIndex = 1;
             // 
             // tableLayoutPanel1
@@ -58,7 +58,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(803, 579);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(919, 579);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // flowLayoutPanel1
@@ -70,13 +70,13 @@
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 547);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(797, 29);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(913, 29);
             this.flowLayoutPanel1.TabIndex = 2;
             // 
             // buttonCancel
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(719, 3);
+            this.buttonCancel.Location = new System.Drawing.Point(835, 3);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 0;
@@ -86,7 +86,7 @@
             // buttonOK
             // 
             this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonOK.Location = new System.Drawing.Point(638, 3);
+            this.buttonOK.Location = new System.Drawing.Point(754, 3);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 1;
@@ -97,9 +97,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(803, 579);
+            this.ClientSize = new System.Drawing.Size(919, 579);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "XmlProperties";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "SimpleProperties";
             this.tableLayoutPanel1.ResumeLayout(false);

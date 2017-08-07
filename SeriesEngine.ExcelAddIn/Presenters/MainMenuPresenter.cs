@@ -55,7 +55,7 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             {
                 var cmd = new InsertSampleCollectionBlockCommandArgs
                 {
-                    SampleName = e.SampleName,
+                    Query = e.XmlQuery,
                     CurrentSelection = selectionProvider.GetSelection()
                 };
                 Controller.Execute(cmd);
