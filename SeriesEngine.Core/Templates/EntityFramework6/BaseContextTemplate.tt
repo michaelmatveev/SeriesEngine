@@ -24,6 +24,7 @@ namespace SeriesEngine.Core.DataAccess
         public virtual DbSet<Network> Networks { get; set; }
         public virtual DbSet<Solution> Solutions { get; set; }
         public virtual DbSet<User> Users { get; set; }
+		public virtual DbSet<StoredQuery> StoredQueries { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
