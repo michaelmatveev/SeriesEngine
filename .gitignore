@@ -281,6 +281,7 @@ ModelManifest.xml
 /SeriesEngine.Core/msk1.RegionVariables.cs
 /SeriesEngine.Core/msk1.Region.cs
 /SeriesEngine.Core/msk1.Point_VoltageLevel.cs
+/SeriesEngine.Core/msk1.Point_HourConsuming.cs
 /SeriesEngine.Core/msk1.Point_TUCode.cs
 /SeriesEngine.Core/msk1.Point_PUPlace.cs
 /SeriesEngine.Core/msk1.Point_MaxPower.cs

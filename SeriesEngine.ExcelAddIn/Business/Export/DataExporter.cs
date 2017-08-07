@@ -73,7 +73,7 @@ namespace SeriesEngine.ExcelAddIn.Business.Export
             var row = collectionDataBlock.ShowHeader ? 1 : 0;
             while (d < period.Till)
             {
-                var column = 1;
+                var column = collectionDataBlock.AddIndexColumn ? 2 : 1;
                 foreach (var varGroup in groups)
                 {
                     var countOfObjects = varGroup.ObjectsToScan.Count;
