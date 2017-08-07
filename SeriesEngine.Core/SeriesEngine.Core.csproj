@@ -146,6 +146,7 @@
     <Compile Include="DataAccess\PeriodVariable.cs" />
     <Compile Include="DataAccess\Solution.cs" />
     <Compile Include="DataAccess\EditorObject.cs" />
+    <Compile Include="DataAccess\StoredQuery.cs" />
     <Compile Include="DataAccess\User.cs" />
     <Compile Include="DataAccess\Utilities.cs" />
     <Compile Include="DataAccess\VersionedVariable.cs" />

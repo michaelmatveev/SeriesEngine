@@ -16,6 +16,7 @@ namespace SeriesEngine.ExcelAddIn.Views
     public interface IXmlPropertiesView : IView
     {
         void ShowIt(string name, string format);
-        event EventHandler<PropertiesUpdatedEventArgs> PropertiesUpdated;   
+        event EventHandler<PropertiesUpdatedEventArgs> PropertiesUpdated;
+        string StoredQueryText { get; set; }
     }
 }

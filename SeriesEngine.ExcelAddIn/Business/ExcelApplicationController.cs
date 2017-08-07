@@ -13,6 +13,7 @@ using System;
 using System.Windows.Forms;
 using SeriesEngine.ExcelAddIn.Business.Import;
 using SeriesEngine.ExcelAddIn.Business.Export;
+using SeriesEngine.ExcelAddIn.Business;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -99,8 +100,11 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 _.For<INetworksProvider>()
                     .Singleton()
-                    //.Use<MockNetworkProvider>();
                     .Use<DataBaseNetworkProvider>();
+
+                _.For<IStoredQueriesProvider>()
+                    .Singleton()
+                    .Use<StoredQueriesProvider>();
 
                 _.For<Workbook>()
                     .Use(_currentDocument);
@@ -178,6 +182,11 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Use<PeriodVariableEditor>();
 
                 _.ForConcreteType<PeriodVariableEditorPresenter>();
+
+                _.For<IStoredQueriesView>()
+                    .Use<StoredQueriesSelector>();
+
+                _.ForConcreteType<StoredQueriesPresenter>();
             });
 
             var provider = Container.GetInstance<IDataBlockProvider>();

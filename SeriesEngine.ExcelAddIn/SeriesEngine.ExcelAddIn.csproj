@@ -198,6 +198,8 @@
   -->
   <ItemGroup>
     <Compile Include="Business\Import\DataMerger.cs" />
+    <Compile Include="Business\IStoredQueriesProvider.cs" />
+    <Compile Include="Business\StoredQueriesProvider.cs" />
     <Compile Include="Business\Trees\FormulaGroup.cs" />
     <Compile Include="Business\Trees\TableGroup.cs" />
     <Compile Include="Business\Trees\VariableGroup.cs" />
@@ -262,6 +264,7 @@
     <Compile Include="Presenters\DataBlockPresenter.cs" />
     <Compile Include="Presenters\MainMenuPresenter.cs" />
     <Compile Include="Presenters\Presenter.cs" />
+    <Compile Include="Presenters\StoredQueriesPresenter.cs" />
     <Compile Include="Presenters\XmlPropertiesPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -297,6 +300,7 @@
     <Compile Include="Views\IPeriodVariableView.cs" />
     <Compile Include="Views\IPeriodView.cs" />
     <Compile Include="Views\ISolutionSelectorView.cs" />
+    <Compile Include="Views\IStoredQueriesView.cs" />
     <Compile Include="Views\IView.cs" />
     <Compile Include="Views\IXmlPropertiesView.cs" />
     <Compile Include="Views\MainPaneControl.cs">
@@ -344,6 +348,12 @@
     </Compile>
     <Compile Include="Views\SolutionSelector.Designer.cs">
       <DependentUpon>SolutionSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StoredQueriesSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\StoredQueriesSelector.Designer.cs">
+      <DependentUpon>StoredQueriesSelector.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\VariableEditor.cs">
       <SubType>Form</SubType>
@@ -397,6 +407,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\SolutionSelector.resx">
       <DependentUpon>SolutionSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\StoredQueriesSelector.resx">
+      <DependentUpon>StoredQueriesSelector.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\VariableEditor.resx">
       <DependentUpon>VariableEditor.cs</DependentUpon>

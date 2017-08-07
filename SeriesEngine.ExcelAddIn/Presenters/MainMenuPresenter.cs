@@ -3,6 +3,7 @@ using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.App;
 using SeriesEngine.App.CommandArgs;
 using SeriesEngine.App.EventData;
+using SeriesEngine.ExcelAddIn.Business;
 
 namespace SeriesEngine.ExcelAddIn.Presenters
 {
@@ -12,16 +13,20 @@ namespace SeriesEngine.ExcelAddIn.Presenters
         IEventHandler<MainPaneClosed>,
         IEventHandler<RestoreMenuStateEventData>
     {
-        private INetworksProvider _networkProvider;
+        private readonly INetworksProvider _networkProvider;
+        private readonly IStoredQueriesProvider _storedQueriesProvider;
         private bool _firstInitialization = true;
         private bool _isPaneVisible;
 
         public MainMenuPresenter(IMainMenuView view, 
             IApplicationController controller,
             ISelectionProvider selectionProvider,
-            INetworksProvider networkProvider) : base(view, controller)
+            INetworksProvider networkProvider,
+            IStoredQueriesProvider storedQueriesProvider) : base(view, controller)
         {
             _networkProvider = networkProvider;
+            _storedQueriesProvider = storedQueriesProvider;
+
             View.ShowCustomPane += (s, e) =>
             {
                 _isPaneVisible = e.Visible;
@@ -74,6 +79,24 @@ namespace SeriesEngine.ExcelAddIn.Presenters
             {
                 CurrentSelection = selectionProvider.GetSelection()
             });
+
+            View.ReloadStoredQueries += (s, e) =>
+            {
+                if (controller.CurrentSolution != null)
+                {
+                    var modelName = controller.CurrentSolution.ModelName;
+                    View.UpdateListOfStoredQueries(_storedQueriesProvider.GetStoredQueries(modelName));
+                }
+                else
+                {
+                    View.UpdateListOfStoredQueries(null);
+                }
+            };
+
+            View.EditStoredQueries += (s, e) =>
+            {
+                Controller.Execute(new ShowStoredQueriesCommandArgs());
+            };
 
             View.Connect += (s, e) => Controller.Execute(new SelectSolutionCommandArgs());
             View.Disconnect += (s, e) => Controller.CurrentSolution = null;

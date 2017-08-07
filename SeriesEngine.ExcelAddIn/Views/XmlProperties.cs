@@ -18,6 +18,18 @@ namespace SeriesEngine.ExcelAddIn.Views
             InitializeComponent();
         }
 
+        public string StoredQueryText
+        {
+            get
+            {
+                return textBoxDataBlock.Text;
+            }
+            set
+            {
+                textBoxDataBlock.Text = value;
+            }
+        }
+
         public event EventHandler<PropertiesUpdatedEventArgs> PropertiesUpdated;
         void IXmlPropertiesView.ShowIt(string name, string dataBlock)
         {

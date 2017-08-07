@@ -55,6 +55,25 @@ CREATE TABLE [dbo].[Users] (
 );
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('[dbo].[StoredQueries]') AND type = 'U')
+DROP TABLE [dbo].[StoredQueries];
+GO
+
+CREATE TABLE [dbo].[StoredQueries] (
+    "Id" INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
+    "Name" NVARCHAR(128) NOT NULL,
+	"ModelName" NVARCHAR(128) NOT NULL,
+	"ConcurrencyStamp" TIMESTAMP NOT NULL,
+	"Text" NVARCHAR(MAX),
+	"AuthorId" INT
+);
+GO
+
+ALTER TABLE [dbo].[StoredQueries] WITH NOCHECK 
+ADD CONSTRAINT [FK_dbo_StoredQueries_Users] FOREIGN KEY("AuthorId")
+REFERENCES [dbo].[Users] ("Id");
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('[dbo].[Networks]') AND type = 'U')
 DROP TABLE [dbo].[Networks];
 GO

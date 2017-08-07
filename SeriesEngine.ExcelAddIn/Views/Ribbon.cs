@@ -1,6 +1,9 @@
 ﻿using System;
 using Microsoft.Office.Tools.Ribbon;
 using SeriesEngine.ExcelAddIn.Views;
+using SeriesEngine.Core.DataAccess;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SeriesEngine.ExcelAddIn
 {
@@ -17,6 +20,8 @@ namespace SeriesEngine.ExcelAddIn
         public event EventHandler EditVariable;
         public event EventHandler Connect;
         public event EventHandler Disconnect;
+        public event EventHandler ReloadStoredQueries;
+        public event EventHandler EditStoredQueries;
 
         private PaneArgs CreatePaneArgs(object toggleButton)
         {
@@ -91,5 +96,37 @@ namespace SeriesEngine.ExcelAddIn
             MergeAll?.Invoke(this, EventArgs.Empty);
         }
 
+        private void menuStoredQueries_ItemsLoading(object sender, RibbonControlEventArgs e)
+        {
+            ReloadStoredQueries?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void UpdateListOfStoredQueries(IEnumerable<StoredQuery> queries)
+        {            
+            menuStoredQueries.Items.Clear();
+            if (queries != null)
+            {
+                foreach (var q in queries.OrderBy(s => s.Name))
+                {
+                    var button = Factory.CreateRibbonButton();
+                    button.Label = q.Name;
+                    button.Tag = q;
+                    button.Click += QueryMenuButton_Click;
+                    menuStoredQueries.Items.Add(button);
+                }
+            }
+            menuStoredQueries.Items.Add(Factory.CreateRibbonSeparator());
+            menuStoredQueries.Items.Add(buttonEditStoredQueries);
+        }
+
+        private void QueryMenuButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            InsertSampleBlock?.Invoke(this, new SampleArgs { SampleName = (string)((RibbonButton)sender).Tag });
+        }
+
+        private void buttonEditStoredQueries_Click(object sender, RibbonControlEventArgs e)
+        {
+            EditStoredQueries?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

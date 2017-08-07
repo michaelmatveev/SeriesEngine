@@ -1,5 +1,6 @@
 ﻿using SeriesEngine.Core.DataAccess;
 using System;
+using System.Collections.Generic;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
@@ -31,8 +32,12 @@ namespace SeriesEngine.ExcelAddIn.Views
         event EventHandler RenameObject;
         event EventHandler DeleteObject;
         event EventHandler EditVariable;
+        event EventHandler ReloadStoredQueries;
+        event EventHandler EditStoredQueries;
 
         void SetButtonToggleState(bool isVisible);
         void SetTabVisibleState(bool isVisible);
+        void UpdateListOfStoredQueries(IEnumerable<StoredQuery> query);
+
     }
 }

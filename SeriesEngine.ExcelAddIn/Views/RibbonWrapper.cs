@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SeriesEngine.Core.DataAccess;
+using System;
+using System.Collections.Generic;
 
 namespace SeriesEngine.ExcelAddIn.Views
 {
@@ -15,16 +17,18 @@ namespace SeriesEngine.ExcelAddIn.Views
         public event EventHandler RenameObject;
         public event EventHandler DeleteObject;
         public event EventHandler EditVariable;
-        
+        public event EventHandler ReloadStoredQueries;
+        public event EventHandler EditStoredQueries;
+
         public bool IsActive { get; set; }
         
         private readonly IMainMenuView _realView;
         public RibbonWrapper(IMainMenuView realView)
         {
             _realView = realView;
-            realView.InsertNewDataBlock += (s, e) => 
+            realView.InsertNewDataBlock += (s, e) =>
             {
-                if(IsActive && InsertNewDataBlock != null)
+                if (IsActive && InsertNewDataBlock != null)
                 {
                     InsertNewDataBlock(s, e);
                 }
@@ -40,7 +44,7 @@ namespace SeriesEngine.ExcelAddIn.Views
 
             realView.ShowCustomPane += (s, e) =>
             {
-                if(IsActive && ShowCustomPane != null)
+                if (IsActive && ShowCustomPane != null)
                 {
                     ShowCustomPane(s, e);
                 }
@@ -48,7 +52,7 @@ namespace SeriesEngine.ExcelAddIn.Views
 
             realView.RefreshAll += (s, e) =>
             {
-                if(IsActive && RefreshAll != null)
+                if (IsActive && RefreshAll != null)
                 {
                     RefreshAll(s, e);
                 }
@@ -101,6 +105,22 @@ namespace SeriesEngine.ExcelAddIn.Views
                     EditVariable?.Invoke(s, e);
                 }
             };
+
+            realView.ReloadStoredQueries += (s, e) =>
+            {
+                if (IsActive)
+                {
+                    ReloadStoredQueries?.Invoke(s, e);
+                }
+            };
+
+            realView.EditStoredQueries += (s, e) =>
+            {
+                if (IsActive)
+                {
+                    EditStoredQueries?.Invoke(s, e);
+                }
+            };
         }
 
         public void SetTabVisibleState(bool isEnabled)
@@ -111,6 +131,11 @@ namespace SeriesEngine.ExcelAddIn.Views
         public void SetButtonToggleState(bool isVisible)
         {
             _realView.SetButtonToggleState(isVisible);
+        }
+
+        public void UpdateListOfStoredQueries(IEnumerable<StoredQuery> queries)
+        {
+            _realView.UpdateListOfStoredQueries(queries);
         }
     }
 }
