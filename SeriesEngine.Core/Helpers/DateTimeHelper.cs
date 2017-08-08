@@ -71,5 +71,18 @@ namespace SeriesEngine.Core.Helpers
             }
         }
 
+        public static Period Shift(this Period sourcePeriod, TimeInterval interval, int shift)
+        {
+            if(interval == TimeInterval.Month)
+            {
+                var shiftedDate = sourcePeriod.From.AddMonths(shift);
+                return new Period
+                {
+                    From = shiftedDate,
+                    Till = shiftedDate.LastDayOfMonth().AddDays(1)
+                };
+            }
+            return sourcePeriod;
+        }
     }
 }

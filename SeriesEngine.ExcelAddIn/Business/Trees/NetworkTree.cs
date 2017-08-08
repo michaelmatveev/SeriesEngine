@@ -253,7 +253,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var vsf = (VariableDataBlock)qp;
                 var varModel = vsf.VariableMetamodel;
                 var variableElementName = VariableNameParser.GetVariableElementName(vsf);
-                var variableElementValue = node.LinkedObject.GetVariableValue(varModel, qp.VariablePeriod);
+                var variableElementValue = node.LinkedObject.GetVariableValue(varModel, qp.VariablePeriod, 0);
                 newElement.Add(new XElement(variableElementName, variableElementValue));
             }
             return true;

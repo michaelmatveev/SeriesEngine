@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SeriesEngine.Core.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -51,16 +52,17 @@ namespace SeriesEngine.Core.DataAccess
         [NotMapped]
         public ObjectState State { get; set; }
 
-        public object GetVariableValue(Variable variableModel, Period requestedPeriod)
+        public object GetVariableValue(Variable variableModel, Period requestedPeriod, int shift)
         {
             var thisType = GetType();
             PropertyInfo property;
-            if(variableModel.PeriodInterval == TimeInterval.Indefinite )
+            var period = requestedPeriod.Shift(variableModel.PeriodInterval, shift);
+            if (variableModel.PeriodInterval == TimeInterval.Indefinite )
             {
                 property = thisType.GetProperty($"{ObjectModel.Name}_{variableModel.Name}s");
                 var collection = property.GetValue(this, null) as IEnumerable<PeriodVariable>;
                 return collection
-                    .Where(v => v.Date < requestedPeriod.Till)
+                    .Where(v => v.Date < period.Till)
                     .OrderBy(v => v.Date)
                     .ThenBy(v => v.Id)
                     .LastOrDefault()
@@ -72,7 +74,7 @@ namespace SeriesEngine.Core.DataAccess
                 property = thisType.GetProperty($"{ObjectModel.Name}_{variableModel.Name}s");
                 var collection = property.GetValue(this, null) as IEnumerable<PeriodVariable>;
                 return collection
-                    .Where(v => v.Date >= requestedPeriod.From && v.Date < requestedPeriod.Till)
+                    .Where(v => v.Date >= period.From && v.Date < period.Till)
                     .OrderBy(v => v.Date)
                     .ThenBy(v => v.Id)
                     .LastOrDefault()

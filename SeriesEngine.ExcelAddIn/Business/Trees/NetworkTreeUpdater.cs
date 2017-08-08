@@ -40,7 +40,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 using (var context = ModelsDescription.GetModel(_network.Solution.ModelName))
                 {
                     context.Configuration.AutoDetectChangesEnabled = false;
-                    //context.Networks.Attach(_network);
+                    context.Networks.Attach(_network);
                     foreach (var v in valuesForPeriod)
                     {
                         if (v.State == ObjectState.Added)
@@ -172,14 +172,25 @@ namespace SeriesEngine.ExcelAddIn.Models
                     }
                 }
 
-                //if (model.IsVersioned & model.PeriodInterval == TimeInterval.Indefinite)
-               //{
+                if (model.IsVersioned & model.PeriodInterval == TimeInterval.Indefinite)
+                {
                     // апериодические переменные здесь не обновляются, потому что для каждого такой переменной следует указывать различное время
-                //}
+                    var storedValue = targetObject.GetVariableValue(model, _defaultDateForPeriodVariables, parsedVar.Shift);
+                    var currentValue = model.Parse(v.Value);
+                    if (!Object.Equals(storedValue, currentValue))
+                    {
+                        var newVariable = Activator.CreateInstance(model.EntityType) as PeriodVariable;
+                        newVariable.Date = _defaultDateForPeriodVariables.From.AddMonths(parsedVar.Shift);
+                        newVariable.ObjectId = targetObject.Id;
+                        newVariable.Value = currentValue;
+                        newVariable.State = ObjectState.Added;
+                        result.Add(newVariable);
+                    }
+                }
 
                 if (model.IsVersioned & model.IsFixedPeriod)
                 {
-                    var storedValue = targetObject.GetVariableValue(model, _defaultDateForPeriodVariables);
+                    var storedValue = targetObject.GetVariableValue(model, _defaultDateForPeriodVariables, parsedVar.Shift);
                     var currentValue = model.Parse(v.Value);
                     if (!Object.Equals(storedValue, currentValue))
                     {
@@ -194,7 +205,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
                 if(model.IsVersioned & model.PeriodInterval == TimeInterval.None)
                 {
-                    var storedValue = targetObject.GetVariableValue(model, _defaultDateForPeriodVariables);
+                    var storedValue = targetObject.GetVariableValue(model, _defaultDateForPeriodVariables, parsedVar.Shift);
                     var currentValue = model.Parse(v.Value);
                     if (!Object.Equals(storedValue, currentValue))
                     {
