@@ -39,6 +39,7 @@ namespace SeriesEngine.<#= Schema #>
 		{
 			var s = h.Attribute("Name").Value;
 			var objs = h.Descendants("UsedStereotype").Select(v => v.Attribute("Name").Value);
+			var sysnets = h.Elements("Network").Select(v => v.Attribute("Name").Value);
 #>
 
         public static HierarchyMemamodel <#= s #> = new HierarchyMemamodel
@@ -54,7 +55,18 @@ namespace SeriesEngine.<#= Schema #>
 			}
 #>
 			},
-			NodeType = typeof(SeriesEngine.<#= Schema #>.<#= s #>Node)
+			SystemNetworks = new string [] 
+			{
+<#+
+			foreach(var n in sysnets)
+			{
+#>				"<#= n #>",
+<#+
+			}
+#>
+			},
+			NodeType = typeof(SeriesEngine.<#= Schema #>.<#= s #>Node),
+			HierarchyType = typeof(SeriesEngine.<#= Schema #>.<#= s #>Network)
         };
 <#+
 		}

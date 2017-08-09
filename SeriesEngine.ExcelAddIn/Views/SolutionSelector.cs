@@ -25,18 +25,22 @@ namespace SeriesEngine.ExcelAddIn.Views
 
         public void ShowIt(IEnumerable<Solution> solutions, Solution selectedSolution)
         {
+            Refresh(solutions, selectedSolution);
+            if (ShowDialog() == DialogResult.OK)
+            {
+                OnSolutionChanged();
+            }
+        }
+
+        public void Refresh(IEnumerable<Solution> solutions, Solution selectedSolution)
+        {
             var items = solutions.Select(s => new ListViewItem(new[] { s.Name, s.ModelName, s.Description })
             {
                 Tag = s,
                 Selected = selectedSolution != null ? s.Id == selectedSolution.Id : false
             }).ToArray();
-
+            listViewSolutions.Items.Clear();
             listViewSolutions.Items.AddRange(items);
-
-            if (ShowDialog() == DialogResult.OK)
-            {
-                OnSolutionChanged();
-            }
         }
 
         public Solution SelectedSolution
@@ -50,10 +54,52 @@ namespace SeriesEngine.ExcelAddIn.Views
         }
 
         public event EventHandler SolutionChanged;
+        public event EventHandler<SolutionEventArgs> NewSolution;
+        public event EventHandler<SolutionEventArgs> EditSolution;
+        public event EventHandler<SolutionEventArgs> DeleteSolution;
 
         protected void OnSolutionChanged()
         {
             SolutionChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void listViewSolutions_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            buttonEdit.Enabled = buttonDelete.Enabled = listViewSolutions.SelectedItems.Count > 0;
+        }
+
+        private void buttonEdit_Click(object sender, EventArgs e)
+        {
+            var solution = listViewSolutions.SelectedItems[0].Tag as Solution;
+            using (var form = new SolutionPropertiesView { CurrentColution = solution })
+            {
+                form.DisableModelSelection();
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    EditSolution?.Invoke(this, new SolutionEventArgs(solution));
+                }
+            }
+        }
+
+        private void buttonCreate_Click(object sender, EventArgs e)
+        {
+            var solution = new Solution();
+            using (var form = new SolutionPropertiesView { CurrentColution = solution })
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    NewSolution?.Invoke(this, new SolutionEventArgs(solution));
+                }
+            }
+        }
+
+        private void buttonDelete_Click(object sender, EventArgs e)
+        {
+            var solution = listViewSolutions.SelectedItems[0].Tag as Solution;
+            if (MessageBox.Show($"Удалить решение '{solution.Name}'?", ViewNames.ApplicationCaption, MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
+            {
+                DeleteSolution?.Invoke(this, new SolutionEventArgs(solution));            
+            }
         }
 
     }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Solution = SeriesEngine.Core.DataAccess.Solution;
 using SeriesEngine.Core;
+using System;
+using SeriesEngine.Core.DataAccess;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -40,6 +42,46 @@ namespace SeriesEngine.ExcelAddIn.Models
                 return null;
             }
         }
+
+        public void UpdateSolution(Solution solution)
+        {
+            using (var context = ModelsDescription.GetModel())
+            {
+                context.Entry(solution).State = System.Data.Entity.EntityState.Modified;
+                context.SaveChanges();
+            }
+        }
+
+        public void InsertSolution(Solution solution)
+        {            
+            using (var context = ModelsDescription.GetModel())
+            {
+                context.Entry(solution).State = System.Data.Entity.EntityState.Added;
+                var model = ModelsDescription.All.Single(m => m.Name == solution.ModelName);
+                foreach (var networkModel in model.HierarchyModels)
+                {
+                    foreach (var sysNetwork in networkModel.SystemNetworks)
+                    {
+                        var network = Activator.CreateInstance(networkModel.HierarchyType) as Network;
+                        network.Name = sysNetwork;
+                        network.Solution = solution;
+                        network.IsSystem = true;
+                        context.Networks.Add(network);
+                    }
+                }
+                context.SaveChanges();
+            }            
+        }
+
+        public void DeleteSolution(Solution solution)
+        {
+            using (var context = ModelsDescription.GetModel())
+            {
+                context.Entry(solution).State = System.Data.Entity.EntityState.Deleted;
+                context.SaveChanges();
+            }
+        }
+
 
     }
 }

@@ -51,8 +51,10 @@ namespace SeriesEngine.Core
     public class HierarchyMemamodel
     {
         public string Name { get; set; }
+        public IEnumerable<string> SystemNetworks;
         public IEnumerable<ObjectMetamodel> ReferencedObjects { get; set; }
         public Type NodeType { get; set; }
+        public Type HierarchyType { get; set; }
     }
 
     public class MetaModel

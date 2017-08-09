@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Hierarchies>
   <Hierarchy Name="MainHierarchy" WithHistory="True">
+    <Network Name="Регион - прибор учета" />
     <Level>
       <UsedStereotype Name="Region"/>
       <Level>
@@ -21,6 +22,7 @@
     </Level>
   </Hierarchy>
   <Hierarchy Name="SupplierHierarchy" WithHistory="True">
+    <Network Name="Поставщик - точка"/>
     <Level>
       <UsedStereotype Name="Supplier" />
       <Level>
@@ -32,6 +34,7 @@
     </Level>  
   </Hierarchy>
   <Hierarchy Name="CurcuitHierarchy" WithHistory="True">
+    <Network Name="Сетевая организация - точка"/>
     <Level>
       <UsedStereotype Name="Curcuit" />
       <Level>

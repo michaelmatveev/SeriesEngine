@@ -7,5 +7,8 @@ namespace SeriesEngine.ExcelAddIn.Models
     {
         IEnumerable<Solution> GetAllSolutions();
         Solution GetSolutionById(int solutionId);
+        void InsertSolution(Solution solution);
+        void UpdateSolution(Solution solution);
+        void DeleteSolution(Solution solution);
     }
 }

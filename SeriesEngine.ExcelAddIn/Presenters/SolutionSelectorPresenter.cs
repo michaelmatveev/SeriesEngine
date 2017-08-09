@@ -14,6 +14,21 @@ namespace SeriesEngine.ExcelAddIn.Presenters
         {
             _solutionProvider = solutionProvider;
             View.SolutionChanged += (s, e) => controller.CurrentSolution = View.SelectedSolution;
+            View.NewSolution += (s, e) =>
+            {
+                solutionProvider.InsertSolution(e.Solution);
+                View.Refresh(solutionProvider.GetAllSolutions(), e.Solution);
+            };
+            View.EditSolution += (s, e) =>
+            {
+                solutionProvider.UpdateSolution(e.Solution);
+                View.Refresh(solutionProvider.GetAllSolutions(), e.Solution);
+            };
+            View.DeleteSolution += (s, e) =>
+            {
+                solutionProvider.DeleteSolution(e.Solution);
+                View.Refresh(solutionProvider.GetAllSolutions(), null);
+            };
         }
 
         void ICommand<SelectSolutionCommandArgs>.Execute(SelectSolutionCommandArgs commandData)

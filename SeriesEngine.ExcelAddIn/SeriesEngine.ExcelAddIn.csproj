@@ -34,7 +34,7 @@
     <PublishUrl>publish\</PublishUrl>
     <InstallUrl>https://dataseries.blob.core.windows.net/clickonce/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.4.3.0</ApplicationVersion>
+    <ApplicationVersion>1.4.4.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -343,6 +343,12 @@
       <DependentUpon>Ribbon.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\RibbonWrapper.cs" />
+    <Compile Include="Views\SolutionPropertiesView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\SolutionPropertiesView.Designer.cs">
+      <DependentUpon>SolutionPropertiesView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\SolutionSelector.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -405,6 +411,9 @@
     <EmbeddedResource Include="Views\Ribbon.resx">
       <DependentUpon>Ribbon.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\SolutionPropertiesView.resx">
+      <DependentUpon>SolutionPropertiesView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\SolutionSelector.resx">
       <DependentUpon>SolutionSelector.cs</DependentUpon>
     </EmbeddedResource>
@@ -419,6 +428,7 @@
     </EmbeddedResource>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\SeriesEngine.Core.DataAccess.Solution.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
