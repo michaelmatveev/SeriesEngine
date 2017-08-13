@@ -4,9 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SeriesEngine.Core.DataAccess
 {
-    public abstract class NetworkTreeNode:
+    public abstract class NetworkTreeNode :
         IStateObject
     {
+        public const char PathSeparator = '|';
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -33,14 +35,18 @@ namespace SeriesEngine.Core.DataAccess
         {
             get
             {
-                return $"{MyParent?.NodeName ?? string.Empty}/{NodeName}"; 
+                if(MyParent == null)
+                {
+                    return NodeName;
+                }
+                return $"{MyParent.Path}{PathSeparator}{NodeName}"; 
             }
         }
 
         public bool InPath(string path)
         {
-            var pathElements = path.Split('/');
-            var myPathElements = Path.Split('/');
+            var pathElements = path.Split(PathSeparator);
+            var myPathElements = Path.Split(PathSeparator);
             for(int i = 0; i < pathElements.Length; i++)
             {
                 if(pathElements[i] != myPathElements[i])

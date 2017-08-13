@@ -41,7 +41,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 {
                     context.Configuration.AutoDetectChangesEnabled = false;
                     context.Networks.Attach(_network);
-                    foreach (var v in valuesForPeriod)
+                    foreach (var v in valuesForPeriod)//.Where(s => s.State != ObjectState.Unchanged))
                     {
                         if (v.State == ObjectState.Added)
                         {
@@ -65,25 +65,32 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
-        private static string GetXPath(XElement element)
+        private static string GetXPath(XElement element, List<string> parents)
         {
-            if (element == null)
+            if (element.Name == NetworkTree.RootName)
             {
-                return string.Empty;
+                return $"/{NetworkTree.RootName}";
             }
             else
             {
-                return $"{GetXPath(element.Parent)}/{element.Name}";
+                var grandParents = parents.Take(parents.Count - 1).ToList();
+                return $"{GetXPath(element.Parent, grandParents)}/{element.Name}[@UniqueName='{parents.Last()}']";
             }
         }
 
         private IList<IStateObject> ProcessNodesElements(XDocument source, NetworkTreeNode parent, IEnumerable<XElement> elements)
         {
-            var result = new List<IStateObject>();
+             var result = new List<IStateObject>();
             foreach (var element in elements.Where(e => e.Attribute("UniqueName") != null))
             {
                 NetworkTreeNode node;
-                var path = $"{GetXPath(element)}[@UniqueName='{element.Attribute("UniqueName").Value}']";
+                var parentPath = new List<string>();
+                if (parent != null)
+                {
+                    parentPath.AddRange(parent.Path.Split(NetworkTreeNode.PathSeparator));
+                }
+                parentPath.Add(element.Attribute("UniqueName").Value);
+                var path = GetXPath(element, parentPath);
                 var sourceElement = source.XPathSelectElement(path);
                 if (sourceElement == null && _updateHierarchyEnabled)
                 {

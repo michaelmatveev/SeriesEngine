@@ -18,6 +18,7 @@ namespace SeriesEngine.Core.DataAccess
             ObjectModel = objectModel;
         }
 
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
