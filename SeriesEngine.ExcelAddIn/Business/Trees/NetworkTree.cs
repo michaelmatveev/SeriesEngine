@@ -35,7 +35,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             var tree = _network
                 .MyNodes
                 .Where(n => IsNodeInPeriod(n, defaultPeriod) && n.LinkedObject != null) // мы грузим все node для Network, но некторые из них не ссылаются на LinkedObject потому что соотвествующие объекты не были запрошены
-                .GenerateTree(n => n.NodeName, n => n.MyParent?.NodeName);
+                .GenerateTree(n => n.Id, n => n.MyParent?.Id);
 
             if (!string.IsNullOrEmpty(path) && path != "*")
             {
@@ -65,7 +65,9 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 if (q is VariableDataBlock)
                 {
-                    var data = nodes.Where(n => n.Key == q.ObjectMetamodel).SelectMany(n => n);
+                    var data = nodes.Where(n => n.Key == q.ObjectMetamodel)
+                        .SelectMany(n => n);
+                        //.Where(n => n.InPath(path));
                     {
                         yield return new VariableGroup
                         {

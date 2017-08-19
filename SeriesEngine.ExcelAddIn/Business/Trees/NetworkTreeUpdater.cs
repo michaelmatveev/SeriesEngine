@@ -57,6 +57,13 @@ namespace SeriesEngine.ExcelAddIn.Models
                     context.SaveChanges();
                 }
             }
+            catch(InvalidOperationException ex)
+            {
+                if(ex.Message.Contains("The changes to the database were committed successfully, but an error occurred while updating the object context. The ObjectContext might be in an inconsistent state."))
+                {
+                    return;
+                }
+            }
             catch (DbEntityValidationException ex)
             {
                 var errors = ex.EntityValidationErrors.SelectMany(s => s.ValidationErrors);
