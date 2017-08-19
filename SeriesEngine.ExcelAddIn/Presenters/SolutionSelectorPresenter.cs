@@ -29,6 +29,14 @@ namespace SeriesEngine.ExcelAddIn.Presenters
                 solutionProvider.DeleteSolution(e.Solution);
                 View.Refresh(solutionProvider.GetAllSolutions(), null);
             };
+            View.ValidateSolution += (s, e) =>
+            {
+                string errorMessage;
+                if (!solutionProvider.ValidateSolutionName(e.Solution, out errorMessage))
+                {
+                    e.ValidationError = errorMessage;
+                }
+            };
         }
 
         void ICommand<SelectSolutionCommandArgs>.Execute(SelectSolutionCommandArgs commandData)

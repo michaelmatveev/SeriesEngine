@@ -82,6 +82,26 @@ namespace SeriesEngine.ExcelAddIn.Models
             }
         }
 
+        public bool ValidateSolutionName(Solution solutionToCheck, out string errorMessage)
+        {
+            if(string.IsNullOrEmpty(solutionToCheck.Name))
+            {
+                errorMessage = "Имя решения не может быть пустым";
+                return false;
+            }
+
+            using (var context = ModelsDescription.GetModel())
+            {
+                if(context.Solutions.Any(s => s.Name == solutionToCheck.Name && s.ModelName == solutionToCheck.ModelName))
+                {
+                    errorMessage = $"Решение '{solutionToCheck.Name}' уже существует для модели '{solutionToCheck.ModelName}'";
+                    return false;
+                }
+            }
+
+            errorMessage = string.Empty;
+            return true;
+        }
 
     }
 }

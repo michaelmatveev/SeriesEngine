@@ -33,12 +33,14 @@
             this.buttonCancel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
+            this.solutionBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxModels = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxDescription = new System.Windows.Forms.TextBox();
-            this.solutionBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.solutionBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonOk
@@ -50,6 +52,7 @@
             this.buttonOk.TabIndex = 4;
             this.buttonOk.Text = "OK";
             this.buttonOk.UseVisualStyleBackColor = true;
+            this.buttonOk.Click += new System.EventHandler(this.buttonOk_Click);
             // 
             // buttonCancel
             // 
@@ -77,6 +80,11 @@
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(315, 20);
             this.textBoxName.TabIndex = 1;
+            this.textBoxName.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
+            // 
+            // solutionBindingSource
+            // 
+            this.solutionBindingSource.DataSource = typeof(SeriesEngine.Core.DataAccess.Solution);
             // 
             // label2
             // 
@@ -89,7 +97,8 @@
             // 
             // comboBoxModels
             // 
-            this.comboBoxModels.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.solutionBindingSource, "ModelName", true));
+            this.comboBoxModels.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.solutionBindingSource, "ModelName", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.comboBoxModels.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxModels.FormattingEnabled = true;
             this.comboBoxModels.Location = new System.Drawing.Point(15, 70);
             this.comboBoxModels.Name = "comboBoxModels";
@@ -114,15 +123,16 @@
             this.textBoxDescription.Size = new System.Drawing.Size(315, 73);
             this.textBoxDescription.TabIndex = 3;
             // 
-            // solutionBindingSource
+            // errorProvider
             // 
-            this.solutionBindingSource.DataSource = typeof(SeriesEngine.Core.DataAccess.Solution);
+            this.errorProvider.ContainerControl = this;
             // 
             // SolutionPropertiesView
             // 
             this.AcceptButton = this.buttonOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(342, 359);
             this.Controls.Add(this.textBoxDescription);
@@ -143,6 +153,7 @@
             this.Text = "Решение";
             this.Load += new System.EventHandler(this.SolutionPropertiesView_Load);
             ((System.ComponentModel.ISupportInitialize)(this.solutionBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -159,5 +170,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxDescription;
         public System.Windows.Forms.BindingSource solutionBindingSource;
+        private System.Windows.Forms.ErrorProvider errorProvider;
     }
 }

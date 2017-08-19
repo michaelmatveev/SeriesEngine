@@ -28,7 +28,7 @@ namespace SeriesEngine.ExcelAddIn.Views
             Refresh(solutions, selectedSolution);
             if (ShowDialog() == DialogResult.OK)
             {
-                OnSolutionChanged();
+                SolutionChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -57,11 +57,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         public event EventHandler<SolutionEventArgs> NewSolution;
         public event EventHandler<SolutionEventArgs> EditSolution;
         public event EventHandler<SolutionEventArgs> DeleteSolution;
-
-        protected void OnSolutionChanged()
-        {
-            SolutionChanged?.Invoke(this, EventArgs.Empty);
-        }
+        public event EventHandler<SolutionEventArgs> ValidateSolution;
 
         private void listViewSolutions_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -71,7 +67,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         private void buttonEdit_Click(object sender, EventArgs e)
         {
             var solution = listViewSolutions.SelectedItems[0].Tag as Solution;
-            using (var form = new SolutionPropertiesView { CurrentColution = solution })
+            using (var form = CreatePropertiesView(solution))
             {
                 form.DisableModelSelection();
                 if (form.ShowDialog() == DialogResult.OK)
@@ -84,13 +80,26 @@ namespace SeriesEngine.ExcelAddIn.Views
         private void buttonCreate_Click(object sender, EventArgs e)
         {
             var solution = new Solution();
-            using (var form = new SolutionPropertiesView { CurrentColution = solution })
+            using (var form = CreatePropertiesView(solution))
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     NewSolution?.Invoke(this, new SolutionEventArgs(solution));
                 }
             }
+        }
+
+        private SolutionPropertiesView CreatePropertiesView(Solution solution)
+        {
+            Func<string> errorProvider = () =>
+            {
+                var arg = new SolutionEventArgs(solution);
+                ValidateSolution?.Invoke(this, arg);
+                return arg.ValidationError;
+            };
+
+            var form = new SolutionPropertiesView(errorProvider) { CurrentSolution = solution };
+            return form;
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)

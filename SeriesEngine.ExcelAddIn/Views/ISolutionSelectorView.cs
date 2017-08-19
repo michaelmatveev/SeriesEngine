@@ -10,7 +10,8 @@ namespace SeriesEngine.ExcelAddIn.Views
         {
             Solution = solution;
         }
-        public Solution Solution { get; private set; } 
+        public Solution Solution { get; private set; }
+        public string ValidationError { get; set; }
     } 
 
     public interface ISolutionSelectorView : IView
@@ -24,6 +25,7 @@ namespace SeriesEngine.ExcelAddIn.Views
         event EventHandler<SolutionEventArgs> NewSolution;
         event EventHandler<SolutionEventArgs> EditSolution;
         event EventHandler<SolutionEventArgs> DeleteSolution;
+        event EventHandler<SolutionEventArgs> ValidateSolution;
 
     }
 }

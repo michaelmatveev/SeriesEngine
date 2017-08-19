@@ -10,5 +10,7 @@ namespace SeriesEngine.ExcelAddIn.Models
         void InsertSolution(Solution solution);
         void UpdateSolution(Solution solution);
         void DeleteSolution(Solution solution);
+        bool ValidateSolutionName(Solution solutionToCheck, out string errorMessage);
+
     }
 }
