@@ -68,6 +68,7 @@
     <Compile Include="StoreNodesTests.cs" />
     <Compile Include="DataSetTests.cs" />
     <Compile Include="ReadDataTests.cs" />
+    <Compile Include="UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

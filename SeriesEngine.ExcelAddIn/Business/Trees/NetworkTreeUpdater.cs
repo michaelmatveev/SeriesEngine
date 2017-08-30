@@ -87,7 +87,7 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         private IList<IStateObject> ProcessNodesElements(XDocument source, NetworkTreeNode parent, IEnumerable<XElement> elements)
         {
-             var result = new List<IStateObject>();
+            var result = new List<IStateObject>();
             foreach (var element in elements.Where(e => e.Attribute("UniqueName") != null))
             {
                 NetworkTreeNode node;
@@ -98,31 +98,39 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
                 parentPath.Add(element.Attribute("UniqueName").Value);
                 var path = GetXPath(element, parentPath);
-                var sourceElement = source.XPathSelectElement(path);
-                if (sourceElement == null && _updateHierarchyEnabled)
+                var sourceElements = source.XPathSelectElements(path);
+                if (!sourceElements.Any() && _updateHierarchyEnabled)
                 {
                     // this is new node
                     node = CreateNode(element, parent);
                     result.Add(node);
                     //_network.MyNodes.Add(node);
+                    result.AddRange(ProcessNodesElements(source, node, element.Elements()));
                 }
                 else
                 {
                     // this is already existed node
-                    var id = int.Parse(sourceElement.Attribute("NodeId").Value);
-                    node = _network.MyNodes.Single(n => n.Id == id);
-                    result.AddRange(UpdateNode(node, element));
-                    node.MyNetwork = _network;
-                    if (_updateHierarchyEnabled)
+                    // all elements with the same path must have the same values
+                    foreach(var sourceElement in sourceElements)
                     {
-                        node.MyParent = parent;
-                    }
+                        var id = int.Parse(sourceElement.Attribute("NodeId").Value);
+                        node = _network.MyNodes.FirstOrDefault(n => n.Id == id);
+                        if (node != null)
+                        {
+                            result.AddRange(UpdateNode(node, element));
+                            node.MyNetwork = _network;
+                            if (_updateHierarchyEnabled)
+                            {
+                                node.MyParent = parent;
+                            }
 
-                    //_network.MyNodes.Add(node);
-                    result.Add(node);
-                    sourceElement.Attribute("NodeId").Value = "0"; // признак того что элемент обработан
+                            //_network.MyNodes.Add(node);
+                            result.Add(node);
+                            sourceElement.Attribute("NodeId").Value = "0"; // признак того что элемент обработан
+                        }
+                        result.AddRange(ProcessNodesElements(source, node, element.Elements()));
+                    }
                 }
-                result.AddRange(ProcessNodesElements(source, node, element.Elements()));
             }
             return result;
         }

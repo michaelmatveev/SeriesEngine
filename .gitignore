@@ -318,3 +318,5 @@ ModelManifest.xml
 /SeriesEngine.Core/abc.BaseModelContext1.cs
 /SeriesEngine.Core/msk1.BaseModelContext1.cs
 /SeriesEngine.Core/BaseModelContext.cs
+/HierarchyView.sql
+/GetPath.sql
