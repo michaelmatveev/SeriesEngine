@@ -1,7 +1,9 @@
+using SeriesEngine.Core.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace SeriesEngine.Core.DataAccess
 {
@@ -43,6 +45,11 @@ namespace SeriesEngine.Core.DataAccess
         public abstract ICollection<NetworkTreeNode> MyNodes { get; }
 
         public virtual Solution Solution { get; set; }
+
+        public virtual IQueryable GetQuery(BaseModelContext context, IEnumerable<int> ids)
+        {
+            return null;
+        }
     }
 
 }

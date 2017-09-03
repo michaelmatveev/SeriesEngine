@@ -117,8 +117,8 @@ namespace SeriesEngine.ExcelAddIn.Business.Import
 
             var period = _blockProvider.GetDefaultPeriod(collectionDataBlock);
 
-            var networkTree = _networksProvider
-                .GetNetwork(solution, collectionDataBlock.NetworkName, collectionDataBlock.DataBlocks, period);
+            var networkTree = _networksProvider.GetNetwork(solution, collectionDataBlock);
+            //.GetNetwork(solution, collectionDataBlock.NetworkName, collectionDataBlock.DataBlocks, period);
 
             var groups = networkTree.ConvertToGroups(collectionDataBlock.DataBlocks, period, collectionDataBlock.CustomPath);
             var d = period.From.GetStartDate(collectionDataBlock.Interval);
@@ -227,33 +227,33 @@ namespace SeriesEngine.ExcelAddIn.Business.Import
 
         #region ImportIntoXmlMap
 
-        private void ImportIntoXmlMap(Solution solution, CollectionDataBlock collectionDatablock)
+        private void ImportIntoXmlMap(Solution solution, CollectionDataBlock collectionDataBlock)
         {
-            Excel.Worksheet sheet = _workbook.Sheets[collectionDatablock.Sheet];
+            Excel.Worksheet sheet = _workbook.Sheets[collectionDataBlock.Sheet];
             sheet.Activate();
-            var tableCell = sheet.get_Range(collectionDatablock.StartCell);
+            var tableCell = sheet.get_Range(collectionDataBlock.StartCell);
 
             var xmlMap = _workbook
                 .XmlMaps
                 .Cast<Excel.XmlMap>()
-                .SingleOrDefault(m => m.Name == collectionDatablock.Name);
+                .SingleOrDefault(m => m.Name == collectionDataBlock.Name);
 
             xmlMap?.Delete();
 
             xmlMap = _workbook
                 .XmlMaps
-                .Add(collectionDatablock.GetSchema(), NetworkTree.RootName);
-            xmlMap.Name = collectionDatablock.Name;
+                .Add(collectionDataBlock.GetSchema(), NetworkTree.RootName);
+            xmlMap.Name = collectionDataBlock.Name;
 
             var listObject = sheet
                 .ListObjects
                 .Cast<Excel.ListObject>()
-                .SingleOrDefault(l => l.Name == collectionDatablock.Name);
+                .SingleOrDefault(l => l.Name == collectionDataBlock.Name);
 
             if (listObject == null)
             {
                 listObject = sheet.ListObjects.Add(SourceType: Excel.XlListObjectSourceType.xlSrcRange, Source: tableCell, Destination: tableCell, XlListObjectHasHeaders: Excel.XlYesNoGuess.xlNo);
-                listObject.Name = collectionDatablock.Name;
+                listObject.Name = collectionDataBlock.Name;
                 // contains one column
             }
 
@@ -265,14 +265,14 @@ namespace SeriesEngine.ExcelAddIn.Business.Import
                 column.Delete();
             }
 
-            if (!collectionDatablock.AddIndexColumn)
+            if (!collectionDataBlock.AddIndexColumn)
             {
                 var column = listObject
                     .ListColumns
                     .Cast<Excel.ListColumn>()
                     .First();
 
-                var block = collectionDatablock.DataBlocks.First(db => db.Visible);
+                var block = collectionDataBlock.DataBlocks.First(db => db.Visible);
                 if (listObject.ShowHeaders)
                 {
                     column.Name = GetColumnName(block);
@@ -280,7 +280,7 @@ namespace SeriesEngine.ExcelAddIn.Business.Import
                 SetColumn(column, xmlMap, block, solution);
             }
 
-            foreach (var f in collectionDatablock.DataBlocks.Where(db => db.Visible).Skip(collectionDatablock.AddIndexColumn ? 0 : 1))
+            foreach (var f in collectionDataBlock.DataBlocks.Where(db => db.Visible).Skip(collectionDataBlock.AddIndexColumn ? 0 : 1))
             {
                 var column = listObject.ListColumns.Add();
                 if (listObject.ShowHeaders)
@@ -290,25 +290,25 @@ namespace SeriesEngine.ExcelAddIn.Business.Import
                 SetColumn(column, xmlMap, f, solution);
             }
 
-            var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
+            var period = _blockProvider.GetDefaultPeriod(collectionDataBlock);
 
-            listObject.ShowHeaders = collectionDatablock.ShowHeader;
-            var networkTree = _networksProvider
-                .GetNetwork(solution, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, period);
+            listObject.ShowHeaders = collectionDataBlock.ShowHeader;
+            var networkTree = _networksProvider.GetNetwork(solution, collectionDataBlock);
+            //.GetNetwork(solution, collectionDatablock.NetworkName, collectionDatablock.DataBlocks, period);
 
-            var xml = networkTree.ConvertToXml(collectionDatablock.DataBlocks, period, collectionDatablock.CustomPath);
-            collectionDatablock.Xml = xml;
+            var xml = networkTree.ConvertToXml(collectionDataBlock.DataBlocks, period, collectionDataBlock.CustomPath);
+            collectionDataBlock.Xml = xml;
 
             var result = xmlMap.ImportXml(xml.ToString(), true);
 
             // call after data assigment
-            if (collectionDatablock.AddIndexColumn)
+            if (collectionDataBlock.AddIndexColumn)
             {
-                SetupIndexerColumn(listObject, collectionDatablock.StartCell);
+                SetupIndexerColumn(listObject, collectionDataBlock.StartCell);
             }
 
-            var index = collectionDatablock.AddIndexColumn ? 2 : 1;
-            foreach (var db in collectionDatablock.DataBlocks.Where(d => d.Visible))
+            var index = collectionDataBlock.AddIndexColumn ? 2 : 1;
+            foreach (var db in collectionDataBlock.DataBlocks.Where(d => d.Visible))
             {
                 var fdb = db as FormulaDataBlock;
                 if (fdb != null)
@@ -323,7 +323,7 @@ namespace SeriesEngine.ExcelAddIn.Business.Import
                 listObject.HeaderRowRange.Validation.Delete();
             }
 
-            if (collectionDatablock.AutoFitColumns)
+            if (collectionDataBlock.AutoFitColumns)
             {
                 listObject.Range.Columns.AutoFit();
             }

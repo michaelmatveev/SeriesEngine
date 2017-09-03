@@ -1,0 +1,79 @@
+﻿<#+
+// <copyright file="CreateReadHierarchyProcedures.tt" company="Michael Matveev">
+//  Copyright © Michael Matveev. All Rights Reserved.
+// </copyright>
+
+public class CreateReadHierarchyProcedures : CSharpTemplate
+{
+    public String Schema;
+    public XElement Hierarchy;
+	public override string TransformText()
+	{
+		String hName = Hierarchy.Attribute("Name").Value;
+		var stereotypes = Hierarchy.Descendants("UsedStereotype").Select(us => us.Attribute("Name").Value).Distinct();
+		var objectIds = String.Join(", ", stereotypes.Select(s => s + "_Id"));
+#>
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('[<#= Schema #>].[<#= hName #>_Read]') AND type = 'P')
+	DROP PROCEDURE [<#= Schema #>].[<#= hName #>_Read];
+GO
+
+CREATE PROCEDURE [<#= Schema #>].[<#= hName #>_Read]
+	@NetId int,
+	@PathToFind VARCHAR(MAX)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	DECLARE @root int;
+	SET @root = NULL;
+
+	;WITH NetworkNodes (Id, ParentId, ValidFrom, ValidTill, Tag, <#= objectIds #>) AS
+	(
+		SELECT Id, ParentId, ValidFrom, ValidTill, Tag, <#= objectIds #>
+		FROM [<#= Schema #>].[<#= hName #>Nodes]
+		WHERE NetId=@NetId
+	),
+	NamedNodes(Id, ParentId, ValidFrom, ValidTill, Tag, ObjName, <#= objectIds #>) AS
+	(
+<#+
+		int index = 0;
+		var count = stereotypes.Count();
+		foreach(var s in stereotypes)
+		{
+			var refObjectIds = String.Join(", ", stereotypes.Select((o, i) => i == index ? o + "_Id" : "NULL" ));
+#>
+		SELECT NN.Id, NN.ParentId, NN.ValidFrom, NN.ValidTill, NN.Tag, O.Name, <#= refObjectIds #>
+		FROM NetworkNodes AS NN
+		INNER JOIN [<#= Schema #>].[<#= s #>s] AS O
+		ON NN.<#= s #>_Id = O.Id
+<#+		
+			if(index != count - 1)
+			{
+#>
+		UNION ALL
+<#+
+			}
+			index++;
+		}
+#>
+	),
+	Paths(Id, ParentId, Name, NamePath, Level, ValidFrom, ValidTill, Tag)
+	AS
+	(
+		SELECT H.Id, H.ParentId, ObjName AS Name, ObjName AS NamePath, 0 AS Level, ValidFrom, ValidTill, Tag
+		FROM NamedNodes AS H
+		WHERE H.ParentId = @root OR (@root IS NULL AND H.ParentId IS NULL)
+		UNION ALL
+		SELECT H.Id, H.ParentId, ObjName AS Name, R.NamePath + '|' + H.ObjName AS NamePath, R.Level + 1, H.ValidFrom, H.ValidTill, H.Tag
+		FROM NamedNodes AS H
+		INNER JOIN Paths AS R
+		ON H.ParentId = R.Id
+	)
+	SELECT Id FROM Paths
+	WHERE NamePath LIKE dbo.PathSearchPattern(@PathToFind, Paths.Level + 1)
+END
+GO
+<#+
+        return this.GenerationEnvironment.ToString();
+	}
+}
+#>

@@ -128,5 +128,10 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             return new NetworkTree(mainTree, true);
         }
+
+        public NetworkTree GetNetwork(Solution solution, CollectionDataBlock collectionDatablock)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

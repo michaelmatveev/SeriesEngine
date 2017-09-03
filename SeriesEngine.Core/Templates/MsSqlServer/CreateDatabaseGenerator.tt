@@ -4,6 +4,7 @@
 <#@ include file="CreateInsertProceduresTemplate.tt" #>
 <#@ include file="CreateUpdateProceduresTemplate.tt" #>
 <#@ include file="CreateDeleteProceduresTemplate.tt" #>
+<#@ include file="CreateReadHierarchyProcedures.tt" #>
 
 <#+
 // <copyright file="CreateDataBaseGenerator.tt" company="">
@@ -46,10 +47,17 @@ public class CreateDataBaseGenerator : Generator
 			Schema = prefix
 		};
 
+		var createHierarchyReadTemplate = new CreateReadHierarchyProcedures()
+		{
+			Schema = prefix
+		};
+
 		foreach(XElement hierarchyElement in HierarchiesDoc.Descendants("Hierarchy"))
 		{
 			createHierarchyTempalte.Hierarchy = hierarchyElement;
 			createHierarchyTempalte.RenderToFile(Output);
+			createHierarchyReadTemplate.Hierarchy = hierarchyElement;
+			createHierarchyReadTemplate.RenderToFile(Output);
 		}
 
 		var createDeleteProceduresTemplate = new CreateDeleteProceduresTemplate

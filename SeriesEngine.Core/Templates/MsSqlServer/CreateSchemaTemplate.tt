@@ -97,6 +97,44 @@ REFERENCES [dbo].[Solutions] ([Id])
 ON DELETE CASCADE;
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('[dbo].[PathSearchPattern]') AND type = 'FN')
+DROP FUNCTION [dbo].[PathSearchPattern];
+GO
+
+CREATE FUNCTION [dbo].[PathSearchPattern] 
+(
+	@Path VARCHAR(max),
+	@n INT
+)
+RETURNS VARCHAR(MAX)
+AS
+BEGIN
+    DECLARE @i INT = 1, @s INT = 1
+	DECLARE @result VARCHAR(max)
+
+    WHILE @s <> 0
+    BEGIN
+		SELECT @s = CHARINDEX('|', @Path, @s + 1)
+		IF @s = 0
+		BEGIN
+			SELECT @result = @Path + '%'
+		END
+		ELSE
+		BEGIN
+			IF @i = @n
+			BEGIN
+				SELECT @result = LEFT(@Path, @s - 1)
+				SELECT @s = 0
+			END
+		END
+        SELECT @i = @i+1
+    END
+
+	RETURN @result
+
+END
+GO
+
 <#+
             return this.GenerationEnvironment.ToString();
 	    }

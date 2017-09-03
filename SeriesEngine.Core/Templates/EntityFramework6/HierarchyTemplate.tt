@@ -16,6 +16,8 @@ public class HierarchyTemplate : CSharpTemplate
 using System.Collections.Generic;
 using SeriesEngine.Core.Helpers;
 using SeriesEngine.Core.DataAccess;
+using System.Linq;
+using System.Data.Entity;
 
 namespace SeriesEngine.<#= Schema #>
 {
@@ -35,6 +37,14 @@ namespace SeriesEngine.<#= Schema #>
             {
                 return Nodes.CastCollection<<#= name #>Node, NetworkTreeNode>();
             }
+        }
+
+		public override IQueryable GetQuery(BaseModelContext context, IEnumerable<int> ids)
+        {
+            var query = context.Set<<#= name #>Node>()
+                .Where(n => ids.Contains(n.Id))
+                .Include("Network");
+            return query;
         }
     }
 }

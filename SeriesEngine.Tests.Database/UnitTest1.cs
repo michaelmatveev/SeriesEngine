@@ -4,6 +4,7 @@ using SeriesEngine.msk1;
 using System.Data.SqlClient;
 using System.Data.Entity;
 using System.Linq;
+using SeriesEngine.Core.DataAccess;
 
 namespace SeriesEngine.Tests.Database
 {
@@ -62,31 +63,86 @@ namespace SeriesEngine.Tests.Database
             using (var context = new Model1())
             {
                 context.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
-                //var network = context.Networks.Find(31);
+                var network = context.Networks.Find(31);
                 var netId = new SqlParameter("@NetId", 31);
                 var path = new SqlParameter("@PathToFind", "Пензенская область|ООО \"МагнитЭнерго\"|1001014-ЭН|ММ \"Версаль\" г. Пенза  ул. Ладожская, 139|ТП-775");
-                var result = context.Database.SqlQuery<MainHierarchyNode>("[msk1].[ReadMainHierarchy] @NetId, @PathToFind", netId, path).ToListAsync().Result;
-                var ids = result.Select(r => r.Id);
+                //             var result = context.Database.SqlQuery<MainHierarchyNode>("[msk1].[ReadMainHierarchy] @NetId, @PathToFind", netId, path).ToListAsync().Result;
+                var ids = context.Database.SqlQuery<int>("[msk1].[MainHierarchy_Read] @NetId, @PathToFind", netId, path).ToListAsync().Result;
                 var d = new DateTime(2014, 01, 01);
                 var nodes = context.MainHierarchyNodes
                     .Where(n => ids.Contains(n.Id))
-                    .Include(n => n.Region)
+                    .Include("Network")
+                    .Include("Region");
+                nodes = nodes
                     .Include(n => n.Consumer)
                     .Include(n => n.Contract)
                     .Include(n => n.ConsumerObject)
                     .Include(n => n.Point)
                     .Include(n => n.ElectricMeter)
                     .Include(n => n.Point.Point_VoltageLevels);
+                nodes.ToList();
                     //.Where(n => n.Point.Point_VoltageLevels.);
 
                 //var result = context.MainHierarchyNodes.SqlQuery("[msk1].[ReadMainHierarchy] @NetId, @PathToFind", netId, path).ToListAsync().Result;
-                Console.WriteLine(result.Count);
+                Console.WriteLine(ids.Count);
                 Console.WriteLine(nodes.Count());
+                Console.WriteLine(network.MyNodes.Count);
                 foreach(var n in nodes)
                 {
                     Console.WriteLine($"{n.LinkedObject.Name}");
                 }
                 
+            }
+        }
+
+        [TestMethod]
+        public void TestMethod3()
+        {
+            using (var context = new Model1())
+            {
+                context.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+                var network = context.Networks.Find(31);
+                var netId = new SqlParameter("@NetId", 31);
+                var path = new SqlParameter("@PathToFind", "Пензенская область|ООО \"МагнитЭнерго\"|1001014-ЭН|ММ \"Версаль\" г. Пенза  ул. Ладожская, 139|ТП-775");
+                //             var result = context.Database.SqlQuery<MainHierarchyNode>("[msk1].[ReadMainHierarchy] @NetId, @PathToFind", netId, path).ToListAsync().Result;
+                var ids = context.Database.SqlQuery<int>("[msk1].[MainHierarchy_Read] @NetId, @PathToFind", netId, path).ToListAsync().Result;
+
+                var nodes = context.Entry(network).Collection("Nodes").Query();
+
+                //var nodes = context.MainHierarchyNodes
+                //context.Set<MainHierarchyNode>() //(network.HierarchyModel.NodeType)
+                //.Where(n => ids.Contains(n.Id)).AsQueryable();
+
+                nodes
+                    .Include("Region")
+                    .Include("Consumer")
+                    .Include("Contract")
+                    .Include("ConsumerObject")
+                    .Include("Point")
+                    .Include("ElectricMeter");
+                    
+                nodes.Load();
+                //.Include(n => n.Region)
+                //.Include(n => n.Consumer)
+                //.Include(n => n.Contract)
+                //.Include(n => n.ConsumerObject)
+                //.Include(n => n.Point)
+                //.Include(n => n.ElectricMeter)
+                //.Include(n => n.Point.Point_VoltageLevels);
+                //.Where(n => n.Point.Point_VoltageLevels.);
+
+                //var result = context.MainHierarchyNodes.SqlQuery("[msk1].[ReadMainHierarchy] @NetId, @PathToFind", netId, path).ToListAsync().Result;
+                Console.WriteLine(ids.Count);
+                //Console.WriteLine(nodes.Count());
+                foreach (var n in nodes)
+                {
+                    var n1 = n as NetworkTreeNode;
+                    if (ids.Contains(n1.Id))
+                    {
+                        Console.WriteLine($"{n1.LinkedObject.Name}");
+                    }
+                }
+
             }
         }
     }

@@ -63,8 +63,8 @@ namespace SeriesEngine.ExcelAddIn.Business.Export
             Excel.Worksheet sheet = _workbook.Sheets[collectionDataBlock.Sheet];
             var period = _blockProvider.GetDefaultPeriod(collectionDataBlock);
 
-            var networkTree = _networksProvider
-                .GetNetwork(solution, collectionDataBlock.NetworkName, collectionDataBlock.DataBlocks, period);
+            var networkTree = _networksProvider.GetNetwork(solution, collectionDataBlock);
+                //.GetNetwork(solution, collectionDataBlock.NetworkName, collectionDataBlock.DataBlocks, period);
                     
             var groups = networkTree.ConvertToGroups(collectionDataBlock.DataBlocks, period, collectionDataBlock.CustomPath).OfType<VariableGroup>();
 
@@ -111,8 +111,8 @@ namespace SeriesEngine.ExcelAddIn.Business.Export
         {
             var period = _blockProvider.GetDefaultPeriod(collectionDataBlock);
 
-            var sourceNetworkTree = _networksProvider
-                .GetNetwork(solution, collectionDataBlock.NetworkName, collectionDataBlock.DataBlocks, period);
+            var sourceNetworkTree = _networksProvider.GetNetwork(solution, collectionDataBlock);
+                //.GetNetwork(solution, collectionDataBlock.NetworkName, collectionDataBlock.DataBlocks, period);
 
             Excel.Worksheet sheet = _workbook.Sheets[collectionDataBlock.Sheet];
             var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == collectionDataBlock.Name);

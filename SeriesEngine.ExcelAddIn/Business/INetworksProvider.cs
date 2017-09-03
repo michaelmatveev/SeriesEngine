@@ -8,5 +8,6 @@ namespace SeriesEngine.ExcelAddIn.Models
     {
         NetworkTree GetNetworkById(string modelName, int networkId);
         NetworkTree GetNetwork(Solution solution, string networkName, IEnumerable<DataBlock> variables = null, Period period = null);
+        NetworkTree GetNetwork(Solution solution, CollectionDataBlock collectionDatablock);
     }
 }

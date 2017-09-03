@@ -409,6 +409,7 @@
     <Content Include="Templates\MsSqlServer\CreateDatabaseGenerator.tt" />
     <Content Include="Templates\MsSqlServer\CreateHierarchyTemplate.tt" />
     <Content Include="Templates\MsSqlServer\CreateInsertProceduresTemplate.tt" />
+    <Content Include="Templates\MsSqlServer\CreateReadHierarchyProcedures.tt" />
     <Content Include="Templates\MsSqlServer\CreateSchemaTemplate.tt" />
     <Content Include="Templates\MsSqlServer\CreateDeleteProceduresTemplate.tt" />
     <Content Include="Templates\MsSqlServer\CreateTableTemplate.tt" />
