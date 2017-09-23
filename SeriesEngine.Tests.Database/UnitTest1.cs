@@ -79,7 +79,7 @@ namespace SeriesEngine.Tests.Database
                     .Include(n => n.ConsumerObject)
                     .Include(n => n.Point)
                     .Include(n => n.ElectricMeter)
-                    .Include(n => n.Point.Point_VoltageLevels);
+                    .Include(n => n.Point.Point_ContractVoltageLevels);
                 nodes.ToList();
                     //.Where(n => n.Point.Point_VoltageLevels.);
 

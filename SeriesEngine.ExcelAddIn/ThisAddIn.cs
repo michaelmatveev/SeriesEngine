@@ -21,7 +21,8 @@ namespace SeriesEngine.ExcelAddIn
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            if(Application.Workbooks.Count == 1)
+            HibernatingRhinos.Profiler.Appender.EntityFramework.EntityFrameworkProfiler.Initialize();
+            if (Application.Workbooks.Count == 1)
             {
                 CreateWorkbookController(Application.Workbooks[1]);
             }

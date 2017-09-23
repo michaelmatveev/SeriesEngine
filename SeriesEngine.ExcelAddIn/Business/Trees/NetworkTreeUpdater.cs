@@ -41,7 +41,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                 {
                     context.Configuration.AutoDetectChangesEnabled = false;
                     context.Networks.Attach(_network);
-                    foreach (var v in valuesForPeriod)//.Where(s => s.State != ObjectState.Unchanged))
+                    foreach (var v in valuesForPeriod)
                     {
                         if (v.State == ObjectState.Added)
                         {
@@ -52,6 +52,17 @@ namespace SeriesEngine.ExcelAddIn.Models
                             context.Set(v.GetType()).Attach(v);
                         }
                     }
+
+                    //foreach (var groupOfValues in valuesForPeriod.GroupBy(v => v.GetType()))
+                    //{
+                    //    //var addedValues = groupOfValues.Where(v => v.State == ObjectState.Added);
+                    //    context.Set(groupOfValues.Key).AddRange(groupOfValues);
+                    //    //foreach(var modifiedValues in groupOfValues.Where(v => v.State != ObjectState.Added))
+                    //    //{
+                    //    //    context.
+                    //    //} 
+                    //}
+
                     context.FixState();
                     context.Database.Log = x => System.Diagnostics.Debug.WriteLine(x);
                     context.SaveChanges();

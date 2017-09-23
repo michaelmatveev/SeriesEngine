@@ -57,11 +57,11 @@ namespace SeriesEngine.Tests.Database
                     Name = "ТП-530",
                 };
 
-                point1.Point_VoltageLevels.Add(new Point_VoltageLevel()
+                point1.Point_ContractVoltageLevels.Add(new Point_ContractVoltageLevel()
                 {
                     Date = new DateTime(2014, 01, 01),
                     //CreationTime = new DateTime(2014, 01, 01),
-                    VoltageLevel = "СН-2"
+                    Value = "СН-2"
                 });
                 point1.Point_MaxPowers.Add(new Point_MaxPower()
                 {
@@ -75,11 +75,11 @@ namespace SeriesEngine.Tests.Database
                     Solution = solution,
                     Name = "ТП-531"
                 };
-                point2.Point_VoltageLevels.Add(new Point_VoltageLevel()
+                point2.Point_ContractVoltageLevels.Add(new Point_ContractVoltageLevel()
                 {
                     Date = new DateTime(2014, 01, 01),
                     //CreationTime = new DateTime(2014, 01, 01),
-                    VoltageLevel = "СН-2"
+                    Value = "СН-2"
                 });
                 point2.Point_MaxPowers.Add(new Point_MaxPower()
                 {
@@ -93,11 +93,11 @@ namespace SeriesEngine.Tests.Database
                     Solution = solution,
                     Name = "ТП-796",
                 };
-                point3.Point_VoltageLevels.Add(new Point_VoltageLevel()
+                point3.Point_ContractVoltageLevels.Add(new Point_ContractVoltageLevel()
                 {
                     Date = new DateTime(2014, 01, 01),
                     //CreationTime = new DateTime(2014, 01, 01),
-                    VoltageLevel = "СН-1"
+                    ContractVoltageLevel = "СН-1"
                 });
                 point3.Point_MaxPowers.Add(new Point_MaxPower()
                 {

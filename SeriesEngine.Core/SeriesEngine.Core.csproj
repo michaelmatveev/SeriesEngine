@@ -197,22 +197,64 @@
     <Compile Include="msk1.ElectricMeterVariables.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
-    <Compile Include="msk1.ElectricMeter_Addition.cs">
+    <Compile Include="msk1.ElectricMeter_CheckDate.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
-    <Compile Include="msk1.ElectricMeter_AdditionInPercent.cs">
+    <Compile Include="msk1.ElectricMeter_CheckDateTN.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
-    <Compile Include="msk1.ElectricMeter_CoeffOfTransformation.cs">
+    <Compile Include="msk1.ElectricMeter_CheckDateTT.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_ClassTN.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_ClassTT.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_CoeffTN.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_CoeffTT.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
     <Compile Include="msk1.ElectricMeter_Direction.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
+    <Compile Include="msk1.ElectricMeter_EndCheckDate.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_EndCheckDateTN.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_EndCheckDateTT.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="msk1.ElectricMeter_Integral.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
-    <Compile Include="msk1.ElectricMeter_Odn.cs">
+    <Compile Include="msk1.ElectricMeter_KTR.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_LossesAbs.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_LossesPercent.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_NTN.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_NTT.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_TNType.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_TTType.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_TUCompensation.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
     <Compile Include="msk1.MainHierarchyNetwork.cs">
@@ -239,19 +281,43 @@
     <Compile Include="msk1.Point_ContractPriceCategory.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
+    <Compile Include="msk1.Point_ContractTariffGroup.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point_ContractVoltageLevel.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point_CurcuitContractPriceCategory.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point_CurcuitContractTariffGroup.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point_CurcuitContractVoltageLevel.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="msk1.Point_HourConsuming.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
     <Compile Include="msk1.Point_MaxPower.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
+    <Compile Include="msk1.Point_MaxPowerInGroup.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="msk1.Point_PUPlace.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
-    <Compile Include="msk1.Point_TUCode.cs">
+    <Compile Include="msk1.Point_SupplierContractPriceCategory.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
-    <Compile Include="msk1.Point_VoltageLevel.cs">
+    <Compile Include="msk1.Point_SupplierContractTariffGroup.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point_SupplierContractVoltageLevel.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.Point_TUCode.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
     <Compile Include="msk1.Region.cs">
@@ -335,12 +401,26 @@
 .\msk1.CurcuitHierarchyNode.cs
 .\msk1.CurcuitVariables.cs
 .\msk1.ElectricMeter.cs
-.\msk1.ElectricMeter_Addition.cs
-.\msk1.ElectricMeter_AdditionInPercent.cs
-.\msk1.ElectricMeter_CoeffOfTransformation.cs
+.\msk1.ElectricMeter_CheckDate.cs
+.\msk1.ElectricMeter_CheckDateTN.cs
+.\msk1.ElectricMeter_CheckDateTT.cs
+.\msk1.ElectricMeter_ClassTN.cs
+.\msk1.ElectricMeter_ClassTT.cs
+.\msk1.ElectricMeter_CoeffTN.cs
+.\msk1.ElectricMeter_CoeffTT.cs
 .\msk1.ElectricMeter_Direction.cs
+.\msk1.ElectricMeter_EndCheckDate.cs
+.\msk1.ElectricMeter_EndCheckDateTN.cs
+.\msk1.ElectricMeter_EndCheckDateTT.cs
 .\msk1.ElectricMeter_Integral.cs
-.\msk1.ElectricMeter_Odn.cs
+.\msk1.ElectricMeter_KTR.cs
+.\msk1.ElectricMeter_LossesAbs.cs
+.\msk1.ElectricMeter_LossesPercent.cs
+.\msk1.ElectricMeter_NTN.cs
+.\msk1.ElectricMeter_NTT.cs
+.\msk1.ElectricMeter_TNType.cs
+.\msk1.ElectricMeter_TTType.cs
+.\msk1.ElectricMeter_TUCompensation.cs
 .\msk1.ElectricMeterVariables.cs
 .\msk1.MainHierarchyNetwork.cs
 .\msk1.MainHierarchyNode.cs
@@ -349,11 +429,19 @@
 .\msk1.Point.cs
 .\msk1.Point_BPGroup.cs
 .\msk1.Point_ContractPriceCategory.cs
+.\msk1.Point_ContractTariffGroup.cs
+.\msk1.Point_ContractVoltageLevel.cs
+.\msk1.Point_CurcuitContractPriceCategory.cs
+.\msk1.Point_CurcuitContractTariffGroup.cs
+.\msk1.Point_CurcuitContractVoltageLevel.cs
 .\msk1.Point_HourConsuming.cs
 .\msk1.Point_MaxPower.cs
+.\msk1.Point_MaxPowerInGroup.cs
 .\msk1.Point_PUPlace.cs
+.\msk1.Point_SupplierContractPriceCategory.cs
+.\msk1.Point_SupplierContractTariffGroup.cs
+.\msk1.Point_SupplierContractVoltageLevel.cs
 .\msk1.Point_TUCode.cs
-.\msk1.Point_VoltageLevel.cs
 .\msk1.PointVariables.cs
 .\msk1.Region.cs
 .\msk1.RegionVariables.cs

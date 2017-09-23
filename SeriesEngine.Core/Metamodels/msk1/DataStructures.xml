@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Hierarchies>
   <Hierarchy Name="MainHierarchy" WithHistory="True">
-    <Network Name="Регион - прибор учета" />
+    <Network Name="Регион - Прибор учета" />
     <Level>
       <UsedStereotype Name="Region"/>
       <Level>
@@ -22,25 +22,37 @@
     </Level>
   </Hierarchy>
   <Hierarchy Name="SupplierHierarchy" WithHistory="True">
-    <Network Name="Поставщик - точка"/>
+    <Network Name="Поставщик - Прибор учета"/>
     <Level>
-      <UsedStereotype Name="Supplier" />
+      <UsedStereotype Name="Region" />
       <Level>
-        <UsedStereotype Name="SupplierContract" />
+        <UsedStereotype Name="Supplier" />
         <Level>
-          <UsedStereotype Name="Point" />
+          <UsedStereotype Name="SupplierContract" />
+          <Level>
+            <UsedStereotype Name="Point" />
+            <Level>
+              <UsedStereotype Name="ElectricMeter" />
+            </Level>
+          </Level>
         </Level>
       </Level>
-    </Level>  
+    </Level>
   </Hierarchy>
   <Hierarchy Name="CurcuitHierarchy" WithHistory="True">
-    <Network Name="Сетевая организация - точка"/>
+    <Network Name="Сетевая компания - Прибор учета"/>
     <Level>
-      <UsedStereotype Name="Curcuit" />
-      <Level>
-        <UsedStereotype Name="CurcuitContract" />
+      <UsedStereotype Name="Region" />
         <Level>
-          <UsedStereotype Name="Point" />
+        <UsedStereotype Name="Curcuit" />
+        <Level>
+          <UsedStereotype Name="CurcuitContract" />
+          <Level>
+            <UsedStereotype Name="Point" />
+            <Level>
+              <UsedStereotype Name="ElectricMeter" />
+            </Level>
+          </Level>
         </Level>
       </Level>
     </Level>  

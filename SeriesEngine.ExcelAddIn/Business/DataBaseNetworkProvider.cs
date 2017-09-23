@@ -32,6 +32,8 @@ namespace SeriesEngine.ExcelAddIn.Models
         {
             using (var context = ModelsDescription.GetModel(solution.ModelName))
             {
+                context.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+
                 var sln = context.Solutions.Find(solution.Id);
                 context.Entry(sln).Collection(s => s.Networks).Load();
                 var network = sln.Networks.First(n => n.Name == collectionDatablock.NetworkName);
@@ -40,10 +42,10 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var path = new SqlParameter("@PathToFind", collectionDatablock.CustomPath);
                 var readHierarchySp = $"[{solution.ModelName}].[{network.HierarchyModel.Name}_Read]";
                 var ids  = context.Database.SqlQuery<int>($"{readHierarchySp} @NetId, @PathToFind", netId, path).ToListAsync().Result;
-                var query = network.GetQuery(context, ids);
+                var query = network.GetQuery(context, ids);//.AsNoTracking();
 
                 //var query = context.Set<MainHierarchyNode>()
-                //    .Where(n => ids.Contains(n.Id))
+               //     .Where(n => ids.Contains(n.Id))
                 //    .Include("Network");
 
                 //var query = context.Entry(network).Collection("Nodes").Query();
@@ -59,12 +61,14 @@ namespace SeriesEngine.ExcelAddIn.Models
                         var obj = v.RefObject;
                         var vrb = v.VariableMetamodel.Name;
                         query = query.Include($"{obj}.{obj}_{vrb}s");
+                        //query.Include($"{obj}.{obj}_{vrb}s").Load();
                     }
 
                     foreach (var v in variables.OfType<NodeDataBlock>()
                         .Where(n => n.NodeType == NodeType.UniqueName))
                     {
                         query = query.Include(v.RefObject);
+                        //query.Include(v.RefObject).Load();
                     }
 
                     var nodeObjects = variables
@@ -78,9 +82,8 @@ namespace SeriesEngine.ExcelAddIn.Models
                         .Except(nodeObjects).Count() == 0;
                 }
 
-                context.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
                 query.Load();
-                //query.ToList();
+                ////query.ToList();
                 return new NetworkTree(network, fullHierarchy);
             }
         }

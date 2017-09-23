@@ -43,24 +43,6 @@ namespace SeriesEngine.Core.DataAccess
             }
         }
 
-        public bool InPath(string path)
-        {
-            var pathElements = path.Split(PathSeparator);
-            var myPathElements = Path.Split(PathSeparator);
-            for(int i = 0; i < pathElements.Length; i++)
-            {
-                if(pathElements[i] != myPathElements[i])
-                {
-                    return false;
-                }
-                if((i + 1) == myPathElements.Length)
-                {
-                    break;
-                }
-            }
-            return true;
-        }
-
         [NotMapped]
         public abstract NamedObject LinkedObject { get; }
 

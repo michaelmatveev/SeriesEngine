@@ -6,6 +6,7 @@
   <PrimitiveDataType Name="Decimal" ClrType="Double" StoreType="FLOAT"/>
   <PrimitiveDataType Name="String200" ClrType="String" StoreType="NVARCHAR(200)" />
   <PrimitiveDataType Name="StringMax" ClrType="String" StoreType="NVARCHAR(MAX)" />
+  <PrimitiveDataType Name="DateTime" ClrType="DateTime" StoreType="DATETIME" /> 
   <EnumDataType Name="CustomEnumType1">
     <Element Member="Const1" Value="0">Константа 1</Element>
     <Element Member="Const2" Value="1">Константа 2</Element>

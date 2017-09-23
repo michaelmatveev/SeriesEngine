@@ -18,33 +18,57 @@
   <Stereotype Name="Contract">
     <Variable Name="Name" DataType="StringMax">
       <Family Rank="10">Основные свойства</Family>
-      <Help Context="Договор">Номер договора</Help>
+      <Help Context="Номер договора">Номер договора</Help>
     </Variable>
     <Variable Name="ContractType" DataType="String200">
       <Family Rank="10">Основные свойства</Family>
-      <Help Context="Тип договора">Тип договора</Help>
+      <Help Context="Тип договора">Тип(форма) договора</Help>
     </Variable>
   </Stereotype>
 
   <Stereotype Name="ConsumerObject">
     <Variable Name="Name" DataType="StringMax">
       <Family Rank="10">Основные свойства</Family>
-      <Help Context="Объект">Объект потребления</Help>
+      <Help Context="Объект">Объект энергоснабжения, адрес</Help>
     </Variable>
   </Stereotype>
 
   <Stereotype Name="Point">
     <Variable Name="Name" DataType="StringMax">
       <Family Rank="10">Основные свойства</Family>
-      <Help Context="Точка">Точка</Help>
+      <Help Context="Точка тоставки">Точка поставки</Help>
     </Variable>
-    <Variable Name="VoltageLevel" DataType="String200" Versioned="True" Period="Indefinite">
+    <Variable Name="ContractVoltageLevel" DataType="String200" Versioned="True" Period="Indefinite">
       <Family Rank="20">Основные свойства</Family>
-      <Help Context="Уровень напряжения">Уровень напряжения</Help>
+      <Help Context="Уровень напряжения по контакту с потребителем">Уровень напряжения по контакту с потребителем</Help>
     </Variable>
-    <Variable Name="MaxPower" DataType="Decimal" Versioned="True" Period="Indefinite">
+    <Variable Name="SupplierContractVoltageLevel" DataType="String200" Versioned="True" Period="Indefinite">
+      <Family Rank="20">Основные свойства</Family>
+      <Help Context="Уровень напряжения по контракту с поставщиком">Уровень напряжения по контракту с поставщиком</Help>
+    </Variable>
+    <Variable Name="CurcuitContractVoltageLevel" DataType="String200" Versioned="True" Period="Indefinite">
+      <Family Rank="20">Основные свойства</Family>
+      <Help Context="Уровень напряжения по контракту с сетевой компанией">Уровень напряжения по контракту с сетевой компанией</Help>
+    </Variable>
+    <Variable Name="MaxPower" DataType="Decimal" Optional="True" Versioned="True" Period="Indefinite">
       <Family Rank="30">Основные свойства</Family>
       <Help Context="Максимальная мощность">Максимальная мощность</Help>
+    </Variable>
+    <Variable Name="MaxPowerInGroup" DataType="Decimal" Optional="True" Versioned="True" Period="Indefinite">
+      <Family Rank="35">Основные свойства</Family>
+      <Help Context="Максимальная мощность по группе точек">Максимальная мощность по группе точек</Help>
+    </Variable>
+    <Variable Name="ContractTariffGroup" DataType="String200" Versioned="True" Period="Indefinite">
+      <Family Rank="36">Основные свойства</Family>
+      <Help Context="Тарифная группа по контракту с потребителем">Тарифная группа по контракту с потребителем</Help>
+    </Variable>
+    <Variable Name="SupplierContractTariffGroup" DataType="String200" Versioned="True" Period="Indefinite">
+      <Family Rank="36">Основные свойства</Family>
+      <Help Context="Тарифная группа по контракту с поставщиком">Тарифная группа по контракту с поставщиком</Help>
+    </Variable>
+    <Variable Name="CurcuitContractTariffGroup" DataType="String200" Versioned="True" Period="Indefinite">
+      <Family Rank="36">Основные свойства</Family>
+      <Help Context="Тарифная группа по контракту с сетевой компанией">Тарифная группа по контракту с сетевой компанией</Help>
     </Variable>
     <Variable Name="TUCode" DataType="String200" Optional="True" Versioned="True" Period="Indefinite">
       <Family Rank="40">Основные свойства</Family>
@@ -54,17 +78,29 @@
       <Family Rank="50">Основные свойства</Family>
       <Help Context="Группа БП">Группа БП</Help>
     </Variable>
-    <Variable Name="PUPlace" DataType="String200" Optional="True" Versioned="True">
+    <Variable Name="PUPlace" DataType="StringMax" Optional="True" Versioned="True">
       <Family Rank="60">Основные свойства</Family>
       <Help Context="Место установки прибора учета">Место установки прибора учета</Help>
     </Variable>
     <Variable Name="ContractPriceCategory" DataType="String200" Optional="True" Versioned="True">
       <Family Rank="60">Основные свойства</Family>
-      <Help Context="Ценовая категория по контракту">Ценовая категория по контракту</Help>
+      <Help Context="Ценовая категория по контракту c потребителем">Ценовая категория по контракту с потребителем</Help>
     </Variable>
+    <Variable Name="SupplierContractPriceCategory" DataType="String200" Optional="True" Versioned="True">
+      <Family Rank="60">Основные свойства</Family>
+      <Help Context="Ценовая категория по контракту c поставщиком">Ценовая категория по контракту с поставщиком</Help>
+    </Variable>
+    <Variable Name="CurcuitContractPriceCategory" DataType="String200" Optional="True" Versioned="True">
+      <Family Rank="60">Основные свойства</Family>
+      <Help Context="Ценовая категория по контракту c сетевой компанией">Ценовая категория по контракту c сетевой компанией</Help>
+    </Variable>    
     <Variable Name="HourConsuming" DataType="Decimal" Optional="True" Versioned="True" Period="Hour">
       <Family Rank="60">Основные свойства</Family>
       <Help Context="Почасовое потребление">Почасовое потребление</Help>
+    </Variable>
+    <Variable Name="HourCount" DataType="Boolean">
+      <Family Rank="30">Основные свойства</Family>
+      <Help Context="Почасовой учет">Почасовой учет</Help>
     </Variable>
   </Stereotype>
   
@@ -77,23 +113,99 @@
       <Family Rank="20">Основные свойства</Family>
       <Help Context="Тип прибора учета">Тип прибора учета</Help>
     </Variable>
-    <Variable Name="HourCount" DataType="Boolean">
-      <Family Rank="30">Основные свойства</Family>
-      <Help Context="Почасовой учет">Почасовой учет</Help>
-    </Variable>
-    <Variable Name="Class" DataType="String200">
+
+    <Variable Name="Class" DataType="String200" Optional="True">
       <Family Rank="40">Основные свойства</Family>
       <Help Context="Класс точности">Класс точности</Help>
     </Variable>
-    <Variable Name="Direction" DataType="String200" Optional="True" Versioned="True">
+    <Variable Name="CheckDate" DataType="DateTime" Optional="True" Versioned="True" Period="Indefinite">
+      <Family Rank="41">Основные свойства</Family>
+      <Help Context="Дата поверки">Дата поверки</Help>
+    </Variable>
+    <Variable Name="EndCheckDate" DataType="DateTime" Optional="True" Versioned="True" Period="Indefinite">
+      <Family Rank="42">Основные свойства</Family>
+      <Help Context="Окончание поверки">Окончание поверки</Help>
+    </Variable>
+    
+    <Variable Name="TTType" DataType="String200" Optional="True" Versioned="True">
+      <Family Rank="43">Основные свойства</Family>
+      <Help Context="Тип ТТ">Тип ТТ</Help>
+    </Variable>
+    <Variable Name="NTT" DataType="String200" Optional="True" Versioned="True">
+      <Family Rank="44">Основные свойства</Family>
+      <Help Context="Номер ТТ">Номер ТТ</Help>
+    </Variable>
+    <Variable Name="CoeffTT" DataType="Decimal" Optional="True" Versioned="True">
+      <Family Rank="45">Основные свойства</Family>
+      <Help Context="Коэф. ТТ">Коэф. ТТ</Help>
+    </Variable>
+    <Variable Name="ClassTT" DataType="Decimal" Optional="True" Versioned="True">
+      <Family Rank="46">Основные свойства</Family>
+      <Help Context="Класс точности ТТ">Класс точности ТТ</Help>
+    </Variable>
+    <Variable Name="CheckDateTT" DataType="DateTime" Optional="True" Versioned="True" Period="Indefinite">
+      <Family Rank="47">Основные свойства</Family>
+      <Help Context="Дата поверки ТТ">Дата поверки ТТ</Help>
+    </Variable>
+    <Variable Name="EndCheckDateTT" DataType="DateTime" Optional="True" Versioned="True" Period="Indefinite">
+      <Family Rank="48">Основные свойства</Family>
+      <Help Context="Окончание поверки ТТ">Окончание поверки ТТ</Help>
+    </Variable>
+
+    <Variable Name="TNType" DataType="String200" Optional="True" Versioned="True">
+      <Family Rank="49">Основные свойства</Family>
+      <Help Context="Тип ТН">Тип ТН</Help>
+    </Variable>
+    <Variable Name="NTN" DataType="String200" Optional="True" Versioned="True">
       <Family Rank="50">Основные свойства</Family>
+      <Help Context="Номер ТН">Номер ТН</Help>
+    </Variable>
+    <Variable Name="CoeffTN" DataType="Decimal" Optional="True" Versioned="True">
+      <Family Rank="51">Основные свойства</Family>
+      <Help Context="Коэф. ТН">Коэф. ТН</Help>
+    </Variable>
+    <Variable Name="ClassTN" DataType="Decimal" Optional="True" Versioned="True">
+      <Family Rank="52">Основные свойства</Family>
+      <Help Context="Класс точности ТН">Класс точности ТН</Help>
+    </Variable>
+    <Variable Name="CheckDateTN" DataType="DateTime" Optional="True" Versioned="True" Period="Indefinite">
+      <Family Rank="53">Основные свойства</Family>
+      <Help Context="Дата поверки ТН">Дата поверки ТН</Help>
+    </Variable>
+    <Variable Name="EndCheckDateTN" DataType="DateTime" Optional="True" Versioned="True" Period="Indefinite">
+      <Family Rank="54">Основные свойства</Family>
+      <Help Context="Окончание поверки ТН">Окончание поверки ТН</Help>
+    </Variable>
+
+    <Variable Name="KTR" DataType="Decimal" Optional="True" Versioned="True">
+      <Family Rank="55">Основные свойства</Family>
+      <Help Context="Ктр">Ктр</Help>
+    </Variable>
+
+    <Variable Name="LossesPercent" DataType="Decimal" Optional="True" Versioned="True">
+      <Family Rank="56">Основные свойства</Family>
+      <Help Context="Потери">Потери, %</Help>
+    </Variable>
+    <Variable Name="LossesAbs" DataType="Decimal" Optional="True" Versioned="True">
+      <Family Rank="57">Основные свойства</Family>
+      <Help Context="Потери">Потери, кВт</Help>
+    </Variable>
+
+    <Variable Name="Direction" DataType="String200" Optional="True" Versioned="True">
+      <Family Rank="58">Основные свойства</Family>
       <Help Context="Направление">Направление</Help>
+    </Variable>
+    <Variable Name="TUCompensation" DataType="String200" Optional="True" Versioned="True">
+      <Family Rank="59">Основные свойства</Family>
+      <Help Context="Вычет из ТУ">Вычет из ТУ</Help>
     </Variable>
     <Variable Name="Integral" DataType="Decimal" Optional="True" Versioned="True" Period="Month">
       <Family Rank="60">Основные свойства</Family>
       <Help Context="Интеграл">Интеграл</Help>
     </Variable>
-    <Variable Name="CoeffOfTransformation" DataType="Decimal" Optional="True" Versioned="True">
+    
+    
+    <!--<Variable Name="CoeffOfTransformation" DataType="Decimal" Optional="True" Versioned="True">
       <Family Rank="70">Основные свойства</Family>
       <Help Context="Коэффициент трансформации">Коэффициент трансформации</Help>
     </Variable>
@@ -108,7 +220,7 @@
     <Variable Name="Odn" DataType="Decimal" Optional="True" Versioned="True">
       <Family Rank="100">Основные свойства</Family>
       <Help Context="ОДН">Общедомовые нужды</Help>
-    </Variable>
+    </Variable>-->
 
   </Stereotype>
 
