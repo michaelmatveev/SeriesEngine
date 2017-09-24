@@ -6,6 +6,7 @@ using SeriesEngine.Core.DataAccess;
 using SeriesEngine.Core;
 using System.Data.SqlClient;
 using SeriesEngine.msk1;
+using SeriesEngine.ExcelAddIn.Business;
 
 namespace SeriesEngine.ExcelAddIn.Models
 {
@@ -37,54 +38,63 @@ namespace SeriesEngine.ExcelAddIn.Models
                 var sln = context.Solutions.Find(solution.Id);
                 context.Entry(sln).Collection(s => s.Networks).Load();
                 var network = sln.Networks.First(n => n.Name == collectionDatablock.NetworkName);
-                
-                var netId = new SqlParameter("@NetId", network.Id);
-                var path = new SqlParameter("@PathToFind", collectionDatablock.CustomPath);
-                var readHierarchySp = $"[{solution.ModelName}].[{network.HierarchyModel.Name}_Read]";
-                var ids  = context.Database.SqlQuery<int>($"{readHierarchySp} @NetId, @PathToFind", netId, path).ToListAsync().Result;
-                var query = network.GetQuery(context, ids);//.AsNoTracking();
-
-                //var query = context.Set<MainHierarchyNode>()
-               //     .Where(n => ids.Contains(n.Id))
-                //    .Include("Network");
-
-                //var query = context.Entry(network).Collection("Nodes").Query();
-
 
                 bool fullHierarchy = false;
-                var variables = collectionDatablock.DataBlocks;
-                if (variables != null)
+                var sdt = new SelectDataTemplate(collectionDatablock, network);
+                using (var connection = context.Database.Connection)
                 {
-                    foreach (var v in variables.OfType<VariableDataBlock>()
-                        .Where(b => b.VariableMetamodel.PeriodInterval != TimeInterval.None || b.VariableMetamodel.IsVersioned))
+                    connection.Open();
+                    var command = connection.CreateCommand();
+                    command.CommandText = sdt.GetCommandText();
+                    using (var reader = command.ExecuteReader())
                     {
-                        var obj = v.RefObject;
-                        var vrb = v.VariableMetamodel.Name;
-                        query = query.Include($"{obj}.{obj}_{vrb}s");
-                        //query.Include($"{obj}.{obj}_{vrb}s").Load();
+                        foreach(var loader in sdt.DataReaders)
+                        {
+                            loader(context, reader);
+                            reader.NextResult();
+                        }
                     }
-
-                    foreach (var v in variables.OfType<NodeDataBlock>()
-                        .Where(n => n.NodeType == NodeType.UniqueName))
-                    {
-                        query = query.Include(v.RefObject);
-                        //query.Include(v.RefObject).Load();
-                    }
-
-                    var nodeObjects = variables
-                        .OfType<NodeDataBlock>()
-                        .Where(n => n.NodeType == NodeType.UniqueName)
-                        .Select(v => v.RefObject);
-
-                    fullHierarchy = network.HierarchyModel
-                        .ReferencedObjects
-                        .Select(o => o.Name)
-                        .Except(nodeObjects).Count() == 0;
+                   
                 }
-
-                query.Load();
-                ////query.ToList();
                 return new NetworkTree(network, fullHierarchy);
+
+                //var netId = new SqlParameter("@NetId", network.Id);
+                //var path = new SqlParameter("@PathToFind", collectionDatablock.CustomPath);
+                //var readHierarchySp = $"[{solution.ModelName}].[{network.HierarchyModel.Name}_Read]";
+                //var ids  = context.Database.SqlQuery<int>($"{readHierarchySp} @NetId, @PathToFind", netId, path).ToListAsync().Result;
+                //var query = network.GetQuery(context, ids);//.AsNoTracking();
+
+                //bool fullHierarchy = false;
+                //var variables = collectionDatablock.DataBlocks;
+                //if (variables != null)
+                //{
+                //    foreach (var v in variables.OfType<VariableDataBlock>()
+                //        .Where(b => b.VariableMetamodel.PeriodInterval != TimeInterval.None || b.VariableMetamodel.IsVersioned))
+                //    {
+                //        var obj = v.RefObject;
+                //        var vrb = v.VariableMetamodel.Name;
+                //        query = query.Include($"{obj}.{obj}_{vrb}s");
+                //    }
+
+                //    foreach (var v in variables.OfType<NodeDataBlock>()
+                //        .Where(n => n.NodeType == NodeType.UniqueName))
+                //    {
+                //        query = query.Include(v.RefObject);
+                //    }
+
+                //    var nodeObjects = variables
+                //        .OfType<NodeDataBlock>()
+                //        .Where(n => n.NodeType == NodeType.UniqueName)
+                //        .Select(v => v.RefObject);
+
+                //    fullHierarchy = network.HierarchyModel
+                //        .ReferencedObjects
+                //        .Select(o => o.Name)
+                //        .Except(nodeObjects).Count() == 0;
+                //}
+
+                //query.Load();
+                //return new NetworkTree(network, fullHierarchy);
             }
         }
 

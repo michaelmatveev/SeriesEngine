@@ -13,7 +13,12 @@ public class HierarchyModelTemplate : CSharpTemplate
 		base.TransformText();
 #>
 using SeriesEngine.Core;
+using SeriesEngine.Core.DataAccess;
+using System;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
 
 namespace SeriesEngine.<#= Schema #>
 {
@@ -45,6 +50,7 @@ namespace SeriesEngine.<#= Schema #>
         public static HierarchyMemamodel <#= s #> = new HierarchyMemamodel
         {
             Name = "<#= s #>",
+			ModelName = "<#= Schema #>",
             ReferencedObjects = new [] 
 			{
 <#+
@@ -66,7 +72,8 @@ namespace SeriesEngine.<#= Schema #>
 #>
 			},
 			NodeType = typeof(SeriesEngine.<#= Schema #>.<#= s #>Node),
-			HierarchyType = typeof(SeriesEngine.<#= Schema #>.<#= s #>Network)
+			HierarchyType = typeof(SeriesEngine.<#= Schema #>.<#= s #>Network),
+			DataLoader = new Action<BaseModelContext, DbDataReader>((c, r) => ((IObjectContextAdapter)c).ObjectContext.Translate<<#= s #>Node>(r, "<#= s #>Nodes", System.Data.Entity.Core.Objects.MergeOption.AppendOnly).ToList())
         };
 <#+
 		}

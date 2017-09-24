@@ -1,0 +1,57 @@
+﻿<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="SeriesEngine.Core" #>
+<#@ import namespace="System.Reflection" #>
+<#@ import namespace="SeriesEngine.ExcelAddIn.Models.DataBlocks" #>
+<#@ import namespace="SeriesEngine.ExcelAddIn.Models" #>
+<#@ import namespace="SeriesEngine.Core.DataAccess" #>
+<#@ template language="C#" #>
+DECLARE @Nodes TABLE(
+Id INT NOT NULL PRIMARY KEY,
+ParentId INT NULL,
+NetId INT NOT NULL,
+ValidFrom DATETIME2(7) NULL,
+ValidTill DATETIME2 (7) NULL,
+Tag INT NULL,
+<#
+	var objects = _hierarchyModel.ReferencedObjects.Select(o => o.Name);
+	var objectIds = String.Join(",", objects.Select(o => o + "_Id INT NULL"));
+	_DataReaders.Clear();
+#>
+<#= objectIds #>
+);
+
+INSERT INTO @Nodes
+EXEC <#=_hierarchyModel.ModelName#>.<#=_hierarchyModel.Name#>_Read <#= _networkId #>, '<#= _collectionDataBlock.CustomPath #>';
+
+SELECT * FROM @Nodes;
+
+<#
+	_DataReaders.Add(_hierarchyModel.DataLoader);
+
+	var variables = _collectionDataBlock.DataBlocks;
+	if(variables != null) 
+	{
+		foreach (var v in variables.OfType<NodeDataBlock>().Where(n => n.NodeType == NodeType.UniqueName))
+		{
+#>
+SELECT * FROM <#=_hierarchyModel.ModelName#>.<#= v.RefObject #>s AS O
+INNER JOIN @Nodes AS N
+ON O.Id = N.<#= v.RefObject #>_Id;
+
+<#
+			_DataReaders.Add(v.ObjectMetamodel.DataLoader);
+		}
+		foreach (var v in variables.OfType<VariableDataBlock>().Where(b => b.VariableMetamodel.PeriodInterval != TimeInterval.None || b.VariableMetamodel.IsVersioned))
+		{
+#>
+SELECT * FROM <#=_hierarchyModel.ModelName#>.<#= v.RefObject #>_<#= v.VariableMetamodel.Name #>s AS O
+INNER JOIN @Nodes AS N
+ON O.ObjectId = N.<#= v.RefObject #>_Id;
+
+<#
+			_DataReaders.Add(v.VariableMetamodel.DataLoader);
+		}
+	}
+#>

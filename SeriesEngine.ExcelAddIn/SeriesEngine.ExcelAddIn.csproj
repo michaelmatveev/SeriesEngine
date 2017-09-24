@@ -202,6 +202,12 @@
   <ItemGroup>
     <Compile Include="Business\Import\DataMerger.cs" />
     <Compile Include="Business\IStoredQueriesProvider.cs" />
+    <Compile Include="Business\SelectDataTemplate.Code.cs" />
+    <Compile Include="Business\SelectDataTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SelectDataTemplate.tt</DependentUpon>
+    </Compile>
     <Compile Include="Business\StoredQueriesProvider.cs" />
     <Compile Include="Business\Trees\FormulaGroup.cs" />
     <Compile Include="Business\Trees\TableGroup.cs" />
@@ -480,6 +486,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\data_table.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Business\SelectDataTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SelectDataTemplate.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

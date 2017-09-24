@@ -16,10 +16,13 @@ public class VariableTemplate : CSharpTemplate
 		var vars = Variables.Where(v => v.Attribute("Name").Value != "Name");
 		var noVariables = !vars.Any();
 #>
-using System;
-using System.Collections.Generic;
 using SeriesEngine.Core;
 using SeriesEngine.Core.DataAccess;
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
 
 namespace SeriesEngine.<#= Schema #>
 {
@@ -86,6 +89,7 @@ namespace SeriesEngine.<#= Schema #>
 			if(period != "None" || isVersioned)
 			{
 #>
+			DataLoader =  new Action<BaseModelContext, DbDataReader>((c, r) => ((IObjectContextAdapter)c).ObjectContext.Translate<<#= Stereotype #>_<#= name #>>(r, "<#= Stereotype #>_<#= name #>s", System.Data.Entity.Core.Objects.MergeOption.AppendOnly).ToList()),
 			EntityType = typeof(<#= Stereotype#>_<#= name #>)
 <#+
 			}

@@ -1,6 +1,7 @@
 ﻿using SeriesEngine.Core.DataAccess;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 
 namespace SeriesEngine.Core
 {
@@ -39,22 +40,28 @@ namespace SeriesEngine.Core
         }
 
         public bool IsOptional { get; set; }
+        public Action<BaseModelContext, DbDataReader> DataLoader { get; set; }
     }
 
     public class ObjectMetamodel
     {
         public string Name { get; set; }
+        public string ModelName { get; set; }
+
         public Type ObjectType { get; set; }
         public IEnumerable<Variable> Variables { get; set; }
+        public Action<BaseModelContext, DbDataReader> DataLoader { get; set; }
     }
 
     public class HierarchyMemamodel
     {
         public string Name { get; set; }
+        public string ModelName { get; set; }
         public IEnumerable<string> SystemNetworks;
         public IEnumerable<ObjectMetamodel> ReferencedObjects { get; set; }
         public Type NodeType { get; set; }
         public Type HierarchyType { get; set; }
+        public Action<BaseModelContext, DbDataReader> DataLoader { get; set; }
     }
 
     public class MetaModel

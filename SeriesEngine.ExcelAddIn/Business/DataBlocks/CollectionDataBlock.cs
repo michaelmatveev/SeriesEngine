@@ -48,16 +48,20 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
         public void SetupPeriodForNestedBlocks(Solution solution, Period defaultPeriod)
         {
             var model = ModelsDescription.All.Single(m => m.Name == solution.ModelName);
-            foreach (var b in DataBlocks.OfType<VariableDataBlock>())
+            foreach (var b in DataBlocks)
             {
-                b.VariablePeriod = new Period
-                {
-                    From = defaultPeriod.From.AddMonths(b.Shift),
-                    Till = defaultPeriod.Till.AddMonths(b.Shift)
-                };
                 b.ObjectMetamodel = model.ObjectModels.Single(m => m.Name == b.RefObject);
-                var varName = VariableNameParser.ExtractVariableName(b.VariableBlockName);
-                b.VariableMetamodel = b.ObjectMetamodel.Variables.Single(m => m.Name == varName);
+                var vb = b as VariableDataBlock;
+                if (vb != null)
+                {                    
+                    vb.VariablePeriod = new Period
+                    {
+                        From = defaultPeriod.From.AddMonths(b.Shift),
+                        Till = defaultPeriod.Till.AddMonths(b.Shift)
+                    };
+                    var varName = VariableNameParser.ExtractVariableName(vb.VariableBlockName);
+                    vb.VariableMetamodel = b.ObjectMetamodel.Variables.Single(m => m.Name == varName);
+                }
             }
         } 
 

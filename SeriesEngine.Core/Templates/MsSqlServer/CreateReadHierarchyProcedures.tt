@@ -12,6 +12,7 @@ public class CreateReadHierarchyProcedures : CSharpTemplate
 		String hName = Hierarchy.Attribute("Name").Value;
 		var stereotypes = Hierarchy.Descendants("UsedStereotype").Select(us => us.Attribute("Name").Value).Distinct();
 		var objectIds = String.Join(", ", stereotypes.Select(s => s + "_Id"));
+		var hObjectIds = String.Join(", ", stereotypes.Select(s => "H." + s + "_Id"));
 #>
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID('[<#= Schema #>].[<#= hName #>_Read]') AND type = 'P')
 	DROP PROCEDURE [<#= Schema #>].[<#= hName #>_Read];
@@ -56,19 +57,19 @@ BEGIN
 		}
 #>
 	),
-	Paths(Id, ParentId, Name, NamePath, Level, ValidFrom, ValidTill, Tag)
+	Paths(Id, ParentId, Name, NamePath, Level, ValidFrom, ValidTill, Tag, <#= objectIds #>)
 	AS
 	(
-		SELECT H.Id, H.ParentId, ObjName AS Name, ObjName AS NamePath, 0 AS Level, ValidFrom, ValidTill, Tag
+		SELECT H.Id, H.ParentId, ObjName AS Name, ObjName AS NamePath, 0 AS Level, ValidFrom, ValidTill, Tag, <#= hObjectIds #>
 		FROM NamedNodes AS H
 		WHERE H.ParentId = @root OR (@root IS NULL AND H.ParentId IS NULL)
 		UNION ALL
-		SELECT H.Id, H.ParentId, ObjName AS Name, R.NamePath + '|' + H.ObjName AS NamePath, R.Level + 1, H.ValidFrom, H.ValidTill, H.Tag
+		SELECT H.Id, H.ParentId, ObjName AS Name, R.NamePath + '|' + H.ObjName AS NamePath, R.Level + 1, H.ValidFrom, H.ValidTill, H.Tag, <#= hObjectIds #>
 		FROM NamedNodes AS H
 		INNER JOIN Paths AS R
 		ON H.ParentId = R.Id
 	)
-	SELECT Id FROM Paths
+	SELECT Id, ParentId, @NetId As NetId, ValidFrom, ValidTill, Tag, <#= objectIds #> FROM Paths
 	WHERE NamePath LIKE dbo.PathSearchPattern(@PathToFind, Paths.Level + 1)
 END
 GO

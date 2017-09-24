@@ -13,7 +13,12 @@ public class SchemaObjectTemplate : CSharpTemplate
 		base.TransformText();
 #>
 using SeriesEngine.Core;
+using SeriesEngine.Core.DataAccess;
+using System;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
 
 namespace SeriesEngine.<#= Schema #>
 {
@@ -41,8 +46,10 @@ namespace SeriesEngine.<#= Schema #>
         public static ObjectMetamodel <#= s #> = new ObjectMetamodel
         {
             Name = "<#= s #>",
+			ModelName = "<#= Schema #>",
             Variables = <#= Schema #><#= s #>Variables.AllVariables,
-			ObjectType = typeof(<#= s #>)
+			ObjectType = typeof(<#= s #>),
+			DataLoader = new Action<BaseModelContext, DbDataReader>((c, r) => ((IObjectContextAdapter)c).ObjectContext.Translate<<#= s #>>(r, "<#= s #>s", System.Data.Entity.Core.Objects.MergeOption.AppendOnly).ToList())
         };
 <#+
 		}
