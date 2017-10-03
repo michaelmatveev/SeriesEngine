@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Model Name="Test model" Prefix="abc" TargetDatabase="MsSqlServer">
+<Stereotypes>
 
   <Stereotype Name="ObjectA">
     <Variable Name="Name" DataType="StringMax">
@@ -63,4 +63,4 @@
     </Variable>
   </Stereotype> 
 
-</Model>
+</Stereotypes>

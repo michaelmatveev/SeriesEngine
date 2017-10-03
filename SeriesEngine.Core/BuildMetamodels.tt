@@ -22,7 +22,7 @@ This scripts creates an SQL script to create database schema from scratch
 	var metaModelsPath = this.Host.ResolvePath(@"Metamodels");
 	var dataTypesPath = this.Host.ResolvePath(@"Metamodels\DataTypes\MsSqlServer.xml");
 	var dataTypes = XDocument.Load(dataTypesPath);
-	var prefixes = new List<string>();
+	var prefixes = new List<XElement>();
 	
 	foreach(var modelPath in Directory
 		.GetDirectories(metaModelsPath)
@@ -32,14 +32,16 @@ This scripts creates an SQL script to create database schema from scratch
 		var outputFile = String.Format("CreateDatabaseSchema.{0}.sql", model);
 		var components = XDocument.Load(modelPath + @"\Components.xml");
 		var hierarchies = XDocument.Load(modelPath + @"\DataStructures.xml");
-		prefixes.Add(model);
+		var modelDescription = XDocument.Load(modelPath + @"\Model.xml");
+		prefixes.Add(modelDescription.Root);
 
 		var dbGenerator = new CreateDataBaseGenerator
 		{
 			Output = outputFile,
 			DataTypesDoc = dataTypes,
 			ComponentsDoc = components,
-			HierarchiesDoc = hierarchies
+			HierarchiesDoc = hierarchies,
+			ModelDoc = modelDescription
 		};
 		dbGenerator.Run();
 
@@ -47,7 +49,8 @@ This scripts creates an SQL script to create database schema from scratch
 		{
 			DataTypesDoc = dataTypes,
 			ComponentsDoc = components,
-			HierarchiesDoc = hierarchies
+			HierarchiesDoc = hierarchies,
+			ModelDoc = modelDescription
 		};
 		efGenerator.Run();
 
@@ -55,7 +58,8 @@ This scripts creates an SQL script to create database schema from scratch
 		{
 			DataTypesDoc = dataTypes,
 			ComponentsDoc = components,
-			HierarchiesDoc = hierarchies
+			HierarchiesDoc = hierarchies,
+			ModelDoc = modelDescription
 		};
 		cnsGenerator.Run();
 #>
@@ -65,13 +69,13 @@ The '<#= model #>' model has been created successfully.
 
 	var baseGenerator = new BaseContextGenerator 
 	{
-		Prefixes = prefixes
+		Prefixes = prefixes.Select(m => m.Attribute("Prefix").Value)
 	};
 	baseGenerator.Run();
 
 	var modelGenerator = new ModelGenerator 
 	{
-		Prefixes = prefixes
+		ModelElements = prefixes
 	};
 	modelGenerator.Run();
 #>

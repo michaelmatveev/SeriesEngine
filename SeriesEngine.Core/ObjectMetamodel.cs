@@ -67,6 +67,7 @@ namespace SeriesEngine.Core
     public class MetaModel
     {
         public string Name { get; set; }
+        public bool Visible { get; set; }
         public IEnumerable<ObjectMetamodel> ObjectModels { get; set; }
         public IEnumerable<HierarchyMemamodel> HierarchyModels { get; set; }
     }

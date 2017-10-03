@@ -12,6 +12,7 @@ public class ConstantsGenerator : Generator
 	public XDocument DataTypesDoc;
 	public XDocument ComponentsDoc;
 	public XDocument HierarchiesDoc;
+	public XDocument ModelDoc;
 
 	protected override void RunCore()
 	{
@@ -19,7 +20,7 @@ public class ConstantsGenerator : Generator
 		var schemaObjectTemplate = new SchemaObjectTemplate();
 
 		var stereotypes = ComponentsDoc.Descendants("Stereotype");
-		var prefix = ComponentsDoc.Root.Attribute("Prefix").Value;
+		var prefix = ModelDoc.Root.Attribute("Prefix").Value;
 		Dictionary<String, XElement> dataTypes = DataTypesDoc.Root.Elements().ToDictionary(x => x.Attribute("Name").Value, x => x);
 
 		schemaObjectTemplate.Schema = prefix;

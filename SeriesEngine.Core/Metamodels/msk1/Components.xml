@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Model Name="PowerCompany1" Prefix="msk1" TargetDatabase="MsSqlServer">
+<Stereotypes>
 
   <Stereotype Name="Region">
     <Variable Name="Name" DataType="StringMax">
@@ -143,11 +143,11 @@
       <Family Rank="46">Основные свойства</Family>
       <Help Context="Класс точности ТТ">Класс точности ТТ</Help>
     </Variable>
-    <Variable Name="CheckDateTT" DataType="DateTime" Optional="True" Versioned="True" Period="Indefinite">
+    <Variable Name="CheckDateTT" DataType="DateTime" Optional="True">
       <Family Rank="47">Основные свойства</Family>
       <Help Context="Дата поверки ТТ">Дата поверки ТТ</Help>
     </Variable>
-    <Variable Name="EndCheckDateTT" DataType="DateTime" Optional="True" Versioned="True" Period="Indefinite">
+    <Variable Name="EndCheckDateTT" DataType="DateTime" Optional="True">
       <Family Rank="48">Основные свойства</Family>
       <Help Context="Окончание поверки ТТ">Окончание поверки ТТ</Help>
     </Variable>
@@ -168,11 +168,11 @@
       <Family Rank="52">Основные свойства</Family>
       <Help Context="Класс точности ТН">Класс точности ТН</Help>
     </Variable>
-    <Variable Name="CheckDateTN" DataType="DateTime" Optional="True" Versioned="True" Period="Indefinite">
+    <Variable Name="CheckDateTN" DataType="DateTime" Optional="True">
       <Family Rank="53">Основные свойства</Family>
       <Help Context="Дата поверки ТН">Дата поверки ТН</Help>
     </Variable>
-    <Variable Name="EndCheckDateTN" DataType="DateTime" Optional="True" Versioned="True" Period="Indefinite">
+    <Variable Name="EndCheckDateTN" DataType="DateTime" Optional="True">
       <Family Rank="54">Основные свойства</Family>
       <Help Context="Окончание поверки ТН">Окончание поверки ТН</Help>
     </Variable>
@@ -256,4 +256,4 @@
     </Variable>
   </Stereotype>
 
-</Model>
+</Stereotypes>

@@ -1,13 +1,8 @@
 ﻿using SeriesEngine.Core;
 using SeriesEngine.Core.DataAccess;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SeriesEngine.ExcelAddIn.Views
@@ -41,7 +36,10 @@ namespace SeriesEngine.ExcelAddIn.Views
 
         private void SolutionPropertiesView_Load(object sender, EventArgs e)
         {
-           comboBoxModels.DataSource = ModelsDescription.All.Select(m => m.Name).ToList();
+           comboBoxModels.DataSource = ModelsDescription
+                .All
+                .Where(m => m.Visible)
+                .Select(m => m.Name).ToList();
         }
 
         private bool ValidateAllData()

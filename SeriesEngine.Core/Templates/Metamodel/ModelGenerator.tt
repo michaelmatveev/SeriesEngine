@@ -6,13 +6,13 @@
 
 public class ModelGenerator : Generator
 {
-	public IEnumerable<string> Prefixes;
+	public IEnumerable<XElement> ModelElements;
 
 	protected override void RunCore()
 	{
 		var modelsTemplate = new ModelsTemplate
 		{
-			Models = Prefixes
+			Models = ModelElements
 		};
 		modelsTemplate.RenderToFile("AllModels.cs");
 	}

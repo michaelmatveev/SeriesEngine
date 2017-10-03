@@ -17,12 +17,13 @@ public class CreateDataBaseGenerator : Generator
 	public XDocument DataTypesDoc;
 	public XDocument ComponentsDoc;
 	public XDocument HierarchiesDoc;
+	public XDocument ModelDoc;
 
 	protected override void RunCore()
 	{		
 		var dataTypes = DataTypesDoc.Root.Elements().ToDictionary(x => x.Attribute("Name").Value, x => x);
 
-		var prefix = ComponentsDoc.Root.Attribute("Prefix").Value;
+		var prefix = ModelDoc.Root.Attribute("Prefix").Value;
     
 		var createSchemaTemplate = new CreateSchemaTemplate 
 		{

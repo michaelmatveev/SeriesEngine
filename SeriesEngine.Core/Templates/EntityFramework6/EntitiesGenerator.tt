@@ -14,11 +14,12 @@ public class EntitiesGenerator : Generator
 	public XDocument DataTypesDoc;
 	public XDocument ComponentsDoc;
 	public XDocument HierarchiesDoc;
+	public XDocument ModelDoc;
 
 	protected override void RunCore()
 	{
 		Dictionary<String, XElement> dataTypes = DataTypesDoc.Root.Elements().ToDictionary(x => x.Attribute("Name").Value, x => x);
-		String prefix = ComponentsDoc.Root.Attribute("Prefix").Value;
+		String prefix = ModelDoc.Root.Attribute("Prefix").Value;
 
 		ObjectEntityTemplate objectEntityTemplate = new ObjectEntityTemplate 
 		{

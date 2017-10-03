@@ -5,7 +5,17 @@
 
 public class ModelsTemplate : CSharpTemplate
 {
-	public IEnumerable<string> Models;
+	public IEnumerable<XElement> Models;
+
+	private string GetPrefix(XElement model)
+	{
+		return model.Attribute("Prefix").Value;
+	}
+
+	private string IsVisible(XElement model)
+	{
+		return model.Attribute("Visible").Value.ToLower();
+	}
 
 	public override string TransformText()
 	{
@@ -18,7 +28,7 @@ using SeriesEngine.Core.DataAccess;
 		foreach(var m in Models)
 		{
 #>
-using SeriesEngine.<#= m #>;
+using SeriesEngine.<#= GetPrefix(m) #>;
 <#+
 		}
 #>
@@ -35,7 +45,7 @@ namespace SeriesEngine.Core
 		foreach(var m in Models)
 		{
 #>
-                yield return <#= m #>;
+                yield return <#= GetPrefix(m) #>;
 <#+
 		}
 #>
@@ -46,11 +56,12 @@ namespace SeriesEngine.Core
 		foreach(var m in Models)
 		{
 #>
-        public static MetaModel <#= m #> = new MetaModel
+        public static MetaModel <#= GetPrefix(m) #> = new MetaModel
         {
-            Name = "<#= m #>",
-            ObjectModels = <#= m #>Objects.UsedObjects,
-			HierarchyModels = <#= m #>Hierarchies.UsedHierarchies
+            Name = "<#= GetPrefix(m) #>",
+			Visible = <#= IsVisible(m) #>,
+            ObjectModels = <#= GetPrefix(m) #>Objects.UsedObjects,
+			HierarchyModels = <#= GetPrefix(m) #>Hierarchies.UsedHierarchies
         };
 <#+
 		}
@@ -61,7 +72,7 @@ namespace SeriesEngine.Core
 			if(string.IsNullOrEmpty(modelName))
 			{
 <#+
-		var firstModel = Models.First();
+		var firstModel = GetPrefix(Models.First());
 #>
 				return new SeriesEngine.<#= firstModel #>.Model1();
 			}
@@ -70,9 +81,9 @@ namespace SeriesEngine.Core
 		foreach(var m in Models)
 		{
 #>
-			if(modelName == "<#= m #>")
+			if(modelName == "<#= GetPrefix(m) #>")
             {
-                return new SeriesEngine.<#= m #>.Model1();
+                return new SeriesEngine.<#= GetPrefix(m) #>.Model1();
             }
 <#+
 		}

@@ -200,12 +200,6 @@
     <Compile Include="msk1.ElectricMeter_CheckDate.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
-    <Compile Include="msk1.ElectricMeter_CheckDateTN.cs">
-      <DependentUpon>BuildMetamodels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="msk1.ElectricMeter_CheckDateTT.cs">
-      <DependentUpon>BuildMetamodels.tt</DependentUpon>
-    </Compile>
     <Compile Include="msk1.ElectricMeter_ClassTN.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
@@ -222,12 +216,6 @@
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
     <Compile Include="msk1.ElectricMeter_EndCheckDate.cs">
-      <DependentUpon>BuildMetamodels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="msk1.ElectricMeter_EndCheckDateTN.cs">
-      <DependentUpon>BuildMetamodels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="msk1.ElectricMeter_EndCheckDateTT.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
     <Compile Include="msk1.ElectricMeter_Integral.cs">
@@ -402,16 +390,12 @@
 .\msk1.CurcuitVariables.cs
 .\msk1.ElectricMeter.cs
 .\msk1.ElectricMeter_CheckDate.cs
-.\msk1.ElectricMeter_CheckDateTN.cs
-.\msk1.ElectricMeter_CheckDateTT.cs
 .\msk1.ElectricMeter_ClassTN.cs
 .\msk1.ElectricMeter_ClassTT.cs
 .\msk1.ElectricMeter_CoeffTN.cs
 .\msk1.ElectricMeter_CoeffTT.cs
 .\msk1.ElectricMeter_Direction.cs
 .\msk1.ElectricMeter_EndCheckDate.cs
-.\msk1.ElectricMeter_EndCheckDateTN.cs
-.\msk1.ElectricMeter_EndCheckDateTT.cs
 .\msk1.ElectricMeter_Integral.cs
 .\msk1.ElectricMeter_KTR.cs
 .\msk1.ElectricMeter_LossesAbs.cs
@@ -471,6 +455,7 @@
     <Content Include="Metamodels\abc\DataStructures.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Metamodels\abc\Model.xml" />
     <Content Include="Metamodels\DataTypes\MsSqlServer.xml" />
     <Content Include="Metamodels\msk1\Components.xml">
       <SubType>Designer</SubType>
@@ -478,6 +463,7 @@
     <Content Include="Metamodels\msk1\DataStructures.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Metamodels\msk1\Model.xml" />
     <Content Include="Templates\EntityFramework6\BaseContextGenerator.tt" />
     <Content Include="Templates\EntityFramework6\BaseContextPartialTemplate.tt" />
     <Content Include="Templates\EntityFramework6\BaseContextTemplate.tt" />
