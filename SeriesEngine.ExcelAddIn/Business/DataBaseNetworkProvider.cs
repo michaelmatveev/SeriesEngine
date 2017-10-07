@@ -4,8 +4,6 @@ using System.Linq;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using SeriesEngine.Core.DataAccess;
 using SeriesEngine.Core;
-using System.Data.SqlClient;
-using SeriesEngine.msk1;
 using SeriesEngine.ExcelAddIn.Business;
 
 namespace SeriesEngine.ExcelAddIn.Models
@@ -39,7 +37,6 @@ namespace SeriesEngine.ExcelAddIn.Models
                 context.Entry(sln).Collection(s => s.Networks).Load();
                 var network = sln.Networks.First(n => n.Name == collectionDatablock.NetworkName);
 
-                bool fullHierarchy = false;
                 var sdt = new SelectDataTemplate(collectionDatablock, network);
                 using (var connection = context.Database.Connection)
                 {
@@ -53,48 +50,21 @@ namespace SeriesEngine.ExcelAddIn.Models
                             loader(context, reader);
                             reader.NextResult();
                         }
-                    }
-                   
+                    }                   
                 }
+
+                //var nodeObjects = collectionDatablock
+                //    .DataBlocks
+                //    .OfType<NodeDataBlock>()
+                //    .Where(n => n.NodeType == NodeType.UniqueName)
+                //    .Select(v => v.RefObject);
+
+                //var fullHierarchy = network.HierarchyModel
+                //    .ReferencedObjects
+                //    .Select(o => o.Name)
+                //    .Except(nodeObjects).Count() == 0;
+                var fullHierarchy = true;
                 return new NetworkTree(network, fullHierarchy);
-
-                //var netId = new SqlParameter("@NetId", network.Id);
-                //var path = new SqlParameter("@PathToFind", collectionDatablock.CustomPath);
-                //var readHierarchySp = $"[{solution.ModelName}].[{network.HierarchyModel.Name}_Read]";
-                //var ids  = context.Database.SqlQuery<int>($"{readHierarchySp} @NetId, @PathToFind", netId, path).ToListAsync().Result;
-                //var query = network.GetQuery(context, ids);//.AsNoTracking();
-
-                //bool fullHierarchy = false;
-                //var variables = collectionDatablock.DataBlocks;
-                //if (variables != null)
-                //{
-                //    foreach (var v in variables.OfType<VariableDataBlock>()
-                //        .Where(b => b.VariableMetamodel.PeriodInterval != TimeInterval.None || b.VariableMetamodel.IsVersioned))
-                //    {
-                //        var obj = v.RefObject;
-                //        var vrb = v.VariableMetamodel.Name;
-                //        query = query.Include($"{obj}.{obj}_{vrb}s");
-                //    }
-
-                //    foreach (var v in variables.OfType<NodeDataBlock>()
-                //        .Where(n => n.NodeType == NodeType.UniqueName))
-                //    {
-                //        query = query.Include(v.RefObject);
-                //    }
-
-                //    var nodeObjects = variables
-                //        .OfType<NodeDataBlock>()
-                //        .Where(n => n.NodeType == NodeType.UniqueName)
-                //        .Select(v => v.RefObject);
-
-                //    fullHierarchy = network.HierarchyModel
-                //        .ReferencedObjects
-                //        .Select(o => o.Name)
-                //        .Except(nodeObjects).Count() == 0;
-                //}
-
-                //query.Load();
-                //return new NetworkTree(network, fullHierarchy);
             }
         }
 

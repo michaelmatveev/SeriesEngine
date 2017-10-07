@@ -12,6 +12,7 @@ using SeriesEngine.Core;
 using SeriesEngine.ExcelAddIn.Business.Trees;
 using System.Collections.Generic;
 using SeriesEngine.ExcelAddIn.Models;
+using System;
 
 namespace SeriesEngine.ExcelAddIn.Business.Import
 {
@@ -440,6 +441,11 @@ namespace SeriesEngine.ExcelAddIn.Business.Import
                         short.MaxValue);
                     column.Range.Validation.IgnoreBlank = variable.IsOptional;
                 }
+                else if (variable.ValueType == typeof(DateTime))
+                {
+                    column.Range.NumberFormat = "dd.mm.yyyy hh:mm";
+                }
+
                 column.XPath.SetValue(map, block.XmlPath);
             }
             else

@@ -30,9 +30,12 @@
         <Level>
           <UsedStereotype Name="SupplierContract" />
           <Level>
-            <UsedStereotype Name="Point" />
+            <UsedStereotype Name="ConsumerObject"/>
             <Level>
-              <UsedStereotype Name="ElectricMeter" />
+              <UsedStereotype Name="Point" />
+              <Level>
+                <UsedStereotype Name="ElectricMeter" />
+              </Level>
             </Level>
           </Level>
         </Level>
@@ -48,9 +51,12 @@
         <Level>
           <UsedStereotype Name="CurcuitContract" />
           <Level>
-            <UsedStereotype Name="Point" />
+            <UsedStereotype Name="ConsumerObject"/>
             <Level>
-              <UsedStereotype Name="ElectricMeter" />
+              <UsedStereotype Name="Point" />
+              <Level>
+                <UsedStereotype Name="ElectricMeter" />
+              </Level>
             </Level>
           </Level>
         </Level>

@@ -197,9 +197,6 @@
     <Compile Include="msk1.ElectricMeterVariables.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
-    <Compile Include="msk1.ElectricMeter_CheckDate.cs">
-      <DependentUpon>BuildMetamodels.tt</DependentUpon>
-    </Compile>
     <Compile Include="msk1.ElectricMeter_ClassTN.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
@@ -213,9 +210,6 @@
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
     <Compile Include="msk1.ElectricMeter_Direction.cs">
-      <DependentUpon>BuildMetamodels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="msk1.ElectricMeter_EndCheckDate.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
     <Compile Include="msk1.ElectricMeter_Integral.cs">
@@ -389,13 +383,11 @@
 .\msk1.CurcuitHierarchyNode.cs
 .\msk1.CurcuitVariables.cs
 .\msk1.ElectricMeter.cs
-.\msk1.ElectricMeter_CheckDate.cs
 .\msk1.ElectricMeter_ClassTN.cs
 .\msk1.ElectricMeter_ClassTT.cs
 .\msk1.ElectricMeter_CoeffTN.cs
 .\msk1.ElectricMeter_CoeffTT.cs
 .\msk1.ElectricMeter_Direction.cs
-.\msk1.ElectricMeter_EndCheckDate.cs
 .\msk1.ElectricMeter_Integral.cs
 .\msk1.ElectricMeter_KTR.cs
 .\msk1.ElectricMeter_LossesAbs.cs

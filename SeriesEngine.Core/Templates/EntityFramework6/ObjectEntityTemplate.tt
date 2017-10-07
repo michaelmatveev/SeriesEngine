@@ -57,6 +57,10 @@ namespace SeriesEngine.<#= Schema #>
 			var typeName = varElement.Attribute("DataType").Value;
 			var type = DataTypes[typeName].Attribute("ClrType").Value;
 			var optional = varElement.Attribute("Optional")?.Value == "True";
+			if(optional && type=="DateTime") 
+			{
+				type = "DateTime?";
+			}
 #>
 	
 <#+

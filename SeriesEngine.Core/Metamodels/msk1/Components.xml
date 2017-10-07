@@ -118,11 +118,11 @@
       <Family Rank="40">Основные свойства</Family>
       <Help Context="Класс точности">Класс точности</Help>
     </Variable>
-    <Variable Name="CheckDate" DataType="DateTime" Optional="True" Versioned="True" Period="Indefinite">
+    <Variable Name="CheckDate" DataType="DateTime" Optional="True">
       <Family Rank="41">Основные свойства</Family>
       <Help Context="Дата поверки">Дата поверки</Help>
     </Variable>
-    <Variable Name="EndCheckDate" DataType="DateTime" Optional="True" Versioned="True" Period="Indefinite">
+    <Variable Name="EndCheckDate" DataType="DateTime" Optional="True">
       <Family Rank="42">Основные свойства</Family>
       <Help Context="Окончание поверки">Окончание поверки</Help>
     </Variable>
@@ -254,6 +254,10 @@
       <Family Rank="10">Основные свойства</Family>
       <Help Context="Договор">Номер договора</Help>
     </Variable>
+    <Variable Name="ContractForm" DataType="String200">
+      <Family Rank="20">Основные свойства</Family>
+      <Help Context="Форма договора">Форма договора</Help>
+    </Variable>    
   </Stereotype>
 
 </Stereotypes>

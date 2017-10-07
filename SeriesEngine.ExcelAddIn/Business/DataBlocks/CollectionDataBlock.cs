@@ -183,6 +183,10 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
             {
                 xmlType = "xs:boolean";
             }
+            else if (sf.VariableMetamodel.ValueType == typeof(DateTime))
+            {
+                xmlType = "xs:dateTime";
+            }
             else
             {
                 xmlType = "xs:string";

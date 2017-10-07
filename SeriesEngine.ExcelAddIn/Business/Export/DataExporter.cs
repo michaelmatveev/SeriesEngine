@@ -320,6 +320,10 @@ namespace SeriesEngine.ExcelAddIn.Business.Export
                 if (vsf != null)
                 {
                     start = sf.XmlPath.LastIndexOf('/');
+                    if(vsf.VariableMetamodel.ValueType == typeof(DateTime))
+                    {
+                        _transform = (d) => d == null ? null : DateTime.FromOADate(d);
+                    }
                 }
 
                 FieldName = sf.XmlPath.Substring(start + 1, sf.XmlPath.Length - (start + 1));
