@@ -51,60 +51,60 @@ namespace SeriesEngine.Tests.Database
                     Name = "ММ \"Арбеково\" г.Пенза пр.Строителей, 63"
                 };
 
-                var point1 = new Point()
-                {
-                    Solution = solution,
-                    Name = "ТП-530",
-                };
+                //var point1 = new Point()
+                //{
+                //    Solution = solution,
+                //    Name = "ТП-530",
+                //};
 
-                point1.Point_ContractVoltageLevels.Add(new Point_ContractVoltageLevel()
-                {
-                    Date = new DateTime(2014, 01, 01),
-                    //CreationTime = new DateTime(2014, 01, 01),
-                    Value = "СН-2"
-                });
-                point1.Point_MaxPowers.Add(new Point_MaxPower()
-                {
-                    Date = new DateTime(2014, 01, 01),
-                    //CreationTime = new DateTime(2014, 01, 01),
-                    MaxPower = 10
-                });
+                //point1.Point_ContractVoltageLevels.Add(new Point_ContractVoltageLevel()
+                //{
+                //    Date = new DateTime(2014, 01, 01),
+                //    //CreationTime = new DateTime(2014, 01, 01),
+                //    Value = "СН-2"
+                //});
+                //point1.Point_MaxPowers.Add(new Point_MaxPower()
+                //{
+                //    Date = new DateTime(2014, 01, 01),
+                //    //CreationTime = new DateTime(2014, 01, 01),
+                //    MaxPower = 10
+                //});
 
-                var point2 = new Point()
-                {
-                    Solution = solution,
-                    Name = "ТП-531"
-                };
-                point2.Point_ContractVoltageLevels.Add(new Point_ContractVoltageLevel()
-                {
-                    Date = new DateTime(2014, 01, 01),
-                    //CreationTime = new DateTime(2014, 01, 01),
-                    Value = "СН-2"
-                });
-                point2.Point_MaxPowers.Add(new Point_MaxPower()
-                {
-                    Date = new DateTime(2014, 01, 01),
-                    //CreationTime = new DateTime(2014, 01, 01),
-                    MaxPower = 20
-                });
+                //var point2 = new Point()
+                //{
+                //    Solution = solution,
+                //    Name = "ТП-531"
+                //};
+                //point2.Point_ContractVoltageLevels.Add(new Point_ContractVoltageLevel()
+                //{
+                //    Date = new DateTime(2014, 01, 01),
+                //    //CreationTime = new DateTime(2014, 01, 01),
+                //    Value = "СН-2"
+                //});
+                //point2.Point_MaxPowers.Add(new Point_MaxPower()
+                //{
+                //    Date = new DateTime(2014, 01, 01),
+                //    //CreationTime = new DateTime(2014, 01, 01),
+                //    MaxPower = 20
+                //});
 
-                var point3 = new Point()
-                {
-                    Solution = solution,
-                    Name = "ТП-796",
-                };
-                point3.Point_ContractVoltageLevels.Add(new Point_ContractVoltageLevel()
-                {
-                    Date = new DateTime(2014, 01, 01),
-                    //CreationTime = new DateTime(2014, 01, 01),
-                    ContractVoltageLevel = "СН-1"
-                });
-                point3.Point_MaxPowers.Add(new Point_MaxPower()
-                {
-                    Date = new DateTime(2014, 01, 01),
-                    //CreationTime = new DateTime(2014, 01, 01),
-                    MaxPower = 30
-                });
+                //var point3 = new Point()
+                //{
+                //    Solution = solution,
+                //    Name = "ТП-796",
+                //};
+                //point3.Point_ContractVoltageLevels.Add(new Point_ContractVoltageLevel()
+                //{
+                //    Date = new DateTime(2014, 01, 01),
+                //    //CreationTime = new DateTime(2014, 01, 01),
+                //    ContractVoltageLevel = "СН-1"
+                //});
+                //point3.Point_MaxPowers.Add(new Point_MaxPower()
+                //{
+                //    Date = new DateTime(2014, 01, 01),
+                //    //CreationTime = new DateTime(2014, 01, 01),
+                //    MaxPower = 30
+                //});
 
                 var network01 = new MainHierarchyNetwork()
                 {
@@ -159,35 +159,35 @@ namespace SeriesEngine.Tests.Database
                     Network = network01
                 };
 
-                var node6 = new MainHierarchyNode()
-                {
-                    Point = point1,
-                    Parent = node4,
-                    Network = network01
-                };
+                //var node6 = new MainHierarchyNode()
+                //{
+                //    Point = point1,
+                //    Parent = node4,
+                //    Network = network01
+                //};
 
-                var node7 = new MainHierarchyNode()
-                {
-                    Point = point2,
-                    Parent = node4,
-                    Network = network01
-                };
+                //var node7 = new MainHierarchyNode()
+                //{
+                //    Point = point2,
+                //    Parent = node4,
+                //    Network = network01
+                //};
 
-                var node8 = new MainHierarchyNode()
-                {
-                    Point = point3,
-                    Parent = node5,
-                    Network = network01
-                };
+                //var node8 = new MainHierarchyNode()
+                //{
+                //    Point = point3,
+                //    Parent = node5,
+                //    Network = network01
+                //};
 
                 network01.Nodes.Add(node1);
                 network01.Nodes.Add(node2);
                 network01.Nodes.Add(node3);
                 network01.Nodes.Add(node4);
                 network01.Nodes.Add(node5);
-                network01.Nodes.Add(node6);
-                network01.Nodes.Add(node7);
-                network01.Nodes.Add(node8);
+                //network01.Nodes.Add(node6);
+                //network01.Nodes.Add(node7);
+                //network01.Nodes.Add(node8);
 
                 context.Networks.Add(network01);
                 context.Networks.Add(network02);

@@ -33,8 +33,13 @@
     </Variable>
   </Stereotype>
 
-  <Stereotype Name="Point">
-    <Variable Name="Name" DataType="StringMax">
+  <Stereotype Name="ElectricMeter">
+    <Variable Name="Name" DataType="String200">
+      <Family Rank="0">Основные свойства</Family>
+      <Help Context="Номер прибора учета">Номер прибора учета</Help>
+    </Variable>
+
+    <Variable Name="PointName" DataType="StringMax" Optional="True">
       <Family Rank="10">Основные свойства</Family>
       <Help Context="Точка тоставки">Точка поставки</Help>
     </Variable>
@@ -102,13 +107,7 @@
       <Family Rank="30">Основные свойства</Family>
       <Help Context="Почасовой учет">Почасовой учет</Help>
     </Variable>
-  </Stereotype>
   
-  <Stereotype Name="ElectricMeter">
-    <Variable Name="Name" DataType="String200">
-      <Family Rank="10">Основные свойства</Family>
-      <Help Context="Номер прибора учета">Номер прибора учета</Help>
-    </Variable> 
     <Variable Name="PUType" DataType="String200">
       <Family Rank="20">Основные свойства</Family>
       <Help Context="Тип прибора учета">Тип прибора учета</Help>

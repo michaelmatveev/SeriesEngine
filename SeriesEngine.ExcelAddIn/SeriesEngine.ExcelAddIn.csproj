@@ -34,7 +34,7 @@
     <PublishUrl>publish\</PublishUrl>
     <InstallUrl>https://dataseries.blob.core.windows.net/clickonce/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.4.7.0</ApplicationVersion>
+    <ApplicationVersion>1.4.9.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -507,7 +507,7 @@
     <ManifestKeyFile>SeriesEngine.ExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>CDB8A82142DB1FB52E4DE0D078FCA89529E9D0F3</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>0AC8A1B618F4DB6F2F5843F1BB70021AD7C4804E</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

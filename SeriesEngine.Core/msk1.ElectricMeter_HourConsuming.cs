@@ -11,14 +11,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SeriesEngine.msk1
 {
 
-    [Table("msk1.Point_HourConsumings")]
-    public partial class Point_HourConsuming : PeriodVariable
+    [Table("msk1.ElectricMeter_HourConsumings")]
+    public partial class ElectricMeter_HourConsuming : PeriodVariable
     {
         [Required]
         //[StringLength(200)]
         public Double HourConsuming { get; set; }
 
-        public virtual Point Point { get; set; }
+        public virtual ElectricMeter ElectricMeter { get; set; }
 
         public override object Value
         {

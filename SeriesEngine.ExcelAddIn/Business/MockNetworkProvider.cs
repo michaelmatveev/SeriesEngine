@@ -47,24 +47,24 @@ namespace SeriesEngine.ExcelAddIn.Models
                     Name = "ММ \"Влад\"; г. Пенза пр-т. Строителей, 24а"
                 }
             };
-            var point1 = new MainHierarchyNode
-            {
-                Parent = consumerObject1,
-                Point = new Point
-                {
-                    Name = "ТП-530"
-                }
-            };
+            //var point1 = new MainHierarchyNode
+            //{
+            //    Parent = consumerObject1,
+            //    Point = new Point
+            //    {
+            //        Name = "ТП-530"
+            //    }
+            //};
             //point1.Point.VoltageLevel = "СН-2";
 
-            var point2 = new MainHierarchyNode
-            {
-                Parent = consumerObject1,
-                Point = new Point
-                {
-                    Name = "ТП-531"
-                }
-            };
+            //var point2 = new MainHierarchyNode
+            //{
+            //    Parent = consumerObject1,
+            //    Point = new Point
+            //    {
+            //        Name = "ТП-531"
+            //    }
+            //};
             //point2.Point.VoltageLevel = "СН-2";
 
             var consumerObject2 = new MainHierarchyNode
@@ -76,14 +76,14 @@ namespace SeriesEngine.ExcelAddIn.Models
                 }
             };
 
-            var point3 = new MainHierarchyNode
-            {
-                Parent = consumerObject2,
-                Point = new Point
-                {
-                    Name = "ТП-796"
-                }
-            };
+            //var point3 = new MainHierarchyNode
+            //{
+            //    Parent = consumerObject2,
+            //    Point = new Point
+            //    {
+            //        Name = "ТП-796"
+            //    }
+            //};
             //point3.Point.VoltageLevel = "СН-2";
 
             mainTree = new MainHierarchyNetwork()
@@ -95,10 +95,10 @@ namespace SeriesEngine.ExcelAddIn.Models
             mainTree.MyNodes.Add(consumer1);
             mainTree.MyNodes.Add(contract1);
             mainTree.MyNodes.Add(consumerObject1);
-            mainTree.MyNodes.Add(point1);
-            mainTree.MyNodes.Add(point2);
+            //mainTree.MyNodes.Add(point1);
+            //mainTree.MyNodes.Add(point2);
             mainTree.MyNodes.Add(consumerObject2);
-            mainTree.MyNodes.Add(point3);
+            //mainTree.MyNodes.Add(point3);
         }
 
         public ICollection<NetworkTree> GetNetworks(int solutionId)

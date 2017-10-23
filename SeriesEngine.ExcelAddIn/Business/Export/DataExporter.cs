@@ -115,7 +115,8 @@ namespace SeriesEngine.ExcelAddIn.Business.Export
                 //.GetNetwork(solution, collectionDataBlock.NetworkName, collectionDataBlock.DataBlocks, period);
 
             Excel.Worksheet sheet = _workbook.Sheets[collectionDataBlock.Sheet];
-            var listObject = sheet.ListObjects.Cast<Excel.ListObject>().SingleOrDefault(l => l.Name == collectionDataBlock.Name);
+            var listObjects = sheet.ListObjects.Cast<Excel.ListObject>();
+            var listObject =  listObjects.SingleOrDefault(l => l.Name == collectionDataBlock.Name);
 
             var schema = collectionDataBlock.GetSchema();
             var sr = new StringReader(schema);

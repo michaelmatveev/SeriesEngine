@@ -347,3 +347,17 @@ ModelManifest.xml
 /SeriesEngine.Core/msk1.ElectricMeter_CheckDateTT.cs
 /SeriesEngine.Core/msk1.ElectricMeter_CheckDateTN.cs
 /SeriesEngine.Core/msk1.ElectricMeter_CheckDate.cs
+/SeriesEngine.Core/msk1.ElectricMeter_CurcuitContractVoltageLevel.cs
+/SeriesEngine.Core/msk1.ElectricMeter_CurcuitContractTariffGroup.cs
+/SeriesEngine.Core/msk1.ElectricMeter_CurcuitContractPriceCategory.cs
+/SeriesEngine.Core/msk1.ElectricMeter_ContractVoltageLevel.cs
+/SeriesEngine.Core/msk1.ElectricMeter_ContractTariffGroup.cs
+/SeriesEngine.Core/msk1.ElectricMeter_ContractPriceCategory.cs
+/SeriesEngine.Core/msk1.ElectricMeter_BPGroup.cs
+/SeriesEngine.Core/msk1.ElectricMeter_TUCode.cs
+/SeriesEngine.Core/msk1.ElectricMeter_SupplierContractVoltageLevel.cs
+/SeriesEngine.Core/msk1.ElectricMeter_SupplierContractTariffGroup.cs
+/SeriesEngine.Core/msk1.ElectricMeter_SupplierContractPriceCategory.cs
+/SeriesEngine.Core/msk1.ElectricMeter_PUPlace.cs
+/SeriesEngine.Core/msk1.ElectricMeter_MaxPowerInGroup.cs
+/SeriesEngine.Core/msk1.ElectricMeter_MaxPower.cs

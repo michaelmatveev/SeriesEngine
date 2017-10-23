@@ -11,10 +11,7 @@
           <Level>
             <UsedStereotype Name="ConsumerObject"/>
             <Level>
-              <UsedStereotype Name="Point" />
-              <Level>
-                <UsedStereotype Name="ElectricMeter" />
-              </Level>
+              <UsedStereotype Name="ElectricMeter" />
             </Level>
           </Level>
         </Level>
@@ -32,10 +29,7 @@
           <Level>
             <UsedStereotype Name="ConsumerObject"/>
             <Level>
-              <UsedStereotype Name="Point" />
-              <Level>
-                <UsedStereotype Name="ElectricMeter" />
-              </Level>
+              <UsedStereotype Name="ElectricMeter" />
             </Level>
           </Level>
         </Level>
@@ -53,10 +47,7 @@
           <Level>
             <UsedStereotype Name="ConsumerObject"/>
             <Level>
-              <UsedStereotype Name="Point" />
-              <Level>
-                <UsedStereotype Name="ElectricMeter" />
-              </Level>
+              <UsedStereotype Name="ElectricMeter" />
             </Level>
           </Level>
         </Level>
