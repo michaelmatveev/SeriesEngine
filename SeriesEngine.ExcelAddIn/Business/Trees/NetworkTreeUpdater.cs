@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Transactions;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -25,11 +26,9 @@ namespace SeriesEngine.ExcelAddIn.Models
 
         public void UpdateFromSourceToTarget(XDocument source, XDocument target)
         {
-            //_network.HierarchyModel.ReferencedObjects.All
             var nodes = new List<IStateObject>();
             nodes.AddRange(ProcessNodesElements(source, null, target.Root.Elements()));
             nodes.AddRange(FindNodesToDelete(source.Root.Elements()));
-            //Update(_network.MyNodes);
             Update(nodes);
         }
 
@@ -53,26 +52,96 @@ namespace SeriesEngine.ExcelAddIn.Models
                         }
                     }
 
-                    //foreach (var groupOfValues in valuesForPeriod.GroupBy(v => v.GetType()))
-                    //{
-                    //    //var addedValues = groupOfValues.Where(v => v.State == ObjectState.Added);
-                    //    context.Set(groupOfValues.Key).AddRange(groupOfValues);
-                    //    //foreach(var modifiedValues in groupOfValues.Where(v => v.State != ObjectState.Added))
-                    //    //{
-                    //    //    context.
-                    //    //} 
-                    //}
-
                     context.FixState();
                     context.Database.Log = x => System.Diagnostics.Debug.WriteLine(x);
+                    context.Database.ExecuteSqlCommand("SET ARITHABORT ON;");
                     context.SaveChanges();
                 }
             }
-            catch(InvalidOperationException ex)
+            catch (InvalidOperationException ex)
             {
-                if(ex.Message.Contains("The changes to the database were committed successfully, but an error occurred while updating the object context. The ObjectContext might be in an inconsistent state."))
+                if (ex.Message.Contains("The changes to the database were committed successfully, but an error occurred while updating the object context. The ObjectContext might be in an inconsistent state."))
                 {
                     return;
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var errors = ex.EntityValidationErrors.SelectMany(s => s.ValidationErrors);
+                var message = string.Join(", ", errors.Select(e => e.ErrorMessage));
+                throw new InvalidOperationException(message);
+            }
+        }
+
+        public void Update2(IEnumerable<IStateObject> valuesForPeriod)
+        {
+            using (var scope = new TransactionScope())
+            {
+                BaseModelContext context = null;
+                try
+                {
+                    context = ModelsDescription.GetModel(_network.Solution.ModelName);
+                    context.Configuration.AutoDetectChangesEnabled = false;
+                    context.Networks.Attach(_network);
+
+                    int count = 0;
+                    foreach (var v in valuesForPeriod)
+                    {
+                        if (v.State == ObjectState.Added)
+                        {
+                            context.Set(v.GetType()).Add(v);
+                        }
+                        else
+                        {
+                            context.Set(v.GetType()).Attach(v);
+                        }
+                        ++count;
+                        context = AddToContext(context, v, count, 30, true);
+                    }
+
+                    CommitData(context);
+                }
+                finally
+                {
+                    if (context != null)
+                    {
+                        context.Dispose();
+                    }
+                }
+                scope.Complete();
+            }
+        }
+
+        private BaseModelContext AddToContext(BaseModelContext context, IStateObject v, int count, int commitCount, bool recreateContext)
+        {
+            if (count % commitCount == 0)
+            {
+                CommitData(context);
+                if (recreateContext)
+                {
+                    context.Dispose();
+                    context = ModelsDescription.GetModel(_network.Solution.ModelName);
+                    context.Configuration.AutoDetectChangesEnabled = false;
+                    context.Networks.Attach(_network);
+                }
+            }
+
+            return context;
+        }
+
+        private static void CommitData(BaseModelContext context)
+        {
+            try
+            {
+                context.FixState();
+                context.Database.Log = x => System.Diagnostics.Debug.WriteLine(x);
+                context.SaveChanges();
+            }
+            catch (InvalidOperationException ex)
+            {
+                if (!ex.Message.Contains("The changes to the database were committed successfully, but an error occurred while updating the object context. The ObjectContext might be in an inconsistent state."))
+                {
+                    throw ex;
                 }
             }
             catch (DbEntityValidationException ex)

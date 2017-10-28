@@ -46,7 +46,7 @@ ON O.Id = N.<#= v.RefObject #>_Id;
 		foreach (var v in variables.OfType<VariableDataBlock>().Where(b => b.VariableMetamodel.PeriodInterval != TimeInterval.None || b.VariableMetamodel.IsVersioned))
 		{
 #>
-SELECT * FROM <#=_hierarchyModel.ModelName#>.<#= v.RefObject #>_<#= v.VariableMetamodel.Name #>s AS O
+SELECT O.* FROM <#=_hierarchyModel.ModelName#>.<#= v.RefObject #>_<#= v.VariableMetamodel.Name #>s AS O
 INNER JOIN @Nodes AS N
 ON O.ObjectId = N.<#= v.RefObject #>_Id;
 

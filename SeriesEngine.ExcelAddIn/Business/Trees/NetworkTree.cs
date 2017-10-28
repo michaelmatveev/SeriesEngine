@@ -126,7 +126,7 @@ namespace SeriesEngine.ExcelAddIn.Models
             {
                 using (var context = ModelsDescription.GetModel(_network.Solution.ModelName))
                 {
-                    //context.Configuration.AutoDetectChangesEnabled = false;
+                    context.Configuration.AutoDetectChangesEnabled = false;
                     //context.Networks.Attach(_network);
                     foreach (var v in valuesForPeriod)
                     {
@@ -141,6 +141,7 @@ namespace SeriesEngine.ExcelAddIn.Models
                     }
                     context.FixState();
                     context.Database.Log = x => System.Diagnostics.Debug.WriteLine(x);
+                    context.Database.ExecuteSqlCommand("set arithabort on");
                     context.SaveChanges();
                 }
             }

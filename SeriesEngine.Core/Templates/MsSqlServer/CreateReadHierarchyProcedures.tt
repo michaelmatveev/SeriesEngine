@@ -46,6 +46,7 @@ BEGIN
 		FROM NetworkNodes AS NN
 		INNER JOIN [<#= Schema #>].[<#= s #>s] AS O
 		ON NN.<#= s #>_Id = O.Id
+		AND O.Id > 0
 <#+		
 			if(index != count - 1)
 			{

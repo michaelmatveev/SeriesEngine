@@ -50,7 +50,10 @@ namespace SeriesEngine.ExcelAddIn.Models.DataBlocks
             var model = ModelsDescription.All.Single(m => m.Name == solution.ModelName);
             foreach (var b in DataBlocks)
             {
-                b.ObjectMetamodel = model.ObjectModels.Single(m => m.Name == b.RefObject);
+                if (b.RefObject != null)
+                {
+                    b.ObjectMetamodel = model.ObjectModels.Single(m => m.Name == b.RefObject);
+                }
                 var vb = b as VariableDataBlock;
                 if (vb != null)
                 {                    

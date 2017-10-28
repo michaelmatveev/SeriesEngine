@@ -128,7 +128,7 @@ namespace SeriesEngine.ExcelAddIn.Business
             
             #line default
             #line hidden
-            this.Write("SELECT * FROM ");
+            this.Write("SELECT O.* FROM ");
             
             #line 49 "C:\GitRepositories\SeriesEngine2\SeriesEngine.ExcelAddIn\Business\SelectDataTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_hierarchyModel.ModelName));
