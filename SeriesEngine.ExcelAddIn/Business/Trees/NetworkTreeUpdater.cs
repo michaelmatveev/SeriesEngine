@@ -17,6 +17,8 @@ namespace SeriesEngine.ExcelAddIn.Models
         private readonly bool _updateHierarchyEnabled;
         private Period _defaultDateForPeriodVariables;
 
+        public EventHandler<string> OnProgressUpdate;
+
         public NetworkTreeUpdater(Network network, bool updateHiearchyEnabled, Period defaultDateForPeriodVariables)
         {
             _network = network;
@@ -29,7 +31,13 @@ namespace SeriesEngine.ExcelAddIn.Models
             var nodes = new List<IStateObject>();
             nodes.AddRange(ProcessNodesElements(source, null, target.Root.Elements()));
             nodes.AddRange(FindNodesToDelete(source.Root.Elements()));
+            OnUpdate(nodes.Count);
             Update(nodes);
+        }
+
+        protected void OnUpdate(int countOfEntites)
+        {
+            OnProgressUpdate?.Invoke(this, countOfEntites.ToString());
         }
 
         public void Update(IEnumerable<IStateObject> valuesForPeriod)

@@ -187,6 +187,9 @@ namespace SeriesEngine.ExcelAddIn.Models
                     .Use<StoredQueriesSelector>();
 
                 _.ForConcreteType<StoredQueriesPresenter>();
+
+                _.For<IProgressView>()
+                    .Use<ProgressView>();
             });
 
             var provider = Container.GetInstance<IDataBlockProvider>();

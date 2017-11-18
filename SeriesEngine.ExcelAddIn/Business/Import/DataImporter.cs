@@ -445,7 +445,6 @@ namespace SeriesEngine.ExcelAddIn.Business.Import
                 {
                     column.Range.NumberFormat = "dd.mm.yyyy hh:mm";
                 }
-
                 column.XPath.SetValue(map, block.XmlPath);
             }
             else

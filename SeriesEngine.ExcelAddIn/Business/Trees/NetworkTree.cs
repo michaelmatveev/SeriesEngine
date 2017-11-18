@@ -43,9 +43,10 @@ namespace SeriesEngine.ExcelAddIn.Models
             return data;
         }
 
-        public void LoadFromXml(XDocument source, XDocument target, Period defaultPeriod)
+        public void LoadFromXml(XDocument source, XDocument target, Period defaultPeriod, IProgressView progress)
         {
             var updater = new NetworkTreeUpdater(_network, _fullHierarchy, defaultPeriod);
+            updater.OnProgressUpdate += (s, e) => progress.UpdateInfo($"Измененных объектов: {e}");            
             updater.UpdateFromSourceToTarget(source, target);
         }
 

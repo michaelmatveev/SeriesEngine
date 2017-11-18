@@ -8,11 +8,13 @@ using SeriesEngine.ExcelAddIn.Business.Trees;
 using SeriesEngine.ExcelAddIn.Helpers;
 using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
+using SeriesEngine.ExcelAddIn.Views;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -26,27 +28,35 @@ namespace SeriesEngine.ExcelAddIn.Business.Export
         private readonly IDataBlockProvider _blockProvider;
         private readonly INetworksProvider _networksProvider;
 
-        public DataExporter(Workbook workbook, IDataBlockProvider blockProvider, INetworksProvider networksProvider)
+        public DataExporter(Workbook workbook, IDataBlockProvider blockProvider, INetworksProvider networksProvider, IProgressView progressView) :
+            base(progressView)
         {
             _workbook = workbook;
             _blockProvider = blockProvider;
             _networksProvider = networksProvider;
         }
 
+        private Period _period;
         public void Execute(SaveAllCommandArgs commandData)
         {
             using (new ActiveRangeKeeper(_workbook))
             {
-                var sheetDataBlocks = _blockProvider.GetDataBlocks().OfType<SheetDataBlock>();
-                ExportFromDataBlocks(commandData.Solution, sheetDataBlocks);
-                _blockProvider.Save(); // save NetworkRevision
+                _period = _blockProvider.GetDefaultPeriod();
+                _progressView.Start("Сохраняем данные...");
+                Task.Run(() =>
+                {
+                    var sheetDataBlocks = _blockProvider.GetDataBlocks().OfType<SheetDataBlock>();
+                    ExportFromDataBlocks(commandData.Solution, sheetDataBlocks);
+                    _blockProvider.Save(); // save NetworkRevision
+                    _progressView.Stop();
+                });
             }
         }
 
         public override void ExportDataBlock(Solution solution, CollectionDataBlock collectionDatablock)
         {
-            var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
-            collectionDatablock.SetupPeriodForNestedBlocks(solution, period);
+            //var period = _blockProvider.GetDefaultPeriod(collectionDatablock);
+            collectionDatablock.SetupPeriodForNestedBlocks(solution, _period);
 
             if (collectionDatablock.Interval == TimeInterval.None)
             {
@@ -109,7 +119,7 @@ namespace SeriesEngine.ExcelAddIn.Business.Export
 
         private void ExportFromXmlMap(Solution solution, CollectionDataBlock collectionDataBlock)
         {
-            var period = _blockProvider.GetDefaultPeriod(collectionDataBlock);
+            //var period = _blockProvider.GetDefaultPeriod(collectionDataBlock);
 
             var sourceNetworkTree = _networksProvider.GetNetwork(solution, collectionDataBlock);
                 //.GetNetwork(solution, collectionDataBlock.NetworkName, collectionDataBlock.DataBlocks, period);
@@ -124,6 +134,8 @@ namespace SeriesEngine.ExcelAddIn.Business.Export
             var dsChanged = new DataSet();
             dsChanged.ReadXmlSchema(sr);
 
+            _progressView.UpdateInfo($"Читаем все данные из списка {listObject.Name}");
+
             if (listObject.DataBodyRange != null)
             {
                 var tree = collectionDataBlock
@@ -136,13 +148,16 @@ namespace SeriesEngine.ExcelAddIn.Business.Export
 
                 for (int row = 1; row <= listObject.DataBodyRange.Rows.Count; row++)
                 {
+                    _progressView.UpdateInfo($"Обрабатываем строку {row}");
                     CreateOrUpdateRowInDataSet(row, dsChanged, listObject, 0, tree);
                 }
             }
 
-            var source = new XDocument(collectionDataBlock.Xml ?? sourceNetworkTree.ConvertToXml(collectionDataBlock.DataBlocks, period, collectionDataBlock.CustomPath));
+            _progressView.UpdateInfo($"Получаем исходные данные перед обновлением");
+            var source = new XDocument(collectionDataBlock.Xml ?? sourceNetworkTree.ConvertToXml(collectionDataBlock.DataBlocks, _period, collectionDataBlock.CustomPath));
+            _progressView.UpdateInfo($"Получаем измененные данные");
             var target = XDocument.Parse(dsChanged.GetXml());
-            sourceNetworkTree.LoadFromXml(source, target, period);
+            sourceNetworkTree.LoadFromXml(source, target, _period, _progressView);
         }
 
         private void CreateOrUpdateRowInDataSet(int row, DataSet dataSet, Excel.ListObject listObject, int rootId, IEnumerable<TreeItem<IGrouping<ObjectIdentity, ColumnIdentity>>> currentItems)

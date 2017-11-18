@@ -248,6 +248,12 @@
     <Compile Include="msk1.ElectricMeter_LossesPercent.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
+    <Compile Include="msk1.ElectricMeter_LossTransport.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="msk1.ElectricMeter_LossWire.cs">
+      <DependentUpon>BuildMetamodels.tt</DependentUpon>
+    </Compile>
     <Compile Include="msk1.ElectricMeter_MaxPower.cs">
       <DependentUpon>BuildMetamodels.tt</DependentUpon>
     </Compile>
@@ -394,6 +400,8 @@
 .\msk1.ElectricMeter_KTR.cs
 .\msk1.ElectricMeter_LossesAbs.cs
 .\msk1.ElectricMeter_LossesPercent.cs
+.\msk1.ElectricMeter_LossTransport.cs
+.\msk1.ElectricMeter_LossWire.cs
 .\msk1.ElectricMeter_MaxPower.cs
 .\msk1.ElectricMeter_MaxPowerInGroup.cs
 .\msk1.ElectricMeter_NTN.cs

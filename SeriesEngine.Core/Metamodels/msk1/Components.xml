@@ -203,6 +203,14 @@
       <Help Context="Интеграл">Интеграл</Help>
     </Variable>
     
+    <Variable Name="LossWire" DataType="Decimal" Optional="True" Versioned="True" Period="Month">
+      <Family Rank="61">Основные свойства</Family>
+      <Help Context="Интеграл">Потери ЛЭП</Help>
+    </Variable>
+    <Variable Name="LossTransport" DataType="Decimal" Optional="True" Versioned="True" Period="Month">
+      <Family Rank="62">Основные свойства</Family>
+      <Help Context="Интеграл">Потери транспорт</Help>
+    </Variable>
     
     <!--<Variable Name="CoeffOfTransformation" DataType="Decimal" Optional="True" Versioned="True">
       <Family Rank="70">Основные свойства</Family>

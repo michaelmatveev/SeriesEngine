@@ -3,20 +3,29 @@ using SeriesEngine.ExcelAddIn.Models;
 using SeriesEngine.ExcelAddIn.Models.DataBlocks;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SeriesEngine.ExcelAddIn.Business.Export
 {
     public abstract class BaseDataExporter : IErrorAware
     {
+        protected readonly IProgressView _progressView;
+
+        public BaseDataExporter(IProgressView progressView)
+        {
+            _progressView = progressView;
+        }
+
         protected void ExportFromDataBlocks(Solution solution, IEnumerable<SheetDataBlock> dataBlocks)
         {
             foreach (var db in dataBlocks)
             {
                 try
-                {                                     
+                {
+                    _progressView.UpdateInfo($"Данные из запроса {db.Name}");
                     db.Export(solution, this);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     if (OnErrorOccured(ex.Message))
                     {

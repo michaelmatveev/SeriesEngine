@@ -34,7 +34,7 @@
     <PublishUrl>publish\</PublishUrl>
     <InstallUrl>https://dataseries.blob.core.windows.net/clickonce/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.4.10.0</ApplicationVersion>
+    <ApplicationVersion>1.4.11.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -309,6 +309,7 @@
     <Compile Include="Views\IPanes.cs" />
     <Compile Include="Views\IPeriodVariableView.cs" />
     <Compile Include="Views\IPeriodView.cs" />
+    <Compile Include="Business\IProgressView.cs" />
     <Compile Include="Views\ISolutionSelectorView.cs" />
     <Compile Include="Views\IStoredQueriesView.cs" />
     <Compile Include="Views\IView.cs" />
@@ -345,6 +346,12 @@
     </Compile>
     <Compile Include="Views\PeriodVariableEditor.Designer.cs">
       <DependentUpon>PeriodVariableEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProgressView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ProgressView.Designer.cs">
+      <DependentUpon>ProgressView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Ribbon.cs">
       <SubType>Component</SubType>
@@ -417,6 +424,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\PeriodVariableEditor.resx">
       <DependentUpon>PeriodVariableEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ProgressView.resx">
+      <DependentUpon>ProgressView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Ribbon.resx">
       <DependentUpon>Ribbon.cs</DependentUpon>
