@@ -149,7 +149,8 @@ namespace SeriesEngine.ExcelAddIn.Business.Export
                 for (int row = 1; row <= listObject.DataBodyRange.Rows.Count; row++)
                 {
                     _progressView.UpdateInfo($"Обрабатываем строку {row}");
-                    CreateOrUpdateRowInDataSet(row, dsChanged, listObject, 0, tree);
+                    var array = listObject.DataBodyRange.Value;
+                    CreateOrUpdateRowInDataSet(row, dsChanged, array, 0, tree);
                 }
             }
 
@@ -160,13 +161,13 @@ namespace SeriesEngine.ExcelAddIn.Business.Export
             sourceNetworkTree.LoadFromXml(source, target, _period, _progressView);
         }
 
-        private void CreateOrUpdateRowInDataSet(int row, DataSet dataSet, Excel.ListObject listObject, int rootId, IEnumerable<TreeItem<IGrouping<ObjectIdentity, ColumnIdentity>>> currentItems)
+        private void CreateOrUpdateRowInDataSet(int row, DataSet dataSet, dynamic array, int rootId, IEnumerable<TreeItem<IGrouping<ObjectIdentity, ColumnIdentity>>> currentItems)
         {
             foreach (var node in currentItems)
             {
                 var table = dataSet.Tables[node.Item.Key.RefObject];
                 var nameColumn = node.Item.SingleOrDefault(c => c.FieldName == "UniqueName");
-                var objectName = (listObject.DataBodyRange[row, nameColumn.Index + 1] as Excel.Range).Value2;
+                var objectName = array[row, nameColumn.Index + 1];
                 if (objectName == null)
                 {
                     return;
@@ -186,7 +187,7 @@ namespace SeriesEngine.ExcelAddIn.Business.Export
                     dataRow = table.NewRow();
                     foreach (var column in node.Item)
                     {
-                        var cellValue = (listObject.DataBodyRange[row, column.Index + 1] as Excel.Range).Value2;
+                        var cellValue = array[row, column.Index + 1];
                         dataRow[column.FieldName] = column.TransformValue(cellValue) ?? DBNull.Value;
                     }
                     if (node.Item.Key.Parent != NetworkTree.RootName)
@@ -202,7 +203,7 @@ namespace SeriesEngine.ExcelAddIn.Business.Export
                     {
                         id = (int)dataRow[$"{node.Item.Key.RefObject}_Id"];
                     }
-                    CreateOrUpdateRowInDataSet(row, dataSet, listObject, id, node.Children);
+                    CreateOrUpdateRowInDataSet(row, dataSet, array, id, node.Children);
                 }
 
             }
